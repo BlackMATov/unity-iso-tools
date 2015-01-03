@@ -40,6 +40,12 @@ public class IsoWorld : MonoBehaviour {
 			0.0f) / TileSize;
 	}
 
+	public Vector3 ScreenToIso(Vector2 pos, float iso_z) {
+		var iso_pos = ScreenToIso(new Vector2(pos.x, pos.y - iso_z * TileSize));
+		iso_pos.z = iso_z;
+		return iso_pos;
+	}
+
 	void _scanObjects() {
 		_objects.Clear();
 		IsoObject[] iso_objects = GameObject.FindObjectsOfType<IsoObject>();

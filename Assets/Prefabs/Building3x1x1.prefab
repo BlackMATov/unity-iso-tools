@@ -40,9 +40,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a9c584f9a39449438abc7ba59a68778, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  position: {x: 0, y: 0, z: 0}
-  size: {x: 3, y: 1, z: 1}
-  alignment: 1
+  _position: {x: 0, y: 0, z: 0}
+  _size: {x: 3, y: 1, z: 1}
+  _alignment: 1
 --- !u!212 &21281704
 SpriteRenderer:
   m_ObjectHideFlags: 1
