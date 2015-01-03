@@ -79,9 +79,8 @@ public class IsoWorld : MonoBehaviour {
 	}
 
 	void _placeObject(IsoObject obj, float depth) {
-		Vector3 pos = IsoToScreen(obj.Position);
-		pos.z = depth;
-		obj.gameObject.transform.position = pos;
+		var pos = obj.gameObject.transform.position;
+		obj.gameObject.transform.position = new Vector3(pos.x, pos.y, depth);
 	}
 
 	void _placeObject(ObjectInfo info, ref float depth) {
@@ -98,12 +97,6 @@ public class IsoWorld : MonoBehaviour {
 	}
 	
 	void Start () {
-		if ( Application.isPlaying ) {
-			Debug.Log("Application!");
-		}
-		if ( Application.isEditor ) {
-			Debug.Log("Editor!");
-		}
 	}
 
 	void Update () {
