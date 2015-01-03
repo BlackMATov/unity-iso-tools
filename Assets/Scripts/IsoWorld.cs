@@ -5,7 +5,11 @@ using System.Collections.Generic;
 [ExecuteInEditMode]
 public class IsoWorld : MonoBehaviour {
 
-	private class ObjectInfo {
+	public float TileSize   = 32.0f;
+	public float StartDepth = 0.0f;
+	public float StepDepth  = 0.1f;
+
+	class ObjectInfo {
 		public IsoObject IsoObject;
 		public bool      Visited;
 		public int       BeginDepend;
@@ -20,12 +24,13 @@ public class IsoWorld : MonoBehaviour {
 		}
 	}
 
-	public float TileSize   = 32.0f;
-	public float StartDepth = 0.0f;
-	public float StepDepth  = 0.1f;
-
+	bool             _dirty   = true;
 	List<int>        _depends = new List<int>();
 	List<ObjectInfo> _objects = new List<ObjectInfo>();
+
+	public void MarkDirty() {
+		_dirty = true;
+	}
 	
 	public Vector2 IsoToScreen(Vector3 pos) {
 		return new Vector2(
@@ -102,12 +107,19 @@ public class IsoWorld : MonoBehaviour {
 		}
 	}
 	
-	void Start () {
+	void Start() {
 	}
 
-	void Update () {
-		_scanObjects();
-		_scanDepends();
-		_manualSort();
+	void Update() {
+		if ( _dirty ) {
+			_scanObjects();
+			_scanDepends();
+			_manualSort();
+			_dirty = false;
+		}
+	}
+
+	void LateUpdate() {
+		Update();
 	}
 }

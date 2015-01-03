@@ -46,6 +46,7 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\IsoAutoController.cs" />
      <Compile Include="Assets\Scripts\IsoController.cs" />
      <Compile Include="Assets\Scripts\IsoObject.cs" />
      <Compile Include="Assets\Scripts\IsoWorld.cs" />

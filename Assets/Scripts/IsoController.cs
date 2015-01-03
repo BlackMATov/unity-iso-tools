@@ -2,10 +2,6 @@
 using System.Collections;
 
 public class IsoController : MonoBehaviour {
-	
-	void Start () {	
-	}
-
 	void Update () {
 		var iso_object = gameObject.GetComponent<IsoObject>();
 		if ( iso_object ) {
