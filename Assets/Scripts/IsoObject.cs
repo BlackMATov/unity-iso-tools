@@ -19,9 +19,10 @@ public class IsoObject : MonoBehaviour {
 			} else {
 				_position = value;
 			}
-			FixTransform();
 			GetIsoWorld().MarkDirty();
-			_lastPosition = _position;
+			if ( Application.isEditor ) {
+				EditorUtility.SetDirty(this);
+			}
 		}
 	}
 	
@@ -34,21 +35,11 @@ public class IsoObject : MonoBehaviour {
 
 	void Update() {
 		if ( _lastPosition != _position ) {
-			Position = _position;
+			FixTransform();
 		}
 		if ( _lastTransform != gameObject.transform.position ) {
 			FixIsoPosition();
 		}
-		/*
-		if ( Selection.Contains(gameObject) ) {
-			FixIsoPosition();
-		} else {
-			FixTransform();
-		}*/
-	}
-
-	void OnRenderObject() {
-		Update();
 	}
 
 	IsoWorld GetIsoWorld() {
@@ -66,15 +57,13 @@ public class IsoObject : MonoBehaviour {
 		var depth = gameObject.transform.position.z;
 		var trans = new Vector3(pos.x, pos.y, depth);
 		gameObject.transform.position = trans;
-		_lastPosition = trans;
+		_lastPosition = Position;
+		_lastTransform = trans;
 	}
 
 	void FixIsoPosition() {
 		var trans = gameObject.transform.position;
 		Position = GetIsoWorld().ScreenToIso(new Vector2(trans.x, trans.y), Position.z);
-		_lastTransform = trans;
-		if ( Application.isEditor ) {
-			EditorUtility.SetDirty(this);
-		}
+		FixTransform();
 	}
 }

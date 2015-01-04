@@ -106,20 +106,13 @@ public class IsoWorld : MonoBehaviour {
 			depth += StepDepth;
 		}
 	}
-	
-	void Start() {
-	}
 
-	void Update() {
+	void LateUpdate() {
 		if ( _dirty ) {
 			_scanObjects();
 			_scanDepends();
 			_manualSort();
 			_dirty = false;
 		}
-	}
-
-	void LateUpdate() {
-		Update();
 	}
 }
