@@ -52,6 +52,22 @@ public class IsoWorld : MonoBehaviour {
 		return iso_pos;
 	}
 
+	void _fixTileSize() {
+		_scanObjects();
+		foreach ( var obj in _objects ) {
+			obj.IsoObject.FixTransform();
+		}
+		_objects.Clear();
+		_lastTileSize = TileSize;
+	}
+
+	void _fixDirty() {
+		_scanObjects();
+		_scanDepends();
+		_manualSort();
+		_dirty = false;
+	}
+	
 	void _scanObjects() {
 		_objects.Clear();
 		IsoObject[] iso_objects = GameObject.FindObjectsOfType<IsoObject>();
@@ -116,17 +132,10 @@ public class IsoWorld : MonoBehaviour {
 
 	void LateUpdate() {
 		if ( _lastTileSize != TileSize ) {
-			_scanObjects();
-			foreach ( var obj in _objects ) {
-				obj.IsoObject.FixTransform();
-			}
-			_objects.Clear();
+			_fixTileSize();
 		}
 		if ( _dirty ) {
-			_scanObjects();
-			_scanDepends();
-			_manualSort();
-			_dirty = false;
+			_fixDirty();
 		}
 	}
 }

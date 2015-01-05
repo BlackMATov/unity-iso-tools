@@ -121,8 +121,4 @@ public class IsoObject : MonoBehaviour {
 	void OnEnable() {
 		IsoWorld.MarkDirty();
 	}
-
-	void OnDisable() {
-		IsoWorld.MarkDirty();
-	}
 }
