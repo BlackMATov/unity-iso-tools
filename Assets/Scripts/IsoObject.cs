@@ -5,65 +5,108 @@ using System.Collections;
 [ExecuteInEditMode]
 public class IsoObject : MonoBehaviour {
 
-	IsoWorld _iso_world     = null;
-	Vector3  _lastPosition  = Vector3.zero;
-	Vector3  _lastTransform = Vector3.zero;
+	IsoWorld  _iso_world     = null;
+	Transform _transform     = null;
+	Vector3   _lastPosition  = Vector3.zero;
+	Vector3   _lastTransform = Vector3.zero;
 
 	[SerializeField]
 	Vector3 _position = Vector3.zero;
 	public Vector3 Position {
 		get { return _position; }
 		set {
+			_position = value;
 			if ( Alignment ) {
-				_position.Set(Mathf.Round(value.x), Mathf.Round(value.y), Mathf.Round(value.z));
+				FixAlignment();
 			} else {
-				_position = value;
+				FixTransform();
 			}
-			GetIsoWorld().MarkDirty();
+			_iso_world.MarkDirty();
 			if ( Application.isEditor ) {
 				EditorUtility.SetDirty(this);
 			}
 		}
 	}
-	
-	public Vector3 Size      = Vector3.one;
-	public bool    Alignment = true;
 
-	void Start() {
-		GetIsoWorld().MarkDirty();
+	[SerializeField]
+	Vector3 _size = Vector3.one;
+	public Vector3 Size {
+		get { return _size; }
+		set {
+			_size = value;
+			if ( Alignment ) {
+				FixAlignment();
+			} else {
+				FixTransform();
+			}
+			_iso_world.MarkDirty();
+			if ( Application.isEditor ) {
+				EditorUtility.SetDirty(this);
+			}
+		}
 	}
 
-	void Update() {
-		if ( _lastPosition != _position ) {
-			FixTransform();
-		}
-		if ( _lastTransform != gameObject.transform.position ) {
-			FixIsoPosition();
+	[SerializeField]
+	bool _alignment = true;	
+	public bool Alignment {
+		get { return _alignment; }
+		set {
+			_alignment = value;
+			if ( Alignment ) {
+				FixAlignment();
+			} else {
+				FixTransform();
+			}
+			_iso_world.MarkDirty();
+			if ( Application.isEditor ) {
+				EditorUtility.SetDirty(this);
+			}
 		}
 	}
 
-	IsoWorld GetIsoWorld() {
-		if ( !_iso_world ) {
-			_iso_world = GameObject.FindObjectOfType<IsoWorld>();
+	public void FixAlignment() {
+		_position.Set(
+			Mathf.Round(_position.x),
+			Mathf.Round(_position.y),
+			Mathf.Round(_position.z));
+		FixTransform();
+		_iso_world.MarkDirty();
+		if ( Application.isEditor ) {
+			EditorUtility.SetDirty(this);
 		}
-		if ( !_iso_world ) {
-			throw new UnityException("IsoObject. IsoWorld not found!");
-		}
-		return _iso_world;
 	}
 
-	void FixTransform() {
-		var pos = GetIsoWorld().IsoToScreen(Position);
-		var depth = gameObject.transform.position.z;
-		var trans = new Vector3(pos.x, pos.y, depth);
-		gameObject.transform.position = trans;
+	public void FixTransform() {
+		Vector3 trans = _iso_world.IsoToScreen(Position);
+		trans.z = _transform.position.z;
+		_transform.position = trans;
 		_lastPosition = Position;
 		_lastTransform = trans;
 	}
 
-	void FixIsoPosition() {
-		var trans = gameObject.transform.position;
-		Position = GetIsoWorld().ScreenToIso(new Vector2(trans.x, trans.y), Position.z);
+	public void FixIsoPosition() {
+		Vector2 trans = _transform.position;
+		Position = _iso_world.ScreenToIso(trans, Position.z);
 		FixTransform();
+	}
+
+	void Start() {
+		_iso_world = GameObject.FindObjectOfType<IsoWorld>();
+		if ( !_iso_world ) {
+			throw new UnityException("IsoObject. IsoWorld not found!");
+		}
+		_transform = gameObject.transform;
+		_lastPosition = Position;
+		_lastTransform = _transform.position;
+		_iso_world.MarkDirty();
+	}
+	
+	void Update() {
+		if ( _lastPosition != _position ) {
+			Position = _position;
+		}
+		if ( _lastTransform != _transform.position ) {
+			FixIsoPosition();
+		}
 	}
 }

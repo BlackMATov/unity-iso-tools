@@ -24,9 +24,10 @@ public class IsoWorld : MonoBehaviour {
 		}
 	}
 
-	bool             _dirty   = true;
-	List<int>        _depends = new List<int>();
-	List<ObjectInfo> _objects = new List<ObjectInfo>();
+	bool             _dirty        = true;
+	List<int>        _depends      = new List<int>();
+	List<ObjectInfo> _objects      = new List<ObjectInfo>();
+	float            _lastTileSize = 0.0f;
 
 	public void MarkDirty() {
 		_dirty = true;
@@ -87,6 +88,8 @@ public class IsoWorld : MonoBehaviour {
 		foreach ( ObjectInfo info in _objects ) {
 			_placeObject(info, ref depth);
 		}
+		_objects.Clear();
+		_depends.Clear();
 	}
 
 	void _placeObject(IsoObject obj, float depth) {
@@ -107,7 +110,18 @@ public class IsoWorld : MonoBehaviour {
 		}
 	}
 
+	void Start() {
+		_lastTileSize = TileSize;
+	}
+
 	void LateUpdate() {
+		if ( _lastTileSize != TileSize ) {
+			_scanObjects();
+			foreach ( var obj in _objects ) {
+				obj.IsoObject.FixTransform();
+			}
+			_objects.Clear();
+		}
 		if ( _dirty ) {
 			_scanObjects();
 			_scanDepends();

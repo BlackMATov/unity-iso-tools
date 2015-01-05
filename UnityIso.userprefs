@@ -1,9 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/IsoObject.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/IsoController.cs">
     <Files>
-      <File FileName="Assets/Scripts/IsoWorld.cs" Line="73" Column="12" />
-      <File FileName="Assets/Scripts/IsoObject.cs" Line="58" Column="26" />
+      <File FileName="Assets/Scripts/IsoWorld.cs" Line="29" Column="53" />
+      <File FileName="Assets/Scripts/IsoObject.cs" Line="23" Column="27" />
       <File FileName="Assets/Scripts/IsoAutoController.cs" Line="33" Column="1" />
       <File FileName="Assets/Scripts/IsoController.cs" Line="28" Column="2" />
     </Files>
