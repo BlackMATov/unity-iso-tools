@@ -4,8 +4,7 @@ using System.Collections;
 
 [ExecuteInEditMode]
 public class IsoObject : MonoBehaviour {
-
-	IsoWorld  _iso_world     = null;
+	
 	Transform _transform     = null;
 	Vector3   _lastPosition  = Vector3.zero;
 	Vector3   _lastTransform = Vector3.zero;
@@ -21,7 +20,7 @@ public class IsoObject : MonoBehaviour {
 			} else {
 				FixTransform();
 			}
-			_iso_world.MarkDirty();
+			IsoWorld.MarkDirty();
 			if ( Application.isEditor ) {
 				EditorUtility.SetDirty(this);
 			}
@@ -39,7 +38,7 @@ public class IsoObject : MonoBehaviour {
 			} else {
 				FixTransform();
 			}
-			_iso_world.MarkDirty();
+			IsoWorld.MarkDirty();
 			if ( Application.isEditor ) {
 				EditorUtility.SetDirty(this);
 			}
@@ -57,10 +56,23 @@ public class IsoObject : MonoBehaviour {
 			} else {
 				FixTransform();
 			}
-			_iso_world.MarkDirty();
+			IsoWorld.MarkDirty();
 			if ( Application.isEditor ) {
 				EditorUtility.SetDirty(this);
 			}
+		}
+	}
+
+	IsoWorld _iso_world = null;
+	public IsoWorld IsoWorld {
+		get {
+			if ( !_iso_world ) {
+				_iso_world = GameObject.FindObjectOfType<IsoWorld>();
+			}
+			if ( !_iso_world ) {
+				throw new UnityException("IsoObject. IsoWorld not found!");
+			}
+			return _iso_world;
 		}
 	}
 
@@ -70,14 +82,14 @@ public class IsoObject : MonoBehaviour {
 			Mathf.Round(_position.y),
 			Mathf.Round(_position.z));
 		FixTransform();
-		_iso_world.MarkDirty();
+		IsoWorld.MarkDirty();
 		if ( Application.isEditor ) {
 			EditorUtility.SetDirty(this);
 		}
 	}
 
 	public void FixTransform() {
-		Vector3 trans = _iso_world.IsoToScreen(Position);
+		Vector3 trans = IsoWorld.IsoToScreen(Position);
 		trans.z = _transform.position.z;
 		_transform.position = trans;
 		_lastPosition = Position;
@@ -86,19 +98,15 @@ public class IsoObject : MonoBehaviour {
 
 	public void FixIsoPosition() {
 		Vector2 trans = _transform.position;
-		Position = _iso_world.ScreenToIso(trans, Position.z);
+		Position = IsoWorld.ScreenToIso(trans, Position.z);
 		FixTransform();
 	}
 
 	void Start() {
-		_iso_world = GameObject.FindObjectOfType<IsoWorld>();
-		if ( !_iso_world ) {
-			throw new UnityException("IsoObject. IsoWorld not found!");
-		}
 		_transform = gameObject.transform;
 		_lastPosition = Position;
 		_lastTransform = _transform.position;
-		_iso_world.MarkDirty();
+		IsoWorld.MarkDirty();
 	}
 	
 	void Update() {
@@ -108,5 +116,13 @@ public class IsoObject : MonoBehaviour {
 		if ( _lastTransform != _transform.position ) {
 			FixIsoPosition();
 		}
+	}
+
+	void OnEnable() {
+		IsoWorld.MarkDirty();
+	}
+
+	void OnDisable() {
+		IsoWorld.MarkDirty();
 	}
 }
