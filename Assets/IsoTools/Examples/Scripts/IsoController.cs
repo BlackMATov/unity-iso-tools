@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+namespace IsoTools { namespace Examples {
 public class IsoController : MonoBehaviour {
 	void Update () {
 		var iso_object = gameObject.GetComponent<IsoObject>();
@@ -26,3 +27,4 @@ public class IsoController : MonoBehaviour {
 		}
 	}
 }
+}} // namespace IsoTools::Examples

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEditor;
-using System.Collections;
 
+namespace IsoTools {
 [ExecuteInEditMode]
 public class IsoObject : MonoBehaviour {
 	
@@ -137,3 +137,4 @@ public class IsoObject : MonoBehaviour {
 		MartDirtyIsoWorld();
 	}
 }
+} // namespace IsoTools

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
+namespace IsoTools {
 [ExecuteInEditMode]
 public class IsoWorld : MonoBehaviour {
 
@@ -152,3 +152,4 @@ public class IsoWorld : MonoBehaviour {
 		_fixDisable();
 	}
 }
+} // namespace IsoTools
