@@ -67,6 +67,14 @@ public class IsoWorld : MonoBehaviour {
 		_manualSort();
 		_dirty = false;
 	}
+
+	void _fixDisable() {
+		_scanObjects();
+		foreach ( var obj in _objects ) {
+			obj.IsoObject.ResetIsoWorld();
+		}
+		_objects.Clear();
+	}
 	
 	void _scanObjects() {
 		_objects.Clear();
@@ -127,7 +135,8 @@ public class IsoWorld : MonoBehaviour {
 	}
 
 	void Start() {
-		_lastTileSize = TileSize;
+		_fixTileSize();
+		_fixDirty();
 	}
 
 	void LateUpdate() {
@@ -137,5 +146,9 @@ public class IsoWorld : MonoBehaviour {
 		if ( _dirty ) {
 			_fixDirty();
 		}
+	}
+
+	void OnDisable() {
+		_fixDisable();
 	}
 }

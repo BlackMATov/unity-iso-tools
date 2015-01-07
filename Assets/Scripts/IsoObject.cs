@@ -20,7 +20,7 @@ public class IsoObject : MonoBehaviour {
 			} else {
 				FixTransform();
 			}
-			IsoWorld.MarkDirty();
+			MartDirtyIsoWorld();
 			if ( Application.isEditor ) {
 				EditorUtility.SetDirty(this);
 			}
@@ -38,7 +38,7 @@ public class IsoObject : MonoBehaviour {
 			} else {
 				FixTransform();
 			}
-			IsoWorld.MarkDirty();
+			MartDirtyIsoWorld();
 			if ( Application.isEditor ) {
 				EditorUtility.SetDirty(this);
 			}
@@ -56,7 +56,7 @@ public class IsoObject : MonoBehaviour {
 			} else {
 				FixTransform();
 			}
-			IsoWorld.MarkDirty();
+			MartDirtyIsoWorld();
 			if ( Application.isEditor ) {
 				EditorUtility.SetDirty(this);
 			}
@@ -64,16 +64,18 @@ public class IsoObject : MonoBehaviour {
 	}
 
 	IsoWorld _iso_world = null;
-	public IsoWorld IsoWorld {
-		get {
-			if ( !_iso_world ) {
-				_iso_world = GameObject.FindObjectOfType<IsoWorld>();
-			}
-			if ( !_iso_world ) {
-				throw new UnityException("IsoObject. IsoWorld not found!");
-			}
-			return _iso_world;
+	public IsoWorld GetIsoWorld() {
+		if ( !_iso_world ) {
+			_iso_world = GameObject.FindObjectOfType<IsoWorld>();
 		}
+		if ( !_iso_world ) {
+			throw new UnityException("IsoObject. IsoWorld not found!");
+		}
+		return _iso_world;
+	}
+
+	public void ResetIsoWorld() {
+		_iso_world = null;
 	}
 
 	public void FixAlignment() {
@@ -82,31 +84,44 @@ public class IsoObject : MonoBehaviour {
 			Mathf.Round(_position.y),
 			Mathf.Round(_position.z));
 		FixTransform();
-		IsoWorld.MarkDirty();
+		MartDirtyIsoWorld();
 		if ( Application.isEditor ) {
 			EditorUtility.SetDirty(this);
 		}
 	}
 
 	public void FixTransform() {
-		Vector3 trans = IsoWorld.IsoToScreen(Position);
-		trans.z = _transform.position.z;
-		_transform.position = trans;
-		_lastPosition = Position;
-		_lastTransform = trans;
+		var iso_world = GetIsoWorld();
+		if ( iso_world && _transform ) {
+			Vector3 trans = iso_world.IsoToScreen(Position);
+			trans.z = _transform.position.z;
+			_transform.position = trans;
+			_lastPosition = Position;
+			_lastTransform = trans;
+		}
 	}
 
 	public void FixIsoPosition() {
-		Vector2 trans = _transform.position;
-		Position = IsoWorld.ScreenToIso(trans, Position.z);
-		FixTransform();
+		var iso_world = GetIsoWorld();
+		if ( iso_world && _transform ) {
+			Vector2 trans = _transform.position;
+			Position = iso_world.ScreenToIso(trans, Position.z);
+			FixTransform();
+		}
+	}
+
+	void MartDirtyIsoWorld() {
+		var iso_world = GetIsoWorld();
+		if ( iso_world ) {
+			iso_world.MarkDirty();
+		}
 	}
 
 	void Start() {
 		_transform = gameObject.transform;
 		_lastPosition = Position;
 		_lastTransform = _transform.position;
-		IsoWorld.MarkDirty();
+		MartDirtyIsoWorld();
 	}
 	
 	void Update() {
@@ -119,6 +134,6 @@ public class IsoObject : MonoBehaviour {
 	}
 
 	void OnEnable() {
-		IsoWorld.MarkDirty();
+		MartDirtyIsoWorld();
 	}
 }
