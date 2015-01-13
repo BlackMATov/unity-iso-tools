@@ -11,6 +11,7 @@ public class IsoObject : MonoBehaviour {
 
 	[SerializeField]
 	Vector3 _position = Vector3.zero;
+	/// <summary>Isometric object position.</summary>
 	public Vector3 Position {
 		get { return _position; }
 		set {
@@ -29,6 +30,7 @@ public class IsoObject : MonoBehaviour {
 
 	[SerializeField]
 	Vector3 _size = Vector3.one;
+	/// <summary>Isometric object size.</summary>
 	public Vector3 Size {
 		get { return _size; }
 		set {
@@ -46,7 +48,8 @@ public class IsoObject : MonoBehaviour {
 	}
 
 	[SerializeField]
-	bool _alignment = true;	
+	bool _alignment = true;
+	/// <summary>Auto alignment position by isometric tile size.</summary>
 	public bool Alignment {
 		get { return _alignment; }
 		set {
