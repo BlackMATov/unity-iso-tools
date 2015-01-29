@@ -120,10 +120,11 @@ public class IsoObject : MonoBehaviour {
 		}
 	}
 
-	void Start() {
+	void Awake() {
 		_transform = gameObject.transform;
 		_lastPosition = Position;
 		_lastTransform = _transform.position;
+		FixIsoPosition();
 		MartDirtyIsoWorld();
 	}
 	
