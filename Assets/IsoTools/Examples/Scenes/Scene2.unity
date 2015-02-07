@@ -155,9 +155,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a9c584f9a39449438abc7ba59a68778, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _position: {x: -1, y: 0, z: 3}
+  _position: {x: -1, y: -0, z: 3}
   _size: {x: 1, y: 3, z: 1}
   _alignment: 1
+  _sorting: 1
 --- !u!212 &96893953
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -289,6 +290,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f01619d3802e814f86f9e6bb965349a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TileType: 0
   TileSize: 16
   StartDepth: 0
   StepDepth: .100000001
@@ -324,6 +326,7 @@ MonoBehaviour:
   _position: {x: 4, y: -1, z: 0}
   _size: {x: 1, y: 1, z: 3}
   _alignment: 1
+  _sorting: 1
 --- !u!212 &122191686
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -391,6 +394,7 @@ MonoBehaviour:
   _position: {x: -1, y: -1, z: 0}
   _size: {x: 1, y: 1, z: 3}
   _alignment: 1
+  _sorting: 1
 --- !u!212 &126996302
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -630,6 +634,7 @@ MonoBehaviour:
   _position: {x: -1, y: 5, z: 0}
   _size: {x: 3, y: 0, z: 1}
   _alignment: 1
+  _sorting: 1
 --- !u!212 &350868379
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -697,6 +702,7 @@ MonoBehaviour:
   _position: {x: -1, y: 3, z: 3}
   _size: {x: 1, y: 1, z: 1}
   _alignment: 1
+  _sorting: 1
 --- !u!212 &362010001
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -764,6 +770,7 @@ MonoBehaviour:
   _position: {x: 4, y: 1, z: 3}
   _size: {x: 1, y: 3, z: 1}
   _alignment: 1
+  _sorting: 1
 --- !u!212 &398818129
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -831,6 +838,7 @@ MonoBehaviour:
   _position: {x: -1, y: 2, z: 3}
   _size: {x: 3, y: 3, z: 0}
   _alignment: 1
+  _sorting: 1
 --- !u!212 &429649229
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -911,7 +919,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11453620, guid: dbd21aa1b9a2cdf4a944f50e64d145a1, type: 2}
       propertyPath: _position.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 11453620, guid: dbd21aa1b9a2cdf4a944f50e64d145a1, type: 2}
       propertyPath: _position.z
@@ -1062,6 +1070,7 @@ MonoBehaviour:
   _position: {x: 2, y: 5, z: 0}
   _size: {x: 3, y: 0, z: 1}
   _alignment: 1
+  _sorting: 1
 --- !u!212 &541160137
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1129,6 +1138,7 @@ MonoBehaviour:
   _position: {x: 2, y: -1, z: 3}
   _size: {x: 3, y: 1, z: 1}
   _alignment: 1
+  _sorting: 1
 --- !u!212 &545788336
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1196,6 +1206,7 @@ MonoBehaviour:
   _position: {x: -1, y: 2, z: 0}
   _size: {x: 0, y: 3, z: 1}
   _alignment: 1
+  _sorting: 1
 --- !u!212 &583420794
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1315,6 +1326,7 @@ MonoBehaviour:
   _position: {x: -1, y: 4, z: 0}
   _size: {x: 1, y: 1, z: 3}
   _alignment: 1
+  _sorting: 1
 --- !u!212 &591256427
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1454,6 +1466,7 @@ MonoBehaviour:
   _position: {x: -1, y: 2, z: 0}
   _size: {x: 3, y: 3, z: 0}
   _alignment: 1
+  _sorting: 1
 --- !u!212 &645254207
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1593,6 +1606,7 @@ MonoBehaviour:
   _position: {x: 2, y: 2, z: 3}
   _size: {x: 3, y: 3, z: 0}
   _alignment: 1
+  _sorting: 1
 --- !u!212 &710920158
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1660,6 +1674,7 @@ MonoBehaviour:
   _position: {x: -1, y: -1, z: 3}
   _size: {x: 3, y: 1, z: 1}
   _alignment: 1
+  _sorting: 1
 --- !u!212 &737539485
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1899,6 +1914,7 @@ MonoBehaviour:
   _position: {x: -1, y: -1, z: 0}
   _size: {x: 3, y: 0, z: 1}
   _alignment: 1
+  _sorting: 1
 --- !u!212 &896677262
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2034,6 +2050,7 @@ MonoBehaviour:
   _position: {x: -1, y: -1, z: 0}
   _size: {x: 0, y: 3, z: 1}
   _alignment: 1
+  _sorting: 1
 --- !u!212 &922783484
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2101,6 +2118,7 @@ MonoBehaviour:
   _position: {x: 2, y: -1, z: 3}
   _size: {x: 3, y: 3, z: 0}
   _alignment: 1
+  _sorting: 1
 --- !u!212 &994589227
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2224,6 +2242,7 @@ MonoBehaviour:
   _position: {x: 2, y: 2, z: 0}
   _size: {x: 3, y: 3, z: 0}
   _alignment: 1
+  _sorting: 1
 --- !u!212 &1026742448
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2305,6 +2324,7 @@ MonoBehaviour:
   _position: {x: 1, y: 1, z: 3}
   _size: {x: 1, y: 1, z: 1}
   _alignment: 1
+  _sorting: 1
 --- !u!212 &1027895244
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2428,6 +2448,7 @@ MonoBehaviour:
   _position: {x: 5, y: -1, z: 0}
   _size: {x: 0, y: 3, z: 1}
   _alignment: 1
+  _sorting: 1
 --- !u!212 &1058359800
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2547,6 +2568,7 @@ MonoBehaviour:
   _position: {x: -1, y: -1, z: 3}
   _size: {x: 3, y: 3, z: 0}
   _alignment: 1
+  _sorting: 1
 --- !u!212 &1101437762
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2614,6 +2636,7 @@ MonoBehaviour:
   _position: {x: 2, y: -1, z: 0}
   _size: {x: 3, y: 3, z: 0}
   _alignment: 1
+  _sorting: 1
 --- !u!212 &1156676701
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2753,6 +2776,7 @@ MonoBehaviour:
   _position: {x: -1, y: 4, z: 3}
   _size: {x: 3, y: 1, z: 1}
   _alignment: 1
+  _sorting: 1
 --- !u!212 &1178596024
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3068,6 +3092,7 @@ MonoBehaviour:
   _position: {x: 4, y: 4, z: 0}
   _size: {x: 1, y: 1, z: 3}
   _alignment: 1
+  _sorting: 1
 --- !u!212 &1307184242
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3243,6 +3268,7 @@ MonoBehaviour:
   _position: {x: 5, y: 2, z: 0}
   _size: {x: 0, y: 3, z: 1}
   _alignment: 1
+  _sorting: 1
 --- !u!212 &1461606305
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3310,6 +3336,7 @@ MonoBehaviour:
   _position: {x: 2, y: 4, z: 3}
   _size: {x: 3, y: 1, z: 1}
   _alignment: 1
+  _sorting: 1
 --- !u!212 &1478861949
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3377,6 +3404,7 @@ MonoBehaviour:
   _position: {x: 4, y: 0, z: 3}
   _size: {x: 1, y: 1, z: 1}
   _alignment: 1
+  _sorting: 1
 --- !u!212 &1593575841
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3444,6 +3472,7 @@ MonoBehaviour:
   _position: {x: 2, y: -1, z: 0}
   _size: {x: 3, y: 0, z: 1}
   _alignment: 1
+  _sorting: 1
 --- !u!212 &1735698287
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3727,6 +3756,7 @@ MonoBehaviour:
   _position: {x: -1, y: -1, z: 0}
   _size: {x: 3, y: 3, z: 0}
   _alignment: 1
+  _sorting: 1
 --- !u!212 &2082162186
 SpriteRenderer:
   m_ObjectHideFlags: 0

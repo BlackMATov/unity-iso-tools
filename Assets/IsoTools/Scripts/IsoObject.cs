@@ -65,6 +65,20 @@ public class IsoObject : MonoBehaviour {
 			}
 		}
 	}
+	
+	[SerializeField]
+	bool _sorting = true;
+	/// <summary>Auto sorting tile.</summary>
+	public bool Sorting {
+		get { return _sorting; }
+		set {
+			_sorting = value;
+			MartDirtyIsoWorld();
+			if ( Application.isEditor ) {
+				EditorUtility.SetDirty(this);
+			}
+		}
+	}
 
 	IsoWorld _iso_world = null;
 	public IsoWorld GetIsoWorld() {
@@ -115,7 +129,7 @@ public class IsoObject : MonoBehaviour {
 
 	void MartDirtyIsoWorld() {
 		var iso_world = GetIsoWorld();
-		if ( iso_world ) {
+		if ( iso_world && Sorting ) {
 			iso_world.MarkDirty();
 		}
 	}
