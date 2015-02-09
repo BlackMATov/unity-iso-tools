@@ -80,6 +80,15 @@ public class IsoObject : MonoBehaviour {
 		}
 	}
 
+	public Vector3 TilePosition {
+		get {
+			return new Vector3(
+				Mathf.Round(Position.x),
+				Mathf.Round(Position.y),
+				Mathf.Round(Position.z));
+		}
+	}
+
 	IsoWorld _iso_world = null;
 	public IsoWorld GetIsoWorld() {
 		if ( !_iso_world ) {
@@ -96,10 +105,7 @@ public class IsoObject : MonoBehaviour {
 	}
 
 	public void FixAlignment() {
-		_position.Set(
-			Mathf.Round(_position.x),
-			Mathf.Round(_position.y),
-			Mathf.Round(_position.z));
+		_position = TilePosition;
 		FixTransform();
 		MartDirtyIsoWorld();
 		if ( Application.isEditor ) {
