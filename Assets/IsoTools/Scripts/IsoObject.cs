@@ -1,5 +1,8 @@
 using UnityEngine;
+
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 namespace IsoTools {
 [ExecuteInEditMode]
@@ -22,9 +25,7 @@ public class IsoObject : MonoBehaviour {
 				FixTransform();
 			}
 			MartDirtyIsoWorld();
-			if ( Application.isEditor ) {
-				EditorUtility.SetDirty(this);
-			}
+			MarkEditorObjectDirty();
 		}
 	}
 
@@ -41,9 +42,7 @@ public class IsoObject : MonoBehaviour {
 				FixTransform();
 			}
 			MartDirtyIsoWorld();
-			if ( Application.isEditor ) {
-				EditorUtility.SetDirty(this);
-			}
+			MarkEditorObjectDirty();
 		}
 	}
 
@@ -60,9 +59,7 @@ public class IsoObject : MonoBehaviour {
 				FixTransform();
 			}
 			MartDirtyIsoWorld();
-			if ( Application.isEditor ) {
-				EditorUtility.SetDirty(this);
-			}
+			MarkEditorObjectDirty();
 		}
 	}
 	
@@ -74,9 +71,7 @@ public class IsoObject : MonoBehaviour {
 		set {
 			_sorting = value;
 			MartDirtyIsoWorld();
-			if ( Application.isEditor ) {
-				EditorUtility.SetDirty(this);
-			}
+			MarkEditorObjectDirty();
 		}
 	}
 
@@ -108,9 +103,7 @@ public class IsoObject : MonoBehaviour {
 		_position = TilePosition;
 		FixTransform();
 		MartDirtyIsoWorld();
-		if ( Application.isEditor ) {
-			EditorUtility.SetDirty(this);
-		}
+		MarkEditorObjectDirty();
 	}
 
 	public void FixTransform() {
@@ -138,6 +131,14 @@ public class IsoObject : MonoBehaviour {
 		if ( iso_world && Sorting ) {
 			iso_world.MarkDirty();
 		}
+	}
+
+	void MarkEditorObjectDirty() {
+#if UNITY_EDITOR
+		if ( Application.isEditor ) {
+			EditorUtility.SetDirty(this);
+		}
+#endif
 	}
 
 	void Awake() {
