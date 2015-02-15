@@ -9,7 +9,7 @@ namespace IsoTools {
 	public class IsoObject : MonoBehaviour {
 		
 		Transform _transform     = null;
-		Vector3   _lastTransform = Vector3.zero;
+		Vector2   _lastTransform = Vector2.zero;
 		Vector3   _lastPosition  = Vector3.zero;
 		Vector3   _lastSize      = Vector3.zero;
 		bool      _lastSorting   = false;
@@ -122,7 +122,7 @@ namespace IsoTools {
 		void MartDirtyIsoWorld() {
 			var iso_world = GetIsoWorld();
 			if ( iso_world && Sorting ) {
-				iso_world.MarkDirty();
+				iso_world.MarkDirty(this);
 			}
 		}
 
@@ -141,7 +141,7 @@ namespace IsoTools {
 		}
 		
 		void Update() {
-			if ( _lastTransform != _transform.position ) {
+			if ( _lastTransform.x != _transform.position.x || _lastTransform.y != _transform.position.y ) {
 				FixIsoPosition();
 			}
 			if ( Application.isEditor ) {

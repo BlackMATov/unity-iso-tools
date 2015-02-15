@@ -12,13 +12,13 @@ namespace IsoTools {
 		}
 		
 		/// <summary>World tile type.</summary>
-		public TileTypes TileType   = TileTypes.Isometric;
+		public TileTypes TileType = TileTypes.Isometric;
 		/// <summary>Isometric tile size.</summary>
-		public float     TileSize   = 32.0f;
+		public float     TileSize = 32.0f;
 		/// <summary>Start sorting depth value.</summary>
-		public float     StartDepth = 0.0f;
+		public float     MinDepth = 0.0f;
 		/// <summary>Step sorting depth value.</summary>
-		public float     StepDepth  = 0.1f;
+		public float     MaxDepth = 100.0f;
 
 		class ObjectInfo {
 			public IsoObject IsoObject;
@@ -46,6 +46,16 @@ namespace IsoTools {
 		// ------------------------------------------------------------------------
 		public void MarkDirty() {
 			_dirty = true;
+		}
+
+		/// <summary>
+		/// Marks world for resorting one object only
+		/// </summary>
+		/// <param name="obj">Isometric object for resorting.</param>
+		public void MarkDirty(IsoObject obj) {
+			if ( !_dirty ) {
+				_manualSort(obj);
+			}
 		}
 		
 		// ------------------------------------------------------------------------
@@ -127,17 +137,20 @@ namespace IsoTools {
 		}
 
 		void _fixTileSize() {
+			MarkDirty();
 			_fixAllTransforms();
 			_lastTileSize = TileSize;
 		}
 		
 		void _fixTileType() {
+			MarkDirty();
 			_fixAllTransforms();
 			_lastTileType = TileType;
 		}
 
 		void _fixDirty() {
 			_manualSort();
+			Debug.Log("Resort!");
 			_dirty = false;
 		}
 
@@ -186,9 +199,51 @@ namespace IsoTools {
 		void _manualSort() {
 			var objects = _scanObjects(true);
 			var depends = _scanDepends(objects);
-			var depth = StartDepth;
+			var depth = MinDepth;
 			foreach ( var info in objects ) {
 				_placeObject(info, objects, depends, ref depth);
+			}
+		}
+
+		bool _isDepends(IsoObject obj_ao, IsoObject obj_bo) {
+			if ( obj_ao != obj_bo ) {
+				var max_ax = obj_ao.Position.x + obj_ao.Size.x;
+				var max_ay = obj_ao.Position.y + obj_ao.Size.y;
+				if ( obj_bo.Position.x < max_ax && obj_bo.Position.y < max_ay ) {
+					var max_bz = obj_bo.Position.z + obj_bo.Size.z;
+					if ( obj_ao.Position.z < max_bz ) {
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+
+		void _manualSort(IsoObject obj) {
+			var objects = _scanObjects(true);
+			var min_depth = float.MinValue;
+			foreach ( var obj_b in objects ) {
+				if ( _isDepends(obj, obj_b.IsoObject) ) {
+					min_depth = Mathf.Max(min_depth, obj_b.IsoObject.transform.position.z);
+				}
+			}
+			var max_depth = float.MaxValue;
+			foreach ( var obj_a in objects ) {
+				if ( _isDepends(obj_a.IsoObject, obj) ) {
+					max_depth = Mathf.Min(max_depth, obj_a.IsoObject.transform.position.z);
+				}
+			}
+			if ( max_depth == float.MaxValue ) {
+				max_depth = MaxDepth;
+			}
+			if ( min_depth == float.MinValue ) {
+				min_depth = MinDepth;
+			}
+			//TODO: Epsilon!!!!!
+			if ( Mathf.Abs(max_depth - min_depth) <= Mathf.Epsilon ) {
+				MarkDirty();
+			} else {
+				_placeObject(obj, (min_depth + max_depth) / 2.0f);
 			}
 		}
 
@@ -206,7 +261,7 @@ namespace IsoTools {
 					_placeObject(obj, objects, depends, ref depth);
 				}
 				_placeObject(info.IsoObject, depth);
-				depth += StepDepth;
+				depth += (MaxDepth - MinDepth) / objects.Count;
 			}
 		}
 
