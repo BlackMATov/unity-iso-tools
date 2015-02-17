@@ -7,8 +7,7 @@ using UnityEditor;
 namespace IsoTools {
 	[ExecuteInEditMode]
 	public class IsoObject : MonoBehaviour {
-		
-		Transform _transform     = null;
+
 		Vector2   _lastTransform = Vector2.zero;
 		Vector3   _lastPosition  = Vector3.zero;
 		Vector3   _lastSize      = Vector3.zero;
@@ -68,20 +67,20 @@ namespace IsoTools {
 					Mathf.Round(Position.y),
 					Mathf.Round(Position.z));
 			}
-			set {
-				Position = value;
-			}
+			set { Position = value; }
 		}
 
 		IsoWorld _iso_world = null;
-		public IsoWorld GetIsoWorld() {
-			if ( !_iso_world ) {
-				_iso_world = GameObject.FindObjectOfType<IsoWorld>();
+		public IsoWorld IsoWorld {
+			get {
+				if ( !_iso_world ) {
+					_iso_world = GameObject.FindObjectOfType<IsoWorld>();
+				}
+				if ( !_iso_world ) {
+					throw new UnityException("IsoObject. IsoWorld not found!");
+				}
+				return _iso_world;
 			}
-			if ( !_iso_world ) {
-				throw new UnityException("IsoObject. IsoWorld not found!");
-			}
-			return _iso_world;
 		}
 
 		public void ResetIsoWorld() {
@@ -92,27 +91,21 @@ namespace IsoTools {
 			if ( Application.isEditor && Alignment ) {
 				_position = TilePosition;
 			}
-			var iso_world = GetIsoWorld();
-			if ( iso_world && _transform ) {
-				Vector3 trans = iso_world.IsoToScreen(Position);
-				trans.z = _transform.position.z;
-				_transform.position = trans;
-				FixLastProperties(trans);
-			}
+			Vector3 trans = IsoWorld.IsoToScreen(Position);
+			trans.z = transform.position.z;
+			transform.position = trans;
+			FixLastProperties();
 			MartDirtyIsoWorld();
 			MarkEditorObjectDirty();
 		}
 
 		public void FixIsoPosition() {
-			var iso_world = GetIsoWorld();
-			if ( iso_world && _transform ) {
-				Vector2 trans = _transform.position;
-				Position = iso_world.ScreenToIso(trans, Position.z);
-			}
+			Vector2 trans = transform.position;
+			Position = IsoWorld.ScreenToIso(trans, Position.z);
 		}
 
-		void FixLastProperties(Vector3 trans) {
-			_lastTransform = trans;
+		void FixLastProperties() {
+			_lastTransform = transform.position;
 			_lastPosition = Position;
 			_lastSize = Size;
 			_lastSorting = Sorting;
@@ -120,28 +113,29 @@ namespace IsoTools {
 		}
 
 		void MartDirtyIsoWorld() {
-			var iso_world = GetIsoWorld();
-			if ( iso_world && Sorting ) {
-				iso_world.MarkDirty(this);
+			if ( Sorting ) {
+				IsoWorld.MarkDirty(this);
 			}
 		}
 
 		void MarkEditorObjectDirty() {
-#if UNITY_EDITOR
+		#if UNITY_EDITOR
 			if ( Application.isEditor ) {
 				EditorUtility.SetDirty(this);
 			}
-#endif
+		#endif
 		}
 
 		void Awake() {
-			_transform = gameObject.transform;
-			FixLastProperties(_transform.position);
+			FixLastProperties();
 			FixIsoPosition();
 		}
 		
 		void Update() {
-			if ( _lastTransform.x != _transform.position.x || _lastTransform.y != _transform.position.y ) {
+			var trans_pos = transform.position;
+			if ( !Mathf.Approximately(_lastTransform.x, trans_pos.x) ||
+			     !Mathf.Approximately(_lastTransform.y, trans_pos.y) )
+			{
 				FixIsoPosition();
 			}
 			if ( Application.isEditor ) {
