@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace IsoTools {
@@ -10,24 +11,17 @@ namespace IsoTools {
 			Isometric,
 			UpDown
 		}
-		
-		/// <summary>World tile type.</summary>
-		public TileTypes TileType = TileTypes.Isometric;
-		/// <summary>Isometric tile size.</summary>
-		public float     TileSize = 32.0f;
-		/// <summary>Start sorting depth value.</summary>
-		public float     MinDepth = 0.0f;
-		/// <summary>Step sorting depth value.</summary>
-		public float     MaxDepth = 100.0f;
 
 		class ObjectInfo {
 			public IsoObject IsoObject;
 			public bool      Visited;
 			public int       BeginDepend;
 			public int       EndDepend;
+
 			public ObjectInfo(IsoObject obj) {
 				IsoObject = obj;
 			}
+
 			public void Reset(int first_depend) {
 				Visited     = false;
 				BeginDepend = first_depend;
@@ -35,9 +29,57 @@ namespace IsoTools {
 			}
 		}
 
-		bool      _dirty        = true;
-		float     _lastTileSize = 0.0f;
-		TileTypes _lastTileType = TileTypes.Isometric;
+		bool               _dirty        = true;
+		HashSet<IsoObject> _dirtyObjects = new HashSet<IsoObject>();
+
+		TileTypes          _lastTileType = TileTypes.Isometric;
+		float              _lastTileSize = 0.0f;
+		float              _lastMinDepth = 0.0f;
+		float              _lastMaxDepth = 0.0f;
+
+		[SerializeField]
+		public TileTypes _tileType = TileTypes.Isometric;
+		/// <summary>World tile type.</summary>
+		public TileTypes TileType {
+			get { return _tileType; }
+			set {
+				_tileType = value;
+				ChangeSortingProperty();
+			}
+		}
+
+		[SerializeField]
+		public float _tileSize = 32.0f;
+		/// <summary>Isometric tile size.</summary>
+		public float TileSize {
+			get { return _tileSize; }
+			set {
+				_tileSize = value;
+				ChangeSortingProperty();
+			}
+		}
+
+		[SerializeField]
+		public float _minDepth = 0.0f;
+		/// <summary>Min sorting depth value.</summary>
+		public float MinDepth {
+			get { return _minDepth; }
+			set {
+				_minDepth = value;
+				ChangeSortingProperty();
+			}
+		}
+
+		[SerializeField]
+		public float _maxDepth = 100.0f;
+		/// <summary>Max sorting depth value.</summary>
+		public float MaxDepth {
+			get { return _maxDepth; }
+			set {
+				_maxDepth = value;
+				ChangeSortingProperty();
+			}
+		}
 		
 		// ------------------------------------------------------------------------
 		/// <summary>
@@ -48,14 +90,14 @@ namespace IsoTools {
 			_dirty = true;
 		}
 
+		// ------------------------------------------------------------------------
 		/// <summary>
 		/// Marks world for resorting one object only
 		/// </summary>
 		/// <param name="obj">Isometric object for resorting.</param>
+		// ------------------------------------------------------------------------ 
 		public void MarkDirty(IsoObject obj) {
-			if ( !_dirty ) {
-				_manualSort(obj);
-			}
+			_dirtyObjects.Add(obj);
 		}
 		
 		// ------------------------------------------------------------------------
@@ -129,51 +171,32 @@ namespace IsoTools {
 			}
 		}
 		
-		void _fixAllTransforms() {
-			var objects = _scanObjects(false);
+		void FixAllTransforms() {
+			var objects = ScanObjects();
 			foreach ( var obj in objects ) {
 				obj.IsoObject.FixTransform();
 			}
 		}
 
-		void _fixTileSize() {
+		void ChangeSortingProperty() {
 			MarkDirty();
-			_fixAllTransforms();
-			_lastTileSize = TileSize;
-		}
-		
-		void _fixTileType() {
-			MarkDirty();
-			_fixAllTransforms();
+			FixAllTransforms();
 			_lastTileType = TileType;
-		}
-
-		void _fixDirty() {
-			_manualSort();
-			Debug.Log("Resort!");
-			_dirty = false;
-		}
-
-		void _fixDisable() {
-			var objects = _scanObjects(false);
-			foreach ( var obj in objects ) {
-				obj.IsoObject.ResetIsoWorld();
-			}
+			_lastTileSize = TileSize;
+			_lastMinDepth = MinDepth;
+			_lastMaxDepth = MaxDepth;
 		}
 		
-		IList<ObjectInfo> _scanObjects(bool onlySorting) {
+		IList<ObjectInfo> ScanObjects() {
 			var iso_objects = GameObject.FindObjectsOfType<IsoObject>();
 			var objects = new List<ObjectInfo>(iso_objects.Length);
 			foreach ( var iso_object in iso_objects ) {
-				if ( !onlySorting || iso_object.Sorting ) {
-					var info = new ObjectInfo(iso_object);
-					objects.Add(info);
-				}
+				objects.Add(new ObjectInfo(iso_object));
 			}
 			return objects;
 		}
 
-		IList<int> _scanDepends(IList<ObjectInfo> objects) {
+		IList<int> ScanDepends(IList<ObjectInfo> objects) {
 			var depends = new List<int>(objects.Count);
 			foreach ( var obj_a in objects ) {
 				obj_a.Reset(depends.Count);
@@ -196,16 +219,15 @@ namespace IsoTools {
 			return depends;
 		}
 
-		void _manualSort() {
-			var objects = _scanObjects(true);
-			var depends = _scanDepends(objects);
+		void ManualSort(IList<ObjectInfo> objects) {
+			var depends = ScanDepends(objects);
 			var depth = MinDepth;
 			foreach ( var info in objects ) {
-				_placeObject(info, objects, depends, ref depth);
+				PlaceObject(info, objects, depends, ref depth);
 			}
 		}
 
-		bool _isDepends(IsoObject obj_ao, IsoObject obj_bo) {
+		bool IsDepends(IsoObject obj_ao, IsoObject obj_bo) {
 			if ( obj_ao != obj_bo ) {
 				var max_ax = obj_ao.Position.x + obj_ao.Size.x;
 				var max_ay = obj_ao.Position.y + obj_ao.Size.y;
@@ -219,72 +241,95 @@ namespace IsoTools {
 			return false;
 		}
 
-		void _manualSort(IsoObject obj) {
-			var objects = _scanObjects(true);
+		void ManualSort(IsoObject obj, IList<ObjectInfo> objects) {
 			var min_depth = float.MinValue;
 			foreach ( var obj_b in objects ) {
-				if ( _isDepends(obj, obj_b.IsoObject) ) {
+				if ( IsDepends(obj, obj_b.IsoObject) ) {
 					min_depth = Mathf.Max(min_depth, obj_b.IsoObject.transform.position.z);
 				}
 			}
 			var max_depth = float.MaxValue;
 			foreach ( var obj_a in objects ) {
-				if ( _isDepends(obj_a.IsoObject, obj) ) {
+				if ( IsDepends(obj_a.IsoObject, obj) ) {
 					max_depth = Mathf.Min(max_depth, obj_a.IsoObject.transform.position.z);
 				}
-			}
-			if ( max_depth == float.MaxValue ) {
-				max_depth = MaxDepth;
 			}
 			if ( min_depth == float.MinValue ) {
 				min_depth = MinDepth;
 			}
-			//TODO: Epsilon!!!!!
-			if ( Mathf.Abs(max_depth - min_depth) <= Mathf.Epsilon ) {
+			if ( max_depth == float.MaxValue ) {
+				max_depth = MaxDepth;
+			}
+			//TODO: magic number
+			var min_depth_step = 0.01f;
+			if ( Mathf.Abs(max_depth - min_depth) < min_depth_step ) {
 				MarkDirty();
 			} else {
-				_placeObject(obj, (min_depth + max_depth) / 2.0f);
+				PlaceObject(obj, (min_depth + max_depth) / 2.0f);
 			}
 		}
 
-		void _placeObject(IsoObject obj, float depth) {
+		void PlaceObject(IsoObject obj, float depth) {
 			var pos = obj.gameObject.transform.position;
 			obj.gameObject.transform.position = new Vector3(pos.x, pos.y, depth);
 		}
 
-		void _placeObject(ObjectInfo info, IList<ObjectInfo> objects, IList<int> depends, ref float depth) {
+		void PlaceObject(ObjectInfo info, IList<ObjectInfo> objects, IList<int> depends, ref float depth) {
 			if ( !info.Visited ) {
 				info.Visited = true;
 				for ( int i = info.BeginDepend; i < info.EndDepend && i < depends.Count; ++i ) {
 					var object_index = depends[i];
 					var obj = objects[object_index];
-					_placeObject(obj, objects, depends, ref depth);
+					PlaceObject(obj, objects, depends, ref depth);
 				}
-				_placeObject(info.IsoObject, depth);
+				PlaceObject(info.IsoObject, depth);
 				depth += (MaxDepth - MinDepth) / objects.Count;
 			}
 		}
 
+		void SmartSort() {
+			if ( _dirty || _dirtyObjects.Count > 0 ) {
+				var objects = ScanObjects().Where(p => p.IsoObject.Sorting).ToList();
+				if ( _dirty ) {
+					ManualSort(objects);
+				} else {
+					foreach ( var obj in _dirtyObjects ) {
+						ManualSort(obj, objects);
+						if ( _dirty ) {
+							ManualSort(objects);
+							break;
+						}
+					}
+				}
+				_dirty = false;
+				_dirtyObjects.Clear();
+			}
+		}
+
 		void Start() {
-			_fixTileSize();
-			_fixTileType();
-			_fixDirty();
+			ChangeSortingProperty();
+			ManualSort(ScanObjects());
 		}
 
 		void LateUpdate() {
-			if ( _lastTileSize != TileSize ) {
-				_fixTileSize();
+			if ( Application.isEditor ) {
+				if ( _lastTileType != _tileType )                     TileType = _tileType;
+				if ( !Mathf.Approximately(_lastTileSize, _tileSize) ) TileSize = _tileSize;
+				if ( !Mathf.Approximately(_lastMinDepth, _minDepth) ) MinDepth = _minDepth;
+				if ( !Mathf.Approximately(_lastMaxDepth, _maxDepth) ) MaxDepth = _maxDepth;
 			}
-			if ( _lastTileType != TileType ) {
-				_fixTileType();
-			}
-			if ( _dirty ) {
-				_fixDirty();
-			}
+			SmartSort();
+		}
+
+		void OnEnable() {
+			MarkDirty();
 		}
 
 		void OnDisable() {
-			_fixDisable();
+			var objects = ScanObjects();
+			foreach ( var obj in objects ) {
+				obj.IsoObject.ResetIsoWorld();
+			}
 		}
 	}
 } // namespace IsoTools

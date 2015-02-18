@@ -130,24 +130,26 @@ namespace IsoTools {
 			FixLastProperties();
 			FixIsoPosition();
 		}
-		
+
+		void OnEnable() {
+			MartDirtyIsoWorld();
+		}
+
+		#if UNITY_EDITOR
 		void Update() {
-			var trans_pos = transform.position;
-			if ( !Mathf.Approximately(_lastTransform.x, trans_pos.x) ||
-			     !Mathf.Approximately(_lastTransform.y, trans_pos.y) )
-			{
-				FixIsoPosition();
-			}
 			if ( Application.isEditor ) {
+				var trans_pos = transform.position;
+				if ( !Mathf.Approximately(_lastTransform.x, trans_pos.x) ||
+				    !Mathf.Approximately(_lastTransform.y, trans_pos.y) )
+				{
+					FixIsoPosition();
+				}
 				if ( _lastPosition  != _position  ) Position  = _position;
 				if ( _lastSize      != _size      ) Size      = _size;
 				if ( _lastSorting   != _sorting   ) Sorting   = _sorting;
 				if ( _lastAlignment != _alignment ) Alignment = _alignment;
 			}
 		}
-
-		void OnEnable() {
-			MartDirtyIsoWorld();
-		}
+		#endif
 	}
 } // namespace IsoTools
