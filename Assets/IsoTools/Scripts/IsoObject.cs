@@ -8,11 +8,13 @@ namespace IsoTools {
 	[ExecuteInEditMode]
 	public class IsoObject : MonoBehaviour {
 
+		#if UNITY_EDITOR
 		Vector2   _lastTransform = Vector2.zero;
 		Vector3   _lastPosition  = Vector3.zero;
 		Vector3   _lastSize      = Vector3.zero;
 		bool      _lastSorting   = false;
 		bool      _lastAlignment = false;
+		#endif
 
 		[SerializeField]
 		Vector3 _position = Vector3.zero;
@@ -105,11 +107,13 @@ namespace IsoTools {
 		}
 
 		void FixLastProperties() {
+		#if UNITY_EDITOR
 			_lastTransform = transform.position;
 			_lastPosition = Position;
 			_lastSize = Size;
 			_lastSorting = Sorting;
 			_lastAlignment = Alignment;
+		#endif
 		}
 
 		void MartDirtyIsoWorld() {
@@ -138,9 +142,8 @@ namespace IsoTools {
 		#if UNITY_EDITOR
 		void Update() {
 			if ( Application.isEditor ) {
-				var trans_pos = transform.position;
-				if ( !Mathf.Approximately(_lastTransform.x, trans_pos.x) ||
-				    !Mathf.Approximately(_lastTransform.y, trans_pos.y) )
+				if ( !Mathf.Approximately(_lastTransform.x, transform.position.x) ||
+				     !Mathf.Approximately(_lastTransform.y, transform.position.y) )
 				{
 					FixIsoPosition();
 				}

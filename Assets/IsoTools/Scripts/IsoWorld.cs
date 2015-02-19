@@ -118,7 +118,7 @@ namespace IsoTools {
 					pos.x,
 					pos.y + pos.z) * TileSize;
 			default:
-				throw new UnityException("IsoWorld. Type is wrong!");
+				throw new UnityException("IsoWorld. TileType is wrong!");
 			}
 		}
 		
@@ -142,7 +142,7 @@ namespace IsoTools {
 					pos.y,
 					0.0f) / TileSize;
 			default:
-				throw new UnityException("IsoWorld. Type is wrong!");
+				throw new UnityException("IsoWorld. TileType is wrong!");
 			}
 		}
 		
@@ -167,7 +167,7 @@ namespace IsoTools {
 					return iso_pos;
 				}
 			default:
-				throw new UnityException("IsoWorld. Type is wrong!");
+				throw new UnityException("IsoWorld. TileType is wrong!");
 			}
 		}
 		
@@ -186,6 +186,20 @@ namespace IsoTools {
 			_lastMinDepth = MinDepth;
 			_lastMaxDepth = MaxDepth;
 		}
+
+		bool IsDepends(IsoObject obj_ao, IsoObject obj_bo) {
+			if ( obj_ao != obj_bo ) {
+				var max_ax = obj_ao.Position.x + obj_ao.Size.x;
+				var max_ay = obj_ao.Position.y + obj_ao.Size.y;
+				if ( obj_bo.Position.x < max_ax && obj_bo.Position.y < max_ay ) {
+					var max_bz = obj_bo.Position.z + obj_bo.Size.z;
+					if ( obj_ao.Position.z < max_bz ) {
+						return true;
+					}
+				}
+			}
+			return false;
+		}
 		
 		IList<ObjectInfo> ScanObjects() {
 			var iso_objects = GameObject.FindObjectsOfType<IsoObject>();
@@ -201,18 +215,11 @@ namespace IsoTools {
 			foreach ( var obj_a in objects ) {
 				obj_a.Reset(depends.Count);
 				var obj_ao = obj_a.IsoObject;
-				var max_ax = obj_ao.Position.x + obj_ao.Size.x;
-				var max_ay = obj_ao.Position.y + obj_ao.Size.y;
 				for ( int i = 0; i < objects.Count; ++i ) {
 					var obj_bo = objects[i].IsoObject;
-					if ( obj_ao != obj_bo ) {
-						if ( obj_bo.Position.x < max_ax && obj_bo.Position.y < max_ay ) {
-							var max_bz = obj_bo.Position.z + obj_bo.Size.z;
-							if ( obj_ao.Position.z < max_bz ) {
-								depends.Add(i);
-								++obj_a.EndDepend;
-							}
-						}
+					if ( IsDepends(obj_ao, obj_bo) ) {
+						depends.Add(i);
+						++obj_a.EndDepend;
 					}
 				}
 			}
@@ -225,20 +232,6 @@ namespace IsoTools {
 			foreach ( var info in objects ) {
 				PlaceObject(info, objects, depends, ref depth);
 			}
-		}
-
-		bool IsDepends(IsoObject obj_ao, IsoObject obj_bo) {
-			if ( obj_ao != obj_bo ) {
-				var max_ax = obj_ao.Position.x + obj_ao.Size.x;
-				var max_ay = obj_ao.Position.y + obj_ao.Size.y;
-				if ( obj_bo.Position.x < max_ax && obj_bo.Position.y < max_ay ) {
-					var max_bz = obj_bo.Position.z + obj_bo.Size.z;
-					if ( obj_ao.Position.z < max_bz ) {
-						return true;
-					}
-				}
-			}
-			return false;
 		}
 
 		void ManualSort(IsoObject obj, IList<ObjectInfo> objects) {
@@ -270,8 +263,8 @@ namespace IsoTools {
 		}
 
 		void PlaceObject(IsoObject obj, float depth) {
-			var pos = obj.gameObject.transform.position;
-			obj.gameObject.transform.position = new Vector3(pos.x, pos.y, depth);
+			var trans = obj.gameObject.transform;
+			trans.position = new Vector3(trans.position.x, trans.position.y, depth);
 		}
 
 		void PlaceObject(ObjectInfo info, IList<ObjectInfo> objects, IList<int> depends, ref float depth) {
@@ -287,7 +280,7 @@ namespace IsoTools {
 			}
 		}
 
-		void SmartSort() {
+		void StepSort() {
 			if ( _dirty || _dirtyObjects.Count > 0 ) {
 				var objects = ScanObjects().Where(p => p.IsoObject.Sorting).ToList();
 				if ( _dirty ) {
@@ -318,7 +311,7 @@ namespace IsoTools {
 				if ( !Mathf.Approximately(_lastMinDepth, _minDepth) ) MinDepth = _minDepth;
 				if ( !Mathf.Approximately(_lastMaxDepth, _maxDepth) ) MaxDepth = _maxDepth;
 			}
-			SmartSort();
+			StepSort();
 		}
 
 		void OnEnable() {
