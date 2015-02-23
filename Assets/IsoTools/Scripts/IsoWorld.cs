@@ -280,22 +280,41 @@ namespace IsoTools {
 			}
 		}
 
+		/*
 		void StepSort() {
 			if ( _dirty || _dirtyObjects.Count > 0 ) {
 				var objects = ScanObjects().Where(p => p.IsoObject.Sorting).ToList();
 				if ( _dirty ) {
 					ManualSort(objects);
+					Debug.Log("Resort!");
 				} else {
 					foreach ( var obj in _dirtyObjects ) {
 						ManualSort(obj, objects);
 						if ( _dirty ) {
 							ManualSort(objects);
+							Debug.Log("Need Resort!");
 							break;
 						}
 					}
 				}
 				_dirty = false;
 				_dirtyObjects.Clear();
+			}
+		}*/
+
+		void StepSort() {
+			while ( _dirty || _dirtyObjects.Count > 0 ) {
+				if ( _dirty ) {
+					var objects = ScanObjects().Where(p => p.IsoObject.Sorting).ToList();
+					ManualSort(objects);
+					_dirty = false;
+					Debug.Log("Resort!");
+				} else {
+					var objects = ScanObjects().Where(p => p.IsoObject.Sorting).ToList();
+					var obj = _dirtyObjects.First();
+					ManualSort(obj, objects);
+					_dirtyObjects.Remove(obj);
+				}
 			}
 		}
 
