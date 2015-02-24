@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Linq;
+using System;
 using System.Collections.Generic;
 
 namespace IsoTools {
@@ -98,6 +99,9 @@ namespace IsoTools {
 		// ------------------------------------------------------------------------ 
 		public void MarkDirty(IsoObject obj) {
 			_dirtyObjects.Add(obj);
+			if ( !_dirty ) {
+				//ManualSort(obj, Scan)
+			}
 		}
 		
 		// ------------------------------------------------------------------------
@@ -202,10 +206,16 @@ namespace IsoTools {
 		}
 		
 		IList<ObjectInfo> ScanObjects() {
+			return ScanObjects(p => true);
+		}
+
+		IList<ObjectInfo> ScanObjects(Func<IsoObject, bool> filter) {
 			var iso_objects = GameObject.FindObjectsOfType<IsoObject>();
 			var objects = new List<ObjectInfo>(iso_objects.Length);
 			foreach ( var iso_object in iso_objects ) {
-				objects.Add(new ObjectInfo(iso_object));
+				if ( filter(iso_object) ) {
+					objects.Add(new ObjectInfo(iso_object));
+				}
 			}
 			return objects;
 		}
@@ -255,7 +265,7 @@ namespace IsoTools {
 			}
 			//TODO: magic number
 			var min_depth_step = 0.01f;
-			if ( Mathf.Abs(max_depth - min_depth) < min_depth_step ) {
+			if ( max_depth < min_depth || Mathf.Abs(max_depth - min_depth) < min_depth_step ) {
 				MarkDirty();
 			} else {
 				PlaceObject(obj, (min_depth + max_depth) / 2.0f);
@@ -280,47 +290,24 @@ namespace IsoTools {
 			}
 		}
 
-		/*
 		void StepSort() {
-			if ( _dirty || _dirtyObjects.Count > 0 ) {
-				var objects = ScanObjects().Where(p => p.IsoObject.Sorting).ToList();
-				if ( _dirty ) {
-					ManualSort(objects);
-					Debug.Log("Resort!");
-				} else {
-					foreach ( var obj in _dirtyObjects ) {
-						ManualSort(obj, objects);
-						if ( _dirty ) {
-							ManualSort(objects);
-							Debug.Log("Need Resort!");
-							break;
-						}
-					}
-				}
+			while ( !_dirty && _dirtyObjects.Count > 0 ) {
+				var objects = ScanObjects(p => p.Sorting && !_dirtyObjects.Contains(p));
+				var obj = _dirtyObjects.First();
+				ManualSort(obj, objects);
+				_dirtyObjects.Remove(obj);
+			}
+			if ( _dirty ) {
+				ManualSort(ScanObjects(p => p.Sorting));
 				_dirty = false;
 				_dirtyObjects.Clear();
-			}
-		}*/
-
-		void StepSort() {
-			while ( _dirty || _dirtyObjects.Count > 0 ) {
-				if ( _dirty ) {
-					var objects = ScanObjects().Where(p => p.IsoObject.Sorting).ToList();
-					ManualSort(objects);
-					_dirty = false;
-					Debug.Log("Resort!");
-				} else {
-					var objects = ScanObjects().Where(p => p.IsoObject.Sorting).ToList();
-					var obj = _dirtyObjects.First();
-					ManualSort(obj, objects);
-					_dirtyObjects.Remove(obj);
-				}
+				Debug.Log("Resort!");
 			}
 		}
 
 		void Start() {
 			ChangeSortingProperty();
-			ManualSort(ScanObjects());
+			StepSort();
 		}
 
 		void LateUpdate() {

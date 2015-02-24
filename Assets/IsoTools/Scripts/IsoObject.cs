@@ -145,7 +145,6 @@ namespace IsoTools {
 				if ( !Mathf.Approximately(_lastTransform.x, transform.position.x) ||
 				     !Mathf.Approximately(_lastTransform.y, transform.position.y))
 				{
-					Debug.Log("Change pos: " + gameObject.name);
 					FixIsoPosition();
 				}
 				if ( _lastPosition  != _position  ) Position  = _position;
