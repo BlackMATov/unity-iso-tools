@@ -9,11 +9,11 @@ namespace IsoTools {
 	public class IsoObject : MonoBehaviour {
 
 		#if UNITY_EDITOR
-		Vector2   _lastTransform = Vector2.zero;
-		Vector3   _lastPosition  = Vector3.zero;
-		Vector3   _lastSize      = Vector3.zero;
-		bool      _lastSorting   = false;
-		bool      _lastAlignment = false;
+		Vector2 _lastTransform = Vector2.zero;
+		Vector3 _lastPosition  = Vector3.zero;
+		Vector3 _lastSize      = Vector3.zero;
+		bool    _lastSorting   = false;
+		bool    _lastAlignment = false;
 		#endif
 
 		[SerializeField]
@@ -117,9 +117,7 @@ namespace IsoTools {
 		}
 
 		void MartDirtyIsoWorld() {
-			if ( Sorting ) {
-				IsoWorld.MarkDirty(this);
-			}
+			IsoWorld.MarkDirty(this);
 		}
 
 		void MarkEditorObjectDirty() {

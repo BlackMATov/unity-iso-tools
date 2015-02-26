@@ -30,13 +30,11 @@ namespace IsoTools {
 			}
 		}
 
-		bool               _dirty        = true;
-		HashSet<IsoObject> _dirtyObjects = new HashSet<IsoObject>();
-
-		TileTypes          _lastTileType = TileTypes.Isometric;
-		float              _lastTileSize = 0.0f;
-		float              _lastMinDepth = 0.0f;
-		float              _lastMaxDepth = 0.0f;
+		bool      _dirty        = true;
+		TileTypes _lastTileType = TileTypes.Isometric;
+		float     _lastTileSize = 0.0f;
+		float     _lastMinDepth = 0.0f;
+		float     _lastMaxDepth = 0.0f;
 
 		[SerializeField]
 		public TileTypes _tileType = TileTypes.Isometric;
@@ -98,9 +96,8 @@ namespace IsoTools {
 		/// <param name="obj">Isometric object for resorting.</param>
 		// ------------------------------------------------------------------------ 
 		public void MarkDirty(IsoObject obj) {
-			_dirtyObjects.Add(obj);
-			if ( !_dirty ) {
-				//ManualSort(obj, Scan)
+			if ( obj && obj.Sorting ) {
+				_dirty = true;
 			}
 		}
 		
@@ -244,34 +241,6 @@ namespace IsoTools {
 			}
 		}
 
-		void ManualSort(IsoObject obj, IList<ObjectInfo> objects) {
-			var min_depth = float.MinValue;
-			foreach ( var obj_b in objects ) {
-				if ( IsDepends(obj, obj_b.IsoObject) ) {
-					min_depth = Mathf.Max(min_depth, obj_b.IsoObject.transform.position.z);
-				}
-			}
-			var max_depth = float.MaxValue;
-			foreach ( var obj_a in objects ) {
-				if ( IsDepends(obj_a.IsoObject, obj) ) {
-					max_depth = Mathf.Min(max_depth, obj_a.IsoObject.transform.position.z);
-				}
-			}
-			if ( min_depth == float.MinValue ) {
-				min_depth = MinDepth;
-			}
-			if ( max_depth == float.MaxValue ) {
-				max_depth = MaxDepth;
-			}
-			//TODO: magic number
-			var min_depth_step = 0.01f;
-			if ( max_depth < min_depth || Mathf.Abs(max_depth - min_depth) < min_depth_step ) {
-				MarkDirty();
-			} else {
-				PlaceObject(obj, (min_depth + max_depth) / 2.0f);
-			}
-		}
-
 		void PlaceObject(IsoObject obj, float depth) {
 			var trans = obj.gameObject.transform;
 			trans.position = new Vector3(trans.position.x, trans.position.y, depth);
@@ -291,17 +260,9 @@ namespace IsoTools {
 		}
 
 		void StepSort() {
-			while ( !_dirty && _dirtyObjects.Count > 0 ) {
-				var objects = ScanObjects(p => p.Sorting && !_dirtyObjects.Contains(p));
-				var obj = _dirtyObjects.First();
-				ManualSort(obj, objects);
-				_dirtyObjects.Remove(obj);
-			}
 			if ( _dirty ) {
 				ManualSort(ScanObjects(p => p.Sorting));
 				_dirty = false;
-				_dirtyObjects.Clear();
-				Debug.Log("Resort!");
 			}
 		}
 
