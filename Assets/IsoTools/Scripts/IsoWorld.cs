@@ -23,11 +23,11 @@ namespace IsoTools {
 			public int       BeginDepend;
 			public int       EndDepend;
 
-			public ObjectInfo(int index, IsoObject iso_object, Vector3 minSector, Vector3 maxSector) {
+			public ObjectInfo(int index, IsoObject iso_object, Vector3 min_sector, Vector3 max_sector) {
 				Index     = index;
 				IsoObject = iso_object;
-				MinSector = minSector;
-				MaxSector = maxSector;
+				MinSector = min_sector;
+				MaxSector = max_sector;
 			}
 
 			public void Init(int first_depend) {
@@ -38,17 +38,17 @@ namespace IsoTools {
 		}
 
 		class SectorInfo {
-			public Vector3   Position = Vector3.zero;
-			public List<int> Objects  = new List<int>();
-			public List<int> Depends  = new List<int>();
+			public Vector3          Position = Vector3.zero;
+			public List<int>        Objects  = new List<int>();
+			public List<SectorInfo> Depends  = new List<SectorInfo>();
 			public SectorInfo(Vector3 position) {
 				Position = position;
 			}
 		}
 
 		bool             _dirty          = true;
-		List<SectorInfo> _sectors        = new List<SectorInfo>();
 		Vector3          _sectorsNum     = Vector3.zero;
+		List<SectorInfo> _sectors        = new List<SectorInfo>();
 		List<ObjectInfo> _objects        = new List<ObjectInfo>();
 		List<int>        _depends        = new List<int>();
 
@@ -276,15 +276,41 @@ namespace IsoTools {
 			}
 		}
 
+		SectorInfo FindSector(Vector3 pos) {
+			if ( pos.x < 0 || pos.y < 0 || pos.z < 0 ) {
+				return null;
+			}
+			if ( pos.x >= _sectorsNum.x || pos.y >= _sectorsNum.y || pos.z >= _sectorsNum.z ) {
+				return null;
+			}
+			return _sectors[SectorIndex(pos)];
+		}
+
 		void SetupSectorDepends() {
-			foreach ( var sec_a in _sectors ) {
-				for ( var i = 0; i < _sectors.Count; ++i ) {
-					var sec_b = _sectors[i];
-					if ( sec_a == sec_b || IsDepends(sec_a.Position, sec_b.Position, SectorSize) ) {
-						sec_a.Depends.Add(i);
+			IsoUtils.LookUpCube(Vector3.zero, _sectorsNum, p => {
+				var ms = FindSector(p);
+				if ( ms != null ) {
+					ms.Depends.Add(ms);
+
+					var s1 = FindSector(p + new Vector3(-1,  0, 0));
+					var s2 = FindSector(p + new Vector3( 0, -1, 0));
+					var s3 = FindSector(p + new Vector3(-1, -1, 0));
+					if ( s1 != null ) ms.Depends.Add(s1);
+					if ( s2 != null ) ms.Depends.Add(s2);
+					if ( s3 != null ) ms.Depends.Add(s3);
+
+					for ( var i = 1; i < _sectorsNum.z; ++i ) {
+						var ss1 = FindSector(p + new Vector3( 0 - i,  0 - i, i + 1));
+						var ss2 = FindSector(p + new Vector3(-1 - i,  0 - i, i + 1));
+						var ss3 = FindSector(p + new Vector3( 0 - i, -1 - i, i + 1));
+						var ss4 = FindSector(p + new Vector3(-1 - i, -1 - i, i + 1));
+						if ( ss1 != null ) ms.Depends.Add(ss1);
+						if ( ss2 != null ) ms.Depends.Add(ss2);
+						if ( ss3 != null ) ms.Depends.Add(ss3);
+						if ( ss4 != null ) ms.Depends.Add(ss4);
 					}
 				}
-			}
+			});
 		}
 
 		void SetupObjectDepends() {
@@ -294,8 +320,7 @@ namespace IsoTools {
 				var obj_ao = obj_a.IsoObject;
 				IsoUtils.LookUpCube(obj_a.MinSector, obj_a.MaxSector, p => {
 					var index = SectorIndex(p);
-					foreach ( var sec_i in _sectors[index].Depends ) {
-						var sec = _sectors[sec_i];
+					foreach ( var sec in _sectors[index].Depends ) {
 						foreach ( var obj_bi in sec.Objects ) {
 							var obj_bo = _objects[obj_bi].IsoObject;
 							if ( obj_ao != obj_bo && IsDepends(obj_ao.Position, obj_ao.Size, obj_bo.Position, obj_bo.Size) ) {
@@ -305,22 +330,14 @@ namespace IsoTools {
 						}
 					}
 				});
+				//Debug.LogFormat("{0} --- {1}" , obj_a.IsoObject.Position, obj_a.EndDepend - obj_a.BeginDepend);
 			}
-		}
-
-		bool IsDepends(Vector3 a_pos, Vector3 b_pos, float size) {
-			return IsDepends(
-				a_pos, new Vector3(size, size, size),
-				b_pos, new Vector3(size, size, size));
 		}
 
 		bool IsDepends(Vector3 a_min, Vector3 a_size, Vector3 b_min, Vector3 b_size) {
 			var a_max = a_min + a_size;
 			var b_max = b_min + b_size;
-			return
-				a_max.x > b_min.x && a_min.x < b_max.x + 1.0f &&
-				a_max.y > b_min.y && a_min.y < b_max.y + 1.0f &&
-				b_max.z > a_min.z && b_min.z < a_max.z + 1.0f;
+			return a_max.x > b_min.x && a_max.y > b_min.y && b_max.z > a_min.z;
 		}
 
 		void SetupAllObjects() {
@@ -355,7 +372,7 @@ namespace IsoTools {
 				SetupSectorDepends();
 				SetupObjectDepends();
 				SetupAllObjects();
-				_dirty = false;
+				//_dirty = false;
 			}
 		}
 

@@ -2,8 +2,7 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/IsoTools/Scripts/IsoWorld.cs">
     <Files>
-      <File FileName="Assets/IsoTools/Scripts/IsoWorld.cs" Line="351" Column="3" />
-      <File FileName="Assets/IsoTools/Scripts/IsoUtils.cs" Line="6" Column="25" />
+      <File FileName="Assets/IsoTools/Scripts/IsoWorld.cs" Line="355" Column="28" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

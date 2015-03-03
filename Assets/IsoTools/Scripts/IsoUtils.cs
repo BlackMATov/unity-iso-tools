@@ -14,6 +14,13 @@ namespace IsoTools {
 			}
 		}
 
+		public static bool Vec3Approximately(Vector3 a, Vector3 b) {
+			return
+				Mathf.Approximately(a.x, b.x) &&
+				Mathf.Approximately(a.y, b.y) &&
+				Mathf.Approximately(a.z, b.z);
+		}
+
 		public static Vector3 Vec3Ceil(Vector3 v) {
 			return new Vector3(
 				Mathf.Ceil(v.x),
