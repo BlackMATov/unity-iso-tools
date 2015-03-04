@@ -21,6 +21,13 @@ namespace IsoTools {
 				Mathf.Approximately(a.z, b.z);
 		}
 
+		public static Vector3 Vec3Abs(Vector3 v) {
+			return new Vector3(
+				Mathf.Abs(v.x),
+				Mathf.Abs(v.y),
+				Mathf.Abs(v.z));
+		}
+
 		public static Vector3 Vec3Ceil(Vector3 v) {
 			return new Vector3(
 				Mathf.Ceil(v.x),

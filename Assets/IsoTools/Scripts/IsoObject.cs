@@ -33,7 +33,7 @@ namespace IsoTools {
 		public Vector3 Size {
 			get { return _size; }
 			set {
-				_size = value;
+				_size = IsoUtils.Vec3Max(value, Vector3.zero);
 				FixTransform();
 			}
 		}

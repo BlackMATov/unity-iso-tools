@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
-using System.Linq;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace IsoTools {
@@ -38,25 +38,23 @@ namespace IsoTools {
 		}
 
 		class SectorInfo {
-			public Vector3          Position = Vector3.zero;
-			public List<int>        Objects  = new List<int>();
-			public List<SectorInfo> Depends  = new List<SectorInfo>();
-			public SectorInfo(Vector3 position) {
-				Position = position;
-			}
+			public List<int> Objects = new List<int>();
 		}
 
-		bool             _dirty          = true;
-		Vector3          _sectorsNum     = Vector3.zero;
-		List<SectorInfo> _sectors        = new List<SectorInfo>();
-		List<ObjectInfo> _objects        = new List<ObjectInfo>();
-		List<int>        _depends        = new List<int>();
+		bool             _dirty            = true;
 
-		TileTypes        _lastTileType   = TileTypes.Isometric;
-		float            _lastTileSize   = 0.0f;
-		float            _lastMinDepth   = 0.0f;
-		float            _lastMaxDepth   = 0.0f;
-		float            _lastSectorSize = 0.0f;
+		List<SectorInfo> _sectors          = new List<SectorInfo>();
+		Vector3          _sectorsNum       = Vector3.zero;
+		Vector3          _sectorsMinNumPos = Vector3.zero;
+
+		List<ObjectInfo> _objects          = new List<ObjectInfo>();
+		List<int>        _depends          = new List<int>();
+
+		TileTypes        _lastTileType     = TileTypes.Isometric;
+		float            _lastTileSize     = 0.0f;
+		float            _lastMinDepth     = 0.0f;
+		float            _lastMaxDepth     = 0.0f;
+		float            _lastSectorSize   = 0.0f;
 
 		[SerializeField]
 		public TileTypes _tileType = TileTypes.Isometric;
@@ -103,7 +101,7 @@ namespace IsoTools {
 		}
 
 		[SerializeField]
-		public float _sectorSize = 5.0f;
+		public float _sectorSize = 3.0f;
 		/// <summary>Sorting sector size.</summary>
 		public float SectorSize {
 			get { return _sectorSize; }
@@ -227,90 +225,90 @@ namespace IsoTools {
 		}
 
 		int SectorIndex(Vector3 num_pos) {
-			return Mathf.RoundToInt(
-				num_pos.z * _sectorsNum.x * _sectorsNum.y +
-				num_pos.y * _sectorsNum.x +
-				num_pos.x);
+			return Mathf.FloorToInt(
+				num_pos.x + _sectorsNum.x * (num_pos.y + num_pos.z * _sectorsNum.y));
 		}
 
 		Vector3 SectorNumPos(int index) {
-			var z = Mathf.FloorToInt(index / (_sectorsNum.x * _sectorsNum.y));
-			var y = Mathf.FloorToInt((index - (z * _sectorsNum.x * _sectorsNum.y)) / _sectorsNum.x);
-			var x = index - (z * _sectorsNum.x * _sectorsNum.y) - (y * _sectorsNum.x);
-			return new Vector3(x, y, z);
+			var mz = _sectorsNum.x * _sectorsNum.y;
+			var my = _sectorsNum.x;
+			var vz = Mathf.FloorToInt(index / mz);
+			var vy = Mathf.FloorToInt((index - vz * mz) / my);
+			var vx = Mathf.FloorToInt(index - vz * mz - vy * my);
+			return new Vector3(vx, vy, vz);
+		}
+
+		SectorInfo FindSector(Vector3 num_pos) {
+			if ( num_pos.x < 0 || num_pos.y < 0 || num_pos.z < 0 ) {
+				return null;
+			}
+			if ( num_pos.x >= _sectorsNum.x || num_pos.y >= _sectorsNum.y || num_pos.z >= _sectorsNum.z ) {
+				return null;
+			}
+			return _sectors[SectorIndex(num_pos)];
 		}
 
 		void SetupSectors() {
 			var iso_objects = GameObject.FindObjectsOfType<IsoObject>();
 
-			var min = Vector3.zero;
-			var max = Vector3.one;
-			foreach ( var iso_object in iso_objects ) {
-				min = IsoUtils.Vec3Min(min, iso_object.Position);
-				max = IsoUtils.Vec3Max(max, iso_object.Position + iso_object.Size);
+			_objects.Clear();
+			_objects.Capacity = iso_objects.Length;
+
+			Vector3 min_num_pos = -Vector3.one;
+			Vector3 max_num_pos = Vector3.one;
+			foreach ( var obj in iso_objects ) {
+				var obj_max_size = IsoUtils.Vec3Max(Vector3.one, obj.Size);
+				var obj_min_num_pos = IsoUtils.Vec3DivFloor(obj.Position, SectorSize);
+				var obj_max_num_pos = IsoUtils.Vec3DivCeil(obj.Position + obj_max_size, SectorSize);
+				min_num_pos = IsoUtils.Vec3Min(min_num_pos, obj_min_num_pos);
+				max_num_pos = IsoUtils.Vec3Max(max_num_pos, obj_max_num_pos);
+				_objects.Add(new ObjectInfo(_objects.Count, obj, obj_min_num_pos, obj_max_num_pos));
 			}
 
-			_sectorsNum = IsoUtils.Vec3DivCeil(max - min, SectorSize);
+			_sectorsNum = max_num_pos - min_num_pos;
+			_sectorsMinNumPos = min_num_pos;
 
 			_sectors.Clear();
-			_sectors.Capacity = Mathf.CeilToInt(_sectorsNum.x * _sectorsNum.y * _sectorsNum.z);
+			_sectors.Capacity = Mathf.FloorToInt(_sectorsNum.x * _sectorsNum.y * _sectorsNum.z);
 			while ( _sectors.Count < _sectors.Capacity ) {
-				var num_pos = SectorNumPos(_sectors.Count);
-				_sectors.Add(new SectorInfo(num_pos * SectorSize));
+				_sectors.Add(new SectorInfo());
 			}
 
-			_objects.Clear();
-			foreach ( var iso_object in iso_objects ) {
-				var max_size   = IsoUtils.Vec3Max(iso_object.Size, Vector3.one);
-				var min_sector = IsoUtils.Vec3DivFloor(iso_object.Position - min, SectorSize);
-				var max_sector = IsoUtils.Vec3DivCeil(iso_object.Position + max_size - min, SectorSize);
-
-				var obj_info = new ObjectInfo(_objects.Count, iso_object, min_sector, max_sector);
-				_objects.Add(obj_info);
-
-				IsoUtils.LookUpCube(min_sector, max_sector, p => {
-					var index = SectorIndex(p);
-					_sectors[index].Objects.Add(obj_info.Index);
-					
+			foreach ( var obj in _objects ) {
+				obj.MinSector -= _sectorsMinNumPos;
+				obj.MaxSector -= _sectorsMinNumPos;
+				IsoUtils.LookUpCube(obj.MinSector, obj.MaxSector, p => {
+					var sector = FindSector(p);
+					if ( sector != null ) {
+						sector.Objects.Add(obj.Index);
+					}
 				});
 			}
 		}
 
-		SectorInfo FindSector(Vector3 pos) {
-			if ( pos.x < 0 || pos.y < 0 || pos.z < 0 ) {
-				return null;
-			}
-			if ( pos.x >= _sectorsNum.x || pos.y >= _sectorsNum.y || pos.z >= _sectorsNum.z ) {
-				return null;
-			}
-			return _sectors[SectorIndex(pos)];
-		}
+		void LookUpSectorDepends(Vector3 num_pos, Action<SectorInfo> act) {
+			var ms = FindSector(num_pos);
+			if ( ms != null ) {
+				act(ms);
 
-		void SetupSectorDepends() {
-			IsoUtils.LookUpCube(Vector3.zero, _sectorsNum, p => {
-				var ms = FindSector(p);
-				if ( ms != null ) {
-					ms.Depends.Add(ms);
-
-					var s1 = FindSector(p + new Vector3(-1,  0, 0));
-					var s2 = FindSector(p + new Vector3( 0, -1, 0));
-					var s3 = FindSector(p + new Vector3(-1, -1, 0));
-					if ( s1 != null ) ms.Depends.Add(s1);
-					if ( s2 != null ) ms.Depends.Add(s2);
-					if ( s3 != null ) ms.Depends.Add(s3);
-
-					for ( var i = 1; i < _sectorsNum.z; ++i ) {
-						var ss1 = FindSector(p + new Vector3( 0 - i,  0 - i, i + 1));
-						var ss2 = FindSector(p + new Vector3(-1 - i,  0 - i, i + 1));
-						var ss3 = FindSector(p + new Vector3( 0 - i, -1 - i, i + 1));
-						var ss4 = FindSector(p + new Vector3(-1 - i, -1 - i, i + 1));
-						if ( ss1 != null ) ms.Depends.Add(ss1);
-						if ( ss2 != null ) ms.Depends.Add(ss2);
-						if ( ss3 != null ) ms.Depends.Add(ss3);
-						if ( ss4 != null ) ms.Depends.Add(ss4);
-					}
+				var s1 = FindSector(num_pos + new Vector3(-1,  0, 0));
+				var s2 = FindSector(num_pos + new Vector3( 0, -1, 0));
+				var s3 = FindSector(num_pos + new Vector3(-1, -1, 0));
+				if ( s1 != null ) act(s1);
+				if ( s2 != null ) act(s2);
+				if ( s3 != null ) act(s3);
+				
+				for ( var i = 1; i <= _sectorsNum.z ; ++i ) {
+					var ss1 = FindSector(num_pos + new Vector3( 0 - i,  0 - i, i + 1));
+					var ss2 = FindSector(num_pos + new Vector3(-1 - i,  0 - i, i + 1));
+					var ss3 = FindSector(num_pos + new Vector3( 0 - i, -1 - i, i + 1));
+					var ss4 = FindSector(num_pos + new Vector3(-1 - i, -1 - i, i + 1));
+					if ( ss1 != null ) act(ss1);
+					if ( ss2 != null ) act(ss2);
+					if ( ss3 != null ) act(ss3);
+					if ( ss4 != null ) act(ss4);
 				}
-			});
+			}
 		}
 
 		void SetupObjectDepends() {
@@ -319,8 +317,7 @@ namespace IsoTools {
 				obj_a.Init(_depends.Count);
 				var obj_ao = obj_a.IsoObject;
 				IsoUtils.LookUpCube(obj_a.MinSector, obj_a.MaxSector, p => {
-					var index = SectorIndex(p);
-					foreach ( var sec in _sectors[index].Depends ) {
+					LookUpSectorDepends(p, sec => {
 						foreach ( var obj_bi in sec.Objects ) {
 							var obj_bo = _objects[obj_bi].IsoObject;
 							if ( obj_ao != obj_bo && IsDepends(obj_ao.Position, obj_ao.Size, obj_bo.Position, obj_bo.Size) ) {
@@ -328,7 +325,7 @@ namespace IsoTools {
 								++obj_a.EndDepend;
 							}
 						}
-					}
+					});
 				});
 				//Debug.LogFormat("{0} --- {1}" , obj_a.IsoObject.Position, obj_a.EndDepend - obj_a.BeginDepend);
 			}
@@ -369,10 +366,9 @@ namespace IsoTools {
 		void StepSort() {
 			if ( _dirty ) {
 				SetupSectors();
-				SetupSectorDepends();
 				SetupObjectDepends();
 				SetupAllObjects();
-				//_dirty = false;
+				_dirty = false;
 			}
 		}
 
@@ -383,11 +379,11 @@ namespace IsoTools {
 
 		void LateUpdate() {
 			if ( Application.isEditor ) {
-				if ( _lastTileType != _tileType )                          TileType   = _tileType;
-				if ( !Mathf.Approximately(_lastTileSize,   _tileSize   ) ) TileSize   = _tileSize;
-				if ( !Mathf.Approximately(_lastMinDepth,   _minDepth   ) ) MinDepth   = _minDepth;
-				if ( !Mathf.Approximately(_lastMaxDepth,   _maxDepth   ) ) MaxDepth   = _maxDepth;
-				if ( !Mathf.Approximately(_lastSectorSize, _sectorSize ) ) SectorSize = _sectorSize;
+				if ( _lastTileType != _tileType )                         TileType   = _tileType;
+				if ( !Mathf.Approximately(_lastTileSize,   _tileSize  ) ) TileSize   = _tileSize;
+				if ( !Mathf.Approximately(_lastMinDepth,   _minDepth  ) ) MinDepth   = _minDepth;
+				if ( !Mathf.Approximately(_lastMaxDepth,   _maxDepth  ) ) MaxDepth   = _maxDepth;
+				if ( !Mathf.Approximately(_lastSectorSize, _sectorSize) ) SectorSize = _sectorSize;
 			}
 			StepSort();
 		}
