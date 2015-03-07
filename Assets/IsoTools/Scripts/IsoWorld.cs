@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 using System;
-using System.Linq;
 using System.Collections.Generic;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace IsoTools {
 	[ExecuteInEditMode]
@@ -118,17 +121,22 @@ namespace IsoTools {
 		// ------------------------------------------------------------------------
 		public void MarkDirty() {
 			_dirty = true;
+			MarkEditorWorldDirty();
 		}
 
 		// ------------------------------------------------------------------------
 		/// <summary>
-		/// Marks world for resorting one object only
+		/// Marks world for resorting.
 		/// </summary>
 		/// <param name="obj">Isometric object for resorting.</param>
 		// ------------------------------------------------------------------------ 
 		public void MarkDirty(IsoObject obj) {
 			if ( obj && obj.Sorting ) {
-				_dirty = true;
+				var renderer = obj.GetComponent<Renderer>();
+				if ( renderer && renderer.isVisible ) {
+					_dirty = true;
+					MarkEditorWorldDirty();
+				}
 			}
 		}
 		
@@ -202,6 +210,14 @@ namespace IsoTools {
 				throw new UnityException("IsoWorld. TileType is wrong!");
 			}
 		}
+
+		void MarkEditorWorldDirty() {
+		#if UNITY_EDITOR
+			if ( Application.isEditor ) {
+				EditorUtility.SetDirty(this);
+			}
+		#endif
+		}
 		
 		void FixAllTransforms() {
 			ApplyToAllIsoObjects(obj => obj.FixTransform());
@@ -254,15 +270,18 @@ namespace IsoTools {
 			_objects.Clear();
 			_objects.Capacity = iso_objects.Length;
 
-			Vector3 min_num_pos = -Vector3.one;
-			Vector3 max_num_pos = Vector3.one;
+			var min_num_pos = Vector3.zero;
+			var max_num_pos = Vector3.one;
 			foreach ( var obj in iso_objects ) {
-				var obj_max_size = IsoUtils.Vec3Max(Vector3.one, obj.Size);
-				var obj_min_num_pos = IsoUtils.Vec3DivFloor(obj.Position, SectorSize);
-				var obj_max_num_pos = IsoUtils.Vec3DivCeil(obj.Position + obj_max_size, SectorSize);
-				min_num_pos = IsoUtils.Vec3Min(min_num_pos, obj_min_num_pos);
-				max_num_pos = IsoUtils.Vec3Max(max_num_pos, obj_max_num_pos);
-				_objects.Add(new ObjectInfo(_objects.Count, obj, obj_min_num_pos, obj_max_num_pos));
+				var renderer = obj.GetComponent<Renderer>();
+				if ( renderer && renderer.isVisible ) {
+					var obj_max_size = IsoUtils.Vec3Max(Vector3.one, obj.Size);
+					var obj_min_num_pos = IsoUtils.Vec3DivFloor(obj.Position, SectorSize);
+					var obj_max_num_pos = IsoUtils.Vec3DivCeil(obj.Position + obj_max_size, SectorSize);
+					min_num_pos = IsoUtils.Vec3Min(min_num_pos, obj_min_num_pos);
+					max_num_pos = IsoUtils.Vec3Max(max_num_pos, obj_max_num_pos);
+					_objects.Add(new ObjectInfo(_objects.Count, obj, obj_min_num_pos, obj_max_num_pos));
+				}
 			}
 
 			_sectorsNum = max_num_pos - min_num_pos;
@@ -327,7 +346,6 @@ namespace IsoTools {
 						}
 					});
 				});
-				//Debug.LogFormat("{0} --- {1}" , obj_a.IsoObject.Position, obj_a.EndDepend - obj_a.BeginDepend);
 			}
 		}
 
@@ -342,6 +360,8 @@ namespace IsoTools {
 			foreach ( var info in _objects ) {
 				depth = PlaceObject(info, depth);
 			}
+			_objects.Clear();
+			_depends.Clear();
 		}
 		
 		void PlaceObject(IsoObject obj, float depth) {

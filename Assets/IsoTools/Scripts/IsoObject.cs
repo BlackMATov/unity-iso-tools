@@ -137,6 +137,10 @@ namespace IsoTools {
 			MartDirtyIsoWorld();
 		}
 
+		void OnBecameVisible() {
+			MartDirtyIsoWorld();
+		}
+
 		#if UNITY_EDITOR
 		void Update() {
 			if ( Application.isEditor ) {
