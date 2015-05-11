@@ -18,6 +18,25 @@ namespace IsoTools {
 
 		[SerializeField]
 		Vector3 _position = Vector3.zero;
+
+		/// <summary>Isometric object position X.</summary>
+		public float PositionX {
+			get { return Position.x; }
+			set { Position = IsoUtils.Vec3ChangeX(Position, value); }
+		}
+
+		/// <summary>Isometric object position Y.</summary>
+		public float PositionY {
+			get { return Position.y; }
+			set { Position = IsoUtils.Vec3ChangeY(Position, value); }
+		}
+
+		/// <summary>Isometric object position Z.</summary>
+		public float PositionZ {
+			get { return Position.z; }
+			set { Position = IsoUtils.Vec3ChangeZ(Position, value); }
+		}
+
 		/// <summary>Isometric object position.</summary>
 		public Vector3 Position {
 			get { return _position; }
@@ -29,6 +48,25 @@ namespace IsoTools {
 
 		[SerializeField]
 		Vector3 _size = Vector3.one;
+
+		/// <summary>Isometric object size X.</summary>
+		public float SizeX {
+			get { return Size.x; }
+			set { Size = IsoUtils.Vec3ChangeX(Size, value); }
+		}
+
+		/// <summary>Isometric object size Y.</summary>
+		public float SizeY {
+			get { return Size.y; }
+			set { Size = IsoUtils.Vec3ChangeY(Size, value); }
+		}
+
+		/// <summary>Isometric object size Z.</summary>
+		public float SizeZ {
+			get { return Size.z; }
+			set { Size = IsoUtils.Vec3ChangeZ(Size, value); }
+		}
+
 		/// <summary>Isometric object size.</summary>
 		public Vector3 Size {
 			get { return _size; }

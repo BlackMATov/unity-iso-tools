@@ -3,6 +3,50 @@ using System;
 
 namespace IsoTools {
 	public class IsoUtils {
+		public static Vector3 Vec2OneX {
+			get { return new Vector2(1.0f, 0.0f); }
+		}
+
+		public static Vector3 Vec2OneY {
+			get { return new Vector2(0.0f, 1.0f); }
+		}
+
+		public static Vector3 Vec3OneX {
+			get { return new Vector3(1.0f, 0.0f, 0.0f); }
+		}
+
+		public static Vector3 Vec3OneY {
+			get { return new Vector3(0.0f, 1.0f, 0.0f); }
+		}
+
+		public static Vector3 Vec3OneZ {
+			get { return new Vector3(0.0f, 0.0f, 1.0f); }
+		}
+
+		public static Vector2 Vec2FromX(float x) {
+			return new Vector2(x, 0.0f);
+		}
+		
+		public static Vector2 Vec2FromY(float y) {
+			return new Vector2(0.0f, y);
+		}
+
+		public static Vector3 Vec3FromX(float x) {
+			return new Vector3(x, 0.0f, 0.0f);
+		}
+
+		public static Vector3 Vec3FromY(float y) {
+			return new Vector3(0.0f, y, 0.0f);
+		}
+
+		public static Vector3 Vec3FromZ(float z) {
+			return new Vector3(0.0f, 0.0f, z);
+		}
+
+		public static int Sign<T>(float v) {
+			return v > 0.0f ? 1 : (v == 0.0f ? 0 : -1);
+		}
+
 		public static void LookUpCube(Vector3 min, Vector3 max, Action<Vector3> act) {
 			for ( var z = min.z; z < max.z; ++z ) {
 				for ( var y = min.y; y < max.y; ++y ) {
@@ -98,6 +142,34 @@ namespace IsoTools {
 				Mathf.Max(a.x, b.x),
 				Mathf.Max(a.y, b.y),
 				Mathf.Max(a.z, b.z));
+		}
+
+		public static Vector3 Vec3ChangeX(Vector3 v, float x) {
+			return new Vector3(x, v.y, v.z);
+		}
+
+		public static Vector3 Vec3ChangeY(Vector3 v, float y) {
+			return new Vector3(v.x, y, v.z);
+		}
+
+		public static Vector3 Vec3ChangeZ(Vector3 v, float z) {
+			return new Vector3(v.x, v.y, z);
+		}
+
+		public static Color ColorChangeR(Color c, float r) {
+			return new Color(r, c.g, c.b, c.a);
+		}
+
+		public static Color ColorChangeG(Color c, float g) {
+			return new Color(c.r, g, c.b, c.a);
+		}
+
+		public static Color ColorChangeB(Color c, float b) {
+			return new Color(c.r, c.g, b, c.a);
+		}
+
+		public static Color ColorChangeA(Color c, float a) {
+			return new Color(c.r, c.g, c.b, a);
 		}
 	}
 }
