@@ -1,11 +1,8 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/IsoTools/Scripts/IsoWorld.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/IsoTools/Editor/IsoObjectEditor.cs">
     <Files>
-      <File FileName="Assets/IsoTools/Scripts/IsoObject.cs" Line="198" Column="1" />
-      <File FileName="Assets/IsoTools/Editor/IsoObjectEditor.cs" Line="109" Column="24" />
-      <File FileName="Assets/IsoTools/Scripts/IsoWorld.cs" Line="419" Column="53" />
-      <File FileName="Assets/IsoTools/Scripts/IsoUtils.cs" Line="27" Column="30" />
+      <File FileName="Assets/IsoTools/Editor/IsoObjectEditor.cs" Line="106" Column="25" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

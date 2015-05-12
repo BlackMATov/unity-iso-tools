@@ -9,12 +9,6 @@ using UnityEditor;
 namespace IsoTools {
 	[ExecuteInEditMode]
 	public class IsoWorld : MonoBehaviour {
-		
-		/// <summary>World tile types.</summary>
-		public enum TileTypes {
-			Isometric,
-			UpDown
-		}
 
 		class ObjectInfo {
 			public int       Index;
@@ -54,21 +48,9 @@ namespace IsoTools {
 		Vector3          _objsMaxNumPos    = Vector3.zero;
 		Vector3          _objsNumPosCount  = Vector3.zero;
 
-		TileTypes        _lastTileType     = TileTypes.Isometric;
 		float            _lastTileSize     = 0.0f;
 		float            _lastMinDepth     = 0.0f;
 		float            _lastMaxDepth     = 0.0f;
-
-		[SerializeField]
-		public TileTypes _tileType = TileTypes.Isometric;
-		/// <summary>World tile type.</summary>
-		public TileTypes TileType {
-			get { return _tileType; }
-			set {
-				_tileType = value;
-				ChangeSortingProperty();
-			}
-		}
 
 		[SerializeField]
 		public float _tileSize = 32.0f;
@@ -136,18 +118,9 @@ namespace IsoTools {
 		/// <param name="pos">Isometric coordinates.</param>
 		// ------------------------------------------------------------------------
 		public Vector2 IsoToScreen(Vector3 pos) {
-			switch ( TileType ) {
-			case TileTypes.Isometric:
-				return new Vector2(
-					(pos.x - pos.y),
-					(pos.x + pos.y) * 0.5f + pos.z) * TileSize;
-			case TileTypes.UpDown:
-				return new Vector2(
-					pos.x,
-					pos.y + pos.z) * TileSize;
-			default:
-				throw new UnityException("IsoWorld. TileType is wrong!");
-			}
+			return new Vector2(
+				(pos.x - pos.y),
+				(pos.x + pos.y) * 0.5f + pos.z) * TileSize;
 		}
 		
 		// ------------------------------------------------------------------------
@@ -158,20 +131,10 @@ namespace IsoTools {
 		/// <param name="pos">Screen coordinates.</param>
 		// ------------------------------------------------------------------------
 		public Vector3 ScreenToIso(Vector2 pos) {
-			switch ( TileType ) {
-			case TileTypes.Isometric:
-				return new Vector3(
-					(pos.x * 0.5f + pos.y),
-					(pos.y - pos.x * 0.5f),
-					0.0f) / TileSize;
-			case TileTypes.UpDown:
-				return new Vector3(
-					pos.x,
-					pos.y,
-					0.0f) / TileSize;
-			default:
-				throw new UnityException("IsoWorld. TileType is wrong!");
-			}
+			return new Vector3(
+				(pos.x * 0.5f + pos.y),
+				(pos.y - pos.x * 0.5f),
+				0.0f) / TileSize;
 		}
 		
 		// ------------------------------------------------------------------------
@@ -183,20 +146,9 @@ namespace IsoTools {
 		/// <param name="iso_z">Point isometric height.</param>
 		// ------------------------------------------------------------------------
 		public Vector3 ScreenToIso(Vector2 pos, float iso_z) {
-			switch ( TileType ) {
-			case TileTypes.Isometric: {
-					var iso_pos = ScreenToIso(new Vector2(pos.x, pos.y - iso_z * TileSize));
-					iso_pos.z = iso_z;
-					return iso_pos;
-				}
-			case TileTypes.UpDown: {
-					var iso_pos = ScreenToIso(new Vector2(pos.x, pos.y - iso_z * TileSize));
-					iso_pos.z = iso_z;
-					return iso_pos;
-				}
-			default:
-				throw new UnityException("IsoWorld. TileType is wrong!");
-			}
+			var iso_pos = ScreenToIso(new Vector2(pos.x, pos.y - iso_z * TileSize));
+			iso_pos.z = iso_z;
+			return iso_pos;
 		}
 
 		void MarkEditorWorldDirty() {
@@ -221,7 +173,6 @@ namespace IsoTools {
 		void ChangeSortingProperty() {
 			MarkDirty();
 			FixAllTransforms();
-			_lastTileType = TileType;
 			_lastTileSize = TileSize;
 			_lastMinDepth = MinDepth;
 			_lastMaxDepth = MaxDepth;
@@ -403,10 +354,9 @@ namespace IsoTools {
 
 		void LateUpdate() {
 			if ( Application.isEditor ) {
-				if ( _lastTileType != _tileType )                       TileType   = _tileType;
-				if ( !Mathf.Approximately(_lastTileSize, _tileSize  ) ) TileSize   = _tileSize;
-				if ( !Mathf.Approximately(_lastMinDepth, _minDepth  ) ) MinDepth   = _minDepth;
-				if ( !Mathf.Approximately(_lastMaxDepth, _maxDepth  ) ) MaxDepth   = _maxDepth;
+				if ( !Mathf.Approximately(_lastTileSize, _tileSize) ) TileSize = _tileSize;
+				if ( !Mathf.Approximately(_lastMinDepth, _minDepth) ) MinDepth = _minDepth;
+				if ( !Mathf.Approximately(_lastMaxDepth, _maxDepth) ) MaxDepth = _maxDepth;
 			}
 			StepSort();
 		}
