@@ -12,8 +12,6 @@ namespace IsoTools {
 		Vector2 _lastTransform = Vector2.zero;
 		Vector3 _lastPosition  = Vector3.zero;
 		Vector3 _lastSize      = Vector3.zero;
-		bool    _lastSorting   = false;
-		bool    _lastAlignment = false;
 		#endif
 
 		[SerializeField]
@@ -77,28 +75,6 @@ namespace IsoTools {
 		}
 
 		[SerializeField]
-		bool _sorting = true;
-		/// <summary>Auto sorting tile.</summary>
-		public bool Sorting {
-			get { return _sorting; }
-			set {
-				_sorting = value;
-				FixTransform();
-			}
-		}
-
-		[SerializeField]
-		bool _alignment = true;
-		/// <summary>Auto alignment position by isometric tile size.</summary>
-		public bool Alignment {
-			get { return _alignment; }
-			set {
-				_alignment = value;
-				FixTransform();
-			}
-		}
-
-		[SerializeField]
 		/// <summary>Isometric object tile position.</summary>
 		public Vector3 TilePosition {
 			get {
@@ -128,9 +104,6 @@ namespace IsoTools {
 		}
 
 		public void FixTransform() {
-			if ( Application.isEditor && Alignment ) {
-				_position = TilePosition;
-			}
 			Vector3 trans = IsoWorld.IsoToScreen(Position);
 			trans.z = transform.position.z;
 			transform.position = trans;
@@ -149,8 +122,6 @@ namespace IsoTools {
 			_lastTransform = transform.position;
 			_lastPosition = Position;
 			_lastSize = Size;
-			_lastSorting = Sorting;
-			_lastAlignment = Alignment;
 		#endif
 		}
 
@@ -187,10 +158,8 @@ namespace IsoTools {
 				{
 					FixIsoPosition();
 				}
-				if ( _lastPosition  != _position  ) Position  = _position;
-				if ( _lastSize      != _size      ) Size      = _size;
-				if ( _lastSorting   != _sorting   ) Sorting   = _sorting;
-				if ( _lastAlignment != _alignment ) Alignment = _alignment;
+				if ( _lastPosition != _position ) Position = _position;
+				if ( _lastSize     != _size     ) Size     = _size;
 			}
 		}
 		#endif

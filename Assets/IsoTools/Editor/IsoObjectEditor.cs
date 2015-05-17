@@ -26,6 +26,13 @@ namespace IsoTools {
 			}) / _positions.Count;
 		}
 
+		void AlignmentIsoObject(IsoObject iso_object) {
+			if ( IsoAlignmentWindow.Alignment ) {
+				iso_object.Position = iso_object.TilePosition;
+				iso_object.FixTransform();
+			}
+		}
+
 		float ZMoveIsoObjects(float delta) {
 			Undo.RecordObjects(_iso_zpositions.Keys.ToArray(), "Move");
 			return _iso_zpositions.Aggregate(0.0f, (AccIn, pair) => {
@@ -33,6 +40,7 @@ namespace IsoTools {
 				var iso_orig_z = pair.Value;
 				iso_object.PositionZ = iso_orig_z + delta;
 				iso_object.FixTransform();
+				AlignmentIsoObject(iso_object);
 				var z_delta = iso_object.Position.z - iso_orig_z;
 				return Mathf.Abs(z_delta) > Mathf.Abs(AccIn) ? z_delta : AccIn;
 			});
@@ -45,6 +53,7 @@ namespace IsoTools {
 				var iso_orig_p = pair.Value;
 				iso_object.transform.position = iso_orig_p + delta;
 				iso_object.FixIsoPosition();
+				AlignmentIsoObject(iso_object);
 				var pos_delta = iso_object.transform.position - iso_orig_p;
 				return pos_delta.magnitude > AccIn.magnitude ? pos_delta : AccIn;
 			});

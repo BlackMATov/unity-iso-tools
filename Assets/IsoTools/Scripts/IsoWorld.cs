@@ -102,7 +102,7 @@ namespace IsoTools {
 		/// <param name="obj">Isometric object for resorting.</param>
 		// ------------------------------------------------------------------------ 
 		public void MarkDirty(IsoObject obj) {
-			if ( obj && obj.Sorting ) {
+			if ( obj ) {
 				var renderer = obj.GetComponent<Renderer>();
 				if ( renderer && renderer.isVisible ) {
 					MarkDirty();
