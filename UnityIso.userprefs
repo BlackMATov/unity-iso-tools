@@ -1,8 +1,17 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/IsoTools/Scripts/IsoWorld.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="../OtherIso4/Assets/Ultimate Isometric Toolkit/Code/IsometricTools/Other/GameSetup.cs">
     <Files>
-      <File FileName="Assets/IsoTools/Scripts/IsoWorld.cs" Line="1" Column="1" />
+      <File FileName="../OtherIso4/Assets/Ultimate Isometric Toolkit/Code/IsometricTools/IsoController/SimpleIsoObjectController.cs" Line="1" Column="1" />
+      <File FileName="../OtherIso4/Assets/Ultimate Isometric Toolkit/Code/IsometricTools/Iso/Isometric.cs" Line="1" Column="1" />
+      <File FileName="../OtherIso4/Assets/Ultimate Isometric Toolkit/Code/IsometricTools/Iso/IsoObject.cs" Line="1" Column="1" />
+      <File FileName="../OtherIso4/Assets/Ultimate Isometric Toolkit/SetupAndConstraints.txt" Line="1" Column="1" />
+      <File FileName="../OtherIso4/Assets/Ultimate Isometric Toolkit/Code/IsometricTools/Iso/GridMap.cs" Line="1" Column="1" />
+      <File FileName="../OtherIso4/Assets/Ultimate Isometric Toolkit/Code/IsometricTools/Iso/IsoDirection.cs" Line="1" Column="1" />
+      <File FileName="../OtherIso4/Assets/Ultimate Isometric Toolkit/Code/IsometricTools/Iso/Tile.cs" Line="1" Column="1" />
+      <File FileName="../OtherIso4/Assets/Ultimate Isometric Toolkit/Code/IsometricTools/Other/MethodExtensionForMonoBehaviourTransform.cs" Line="1" Column="1" />
+      <File FileName="../OtherIso4/Assets/Ultimate Isometric Toolkit/Code/IsometricTools/Other/LevelLoader.cs" Line="1" Column="1" />
+      <File FileName="../OtherIso4/Assets/Ultimate Isometric Toolkit/Code/IsometricTools/Other/GameSetup.cs" Line="17" Column="42" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

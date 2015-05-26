@@ -50,6 +50,7 @@
      <Compile Include="Assets\IsoTools\Examples\Scripts\IsoAutoController.cs" />
      <Compile Include="Assets\IsoTools\Examples\Scripts\IsoController.cs" />
      <Compile Include="Assets\IsoTools\Scripts\IsoObject.cs" />
+     <Compile Include="Assets\IsoTools\Scripts\IsoRigidbody.cs" />
      <Compile Include="Assets\IsoTools\Scripts\IsoUtils.cs" />
      <Compile Include="Assets\IsoTools\Scripts\IsoWorld.cs" />
  <Reference Include="UnityEngine.UI">

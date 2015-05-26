@@ -83,7 +83,11 @@ namespace IsoTools {
 		}
 
 		void XYMoveRectangle() {
-			Handles.color = IsoUtils.ColorChangeA(Handles.zAxisColor, 0.3f);
+			Handles.color = new Color(
+				Handles.zAxisColor.r,
+				Handles.zAxisColor.g,
+				Handles.zAxisColor.b,
+				0.3f);
 			Handles.DotCap(
 				0,
 				_viewCenter,

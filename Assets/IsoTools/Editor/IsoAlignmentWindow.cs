@@ -24,10 +24,6 @@ namespace IsoTools {
 			window.Show();
 		}
 
-		static IsoAlignmentWindow() {
-			Alignment = true;
-		}
-
 		void OnGUI() {
 			GUILayout.Space(5);
 			Alignment = EditorGUILayout.Toggle("Auto alignment", Alignment);
