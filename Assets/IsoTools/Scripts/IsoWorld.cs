@@ -41,6 +41,8 @@ namespace IsoTools {
 
 		bool             _dirty            = true;
 		float            _lastTileSize     = 0.0f;
+		float            _lastMinDepth     = 0.0f;
+		float            _lastMaxDepth     = 0.0f;
 
 		List<SectorInfo> _sectors          = new List<SectorInfo>();
 		List<ObjectInfo> _objects          = new List<ObjectInfo>();
@@ -60,6 +62,28 @@ namespace IsoTools {
 				ChangeSortingProperty();
 			}
 		}
+
+		[SerializeField]
+		public float _minDepth = 0.0f;
+		/// <summary>Min sorting depth value.</summary>
+		public float MinDepth {
+			get { return _minDepth; }
+			set {
+				_minDepth = value;
+				ChangeSortingProperty();
+			}
+		}
+		
+		[SerializeField]
+		public float _maxDepth = 100.0f;
+		/// <summary>Max sorting depth value.</summary>
+		public float MaxDepth {
+			get { return _maxDepth; }
+			set {
+				_maxDepth = value;
+				ChangeSortingProperty();
+			}
+		}
 		
 		// ------------------------------------------------------------------------
 		/// <summary>
@@ -75,14 +99,11 @@ namespace IsoTools {
 		/// <summary>
 		/// Marks world for resorting.
 		/// </summary>
-		/// <param name="obj">Isometric object for resorting.</param>
+		/// <param name="iso_object">Isometric object for resorting.</param>
 		// ------------------------------------------------------------------------ 
-		public void MarkDirty(IsoObject obj) {
-			if ( obj ) {
-				var renderer = obj.GetComponent<SpriteRenderer>();
-				if ( renderer && renderer.isVisible ) {
-					MarkDirty();
-				}
+		public void MarkDirty(IsoObject iso_object) {
+			if ( iso_object && IsIsoObjectVisible(iso_object) ) {
+				MarkDirty();
 			}
 		}
 		
@@ -127,6 +148,21 @@ namespace IsoTools {
 				iso_z);
 		}
 
+		// ------------------------------------------------------------------------
+		//
+		// Private
+		//
+		// ------------------------------------------------------------------------
+
+		bool IsIsoObjectVisible(IsoObject iso_object) {
+			var renderer = iso_object.GetComponent<Renderer>();
+			if ( renderer && renderer.isVisible ) {
+				return true;
+			}
+			var renderers = iso_object.GetComponentsInChildren<Renderer>();
+			return renderers.Any(r => r.isVisible);
+		}
+
 		void MarkEditorWorldDirty() {
 		#if UNITY_EDITOR
 			if ( Application.isEditor ) {
@@ -150,6 +186,8 @@ namespace IsoTools {
 			MarkDirty();
 			FixAllTransforms();
 			_lastTileSize = TileSize;
+			_lastMinDepth = MinDepth;
+			_lastMaxDepth = MaxDepth;
 		}
 
 		int SectorIndex(Vector3 num_pos) {
@@ -211,32 +249,16 @@ namespace IsoTools {
 			var a_yesno = a_max.x > b_min.x && a_max.y > b_min.y && b_max.z > a_min.z;
 			var b_yesno = b_max.x > a_min.x && b_max.y > a_min.y && a_max.z > b_min.z;
 			if ( a_yesno && b_yesno ) {
-				var da_p = new Vector3(a_max.x - b_min.x, a_max.y - b_min.y, a_max.z - b_min.z);
-				var db_p = new Vector3(b_max.x - a_min.x, b_max.y - a_min.y, b_max.z - a_min.z);
-				var dd_p = IsoUtils.Vec3Abs(da_p - db_p);
-
-				Debug.LogFormat("CoefDB: {0}:::{1}:::{2}", dd_p.x, dd_p.y, dd_p.z);
-				Debug.LogFormat("----------------------------");
-
-				if ( dd_p.z > dd_p.x || dd_p.z > dd_p.y ) {
-					Debug.Log("by z");
-					return da_p.z < db_p.z;
-				} else if ( dd_p.x > dd_p.y && dd_p.x > dd_p.z ) {
-					Debug.Log("by x");
+				var da_p = new Vector3(a_max.x - b_min.x, a_max.y - b_min.y, b_max.z - a_min.z);
+				var db_p = new Vector3(b_max.x - a_min.x, b_max.y - a_min.y, a_max.z - b_min.z);
+				var dp_p = a_size + b_size - IsoUtils.Vec3Abs(da_p - db_p);
+				if ( dp_p.x <= dp_p.y && dp_p.x <= dp_p.z ) {
 					return da_p.x > db_p.x;
-				} else if ( dd_p.y > dd_p.x && dd_p.y > dd_p.z) {
-					Debug.Log("by y");
-					return da_p.y > db_p.y;
-				}
-
-				/*
-				if ( dd_p.x < dd_p.y ) {
-					Debug.Log("by y");
+				} else if ( dp_p.y <= dp_p.x && dp_p.y <= dp_p.z ) {
 					return da_p.y > db_p.y;
 				} else {
-					Debug.Log("by x");
-					return da_p.x > db_p.x;
-				}*/
+					return da_p.z > db_p.z;
+				}
 			}
 			return a_yesno;
 		}
@@ -245,8 +267,7 @@ namespace IsoTools {
 			_objsSectorSize = 0.0f;
 			var objsSum = 0;
 			foreach ( var obj in iso_objects ) {
-				var renderer = obj.GetComponent<SpriteRenderer>();
-				if ( renderer && renderer.isVisible ) {
+				if ( IsIsoObjectVisible(obj) ) {
 					++objsSum;
 					_objsSectorSize += Mathf.Max(obj.Size.x, obj.Size.y, obj.Size.z);
 				}
@@ -259,8 +280,7 @@ namespace IsoTools {
 			_objsMinNumPos = Vector3.zero;
 			_objsMaxNumPos = Vector3.one;
 			foreach ( var obj in iso_objects ) {
-				var renderer = obj.GetComponent<SpriteRenderer>();
-				if ( renderer && renderer.isVisible ) {
+				if ( IsIsoObjectVisible(obj) ) {
 					var max_size = IsoUtils.Vec3Max(Vector3.one, obj.Size);
 					var min_npos = IsoUtils.Vec3DivFloor(obj.Position, _objsSectorSize);
 					var max_npos = IsoUtils.Vec3DivCeil(obj.Position + max_size, _objsSectorSize);
@@ -310,7 +330,7 @@ namespace IsoTools {
 		}
 
 		void PlaceAllObjects() {
-			var depth = 0;
+			var depth = MinDepth;
 			foreach ( var info in _objects ) {
 				depth = PlaceObject(info, depth);
 			}
@@ -319,16 +339,12 @@ namespace IsoTools {
 			_depends.Clear();
 		}
 		
-		void PlaceObject(IsoObject obj, int depth) {
-			//var trans = obj.gameObject.transform;
-			//trans.position = new Vector3(trans.position.x, trans.position.y, depth);
-			var renderer = obj.GetComponent<SpriteRenderer>();
-			if ( renderer ) {
-				renderer.sortingOrder = depth;
-			}
+		void PlaceObject(IsoObject obj, float depth) {
+			var trans = obj.gameObject.transform;
+			trans.position = IsoUtils.Vec3ChangeZ(trans.position, depth);
 		}
 		
-		int PlaceObject(ObjectInfo info, int depth) {
+		float PlaceObject(ObjectInfo info, float depth) {
 			if ( info.Visited ) {
 				return depth;
 			}
@@ -339,7 +355,7 @@ namespace IsoTools {
 				depth = PlaceObject(obj, depth);
 			}
 			PlaceObject(info.IsoObject, depth);
-			return depth - 1;
+			return depth + (MaxDepth - MinDepth) / _objects.Count;
 		}
 
 		void StepSort() {
@@ -362,6 +378,8 @@ namespace IsoTools {
 		void LateUpdate() {
 			if ( Application.isEditor ) {
 				if ( !Mathf.Approximately(_lastTileSize, _tileSize) ) TileSize = _tileSize;
+				if ( !Mathf.Approximately(_lastMinDepth, _minDepth) ) MinDepth = _minDepth;
+				if ( !Mathf.Approximately(_lastMaxDepth, _maxDepth) ) MaxDepth = _maxDepth;
 			}
 			StepSort();
 		}

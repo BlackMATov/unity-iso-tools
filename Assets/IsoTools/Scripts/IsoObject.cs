@@ -6,18 +6,74 @@ using UnityEditor;
 
 namespace IsoTools {
 	[ExecuteInEditMode]
-	[RequireComponent(typeof(SpriteRenderer))]
 	public class IsoObject : MonoBehaviour {
 
 		#if UNITY_EDITOR
-		Vector2 _lastTransform = Vector2.zero;
-		Vector3 _lastPosition  = Vector3.zero;
 		Vector3 _lastSize      = Vector3.zero;
+		Vector3 _lastPosition  = Vector3.zero;
+		Vector2 _lastTransform = Vector2.zero;
 		#endif
+
+		// ------------------------------------------------------------------------
+		//
+		// Size
+		//
+		// ------------------------------------------------------------------------
+
+		[SerializeField]
+		Vector3 _size = Vector3.one;
+		
+		/// <summary>Isometric object size.</summary>
+		public Vector3 Size {
+			get { return _size; }
+			set {
+				_size = IsoUtils.Vec3Max(value, Vector3.zero);
+				FixTransform();
+			}
+		}
+		
+		/// <summary>Isometric object size X.</summary>
+		public float SizeX {
+			get { return Size.x; }
+			set { Size = IsoUtils.Vec3ChangeX(Size, value); }
+		}
+		
+		/// <summary>Isometric object size Y.</summary>
+		public float SizeY {
+			get { return Size.y; }
+			set { Size = IsoUtils.Vec3ChangeY(Size, value); }
+		}
+		
+		/// <summary>Isometric object size Z.</summary>
+		public float SizeZ {
+			get { return Size.z; }
+			set { Size = IsoUtils.Vec3ChangeZ(Size, value); }
+		}
+		
+		/// <summary>Isometric object size XY.</summary>
+		public Vector2 SizeXY {
+			get { return new Vector2(SizeX, SizeY); }
+		}
+		
+		/// <summary>Isometric object size YZ.</summary>
+		public Vector2 SizeYZ {
+			get { return new Vector2(SizeY, SizeZ); }
+		}
+		
+		/// <summary>Isometric object size XZ.</summary>
+		public Vector2 SizeXZ {
+			get { return new Vector2(SizeX, SizeZ); }
+		}
+
+		// ------------------------------------------------------------------------
+		//
+		// Position
+		//
+		// ------------------------------------------------------------------------
 
 		[SerializeField]
 		Vector3 _position = Vector3.zero;
-
+		
 		/// <summary>Isometric object position.</summary>
 		public Vector3 Position {
 			get { return _position; }
@@ -26,7 +82,7 @@ namespace IsoTools {
 				FixTransform();
 			}
 		}
-
+		
 		/// <summary>Isometric object position X.</summary>
 		public float PositionX {
 			get { return Position.x; }
@@ -44,66 +100,27 @@ namespace IsoTools {
 			get { return Position.z; }
 			set { Position = IsoUtils.Vec3ChangeZ(Position, value); }
 		}
-
+		
 		/// <summary>Isometric object position XY.</summary>
 		public Vector2 PositionXY {
 			get { return new Vector2(PositionX, PositionY); }
 		}
-
+		
 		/// <summary>Isometric object position YZ.</summary>
 		public Vector2 PositionYZ {
 			get { return new Vector2(PositionY, PositionZ); }
 		}
-
+		
 		/// <summary>Isometric object position XZ.</summary>
 		public Vector2 PositionXZ {
 			get { return new Vector2(PositionX, PositionZ); }
 		}
 
-		[SerializeField]
-		Vector3 _size = Vector3.one;
-
-		/// <summary>Isometric object size.</summary>
-		public Vector3 Size {
-			get { return _size; }
-			set {
-				_size = IsoUtils.Vec3Max(value, Vector3.zero);
-				FixTransform();
-			}
-		}
-
-		/// <summary>Isometric object size X.</summary>
-		public float SizeX {
-			get { return Size.x; }
-			set { Size = IsoUtils.Vec3ChangeX(Size, value); }
-		}
-
-		/// <summary>Isometric object size Y.</summary>
-		public float SizeY {
-			get { return Size.y; }
-			set { Size = IsoUtils.Vec3ChangeY(Size, value); }
-		}
-
-		/// <summary>Isometric object size Z.</summary>
-		public float SizeZ {
-			get { return Size.z; }
-			set { Size = IsoUtils.Vec3ChangeZ(Size, value); }
-		}
-
-		/// <summary>Isometric object size XY.</summary>
-		public Vector2 SizeXY {
-			get { return new Vector2(SizeX, SizeY); }
-		}
-
-		/// <summary>Isometric object size YZ.</summary>
-		public Vector2 SizeYZ {
-			get { return new Vector2(SizeY, SizeZ); }
-		}
-
-		/// <summary>Isometric object size XZ.</summary>
-		public Vector2 SizeXZ {
-			get { return new Vector2(SizeX, SizeZ); }
-		}
+		// ------------------------------------------------------------------------
+		//
+		// TilePosition
+		//
+		// ------------------------------------------------------------------------
 
 		/// <summary>Isometric object tile position.</summary>
 		public Vector3 TilePosition {
@@ -144,6 +161,12 @@ namespace IsoTools {
 			get { return new Vector2(TilePositionX, TilePositionZ); }
 		}
 
+		// ------------------------------------------------------------------------
+		//
+		// Functions
+		//
+		// ------------------------------------------------------------------------
+
 		IsoWorld _iso_world = null;
 		public IsoWorld IsoWorld {
 			get {
@@ -178,9 +201,9 @@ namespace IsoTools {
 
 		void FixLastProperties() {
 		#if UNITY_EDITOR
-			_lastTransform = transform.position;
-			_lastPosition  = Position;
 			_lastSize      = Size;
+			_lastPosition  = Position;
+			_lastTransform = transform.position;
 		#endif
 		}
 

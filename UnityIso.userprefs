@@ -1,17 +1,10 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="../OtherIso4/Assets/Ultimate Isometric Toolkit/Code/IsometricTools/Other/GameSetup.cs">
+  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/IsoTools/Scripts/IsoWorld.cs">
     <Files>
-      <File FileName="../OtherIso4/Assets/Ultimate Isometric Toolkit/Code/IsometricTools/IsoController/SimpleIsoObjectController.cs" Line="1" Column="1" />
-      <File FileName="../OtherIso4/Assets/Ultimate Isometric Toolkit/Code/IsometricTools/Iso/Isometric.cs" Line="1" Column="1" />
-      <File FileName="../OtherIso4/Assets/Ultimate Isometric Toolkit/Code/IsometricTools/Iso/IsoObject.cs" Line="1" Column="1" />
-      <File FileName="../OtherIso4/Assets/Ultimate Isometric Toolkit/SetupAndConstraints.txt" Line="1" Column="1" />
-      <File FileName="../OtherIso4/Assets/Ultimate Isometric Toolkit/Code/IsometricTools/Iso/GridMap.cs" Line="1" Column="1" />
-      <File FileName="../OtherIso4/Assets/Ultimate Isometric Toolkit/Code/IsometricTools/Iso/IsoDirection.cs" Line="1" Column="1" />
-      <File FileName="../OtherIso4/Assets/Ultimate Isometric Toolkit/Code/IsometricTools/Iso/Tile.cs" Line="1" Column="1" />
-      <File FileName="../OtherIso4/Assets/Ultimate Isometric Toolkit/Code/IsometricTools/Other/MethodExtensionForMonoBehaviourTransform.cs" Line="1" Column="1" />
-      <File FileName="../OtherIso4/Assets/Ultimate Isometric Toolkit/Code/IsometricTools/Other/LevelLoader.cs" Line="1" Column="1" />
-      <File FileName="../OtherIso4/Assets/Ultimate Isometric Toolkit/Code/IsometricTools/Other/GameSetup.cs" Line="17" Column="42" />
+      <File FileName="Assets/IsoTools/Scripts/IsoObject.cs" Line="242" Column="56" />
+      <File FileName="Assets/IsoTools/Scripts/IsoWorld.cs" Line="266" Column="24" />
+      <File FileName="Assets/IsoTools/Editor/IsoObjectEditor.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
