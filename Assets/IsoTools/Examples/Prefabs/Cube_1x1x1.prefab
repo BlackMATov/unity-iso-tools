@@ -10,7 +10,6 @@ GameObject:
   - 4: {fileID: 417528}
   - 212: {fileID: 21217528}
   - 114: {fileID: 11417528}
-  - 114: {fileID: 11422542}
   m_Layer: 0
   m_Name: Cube_1x1x1
   m_TagString: Untagged
@@ -41,22 +40,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a9c584f9a39449438abc7ba59a68778, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _position: {x: 0, y: 0, z: 0}
   _size: {x: 1, y: 1, z: 1}
---- !u!114 &11422542
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 117528}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6f23cf97dc1d49d89a2556193c4f2e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  IsStatic: 0
-  IsTrigger: 0
-  PhysicMaterial: {fileID: 13400000, guid: 867b8c31d245f45d482bfe52123a0c6d, type: 2}
+  _position: {x: 0, y: 0, z: 0}
 --- !u!212 &21217528
 SpriteRenderer:
   m_ObjectHideFlags: 1
