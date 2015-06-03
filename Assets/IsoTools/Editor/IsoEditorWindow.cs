@@ -8,6 +8,9 @@ namespace IsoTools {
 		public static bool Alignment  { get; private set; }
 		public static bool ShowBounds { get; private set; }
 
+		static string _alignmentPropName  = "IsoTools.IsoEditorWindow.Alignment";
+		static string _showBoundsPropName = "IsoTools.IsoEditorWindow.ShowBounds";
+
 		void AlignmentSelection() {
 			var iso_objects = Selection.gameObjects
 				.Where(p => p.GetComponent<IsoObject>())
@@ -32,6 +35,25 @@ namespace IsoTools {
 			if ( GUILayout.Button("Alignment selection objects") || Alignment ) {
 				AlignmentSelection();
 			}
+		}
+
+		void OnFocus() {
+			if ( EditorPrefs.HasKey(_alignmentPropName) ) {
+				Alignment = EditorPrefs.GetBool(_alignmentPropName);
+			}
+			if ( EditorPrefs.HasKey(_showBoundsPropName) ) {
+				ShowBounds = EditorPrefs.GetBool(_showBoundsPropName);
+			}
+		}
+
+		void OnLostFocus() {
+			EditorPrefs.SetBool(_alignmentPropName, Alignment);
+			EditorPrefs.SetBool(_showBoundsPropName, ShowBounds);
+		}
+
+		void OnDestroy() {
+			EditorPrefs.SetBool(_alignmentPropName, Alignment);
+			EditorPrefs.SetBool(_showBoundsPropName, ShowBounds);
 		}
 	}
 }
