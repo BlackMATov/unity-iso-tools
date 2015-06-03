@@ -23,28 +23,6 @@ namespace IsoTools {
 
 		// ------------------------------------------------------------------------
 		//
-		// Swap
-		//
-		// ------------------------------------------------------------------------
-
-		public static Vector2 Vec2SwapXY(Vector2 v) {
-			return new Vector2(v.y, v.x);
-		}
-		
-		public static Vector3 Vec3SwapXY(Vector3 v) {
-			return new Vector3(v.y, v.x, v.z);
-		}
-		
-		public static Vector3 Vec3SwapYZ(Vector3 v) {
-			return new Vector3(v.x, v.z, v.y);
-		}
-		
-		public static Vector3 Vec3SwapXZ(Vector3 v) {
-			return new Vector3(v.z, v.y, v.x);
-		}
-
-		// ------------------------------------------------------------------------
-		//
 		// Abs/Min/Max
 		//
 		// ------------------------------------------------------------------------

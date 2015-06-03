@@ -14,42 +14,88 @@ namespace IsoTools {
 		public CollisionDetectionMode CollisionMode  = CollisionDetectionMode.Discrete;
 		public PhysicMaterial         PhysicMaterial = null;
 
-		IsoObject   _iso_object   = null;
-		GameObject  _fake_object  = null;
-		Rigidbody   _rigid_body   = null;
-		BoxCollider _box_collider = null;
+		IsoObject  _isoObject    = null;
+		GameObject _fakeObject   = null;
+		Vector3    _lastPosition = Vector3.zero;
+
+		public IsoObject IsoObject {
+			get {
+				if ( !_isoObject ) {
+					_isoObject = GetComponent<IsoObject>();
+				}
+				if ( !_isoObject ) {
+					throw new UnityException("IsoRigidbody. IsoObject not found!");
+				}
+				return _isoObject;
+			}
+		}
+
+		public GameObject FakeGameObject {
+			get { return _fakeObject; }
+		}
 
 		public Rigidbody Rigidbody {
-			get { return _rigid_body; }
+			get { return FakeGameObject.GetComponent<Rigidbody>(); }
+		}
+
+		void AddBoxCollider() {
+			var collider       = FakeGameObject.AddComponent<BoxCollider>();
+			collider.center    = IsoObject.Size / 2.0f;
+			collider.size      = IsoObject.Size;
+			collider.isTrigger = IsTrigger;
+			collider.material  = PhysicMaterial;
+		}
+
+		void AddHelperSphere(Vector3 pos, float radius) {
+			var collider       = FakeGameObject.AddComponent<SphereCollider>();
+			collider.center    = pos;
+			collider.radius    = radius;
+			collider.isTrigger = IsTrigger;
+			collider.material  = PhysicMaterial;
+		}
+
+		void AddHelperSpheres() {
+			var radius = 0.1f;
+			var rdelta = radius * 0.1f;
+			var size = IsoObject.Size;
+			if ( size.x > radius && size.y > radius && size.z > radius ) {
+				AddHelperSphere(new Vector3(radius - rdelta         , radius - rdelta         , radius - rdelta         ), radius);
+				AddHelperSphere(new Vector3(size.x - radius + rdelta, radius - rdelta         , radius - rdelta         ), radius);
+				AddHelperSphere(new Vector3(radius - rdelta         , size.y - radius + rdelta, radius - rdelta         ), radius);
+				AddHelperSphere(new Vector3(size.x - radius + rdelta, size.y - radius + rdelta, radius - rdelta         ), radius);
+				AddHelperSphere(new Vector3(radius - rdelta         , radius - rdelta         , size.z - radius + rdelta), radius);
+				AddHelperSphere(new Vector3(size.x - radius + rdelta, radius - rdelta         , size.z - radius + rdelta), radius);
+				AddHelperSphere(new Vector3(radius - rdelta         , size.y - radius + rdelta, size.z - radius + rdelta), radius);
+				AddHelperSphere(new Vector3(size.x - radius + rdelta, size.y - radius + rdelta, size.z - radius + rdelta), radius);
+			}
 		}
 
 		void Awake() {
-			_iso_object = GetComponent<IsoObject>();
-			if ( !_iso_object ) {
-				throw new UnityException("IsoRigidbody. IsoObject not found!");
-			}
-			_fake_object                       = new GameObject();
-			_fake_object.name                  = "_Fake" + gameObject.name;
+			_fakeObject                       = new GameObject();
+			FakeGameObject.name               = "_Fake" + gameObject.name;
+			FakeGameObject.hideFlags          = HideFlags.HideInHierarchy;
 
-			_rigid_body                        = _fake_object.AddComponent<Rigidbody>();
-			_rigid_body.freezeRotation         = true;
-			_rigid_body.isKinematic            = IsKinematic;
-			_rigid_body.interpolation          = Interpolation;
-			_rigid_body.collisionDetectionMode = CollisionMode;
+			var rigidbody                     = FakeGameObject.AddComponent<Rigidbody>();
+			rigidbody.freezeRotation          = true;
+			rigidbody.isKinematic             = IsKinematic;
+			rigidbody.interpolation           = Interpolation;
+			rigidbody.collisionDetectionMode  = CollisionMode;
 
-			_box_collider                      = _fake_object.AddComponent<BoxCollider>();
-			_box_collider.center               = IsoUtils.Vec3SwapYZ(_iso_object.Size / 2.0f);
-			_box_collider.size                 = IsoUtils.Vec3SwapYZ(_iso_object.Size);
-			_box_collider.isTrigger            = IsTrigger;
-			_box_collider.material             = PhysicMaterial;
+			AddBoxCollider();
+			AddHelperSpheres();
 
-			_fake_object.transform.position    = IsoUtils.Vec3SwapYZ(_iso_object.Position);
+			_lastPosition                     = IsoObject.Position;
+			FakeGameObject.transform.position = IsoObject.Position;
 		}
 
 		void FixedUpdate() {
-			if ( _iso_object ) {
-				_iso_object.Position = IsoUtils.Vec3SwapYZ(_fake_object.transform.position);
+			var fake_transform = FakeGameObject.transform;
+			if ( !IsoUtils.Vec3Approximately(_lastPosition, IsoObject.Position) ) {
+				fake_transform.position = IsoObject.Position;
+			} else {
+				IsoObject.Position = fake_transform.position;
 			}
+			_lastPosition = IsoObject.Position;
 		}
 	}
 } // namespace IsoTools

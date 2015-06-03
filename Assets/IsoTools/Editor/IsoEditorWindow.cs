@@ -3,9 +3,10 @@ using UnityEditor;
 using System.Linq;
 
 namespace IsoTools {
-	public class IsoAlignmentWindow : EditorWindow {
+	public class IsoEditorWindow : EditorWindow {
 
-		public static bool Alignment { get; private set; }
+		public static bool Alignment  { get; private set; }
+		public static bool ShowBounds { get; private set; }
 
 		void AlignmentSelection() {
 			var iso_objects = Selection.gameObjects
@@ -17,15 +18,16 @@ namespace IsoTools {
 			}
 		}
 
-		[MenuItem("IsoTools/Alignment")]
+		[MenuItem("IsoTools/IsoEditor")]
 		static void Init() {
-			var window = EditorWindow.GetWindow<IsoAlignmentWindow>();
-			window.title = "IsoAlignment";
+			var window = EditorWindow.GetWindow<IsoEditorWindow>();
+			window.title = "IsoEditor";
 			window.Show();
 		}
 
 		void OnGUI() {
 			GUILayout.Space(5);
+			ShowBounds = EditorGUILayout.Toggle("Show bounds", ShowBounds);
 			Alignment = EditorGUILayout.Toggle("Auto alignment", Alignment);
 			if ( GUILayout.Button("Alignment selection objects") || Alignment ) {
 				AlignmentSelection();

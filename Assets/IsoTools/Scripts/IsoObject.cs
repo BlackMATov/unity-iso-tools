@@ -167,21 +167,21 @@ namespace IsoTools {
 		//
 		// ------------------------------------------------------------------------
 
-		IsoWorld _iso_world = null;
+		IsoWorld _isoWorld = null;
 		public IsoWorld IsoWorld {
 			get {
-				if ( !_iso_world ) {
-					_iso_world = GameObject.FindObjectOfType<IsoWorld>();
+				if ( !_isoWorld ) {
+					_isoWorld = GameObject.FindObjectOfType<IsoWorld>();
 				}
-				if ( !_iso_world ) {
+				if ( !_isoWorld ) {
 					throw new UnityException("IsoObject. IsoWorld not found!");
 				}
-				return _iso_world;
+				return _isoWorld;
 			}
 		}
 
 		public void ResetIsoWorld() {
-			_iso_world = null;
+			_isoWorld = null;
 		}
 
 		public void FixTransform() {
@@ -228,6 +228,7 @@ namespace IsoTools {
 			MartDirtyIsoWorld();
 		}
 
+		//TODO: now working for child sprites
 		void OnBecameVisible() {
 			MartDirtyIsoWorld();
 		}
@@ -238,8 +239,12 @@ namespace IsoTools {
 				if ( !IsoUtils.Vec2Approximately(_lastTransform, transform.position) ) {
 					FixIsoPosition();
 				}
-				if ( _lastPosition != _position ) Position = _position;
-				if ( _lastSize     != _size     ) Size     = _size;
+				if ( !IsoUtils.Vec3Approximately(_lastPosition, _position) ) {
+					Position = _position;
+				}
+				if ( !IsoUtils.Vec3Approximately(_lastSize, _size) ) {
+					Size = _size;
+				}
 			}
 		}
 		#endif
