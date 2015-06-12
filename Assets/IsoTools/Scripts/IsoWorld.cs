@@ -39,18 +39,19 @@ namespace IsoTools {
 			public List<int> Objects = new List<int>();
 		}
 
-		bool             _dirty            = true;
-		float            _lastTileSize     = 0.0f;
-		float            _lastMinDepth     = 0.0f;
-		float            _lastMaxDepth     = 0.0f;
+		bool               _dirty           = true;
+		float              _lastTileSize    = 0.0f;
+		float              _lastMinDepth    = 0.0f;
+		float              _lastMaxDepth    = 0.0f;
 
-		List<SectorInfo> _sectors          = new List<SectorInfo>();
-		List<ObjectInfo> _objects          = new List<ObjectInfo>();
-		List<int>        _depends          = new List<int>();
-		float            _objsSectorSize   = 0.0f;
-		Vector3          _objsMinNumPos    = Vector3.zero;
-		Vector3          _objsMaxNumPos    = Vector3.zero;
-		Vector3          _objsNumPosCount  = Vector3.zero;
+		List<SectorInfo>   _sectors         = new List<SectorInfo>();
+		List<ObjectInfo>   _objects         = new List<ObjectInfo>();
+		List<int>          _depends         = new List<int>();
+		HashSet<IsoObject> _visibles        = new HashSet<IsoObject>();
+		float              _objsSectorSize  = 0.0f;
+		Vector3            _objsMinNumPos   = Vector3.zero;
+		Vector3            _objsMaxNumPos   = Vector3.zero;
+		Vector3            _objsNumPosCount = Vector3.zero;
 
 		[SerializeField]
 		public float _tileSize = 32.0f;
@@ -263,31 +264,36 @@ namespace IsoTools {
 			return a_yesno;
 		}
 
-		void SetupSectorSize(IsoObject[] iso_objects) {
+		void SetupVisibles(IsoObject[] iso_objects) {
+			var new_visibles = new HashSet<IsoObject>(
+				iso_objects.Where(p => IsIsoObjectVisible(p)));
+			if ( !_visibles.IsSupersetOf(new_visibles) ) {
+				MarkDirty();
+			}
+			_visibles = new_visibles;
+		}
+
+		void SetupSectorSize() {
 			_objsSectorSize = 0.0f;
 			var objsSum = 0;
-			foreach ( var obj in iso_objects ) {
-				if ( IsIsoObjectVisible(obj) ) {
-					++objsSum;
-					_objsSectorSize += Mathf.Max(obj.Size.x, obj.Size.y, obj.Size.z);
-				}
+			foreach ( var obj in _visibles ) {
+				++objsSum;
+				_objsSectorSize += Mathf.Max(obj.Size.x, obj.Size.y, obj.Size.z);
 			}
 			_objsSectorSize = Mathf.Round(Mathf.Max(3.0f, _objsSectorSize / objsSum));
 		}
 
-		void SetupObjects(IsoObject[] iso_objects) {
+		void SetupObjects() {
 			_objects.Clear();
 			_objsMinNumPos = Vector3.zero;
 			_objsMaxNumPos = Vector3.one;
-			foreach ( var obj in iso_objects ) {
-				if ( IsIsoObjectVisible(obj) ) {
-					var max_size = IsoUtils.Vec3Max(Vector3.one, obj.Size);
-					var min_npos = IsoUtils.Vec3DivFloor(obj.Position, _objsSectorSize);
-					var max_npos = IsoUtils.Vec3DivCeil(obj.Position + max_size, _objsSectorSize);
-					_objsMinNumPos = IsoUtils.Vec3Min(_objsMinNumPos, min_npos);
-					_objsMaxNumPos = IsoUtils.Vec3Max(_objsMaxNumPos, max_npos);
-					_objects.Add(new ObjectInfo(_objects.Count, obj, min_npos, max_npos));
-				}
+			foreach ( var obj in _visibles ) {
+				var max_size = IsoUtils.Vec3Max(Vector3.one, obj.Size);
+				var min_npos = IsoUtils.Vec3DivFloor(obj.Position, _objsSectorSize);
+				var max_npos = IsoUtils.Vec3DivCeil(obj.Position + max_size, _objsSectorSize);
+				_objsMinNumPos = IsoUtils.Vec3Min(_objsMinNumPos, min_npos);
+				_objsMaxNumPos = IsoUtils.Vec3Max(_objsMaxNumPos, max_npos);
+				_objects.Add(new ObjectInfo(_objects.Count, obj, min_npos, max_npos));
 			}
 			_objsNumPosCount = _objsMaxNumPos - _objsMinNumPos;
 		}
@@ -359,10 +365,11 @@ namespace IsoTools {
 		}
 
 		void StepSort() {
+			var iso_objects = GameObject.FindObjectsOfType<IsoObject>();
+			SetupVisibles(iso_objects);
 			if ( _dirty ) {
-				var iso_objects = GameObject.FindObjectsOfType<IsoObject>();
-				SetupSectorSize(iso_objects);
-				SetupObjects(iso_objects);
+				SetupSectorSize();
+				SetupObjects();
 				SetupSectors();
 				SetupObjectDepends();
 				PlaceAllObjects();

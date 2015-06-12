@@ -73,7 +73,7 @@ namespace IsoTools {
 		void Awake() {
 			_fakeObject                       = new GameObject();
 			FakeGameObject.name               = "_Fake" + gameObject.name;
-			FakeGameObject.hideFlags          = HideFlags.HideInHierarchy;
+			//FakeGameObject.hideFlags          = HideFlags.HideInHierarchy;
 
 			var rigidbody                     = FakeGameObject.AddComponent<Rigidbody>();
 			rigidbody.freezeRotation          = true;
@@ -82,7 +82,7 @@ namespace IsoTools {
 			rigidbody.collisionDetectionMode  = CollisionMode;
 
 			AddBoxCollider();
-			AddHelperSpheres();
+			//AddHelperSpheres();
 
 			_lastPosition                     = IsoObject.Position;
 			FakeGameObject.transform.position = IsoObject.Position;

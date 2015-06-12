@@ -26,21 +26,33 @@ namespace IsoTools {
 			}) / _positions.Count;
 		}
 
-		void AlignmentIsoObject(IsoObject iso_object) {
-			if ( IsoEditorWindow.Alignment ) {
-				iso_object.Position = iso_object.TilePosition;
-				iso_object.FixTransform();
+		bool IsAnyAlignment {
+			get { return _positions.Keys.Any(p => p.Alignment); }
+		}
+
+		void AlignmentSelection() {
+			foreach ( var iso_object in _positions.Keys ) {
+				AlignmentIsoObject(iso_object);
 			}
+			GrabPositions();
+		}
+
+		void AlignmentIsoObject(IsoObject iso_object) {
+			iso_object.Position = iso_object.TilePosition;
+			iso_object.FixTransform();
 		}
 
 		float ZMoveIsoObjects(float delta) {
 			Undo.RecordObjects(_iso_zpositions.Keys.ToArray(), "Move");
+			var is_any_alignment = IsAnyAlignment;
 			return _iso_zpositions.Aggregate(0.0f, (AccIn, pair) => {
 				var iso_object = pair.Key;
 				var iso_orig_z = pair.Value;
 				iso_object.PositionZ = iso_orig_z + delta;
 				iso_object.FixTransform();
-				AlignmentIsoObject(iso_object);
+				if ( is_any_alignment ) {
+					AlignmentIsoObject(iso_object);
+				}
 				var z_delta = iso_object.Position.z - iso_orig_z;
 				return Mathf.Abs(z_delta) > Mathf.Abs(AccIn) ? z_delta : AccIn;
 			});
@@ -48,12 +60,15 @@ namespace IsoTools {
 
 		Vector3 XYMoveIsoObjects(Vector3 delta) {
 			Undo.RecordObjects(_positions.Keys.ToArray(), "Move");
+			var is_any_alignment = IsAnyAlignment;
 			return _positions.Aggregate(Vector3.zero, (AccIn, pair) => {
 				var iso_object = pair.Key;
 				var iso_orig_p = pair.Value;
 				iso_object.transform.position = iso_orig_p + delta;
 				iso_object.FixIsoPosition();
-				AlignmentIsoObject(iso_object);
+				if ( is_any_alignment ) {
+					AlignmentIsoObject(iso_object);
+				}
 				var pos_delta = iso_object.transform.position - iso_orig_p;
 				return pos_delta.magnitude > AccIn.magnitude ? pos_delta : AccIn;
 			});
@@ -111,47 +126,6 @@ namespace IsoTools {
 			}
 		}
 
-		void DrawTop(Vector3 pos, Vector3 size) {
-			var iso_world = GameObject.FindObjectOfType<IsoWorld>();
-			if ( iso_world ) {
-				var points = new Vector3[]{
-					iso_world.IsoToScreen(pos),
-					iso_world.IsoToScreen(pos + IsoUtils.Vec3FromX(size.x)),
-					iso_world.IsoToScreen(pos + IsoUtils.Vec3FromXY(size.x, size.y)),
-					iso_world.IsoToScreen(pos + IsoUtils.Vec3FromY(size.y)),
-					iso_world.IsoToScreen(pos)
-				};
-				Handles.DrawPolyLine(points);
-			}
-		}
-		
-		void DrawVert(Vector3 pos, Vector3 size) {
-			var iso_world = GameObject.FindObjectOfType<IsoWorld>();
-			if ( iso_world ) {
-				Handles.DrawLine(
-					iso_world.IsoToScreen(pos),
-					iso_world.IsoToScreen(pos + IsoUtils.Vec3FromZ(size.z)));
-			}
-		}
-		
-		void DrawCube(Vector3 pos, Vector3 size) {
-			Handles.color = Color.green;
-			DrawTop (pos - IsoUtils.Vec3FromZ(0.5f), size);
-			DrawTop (pos + IsoUtils.Vec3FromZ(size.z - 0.5f), size);
-			DrawVert(pos - IsoUtils.Vec3FromZ(0.5f), size);
-			DrawVert(pos - IsoUtils.Vec3FromZ(0.5f) + IsoUtils.Vec3FromX(size.x), size);
-			DrawVert(pos - IsoUtils.Vec3FromZ(0.5f) + IsoUtils.Vec3FromY(size.y), size);
-		}
-
-		void DrawTargetBounds() {
-			if ( IsoEditorWindow.ShowBounds ) {
-				var iso_object = target as IsoObject;
-				if ( iso_object ) {
-					DrawCube(iso_object.Position, iso_object.Size);
-				}
-			}
-		}
-
 		void OnEnable() {
 			GrabPositions();
 		}
@@ -170,12 +144,14 @@ namespace IsoTools {
 			} else {
 				Tools.hidden = false;
 			}
-			DrawTargetBounds();
 		}
 
 		public override void OnInspectorGUI() {
 			DrawDefaultInspector();
 			GrabPositions();
+			if ( GUILayout.Button("Alignment selection") ) {
+				AlignmentSelection();
+			}
 		}
 	}
 } // namespace IsoTools

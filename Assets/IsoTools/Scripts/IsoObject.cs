@@ -8,12 +8,6 @@ namespace IsoTools {
 	[ExecuteInEditMode]
 	public class IsoObject : MonoBehaviour {
 
-		#if UNITY_EDITOR
-		Vector3 _lastSize      = Vector3.zero;
-		Vector3 _lastPosition  = Vector3.zero;
-		Vector2 _lastTransform = Vector2.zero;
-		#endif
-
 		// ------------------------------------------------------------------------
 		//
 		// Size
@@ -163,6 +157,29 @@ namespace IsoTools {
 
 		// ------------------------------------------------------------------------
 		//
+		// For editor
+		//
+		// ------------------------------------------------------------------------
+
+		#if UNITY_EDITOR
+		Vector3 _lastSize      = Vector3.zero;
+		Vector3 _lastPosition  = Vector3.zero;
+		Vector2 _lastTransform = Vector2.zero;
+
+		[SerializeField] bool _alignment  = true;
+		[SerializeField] bool _showBounds = false;
+
+		public bool Alignment {
+			get { return _alignment; }
+		}
+
+		public bool ShowBounds {
+			get { return _showBounds; }
+		}
+		#endif
+
+		// ------------------------------------------------------------------------
+		//
 		// Functions
 		//
 		// ------------------------------------------------------------------------
@@ -185,6 +202,11 @@ namespace IsoTools {
 		}
 
 		public void FixTransform() {
+		#if UNITY_EDITOR
+			if ( Application.isEditor && !Application.isPlaying && Alignment ) {
+				_position = TilePosition;
+			}
+		#endif
 			transform.position = IsoUtils.Vec3ChangeZ(
 				IsoWorld.IsoToScreen(Position),
 				transform.position.z);
@@ -228,22 +250,23 @@ namespace IsoTools {
 			MartDirtyIsoWorld();
 		}
 
-		//TODO: now working for child sprites
-		void OnBecameVisible() {
-			MartDirtyIsoWorld();
+		#if UNITY_EDITOR
+		void OnDrawGizmos() {
+			if ( ShowBounds ) {
+				IsoUtils.DrawCube(Position, Size, Color.red);
+			}
 		}
 
-		#if UNITY_EDITOR
 		void Update() {
 			if ( Application.isEditor ) {
-				if ( !IsoUtils.Vec2Approximately(_lastTransform, transform.position) ) {
-					FixIsoPosition();
+				if ( !IsoUtils.Vec3Approximately(_lastSize, _size) ) {
+					Size = _size;
 				}
 				if ( !IsoUtils.Vec3Approximately(_lastPosition, _position) ) {
 					Position = _position;
 				}
-				if ( !IsoUtils.Vec3Approximately(_lastSize, _size) ) {
-					Size = _size;
+				if ( !IsoUtils.Vec2Approximately(_lastTransform, transform.position) ) {
+					FixIsoPosition();
 				}
 			}
 		}
