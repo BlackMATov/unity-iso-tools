@@ -183,6 +183,10 @@ namespace IsoTools {
 			ApplyToAllIsoObjects(obj => obj.FixTransform());
 		}
 
+		void ResetAllIsoWorld() {
+			ApplyToAllIsoObjects(obj => obj.ResetIsoWorld());
+		}
+
 		void ChangeSortingProperty() {
 			MarkDirty();
 			FixAllTransforms();
@@ -396,7 +400,7 @@ namespace IsoTools {
 		}
 
 		void OnDisable() {
-			ApplyToAllIsoObjects(obj => obj.ResetIsoWorld());
+			ResetAllIsoWorld();
 		}
 	}
 } // namespace IsoTools

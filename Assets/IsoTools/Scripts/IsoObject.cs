@@ -253,7 +253,7 @@ namespace IsoTools {
 		#if UNITY_EDITOR
 		void OnDrawGizmos() {
 			if ( ShowBounds ) {
-				IsoUtils.DrawCube(Position, Size, Color.red);
+				IsoUtils.DrawCube(Position + Size * 0.5f, Size, Color.red);
 			}
 		}
 

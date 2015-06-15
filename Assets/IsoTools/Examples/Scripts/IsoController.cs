@@ -7,9 +7,8 @@ namespace IsoTools { namespace Examples {
 			var iso_object = GetComponent<IsoObject>();
 			var iso_rigidbody = GetComponent<IsoRigidbody>();
 			if ( iso_rigidbody ) {
-				iso_rigidbody.Rigidbody.velocity = dir;
-			}
-			else if ( iso_object ) {
+				iso_rigidbody.RealRigidbody.velocity = dir;
+			} else if ( iso_object) {
 				iso_object.Position += dir * Time.deltaTime;
 			}
 		}

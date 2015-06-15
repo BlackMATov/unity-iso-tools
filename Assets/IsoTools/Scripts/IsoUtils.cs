@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System;
 
+using UnityEditor;
+
 namespace IsoTools {
 	public static class IsoUtils {
 
@@ -233,6 +235,10 @@ namespace IsoTools {
 			return new Vector2(x, y);
 		}
 
+		public static Vector2 Vec2FromVec3(Vector3 v) {
+			return new Vector2(v.x, v.y);
+		}
+
 		// -----------------------------
 		// Vec3From
 		// -----------------------------
@@ -259,6 +265,14 @@ namespace IsoTools {
 		
 		public static Vector3 Vec3FromXZ(float x, float z) {
 			return new Vector3(x, 0.0f, z);
+		}
+
+		public static Vector3 Vec3FromVec2(Vector2 v) {
+			return new Vector3(v.x, v.y, 0.0f);
+		}
+
+		public static Vector3 Vec3FromVec2(Vector2 v, float z) {
+			return new Vector3(v.x, v.y, z);
 		}
 
 		// ---------------------------------------------------------------------
@@ -380,14 +394,26 @@ namespace IsoTools {
 			}
 		}
 		
-		public static void DrawCube(Vector3 pos, Vector3 size, Color color) {
+		public static void DrawCube(Vector3 center, Vector3 size, Color color) {
 			Gizmos.color = color;
-			DrawTop (pos - IsoUtils.Vec3FromZ(0.5f), size);
-			DrawTop (pos + IsoUtils.Vec3FromZ(size.z - 0.5f), size);
-			DrawVert(pos - IsoUtils.Vec3FromZ(0.5f), size);
-			DrawVert(pos + IsoUtils.Vec3FromZ(0.5f), size);
-			DrawVert(pos - IsoUtils.Vec3FromZ(0.5f) + IsoUtils.Vec3FromX(size.x), size);
-			DrawVert(pos - IsoUtils.Vec3FromZ(0.5f) + IsoUtils.Vec3FromY(size.y), size);
+			var pos = center - size * 0.5f;
+			DrawTop (pos, size);
+			DrawTop (pos + IsoUtils.Vec3FromZ(size.z), size);
+			DrawVert(pos, size);
+			DrawVert(pos + IsoUtils.Vec3FromX(size.x), size);
+			DrawVert(pos + IsoUtils.Vec3FromY(size.y), size);
+			DrawVert(pos + IsoUtils.Vec3FromXY(size.x, size.y), size);
+		}
+
+		public static void DrawSphere(Vector3 pos, float radius, Color color) {
+			var iso_world = GameObject.FindObjectOfType<IsoWorld>();
+			if ( iso_world ) {
+				Handles.color = color;
+				Handles.RadiusHandle(
+					Quaternion.Euler(45.0f, 45.0f, 0.0f),
+					iso_world.IsoToScreen(pos),
+					radius * iso_world.TileSize * 2.0f);
+			}
 		}
 		#endif
 	}

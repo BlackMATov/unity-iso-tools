@@ -49,8 +49,13 @@
      <Compile Include="Assets\IsoTools\Examples\Scripts\CircleFly.cs" />
      <Compile Include="Assets\IsoTools\Examples\Scripts\IsoAutoController.cs" />
      <Compile Include="Assets\IsoTools\Examples\Scripts\IsoController.cs" />
+     <Compile Include="Assets\IsoTools\Scripts\IsoBoxCollider.cs" />
+     <Compile Include="Assets\IsoTools\Scripts\IsoCollider.cs" />
+     <Compile Include="Assets\IsoTools\Scripts\IsoFakeObject.cs" />
      <Compile Include="Assets\IsoTools\Scripts\IsoObject.cs" />
+     <Compile Include="Assets\IsoTools\Scripts\IsoPhysicHelper.cs" />
      <Compile Include="Assets\IsoTools\Scripts\IsoRigidbody.cs" />
+     <Compile Include="Assets\IsoTools\Scripts\IsoSphereCollider.cs" />
      <Compile Include="Assets\IsoTools\Scripts\IsoUtils.cs" />
      <Compile Include="Assets\IsoTools\Scripts\IsoWorld.cs" />
  <Reference Include="UnityEngine.UI">

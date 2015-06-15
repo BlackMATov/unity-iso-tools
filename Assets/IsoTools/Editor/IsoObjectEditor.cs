@@ -13,17 +13,20 @@ namespace IsoTools {
 		Vector3                         _viewCenter     = Vector3.zero;
 
 		void GrabPositions() {
-			_positions = targets
-				.Where(p => p as IsoObject)
-				.Select(p => p as IsoObject)
-				.ToDictionary(p => p, p => p.transform.position);
-			_iso_zpositions = targets
-				.Where(p => p as IsoObject)
-				.Select(p => p as IsoObject)
-				.ToDictionary(p => p, p => p.Position.z);
-			_center = _viewCenter = _positions.Aggregate(Vector3.zero, (AccIn, p) => {
-				return AccIn + p.Value;
-			}) / _positions.Count;
+			var iso_world = GameObject.FindObjectOfType<IsoWorld>();
+			if ( iso_world ) {
+				_positions = targets
+					.Where(p => p as IsoObject)
+					.Select(p => p as IsoObject)
+					.ToDictionary(p => p, p => p.transform.position);
+				_iso_zpositions = targets
+					.Where(p => p as IsoObject)
+					.Select(p => p as IsoObject)
+					.ToDictionary(p => p, p => p.Position.z);
+				_center = _viewCenter = _positions.Aggregate(Vector3.zero, (AccIn, p) => {
+					return AccIn + IsoUtils.Vec3FromVec2(iso_world.IsoToScreen(p.Key.Position + p.Key.Size * 0.5f));
+				}) / _positions.Count;
+			}
 		}
 
 		bool IsAnyAlignment {
