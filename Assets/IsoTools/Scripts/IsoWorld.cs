@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -59,7 +58,7 @@ namespace IsoTools {
 		public float TileSize {
 			get { return _tileSize; }
 			set {
-				_tileSize = Math.Max(value, Mathf.Epsilon);
+				_tileSize = Mathf.Max(value, Mathf.Epsilon);
 				ChangeSortingProperty();
 			}
 		}
@@ -172,7 +171,7 @@ namespace IsoTools {
 		#endif
 		}
 
-		void ApplyToAllIsoObjects(Action<IsoObject> act) {
+		void ApplyToAllIsoObjects(System.Action<IsoObject> act) {
 			var iso_objects = GameObject.FindObjectsOfType<IsoObject>();
 			foreach ( var obj in iso_objects ) {
 				act(obj);
@@ -219,7 +218,7 @@ namespace IsoTools {
 			return _sectors[SectorIndex(num_pos)];
 		}
 
-		void LookUpSectorDepends(Vector3 num_pos, Action<SectorInfo> act) {
+		void LookUpSectorDepends(Vector3 num_pos, System.Action<SectorInfo> act) {
 			var ms = FindSector(num_pos);
 			if ( ms != null ) {
 				act(ms);
@@ -350,7 +349,7 @@ namespace IsoTools {
 		}
 		
 		void PlaceObject(IsoObject obj, float depth) {
-			var trans = obj.gameObject.transform;
+			var trans = obj.transform;
 			trans.position = IsoUtils.Vec3ChangeZ(trans.position, depth);
 		}
 		

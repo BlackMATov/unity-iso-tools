@@ -5,30 +5,67 @@ using UnityEditor;
 #endif
 
 namespace IsoTools {
+	[RequireComponent(typeof(IsoObject))]
 	public class IsoBoxCollider : IsoCollider {
-		public Vector3 Size   = Vector3.zero;
-		public Vector3 Offset = Vector3.zero;
 
-		protected override Collider CreateCollider() {
-			var collider    = IsoFakeObject.gameObject.AddComponent<BoxCollider>();
-			collider.center = Offset;
+		[SerializeField]
+		public Vector3 _size = Vector3.zero;
+		public Vector3 Size {
+			get { return _size; }
+			set {
+				_size = value;
+				if ( RealBoxCollider ) {
+					RealBoxCollider.size = value;
+				}
+			}
+		}
+
+		[SerializeField]
+		public Vector3 _offset = Vector3.zero;
+		public Vector3 Offset {
+			get { return _offset; }
+			set {
+				_offset = value;
+				if ( RealBoxCollider ) {
+					RealBoxCollider.center = value;
+				}
+			}
+		}
+
+		protected override Collider CreateCollider(GameObject target) {
+			var collider    = target.AddComponent<BoxCollider>();
 			collider.size   = Size;
+			collider.center = Offset;
 			return collider;
 		}
 
+		public BoxCollider RealBoxCollider {
+			get { return RealCollider as BoxCollider; }
+		}
+
 		#if UNITY_EDITOR
-		public override void EditorReset() {
-			if ( Application.isEditor ) {
-				Size   = IsoObject.Size;
-				Offset = IsoObject.Size * 0.5f;
-				EditorUtility.SetDirty(this);
+		protected override void Reset() {
+			base.Reset();
+			var iso_object = GetComponent<IsoObject>();
+			Size   = iso_object ? iso_object.Size : Vector3.zero;
+			Offset = iso_object ? iso_object.Size * 0.5f : Vector3.zero;
+			EditorUtility.SetDirty(this);
+		}
+
+		protected override void OnValidate() {
+			base.OnValidate();
+			if ( RealBoxCollider ) {
+				RealBoxCollider.size   = Size;
+				RealBoxCollider.center = Offset;
 			}
 		}
 
 		void OnDrawGizmosSelected() {
-			if ( Application.isEditor ) {
+			var iso_object = GetComponent<IsoObject>();
+			if ( iso_object && iso_object.IsoWorld ) {
 				IsoUtils.DrawCube(
-					IsoObject.Position + Offset,
+					iso_object.IsoWorld,
+					iso_object.Position + Offset,
 					Size,
 					Color.green);
 			}

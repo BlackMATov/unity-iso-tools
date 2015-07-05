@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
-using System;
 
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 namespace IsoTools {
 	public static class IsoUtils {
@@ -346,14 +347,14 @@ namespace IsoTools {
 		//
 		// ---------------------------------------------------------------------
 
-		public static void LookUpCube(Vector2 min, Vector2 max, Action<Vector2> act) {
+		public static void LookUpCube(Vector2 min, Vector2 max, System.Action<Vector2> act) {
 			for ( var y = min.y; y < max.y; ++y ) {
 			for ( var x = min.x; x < max.x; ++x ) {
 				act(new Vector2(x, y));
 			}}
 		}
 
-		public static void LookUpCube(Vector3 min, Vector3 max, Action<Vector3> act) {
+		public static void LookUpCube(Vector3 min, Vector3 max, System.Action<Vector3> act) {
 			for ( var z = min.z; z < max.z; ++z ) {
 			for ( var y = min.y; y < max.y; ++y ) {
 			for ( var x = min.x; x < max.x; ++x ) {
@@ -363,13 +364,25 @@ namespace IsoTools {
 
 		// ---------------------------------------------------------------------
 		//
+		// Helpers
+		//
+		// ---------------------------------------------------------------------
+
+		public static T GetOrCreateComponent<T>(GameObject obj) where T : Component {
+			var comp = obj.GetComponent<T>();
+			return comp != null
+				? comp
+				: obj.AddComponent<T>();
+		}
+
+		// ---------------------------------------------------------------------
+		//
 		// Debug draw
 		//
 		// ---------------------------------------------------------------------
 
 		#if UNITY_EDITOR
-		static void DrawTop(Vector3 pos, Vector3 size) {
-			var iso_world = GameObject.FindObjectOfType<IsoWorld>();
+		static void DrawTop(IsoWorld iso_world, Vector3 pos, Vector3 size) {
 			if ( iso_world ) {
 				var points = new Vector3[]{
 					iso_world.IsoToScreen(pos),
@@ -378,35 +391,35 @@ namespace IsoTools {
 					iso_world.IsoToScreen(pos + IsoUtils.Vec3FromY(size.y)),
 					iso_world.IsoToScreen(pos)
 				};
-				Gizmos.DrawLine(points[0], points[1]);
-				Gizmos.DrawLine(points[1], points[2]);
-				Gizmos.DrawLine(points[2], points[3]);
-				Gizmos.DrawLine(points[3], points[0]);
+				Handles.DrawLine(points[0], points[1]);
+				Handles.DrawLine(points[1], points[2]);
+				Handles.DrawLine(points[2], points[3]);
+				Handles.DrawLine(points[3], points[0]);
 			}
 		}
 
-		static void DrawVert(Vector3 pos, Vector3 size) {
-			var iso_world = GameObject.FindObjectOfType<IsoWorld>();
+		static void DrawVert(IsoWorld iso_world, Vector3 pos, Vector3 size) {
 			if ( iso_world ) {
-				Gizmos.DrawLine(
+				Handles.DrawLine(
 					iso_world.IsoToScreen(pos),
 					iso_world.IsoToScreen(pos + IsoUtils.Vec3FromZ(size.z)));
 			}
 		}
 		
-		public static void DrawCube(Vector3 center, Vector3 size, Color color) {
-			Gizmos.color = color;
-			var pos = center - size * 0.5f;
-			DrawTop (pos, size);
-			DrawTop (pos + IsoUtils.Vec3FromZ(size.z), size);
-			DrawVert(pos, size);
-			DrawVert(pos + IsoUtils.Vec3FromX(size.x), size);
-			DrawVert(pos + IsoUtils.Vec3FromY(size.y), size);
-			DrawVert(pos + IsoUtils.Vec3FromXY(size.x, size.y), size);
+		public static void DrawCube(IsoWorld iso_world, Vector3 center, Vector3 size, Color color) {
+			if ( iso_world ) {
+				Handles.color = color;
+				var pos = center - size * 0.5f;
+				DrawTop (iso_world, pos, size);
+				DrawTop (iso_world, pos + IsoUtils.Vec3FromZ(size.z), size);
+				DrawVert(iso_world, pos, size);
+				DrawVert(iso_world, pos + IsoUtils.Vec3FromX(size.x), size);
+				DrawVert(iso_world, pos + IsoUtils.Vec3FromY(size.y), size);
+				DrawVert(iso_world, pos + IsoUtils.Vec3FromXY(size.x, size.y), size);
+			}
 		}
 
-		public static void DrawSphere(Vector3 pos, float radius, Color color) {
-			var iso_world = GameObject.FindObjectOfType<IsoWorld>();
+		public static void DrawSphere(IsoWorld iso_world, Vector3 pos, float radius, Color color) {
 			if ( iso_world ) {
 				Handles.color = color;
 				Handles.RadiusHandle(
