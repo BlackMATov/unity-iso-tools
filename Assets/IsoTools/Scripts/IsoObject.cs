@@ -251,6 +251,16 @@ namespace IsoTools {
 		}
 
 		#if UNITY_EDITOR
+		void Reset() {
+			Size     = Vector3.one;
+			Position = Vector3.zero;
+		}
+
+		void OnValidate() {
+			Size     = _size;
+			Position = _position;
+		}
+
 		void OnDrawGizmos() {
 			if ( ShowBounds && IsoWorld ) {
 				IsoUtils.DrawCube(IsoWorld, Position + Size * 0.5f, Size, Color.red);

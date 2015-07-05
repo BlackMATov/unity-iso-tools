@@ -42,6 +42,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _size: {x: 1, y: 1, z: 3}
   _position: {x: 0, y: 0, z: 0}
+  _alignment: 1
+  _showBounds: 0
 --- !u!212 &21263702
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -39,10 +39,6 @@ namespace IsoTools {
 		}
 
 		bool               _dirty           = true;
-		float              _lastTileSize    = 0.0f;
-		float              _lastMinDepth    = 0.0f;
-		float              _lastMaxDepth    = 0.0f;
-
 		List<SectorInfo>   _sectors         = new List<SectorInfo>();
 		List<ObjectInfo>   _objects         = new List<ObjectInfo>();
 		List<int>          _depends         = new List<int>();
@@ -155,10 +151,6 @@ namespace IsoTools {
 		// ------------------------------------------------------------------------
 
 		bool IsIsoObjectVisible(IsoObject iso_object) {
-			var renderer = iso_object.GetComponent<Renderer>();
-			if ( renderer && renderer.isVisible ) {
-				return true;
-			}
 			var renderers = iso_object.GetComponentsInChildren<Renderer>();
 			return renderers.Any(r => r.isVisible);
 		}
@@ -189,9 +181,6 @@ namespace IsoTools {
 		void ChangeSortingProperty() {
 			MarkDirty();
 			FixAllTransforms();
-			_lastTileSize = TileSize;
-			_lastMinDepth = MinDepth;
-			_lastMaxDepth = MaxDepth;
 		}
 
 		int SectorIndex(Vector3 num_pos) {
@@ -386,11 +375,6 @@ namespace IsoTools {
 		}
 
 		void LateUpdate() {
-			if ( Application.isEditor ) {
-				if ( !Mathf.Approximately(_lastTileSize, _tileSize) ) TileSize = _tileSize;
-				if ( !Mathf.Approximately(_lastMinDepth, _minDepth) ) MinDepth = _minDepth;
-				if ( !Mathf.Approximately(_lastMaxDepth, _maxDepth) ) MaxDepth = _maxDepth;
-			}
 			StepSort();
 		}
 
@@ -401,5 +385,19 @@ namespace IsoTools {
 		void OnDisable() {
 			ResetAllIsoWorld();
 		}
+
+		#if UNITY_EDITOR
+		void Reset() {
+			TileSize = 32.0f;
+			MinDepth = 0.0f;
+			MaxDepth = 100.0f;
+		}
+		
+		void OnValidate() {
+			TileSize = _tileSize;
+			MinDepth = _minDepth;
+			MaxDepth = _maxDepth;
+		}
+		#endif
 	}
 } // namespace IsoTools
