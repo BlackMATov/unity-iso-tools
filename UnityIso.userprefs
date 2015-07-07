@@ -1,14 +1,16 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/IsoTools/Scripts/IsoFakeObject.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/IsoTools/Examples/Scripts/IsoEchoListener.cs">
     <Files>
-      <File FileName="Assets/IsoTools/Scripts/IsoPhysicHelper.cs" Line="44" Column="24" />
-      <File FileName="Assets/IsoTools/Scripts/IsoFakeObject.cs" Line="58" Column="37" />
-      <File FileName="Assets/IsoTools/Scripts/IsoCollider.cs" Line="31" Column="4" />
+      <File FileName="Assets/IsoTools/Examples/Scripts/CircleFly.cs" Line="25" Column="35" />
+      <File FileName="Assets/IsoTools/Examples/Scripts/IsoEchoListener.cs" Line="29" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="/Users/blackmat/Programming/Projects/UnityIso/Assets/IsoTools/Examples/Scripts/IsoEchoListener.cs" line="19" />
+      <Breakpoint file="/Users/blackmat/Programming/Projects/UnityIso/Assets/IsoTools/Examples/Scripts/IsoEchoListener.cs" line="25" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

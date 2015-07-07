@@ -49,8 +49,12 @@
      <Compile Include="Assets\IsoTools\Examples\Scripts\CircleFly.cs" />
      <Compile Include="Assets\IsoTools\Examples\Scripts\IsoAutoController.cs" />
      <Compile Include="Assets\IsoTools\Examples\Scripts\IsoController.cs" />
+     <Compile Include="Assets\IsoTools\Examples\Scripts\IsoEchoListener.cs" />
      <Compile Include="Assets\IsoTools\Scripts\IsoBoxCollider.cs" />
      <Compile Include="Assets\IsoTools\Scripts\IsoCollider.cs" />
+     <Compile Include="Assets\IsoTools\Scripts\IsoCollision.cs" />
+     <Compile Include="Assets\IsoTools\Scripts\IsoContactPoint.cs" />
+     <Compile Include="Assets\IsoTools\Scripts\IsoFakeCollider.cs" />
      <Compile Include="Assets\IsoTools\Scripts\IsoFakeObject.cs" />
      <Compile Include="Assets\IsoTools\Scripts\IsoObject.cs" />
      <Compile Include="Assets\IsoTools\Scripts\IsoPhysicHelper.cs" />

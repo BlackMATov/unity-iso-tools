@@ -5,6 +5,7 @@ using UnityEditor;
 #endif
 
 namespace IsoTools {
+	[DisallowMultipleComponent]
 	[RequireComponent(typeof(IsoObject))]
 	public class IsoRigidbody : MonoBehaviour {
 

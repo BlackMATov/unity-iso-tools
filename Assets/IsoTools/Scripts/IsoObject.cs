@@ -6,6 +6,7 @@ using UnityEditor;
 
 namespace IsoTools {
 	[ExecuteInEditMode]
+	[DisallowMultipleComponent]
 	public class IsoObject : MonoBehaviour {
 
 		// ------------------------------------------------------------------------

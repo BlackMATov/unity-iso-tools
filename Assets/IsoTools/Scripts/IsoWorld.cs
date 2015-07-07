@@ -8,6 +8,7 @@ using UnityEditor;
 
 namespace IsoTools {
 	[ExecuteInEditMode]
+	[DisallowMultipleComponent]
 	public class IsoWorld : MonoBehaviour {
 
 		class ObjectInfo {

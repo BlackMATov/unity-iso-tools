@@ -33,18 +33,23 @@ namespace IsoTools {
 			}
 		}
 
-		Collider _realCollider = null;
+		GameObject _isoFakeCollider = null;
+		public GameObject IsoFakeCollider {
+			get { return _isoFakeCollider; }
+		}
+
 		public Collider RealCollider {
-			get { return _realCollider; }
+			get { return IsoFakeCollider ? IsoFakeCollider.GetComponent<Collider>() : null; }
 		}
 
 		void Awake() {
-			var helper = IsoUtils.GetOrCreateComponent<IsoPhysicHelper>(gameObject);
-			_realCollider = CreateCollider(helper.IsoFakeObject);
-			if ( _realCollider ) {
-				_realCollider.material  = Material;
-				_realCollider.isTrigger = IsTrigger;
-			}
+			_isoFakeCollider = new GameObject();
+			_isoFakeCollider.transform.SetParent(
+				IsoUtils.GetOrCreateComponent<IsoPhysicHelper>(gameObject).IsoFakeObject.transform, false);
+			_isoFakeCollider.AddComponent<IsoFakeCollider>().Init(this);
+			var real_collider       = CreateCollider(_isoFakeCollider);
+			real_collider.material  = Material;
+			real_collider.isTrigger = IsTrigger;
 		}
 
 		void OnEnable() {
@@ -60,9 +65,9 @@ namespace IsoTools {
 		}
 
 		void OnDestroy() {
-			if ( _realCollider ) {
-				Destroy(_realCollider);
-				_realCollider = null;
+			if ( _isoFakeCollider ) {
+				Destroy(_isoFakeCollider);
+				_isoFakeCollider = null;
 			}
 		}
 
