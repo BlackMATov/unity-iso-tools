@@ -32,7 +32,7 @@ namespace IsoTools {
 			}
 		}
 
-		protected override Collider CreateCollider(GameObject target) {
+		protected override Collider CreateRealCollider(GameObject target) {
 			var collider    = target.AddComponent<SphereCollider>();
 			collider.radius = Radius;
 			collider.center = Offset;

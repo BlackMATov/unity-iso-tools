@@ -7,7 +7,7 @@ using UnityEditor;
 namespace IsoTools {
 	[RequireComponent(typeof(IsoObject))]
 	public abstract class IsoCollider : MonoBehaviour {
-		protected abstract Collider CreateCollider(GameObject target);
+		protected abstract Collider CreateRealCollider(GameObject target);
 
 		[SerializeField]
 		public PhysicMaterial _material  = null;
@@ -33,23 +33,19 @@ namespace IsoTools {
 			}
 		}
 
-		GameObject _isoFakeCollider = null;
-		public GameObject IsoFakeCollider {
-			get { return _isoFakeCollider; }
-		}
-
+		Collider _realCollider = null;
 		public Collider RealCollider {
-			get { return IsoFakeCollider ? IsoFakeCollider.GetComponent<Collider>() : null; }
+			get { return _realCollider; }
 		}
 
 		void Awake() {
-			_isoFakeCollider = new GameObject();
-			_isoFakeCollider.transform.SetParent(
+			var fake_collider_go = new GameObject();
+			fake_collider_go.transform.SetParent(
 				IsoUtils.GetOrCreateComponent<IsoPhysicHelper>(gameObject).IsoFakeObject.transform, false);
-			_isoFakeCollider.AddComponent<IsoFakeCollider>().Init(this);
-			var real_collider       = CreateCollider(_isoFakeCollider);
-			real_collider.material  = Material;
-			real_collider.isTrigger = IsTrigger;
+			fake_collider_go.AddComponent<IsoFakeCollider>().Init(this);
+			_realCollider           = CreateRealCollider(fake_collider_go);
+			_realCollider.material  = Material;
+			_realCollider.isTrigger = IsTrigger;
 		}
 
 		void OnEnable() {
@@ -65,9 +61,9 @@ namespace IsoTools {
 		}
 
 		void OnDestroy() {
-			if ( _isoFakeCollider ) {
-				Destroy(_isoFakeCollider);
-				_isoFakeCollider = null;
+			if ( _realCollider ) {
+				Destroy(_realCollider.gameObject);
+				_realCollider = null;
 			}
 		}
 

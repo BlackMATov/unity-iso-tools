@@ -32,7 +32,7 @@ namespace IsoTools {
 			}
 		}
 
-		protected override Collider CreateCollider(GameObject target) {
+		protected override Collider CreateRealCollider(GameObject target) {
 			var collider    = target.AddComponent<BoxCollider>();
 			collider.size   = Size;
 			collider.center = Offset;
