@@ -375,6 +375,38 @@ namespace IsoTools {
 				: obj.AddComponent<T>();
 		}
 
+		public static IsoCollider IsoConvertCollider(Collider collider) {
+			var fake_collider = collider ? collider.GetComponent<IsoFakeCollider>() : null;
+			return fake_collider ? fake_collider.IsoCollider : null;
+		}
+		
+		public static IsoRigidbody IsoConvertRigidbody(Rigidbody rigidbody) {
+			var fake_rigidbody = rigidbody ? rigidbody.GetComponent<IsoFakeRigidbody>() : null;
+			return fake_rigidbody ? fake_rigidbody.IsoRigidbody : null;
+		}
+		
+		public static GameObject IsoConvertGameObject(GameObject game_object) {
+			var fake_object = game_object ? game_object.GetComponent<IsoFakeObject>() : null;
+			var iso_object = fake_object ? fake_object.IsoObject : null;
+			return iso_object ? iso_object.gameObject : null;
+		}
+		
+		public static IsoContactPoint[] IsoConvertContactPoints(ContactPoint[] points) {
+			var iso_points = new IsoContactPoint[points.Length];
+			for ( var i = 0; i < points.Length; ++i ) {
+				iso_points[i] = new IsoContactPoint(points[i]);
+			}
+			return iso_points;
+		}
+
+		public static IsoRaycastHit[] IsoConvertRaycastHits(RaycastHit[] hits) {
+			var iso_hits = new IsoRaycastHit[hits.Length];
+			for ( var i = 0; i < hits.Length; ++i ) {
+				iso_hits[i] = new IsoRaycastHit(hits[i]);
+			}
+			return iso_hits;
+		}
+
 		// ---------------------------------------------------------------------
 		//
 		// Debug draw

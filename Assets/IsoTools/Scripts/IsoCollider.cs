@@ -9,6 +9,18 @@ namespace IsoTools {
 	public abstract class IsoCollider : MonoBehaviour {
 		protected abstract Collider CreateRealCollider(GameObject target);
 
+		Collider _realCollider = null;
+		protected Collider RealCollider {
+			get { return _realCollider; }
+		}
+
+		protected GameObject IsoFakeObject {
+			get {
+				var helper = IsoUtils.GetOrCreateComponent<IsoPhysicHelper>(gameObject);
+				return helper ? helper.IsoFakeObject : null;
+			}
+		}
+
 		[SerializeField]
 		public PhysicMaterial _material  = null;
 		public PhysicMaterial Material {
@@ -33,15 +45,40 @@ namespace IsoTools {
 			}
 		}
 
-		Collider _realCollider = null;
-		public Collider RealCollider {
-			get { return _realCollider; }
+		public IsoRigidbody AttachedRigidbody {
+			get {
+				return RealCollider
+					? IsoUtils.IsoConvertRigidbody(RealCollider.attachedRigidbody)
+					: null;
+			}
+		}
+
+		public Bounds Bounds {
+			get {
+				return RealCollider
+					? RealCollider.bounds
+					: new Bounds();
+			}
+		}
+
+		public Vector3 ClosestPointOnBounds(Vector3 position) {
+			return RealCollider
+				? RealCollider.ClosestPointOnBounds(position)
+				: Vector3.zero;
+		}
+
+		public bool Raycast(Ray ray, out IsoRaycastHit iso_hit_info, float max_distance) {
+			RaycastHit hit_info;
+			var result = RealCollider
+				? RealCollider.Raycast(ray, out hit_info, max_distance)
+				: false;
+			iso_hit_info = result ? new IsoRaycastHit(hit_info) : new IsoRaycastHit();
+			return result;
 		}
 
 		void Awake() {
 			var fake_collider_go = new GameObject();
-			fake_collider_go.transform.SetParent(
-				IsoUtils.GetOrCreateComponent<IsoPhysicHelper>(gameObject).IsoFakeObject.transform, false);
+			fake_collider_go.transform.SetParent(IsoFakeObject.transform, false);
 			fake_collider_go.AddComponent<IsoFakeCollider>().Init(this);
 			_realCollider           = CreateRealCollider(fake_collider_go);
 			_realCollider.material  = Material;
@@ -75,10 +112,8 @@ namespace IsoTools {
 		}
 
 		protected virtual void OnValidate() {
-			if ( RealCollider ) {
-				RealCollider.material  = Material;
-				RealCollider.isTrigger = IsTrigger;
-			}
+			Material  = _material;
+			IsTrigger = _isTrigger;
 		}
 		#endif
 	}

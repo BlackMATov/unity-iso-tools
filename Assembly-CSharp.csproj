@@ -56,8 +56,10 @@
      <Compile Include="Assets\IsoTools\Scripts\IsoContactPoint.cs" />
      <Compile Include="Assets\IsoTools\Scripts\IsoFakeCollider.cs" />
      <Compile Include="Assets\IsoTools\Scripts\IsoFakeObject.cs" />
+     <Compile Include="Assets\IsoTools\Scripts\IsoFakeRigidbody.cs" />
      <Compile Include="Assets\IsoTools\Scripts\IsoObject.cs" />
      <Compile Include="Assets\IsoTools\Scripts\IsoPhysicHelper.cs" />
+     <Compile Include="Assets\IsoTools\Scripts\IsoRaycastHit.cs" />
      <Compile Include="Assets\IsoTools\Scripts\IsoRigidbody.cs" />
      <Compile Include="Assets\IsoTools\Scripts\IsoSphereCollider.cs" />
      <Compile Include="Assets\IsoTools\Scripts\IsoUtils.cs" />

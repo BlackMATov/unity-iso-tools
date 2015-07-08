@@ -368,3 +368,14 @@ MonoBehaviour:
   _isTrigger: 0
   _size: {x: 1, y: 1, z: 1}
   _offset: {x: .5, y: .5, z: .5}
+--- !u!114 &1846453516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1846453513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 449e21ec66627fb49a67d615cd9d240a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
