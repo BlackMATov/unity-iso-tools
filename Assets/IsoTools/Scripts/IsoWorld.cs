@@ -151,14 +151,23 @@ namespace IsoTools {
 		//
 		// ------------------------------------------------------------------------
 
-		bool IsIsoObjectVisible(IsoObject iso_object) {
-			var renderers = iso_object.GetComponentsInChildren<Renderer>();
-			foreach ( var child_renderer in renderers ) {
-				if ( child_renderer.isVisible ) {
+		bool IsGameObjectVisible(GameObject obj) {
+			var renderer = obj.GetComponent<Renderer>();
+			if ( renderer && renderer.isVisible ) {
+				return true;
+			}
+			var obj_transform = obj.transform;
+			for ( var i = 0; i < obj_transform.childCount; ++i ) {
+				var child_obj = obj_transform.GetChild(i).gameObject;
+				if ( IsGameObjectVisible(child_obj) ) {
 					return true;
 				}
 			}
 			return false;
+		}
+
+		bool IsIsoObjectVisible(IsoObject iso_object) {
+			return IsGameObjectVisible(iso_object.gameObject);
 		}
 
 		void MarkEditorWorldDirty() {
