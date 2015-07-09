@@ -99,7 +99,7 @@ namespace IsoTools {
 		/// <param name="iso_object">Isometric object for resorting.</param>
 		// ------------------------------------------------------------------------ 
 		public void MarkDirty(IsoObject iso_object) {
-			if ( iso_object && IsIsoObjectVisible(iso_object) ) {
+			if ( !_dirty && iso_object && _visibles.Contains(iso_object) ) {
 				MarkDirty();
 			}
 		}
@@ -153,7 +153,12 @@ namespace IsoTools {
 
 		bool IsIsoObjectVisible(IsoObject iso_object) {
 			var renderers = iso_object.GetComponentsInChildren<Renderer>();
-			return renderers.Any(r => r.isVisible);
+			foreach ( var child_renderer in renderers ) {
+				if ( child_renderer.isVisible ) {
+					return true;
+				}
+			}
+			return false;
 		}
 
 		void MarkEditorWorldDirty() {
@@ -258,8 +263,12 @@ namespace IsoTools {
 		}
 
 		void SetupVisibles(IsoObject[] iso_objects) {
-			var new_visibles = new HashSet<IsoObject>(
-				iso_objects.Where(p => IsIsoObjectVisible(p)));
+			var new_visibles = new HashSet<IsoObject>();
+			foreach ( var iso_object in iso_objects ) {
+				if ( IsIsoObjectVisible(iso_object) ) {
+					new_visibles.Add(iso_object);
+				}
+			}
 			if ( !_visibles.IsSupersetOf(new_visibles) ) {
 				MarkDirty();
 			}

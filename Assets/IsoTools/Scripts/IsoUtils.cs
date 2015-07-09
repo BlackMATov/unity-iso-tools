@@ -329,16 +329,11 @@ namespace IsoTools {
 		// ---------------------------------------------------------------------
 
 		public static bool Vec2Approximately(Vector2 a, Vector2 b) {
-			return
-				Mathf.Approximately(a.x, b.x) &&
-				Mathf.Approximately(a.y, b.y);
+			return a == b;
 		}
 
 		public static bool Vec3Approximately(Vector3 a, Vector3 b) {
-			return
-				Mathf.Approximately(a.x, b.x) &&
-				Mathf.Approximately(a.y, b.y) &&
-				Mathf.Approximately(a.z, b.z);
+			return a == b;
 		}
 
 		// ---------------------------------------------------------------------

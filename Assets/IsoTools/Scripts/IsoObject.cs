@@ -188,10 +188,10 @@ namespace IsoTools {
 		IsoWorld _isoWorld = null;
 		public IsoWorld IsoWorld {
 			get {
-				if ( !_isoWorld ) {
+				if ( (object)_isoWorld == null ) {
 					_isoWorld = GameObject.FindObjectOfType<IsoWorld>();
 				}
-				if ( !_isoWorld ) {
+				if ( (object)_isoWorld == null ) {
 					throw new UnityException("IsoObject. IsoWorld not found!");
 				}
 				return _isoWorld;

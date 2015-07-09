@@ -18,11 +18,10 @@ namespace IsoTools {
 
 		void FixedUpdate() {
 			if ( !IsoUtils.Vec3Approximately(_lastPosition, IsoObject.Position) ) {
-				transform.position = IsoObject.Position;
-			} else {
-				IsoObject.Position = transform.position;
+				_lastPosition = transform.position = IsoObject.Position;
+			} else if ( !IsoUtils.Vec3Approximately(_lastPosition, transform.position) ) {
+				_lastPosition = IsoObject.Position = transform.position;
 			}
-			_lastPosition = IsoObject.Position;
 		}
 
 		void OnTriggerEnter(Collider collider) {
