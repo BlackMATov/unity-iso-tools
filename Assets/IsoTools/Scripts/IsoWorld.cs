@@ -417,6 +417,12 @@ namespace IsoTools {
 			MinDepth = _minDepth;
 			MaxDepth = _maxDepth;
 		}
+
+		void OnRenderObject() {
+			if ( Camera.current && Camera.current.name == "SceneCamera" ) {
+				StepSort();
+			}
+		}
 		#endif
 	}
 } // namespace IsoTools
