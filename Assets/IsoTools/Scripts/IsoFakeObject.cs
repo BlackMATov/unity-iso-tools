@@ -8,45 +8,45 @@ namespace IsoTools {
 
 		public void Init(IsoObject iso_object) {
 			_isoObject         = iso_object;
-			_lastPosition      = iso_object.Position;
-			transform.position = iso_object.Position;
+			_lastPosition      = iso_object.position;
+			transform.position = iso_object.position;
 		}
 
-		public IsoObject IsoObject {
+		public IsoObject isoObject {
 			get { return _isoObject; }
 		}
 
 		void FixedUpdate() {
-			if ( !IsoUtils.Vec3Approximately(_lastPosition, IsoObject.Position) ) {
-				_lastPosition = transform.position = IsoObject.Position;
+			if ( !IsoUtils.Vec3Approximately(_lastPosition, isoObject.position) ) {
+				_lastPosition = transform.position = isoObject.position;
 			} else if ( !IsoUtils.Vec3Approximately(_lastPosition, transform.position) ) {
-				_lastPosition = IsoObject.Position = transform.position;
+				_lastPosition = isoObject.position = transform.position;
 			}
 		}
 
 		void OnTriggerEnter(Collider collider) {
-			IsoObject.gameObject.SendMessage(
+			isoObject.gameObject.SendMessage(
 				"OnIsoTriggerEnter",
 				IsoUtils.IsoConvertCollider(collider),
 				SendMessageOptions.DontRequireReceiver);
 		}
 
 		void OnTriggerExit(Collider collider) {
-			IsoObject.gameObject.SendMessage(
+			isoObject.gameObject.SendMessage(
 				"OnIsoTriggerExit",
 				IsoUtils.IsoConvertCollider(collider),
 				SendMessageOptions.DontRequireReceiver);
 		}
 
 		void OnCollisionEnter(Collision collision) {
-			IsoObject.gameObject.SendMessage(
+			isoObject.gameObject.SendMessage(
 				"OnIsoCollisionEnter",
 				new IsoCollision(collision),
 				SendMessageOptions.DontRequireReceiver);
 		}
 		
 		void OnCollisionExit(Collision collision) {
-			IsoObject.gameObject.SendMessage(
+			isoObject.gameObject.SendMessage(
 				"OnIsoCollisionExit",
 				new IsoCollision(collision),
 				SendMessageOptions.DontRequireReceiver);

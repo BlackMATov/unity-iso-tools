@@ -10,67 +10,67 @@ namespace IsoTools {
 		protected abstract Collider CreateRealCollider(GameObject target);
 
 		Collider _realCollider = null;
-		protected Collider RealCollider {
+		protected Collider realCollider {
 			get { return _realCollider; }
 		}
 
-		protected GameObject IsoFakeObject {
+		protected GameObject fakeObject {
 			get {
 				var helper = IsoUtils.GetOrCreateComponent<IsoPhysicHelper>(gameObject);
-				return helper ? helper.IsoFakeObject : null;
+				return helper ? helper.isoFakeObject : null;
 			}
 		}
 
 		[SerializeField]
 		public PhysicMaterial _material  = null;
-		public PhysicMaterial Material {
+		public PhysicMaterial material {
 			get { return _material; }
 			set {
 				_material = value;
-				if ( RealCollider ) {
-					RealCollider.material = value;
+				if ( realCollider ) {
+					realCollider.material = value;
 				}
 			}
 		}
 
 		[SerializeField]
 		public bool _isTrigger = false;
-		public bool IsTrigger {
+		public bool isTrigger {
 			get { return _isTrigger; }
 			set {
 				_isTrigger = value;
-				if ( RealCollider ) {
-					RealCollider.isTrigger = value;
+				if ( realCollider ) {
+					realCollider.isTrigger = value;
 				}
 			}
 		}
 
-		public IsoRigidbody AttachedRigidbody {
+		public IsoRigidbody attachedRigidbody {
 			get {
-				return RealCollider
-					? IsoUtils.IsoConvertRigidbody(RealCollider.attachedRigidbody)
+				return realCollider
+					? IsoUtils.IsoConvertRigidbody(realCollider.attachedRigidbody)
 					: null;
 			}
 		}
 
-		public Bounds Bounds {
+		public Bounds bounds {
 			get {
-				return RealCollider
-					? RealCollider.bounds
+				return realCollider
+					? realCollider.bounds
 					: new Bounds();
 			}
 		}
 
 		public Vector3 ClosestPointOnBounds(Vector3 position) {
-			return RealCollider
-				? RealCollider.ClosestPointOnBounds(position)
+			return realCollider
+				? realCollider.ClosestPointOnBounds(position)
 				: Vector3.zero;
 		}
 
 		public bool Raycast(Ray ray, out IsoRaycastHit iso_hit_info, float max_distance) {
 			RaycastHit hit_info;
-			var result = RealCollider
-				? RealCollider.Raycast(ray, out hit_info, max_distance)
+			var result = realCollider
+				? realCollider.Raycast(ray, out hit_info, max_distance)
 				: false;
 			iso_hit_info = result ? new IsoRaycastHit(hit_info) : new IsoRaycastHit();
 			return result;
@@ -78,22 +78,22 @@ namespace IsoTools {
 
 		void Awake() {
 			var fake_collider_go = new GameObject();
-			fake_collider_go.transform.SetParent(IsoFakeObject.transform, false);
+			fake_collider_go.transform.SetParent(fakeObject.transform, false);
 			fake_collider_go.AddComponent<IsoFakeCollider>().Init(this);
 			_realCollider           = CreateRealCollider(fake_collider_go);
-			_realCollider.material  = Material;
-			_realCollider.isTrigger = IsTrigger;
+			_realCollider.material  = material;
+			_realCollider.isTrigger = isTrigger;
 		}
 
 		void OnEnable() {
-			if ( RealCollider ) {
-				RealCollider.enabled = true;
+			if ( realCollider ) {
+				realCollider.enabled = true;
 			}
 		}
 
 		void OnDisable() {
-			if ( RealCollider ) {
-				RealCollider.enabled = false;
+			if ( realCollider ) {
+				realCollider.enabled = false;
 			}
 		}
 
@@ -106,14 +106,14 @@ namespace IsoTools {
 
 		#if UNITY_EDITOR
 		protected virtual void Reset() {
-			Material  = null;
-			IsTrigger = false;
+			material  = null;
+			isTrigger = false;
 			EditorUtility.SetDirty(this);
 		}
 
 		protected virtual void OnValidate() {
-			Material  = _material;
-			IsTrigger = _isTrigger;
+			material  = _material;
+			isTrigger = _isTrigger;
 		}
 		#endif
 	}

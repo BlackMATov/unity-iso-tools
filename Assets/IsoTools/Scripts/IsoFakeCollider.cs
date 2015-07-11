@@ -9,7 +9,7 @@ namespace IsoTools {
 			_isoCollider = iso_collider;
 		}
 		
-		public IsoCollider IsoCollider {
+		public IsoCollider isoCollider {
 			get { return _isoCollider; }
 		}
 	}

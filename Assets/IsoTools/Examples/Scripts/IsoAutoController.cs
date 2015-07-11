@@ -3,15 +3,15 @@ using System.Collections;
 
 namespace IsoTools { namespace Examples {
 	public class IsoAutoController : MonoBehaviour {
-		public float StepTicks    = 0.5f;
-		public float StepRndTicks = 0.5f;
+		public float stepTicks    = 0.5f;
+		public float stepRndTicks = 0.5f;
 
 		void Start() {
 			StartCoroutine("Move");
 		}
 
 		WaitForSeconds RndWait() {
-			return new WaitForSeconds(StepTicks + Random.Range(0.0f, StepRndTicks));
+			return new WaitForSeconds(stepTicks + Random.Range(0.0f, stepRndTicks));
 		}
 
 		IEnumerator Move() {
@@ -19,13 +19,13 @@ namespace IsoTools { namespace Examples {
 			if ( iso_object ) {
 				for (;;) {
 					yield return RndWait();
-					iso_object.Position += new Vector3(1, 0, 0);
+					iso_object.position += new Vector3(1, 0, 0);
 					yield return RndWait();
-					iso_object.Position += new Vector3(0, 1, 0);
+					iso_object.position += new Vector3(0, 1, 0);
 					yield return RndWait();
-					iso_object.Position += new Vector3(-1, 0, 0);
+					iso_object.position += new Vector3(-1, 0, 0);
 					yield return RndWait();
-					iso_object.Position += new Vector3(0, -1, 0);
+					iso_object.position += new Vector3(0, -1, 0);
 				}
 			}
 		}

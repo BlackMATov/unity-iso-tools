@@ -3,18 +3,18 @@
 namespace IsoTools {
 	public struct IsoRaycastHit {
 
-		public IsoCollider  IsoCollider  { get; private set; }
-		public float        Distance     { get; private set; }
-		public Vector3      Normal       { get; private set; }
-		public Vector3      Point        { get; private set; }
-		public IsoRigidbody IsoRigidbody { get; private set; }
+		public IsoCollider  collider  { get; private set; }
+		public float        distance  { get; private set; }
+		public Vector3      normal    { get; private set; }
+		public Vector3      point     { get; private set; }
+		public IsoRigidbody rigidbody { get; private set; }
 
 		public IsoRaycastHit(RaycastHit hit_info) {
-			IsoCollider  = IsoUtils.IsoConvertCollider(hit_info.collider);
-			Distance     = hit_info.distance;
-			Normal       = hit_info.normal;
-			Point        = hit_info.point;
-			IsoRigidbody = IsoUtils.IsoConvertRigidbody(hit_info.rigidbody);
+			collider  = IsoUtils.IsoConvertCollider(hit_info.collider);
+			distance  = hit_info.distance;
+			normal    = hit_info.normal;
+			point     = hit_info.point;
+			rigidbody = IsoUtils.IsoConvertRigidbody(hit_info.rigidbody);
 		}
 	}
 } // namespace IsoTools

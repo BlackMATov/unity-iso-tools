@@ -6,7 +6,7 @@ namespace IsoTools {
 	public class IsoPhysicHelper : MonoBehaviour {
 
 		GameObject _isoFakeObject = null;
-		public GameObject IsoFakeObject {
+		public GameObject isoFakeObject {
 			get { return _isoFakeObject; }
 		}
 

@@ -13,16 +13,16 @@ namespace IsoTools {
 		//
 		// ---------------------------------------------------------------------
 
-		public static Vector3 Vec2OneX  { get { return new Vector2(1.0f, 0.0f); } }
-		public static Vector3 Vec2OneY  { get { return new Vector2(0.0f, 1.0f); } }
-		public static Vector3 Vec2OneXY { get { return new Vector2(1.0f, 1.0f); } }
+		public static Vector3 vec2OneX  { get { return new Vector2(1.0f, 0.0f); } }
+		public static Vector3 vec2OneY  { get { return new Vector2(0.0f, 1.0f); } }
+		public static Vector3 vec2OneXY { get { return new Vector2(1.0f, 1.0f); } }
 
-		public static Vector3 Vec3OneX  { get { return new Vector3(1.0f, 0.0f, 0.0f); } }
-		public static Vector3 Vec3OneY  { get { return new Vector3(0.0f, 1.0f, 0.0f); } }
-		public static Vector3 Vec3OneZ  { get { return new Vector3(0.0f, 0.0f, 1.0f); } }
-		public static Vector3 Vec3OneXY { get { return new Vector3(1.0f, 1.0f, 0.0f); } }
-		public static Vector3 Vec3OneYZ { get { return new Vector3(0.0f, 1.0f, 1.0f); } }
-		public static Vector3 Vec3OneXZ { get { return new Vector3(1.0f, 0.0f, 1.0f); } }
+		public static Vector3 vec3OneX  { get { return new Vector3(1.0f, 0.0f, 0.0f); } }
+		public static Vector3 vec3OneY  { get { return new Vector3(0.0f, 1.0f, 0.0f); } }
+		public static Vector3 vec3OneZ  { get { return new Vector3(0.0f, 0.0f, 1.0f); } }
+		public static Vector3 vec3OneXY { get { return new Vector3(1.0f, 1.0f, 0.0f); } }
+		public static Vector3 vec3OneYZ { get { return new Vector3(0.0f, 1.0f, 1.0f); } }
+		public static Vector3 vec3OneXZ { get { return new Vector3(1.0f, 0.0f, 1.0f); } }
 
 		// ---------------------------------------------------------------------
 		//
@@ -372,17 +372,17 @@ namespace IsoTools {
 
 		public static IsoCollider IsoConvertCollider(Collider collider) {
 			var fake_collider = collider ? collider.GetComponent<IsoFakeCollider>() : null;
-			return fake_collider ? fake_collider.IsoCollider : null;
+			return fake_collider ? fake_collider.isoCollider : null;
 		}
 		
 		public static IsoRigidbody IsoConvertRigidbody(Rigidbody rigidbody) {
 			var fake_rigidbody = rigidbody ? rigidbody.GetComponent<IsoFakeRigidbody>() : null;
-			return fake_rigidbody ? fake_rigidbody.IsoRigidbody : null;
+			return fake_rigidbody ? fake_rigidbody.isoRigidbody : null;
 		}
 		
 		public static GameObject IsoConvertGameObject(GameObject game_object) {
 			var fake_object = game_object ? game_object.GetComponent<IsoFakeObject>() : null;
-			var iso_object = fake_object ? fake_object.IsoObject : null;
+			var iso_object = fake_object ? fake_object.isoObject : null;
 			return iso_object ? iso_object.gameObject : null;
 		}
 		
@@ -452,7 +452,7 @@ namespace IsoTools {
 				Handles.RadiusHandle(
 					Quaternion.Euler(45.0f, 45.0f, 0.0f),
 					iso_world.IsoToScreen(pos),
-					radius * iso_world.TileSize * 2.0f);
+					radius * iso_world.tileSize * 2.0f);
 			}
 		}
 		#endif

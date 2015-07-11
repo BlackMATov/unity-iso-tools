@@ -12,31 +12,31 @@ namespace IsoTools {
 	public class IsoWorld : MonoBehaviour {
 
 		class ObjectInfo {
-			public int       Index;
-			public IsoObject IsoObject;
-			public Vector3   MinSector;
-			public Vector3   MaxSector;
+			public int       index;
+			public IsoObject isoObject;
+			public Vector3   minSector;
+			public Vector3   maxSector;
 
-			public bool      Visited;
-			public int       BeginDepend;
-			public int       EndDepend;
+			public bool      visited;
+			public int       beginDepend;
+			public int       endDepend;
 
 			public ObjectInfo(int index, IsoObject iso_object, Vector3 min_sector, Vector3 max_sector) {
-				Index     = index;
-				IsoObject = iso_object;
-				MinSector = min_sector;
-				MaxSector = max_sector;
+				this.index       = index;
+				this.isoObject   = iso_object;
+				this.minSector   = min_sector;
+				this.maxSector   = max_sector;
 			}
 
 			public void Init(int first_depend) {
-				Visited     = false;
-				BeginDepend = first_depend;
-				EndDepend   = first_depend;
+				this.visited     = false;
+				this.beginDepend = first_depend;
+				this.endDepend   = first_depend;
 			}
 		}
 
 		class SectorInfo {
-			public List<int> Objects = new List<int>();
+			public List<int> objects = new List<int>();
 		}
 
 		bool               _dirty           = true;
@@ -52,7 +52,7 @@ namespace IsoTools {
 		[SerializeField]
 		public float _tileSize = 32.0f;
 		/// <summary>Isometric tile size.</summary>
-		public float TileSize {
+		public float tileSize {
 			get { return _tileSize; }
 			set {
 				_tileSize = Mathf.Max(value, Mathf.Epsilon);
@@ -63,7 +63,7 @@ namespace IsoTools {
 		[SerializeField]
 		public float _minDepth = 0.0f;
 		/// <summary>Min sorting depth value.</summary>
-		public float MinDepth {
+		public float minDepth {
 			get { return _minDepth; }
 			set {
 				_minDepth = value;
@@ -74,7 +74,7 @@ namespace IsoTools {
 		[SerializeField]
 		public float _maxDepth = 100.0f;
 		/// <summary>Max sorting depth value.</summary>
-		public float MaxDepth {
+		public float maxDepth {
 			get { return _maxDepth; }
 			set {
 				_maxDepth = value;
@@ -114,7 +114,7 @@ namespace IsoTools {
 		public Vector2 IsoToScreen(Vector3 pos) {
 			return new Vector2(
 				(pos.x - pos.y),
-				(pos.x + pos.y) * 0.5f + pos.z) * TileSize;
+				(pos.x + pos.y) * 0.5f + pos.z) * tileSize;
 		}
 		
 		// ------------------------------------------------------------------------
@@ -128,7 +128,7 @@ namespace IsoTools {
 			return new Vector3(
 				(pos.x * 0.5f + pos.y),
 				(pos.y - pos.x * 0.5f),
-				0.0f) / TileSize;
+				0.0f) / tileSize;
 		}
 		
 		// ------------------------------------------------------------------------
@@ -141,7 +141,7 @@ namespace IsoTools {
 		// ------------------------------------------------------------------------
 		public Vector3 ScreenToIso(Vector2 pos, float iso_z) {
 			return IsoUtils.Vec3ChangeZ(
-				ScreenToIso(new Vector2(pos.x, pos.y - iso_z * TileSize)),
+				ScreenToIso(new Vector2(pos.x, pos.y - iso_z * tileSize)),
 				iso_z);
 		}
 
@@ -289,7 +289,7 @@ namespace IsoTools {
 			var objsSum = 0;
 			foreach ( var obj in _visibles ) {
 				++objsSum;
-				_objsSectorSize += Mathf.Max(obj.Size.x, obj.Size.y, obj.Size.z);
+				_objsSectorSize += IsoUtils.Vec3MaxF(obj.size);
 			}
 			_objsSectorSize = Mathf.Round(Mathf.Max(3.0f, _objsSectorSize / objsSum));
 		}
@@ -299,9 +299,9 @@ namespace IsoTools {
 			_objsMinNumPos = Vector3.zero;
 			_objsMaxNumPos = Vector3.one;
 			foreach ( var obj in _visibles ) {
-				var max_size = IsoUtils.Vec3Max(Vector3.one, obj.Size);
-				var min_npos = IsoUtils.Vec3DivFloor(obj.Position, _objsSectorSize);
-				var max_npos = IsoUtils.Vec3DivCeil(obj.Position + max_size, _objsSectorSize);
+				var max_size = IsoUtils.Vec3Max(Vector3.one, obj.size);
+				var min_npos = IsoUtils.Vec3DivFloor(obj.position, _objsSectorSize);
+				var max_npos = IsoUtils.Vec3DivCeil(obj.position + max_size, _objsSectorSize);
 				_objsMinNumPos = IsoUtils.Vec3Min(_objsMinNumPos, min_npos);
 				_objsMaxNumPos = IsoUtils.Vec3Max(_objsMaxNumPos, max_npos);
 				_objects.Add(new ObjectInfo(_objects.Count, obj, min_npos, max_npos));
@@ -316,12 +316,12 @@ namespace IsoTools {
 				_sectors.Add(new SectorInfo());
 			}
 			foreach ( var obj in _objects ) {
-				obj.MinSector -= _objsMinNumPos;
-				obj.MaxSector -= _objsMinNumPos;
-				IsoUtils.LookUpCube(obj.MinSector, obj.MaxSector, p => {
+				obj.minSector -= _objsMinNumPos;
+				obj.maxSector -= _objsMinNumPos;
+				IsoUtils.LookUpCube(obj.minSector, obj.maxSector, p => {
 					var sector = FindSector(p);
 					if ( sector != null ) {
-						sector.Objects.Add(obj.Index);
+						sector.objects.Add(obj.index);
 					}
 				});
 			}
@@ -331,14 +331,14 @@ namespace IsoTools {
 			_depends.Clear();
 			foreach ( var obj_a in _objects ) {
 				obj_a.Init(_depends.Count);
-				var obj_ao = obj_a.IsoObject;
-				IsoUtils.LookUpCube(obj_a.MinSector, obj_a.MaxSector, num_pos => {
+				var obj_ao = obj_a.isoObject;
+				IsoUtils.LookUpCube(obj_a.minSector, obj_a.maxSector, num_pos => {
 					LookUpSectorDepends(num_pos, sec => {
-						foreach ( var obj_bi in sec.Objects ) {
-							var obj_bo = _objects[obj_bi].IsoObject;
-							if ( obj_ao != obj_bo && IsDepends(obj_ao.Position, obj_ao.Size, obj_bo.Position, obj_bo.Size) ) {
+						foreach ( var obj_bi in sec.objects ) {
+							var obj_bo = _objects[obj_bi].isoObject;
+							if ( obj_ao != obj_bo && IsDepends(obj_ao.position, obj_ao.size, obj_bo.position, obj_bo.size) ) {
 								_depends.Add(obj_bi);
-								++obj_a.EndDepend;
+								++obj_a.endDepend;
 							}
 						}
 					});
@@ -347,7 +347,7 @@ namespace IsoTools {
 		}
 
 		void PlaceAllObjects() {
-			var depth = MinDepth;
+			var depth = minDepth;
 			foreach ( var info in _objects ) {
 				depth = PlaceObject(info, depth);
 			}
@@ -362,17 +362,17 @@ namespace IsoTools {
 		}
 		
 		float PlaceObject(ObjectInfo info, float depth) {
-			if ( info.Visited ) {
+			if ( info.visited ) {
 				return depth;
 			}
-			info.Visited = true;
-			for ( var i = info.BeginDepend; i < info.EndDepend && i < _depends.Count; ++i ) {
+			info.visited = true;
+			for ( var i = info.beginDepend; i < info.endDepend && i < _depends.Count; ++i ) {
 				var obj_index = _depends[i];
 				var obj = _objects[obj_index];
 				depth = PlaceObject(obj, depth);
 			}
-			PlaceObject(info.IsoObject, depth);
-			return depth + (MaxDepth - MinDepth) / _objects.Count;
+			PlaceObject(info.isoObject, depth);
+			return depth + (maxDepth - minDepth) / _objects.Count;
 		}
 
 		void StepSort() {
@@ -407,15 +407,15 @@ namespace IsoTools {
 
 		#if UNITY_EDITOR
 		void Reset() {
-			TileSize = 32.0f;
-			MinDepth = 0.0f;
-			MaxDepth = 100.0f;
+			tileSize = 32.0f;
+			minDepth = 0.0f;
+			maxDepth = 100.0f;
 		}
 		
 		void OnValidate() {
-			TileSize = _tileSize;
-			MinDepth = _minDepth;
-			MaxDepth = _maxDepth;
+			tileSize = _tileSize;
+			minDepth = _minDepth;
+			maxDepth = _maxDepth;
 		}
 
 		void OnRenderObject() {

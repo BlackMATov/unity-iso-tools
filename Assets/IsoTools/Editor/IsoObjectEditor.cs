@@ -22,15 +22,15 @@ namespace IsoTools {
 				_iso_zpositions = targets
 					.Where(p => p as IsoObject)
 					.Select(p => p as IsoObject)
-					.ToDictionary(p => p, p => p.Position.z);
+					.ToDictionary(p => p, p => p.position.z);
 				_center = _viewCenter = _positions.Aggregate(Vector3.zero, (AccIn, p) => {
-					return AccIn + IsoUtils.Vec3FromVec2(iso_world.IsoToScreen(p.Key.Position + p.Key.Size * 0.5f));
+					return AccIn + IsoUtils.Vec3FromVec2(iso_world.IsoToScreen(p.Key.position + p.Key.size * 0.5f));
 				}) / _positions.Count;
 			}
 		}
 
 		bool IsAnyAlignment {
-			get { return _positions.Keys.Any(p => p.Alignment); }
+			get { return _positions.Keys.Any(p => p.isAlignment); }
 		}
 
 		void AlignmentSelection() {
@@ -41,7 +41,7 @@ namespace IsoTools {
 		}
 
 		void AlignmentIsoObject(IsoObject iso_object) {
-			iso_object.Position = iso_object.TilePosition;
+			iso_object.position = iso_object.tilePosition;
 			iso_object.FixTransform();
 		}
 
@@ -51,12 +51,12 @@ namespace IsoTools {
 			return _iso_zpositions.Aggregate(0.0f, (AccIn, pair) => {
 				var iso_object = pair.Key;
 				var iso_orig_z = pair.Value;
-				iso_object.PositionZ = iso_orig_z + delta;
+				iso_object.positionZ = iso_orig_z + delta;
 				iso_object.FixTransform();
 				if ( is_any_alignment ) {
 					AlignmentIsoObject(iso_object);
 				}
-				var z_delta = iso_object.Position.z - iso_orig_z;
+				var z_delta = iso_object.position.z - iso_orig_z;
 				return Mathf.Abs(z_delta) > Mathf.Abs(AccIn) ? z_delta : AccIn;
 			});
 		}
@@ -81,10 +81,10 @@ namespace IsoTools {
 			var iso_world = GameObject.FindObjectOfType<IsoWorld>();
 			if ( iso_world ) {
 				Handles.color = Handles.zAxisColor;
-				var delta = Handles.Slider(_viewCenter, IsoUtils.Vec3OneY) - _viewCenter;
+				var delta = Handles.Slider(_viewCenter, IsoUtils.vec3OneY) - _viewCenter;
 				if ( Mathf.Abs(delta.y) > Mathf.Epsilon ) {
-					float tmp_y = ZMoveIsoObjects((_viewCenter.y - _center.y + delta.y) / iso_world.TileSize);
-					_viewCenter = _center + IsoUtils.Vec3FromY(tmp_y * iso_world.TileSize);
+					float tmp_y = ZMoveIsoObjects((_viewCenter.y - _center.y + delta.y) / iso_world.tileSize);
+					_viewCenter = _center + IsoUtils.Vec3FromY(tmp_y * iso_world.tileSize);
 				}
 			}
 		}
@@ -134,15 +134,18 @@ namespace IsoTools {
 		}
 
 		void OnDisable() {
-			Tools.hidden = false;
+			if ( Tools.hidden ) {
+				Tools.hidden = false;
+				Tools.current = Tool.Move;
+			}
 		}
 
 		void OnSceneGUI() {
 			if ( Tools.current == Tool.Move ) {
 				Tools.hidden = true;
 				ZMoveSlider();
-				XYMoveSlider(Handles.xAxisColor, IsoUtils.Vec3OneX);
-				XYMoveSlider(Handles.yAxisColor, IsoUtils.Vec3OneY);
+				XYMoveSlider(Handles.xAxisColor, IsoUtils.vec3OneX);
+				XYMoveSlider(Handles.yAxisColor, IsoUtils.vec3OneY);
 				XYMoveRectangle();
 			} else {
 				Tools.hidden = false;

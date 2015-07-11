@@ -9,7 +9,7 @@ namespace IsoTools {
 			_isoRigidbody = iso_rigidbody;
 		}
 		
-		public IsoRigidbody IsoRigidbody {
+		public IsoRigidbody isoRigidbody {
 			get { return _isoRigidbody; }
 		}
 	}

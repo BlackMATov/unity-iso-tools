@@ -18,13 +18,13 @@ namespace IsoTools { namespace Examples {
 		void OnIsoCollisionEnter(IsoCollision iso_collision) {
 			Debug.LogFormat(
 				"OnIsoCollisionEnter. self:{0} other:{1}",
-				gameObject.name, iso_collision.GameObject.name);
+				gameObject.name, iso_collision.gameObject.name);
 		}
 
 		void OnIsoCollisionExit(IsoCollision iso_collision) {
 			Debug.LogFormat(
 				"OnIsoCollisionExit. self:{0} other:{1}",
-				gameObject.name, iso_collision.GameObject.name);
+				gameObject.name, iso_collision.gameObject.name);
 		}
 	}
 }} // namespace IsoTools::Examples

@@ -10,136 +10,136 @@ namespace IsoTools {
 	public class IsoRigidbody : MonoBehaviour {
 
 		Rigidbody _realRigidbody = null;
-		protected Rigidbody RealRigidbody {
+		protected Rigidbody realRigidbody {
 			get { return _realRigidbody; }
 		}
 
-		protected GameObject IsoFakeObject {
+		protected GameObject fakeObject {
 			get {
 				var helper = IsoUtils.GetOrCreateComponent<IsoPhysicHelper>(gameObject);
-				return helper ? helper.IsoFakeObject : null;
+				return helper ? helper.isoFakeObject : null;
 			}
 		}
 
 		[SerializeField]
 		public bool _isKinematic = false;
-		public bool IsKinematic {
+		public bool isKinematic {
 			get { return _isKinematic; }
 			set {
 				_isKinematic = value;
-				if ( RealRigidbody ) {
-					RealRigidbody.isKinematic = value;
+				if ( realRigidbody ) {
+					realRigidbody.isKinematic = value;
 				}
 			}
 		}
 
 		[SerializeField]
 		public RigidbodyInterpolation _interpolation = RigidbodyInterpolation.None;
-		public RigidbodyInterpolation Interpolation {
+		public RigidbodyInterpolation interpolation {
 			get { return _interpolation; }
 			set {
 				_interpolation = value;
-				if ( RealRigidbody ) {
-					RealRigidbody.interpolation = value;
+				if ( realRigidbody ) {
+					realRigidbody.interpolation = value;
 				}
 			}
 		}
 
 		[SerializeField]
 		public CollisionDetectionMode _collisionDetectionMode = CollisionDetectionMode.Discrete;
-		public CollisionDetectionMode CollisionDetectionMode {
+		public CollisionDetectionMode collisionDetectionMode {
 			get { return _collisionDetectionMode; }
 			set {
 				_collisionDetectionMode = value;
-				if ( RealRigidbody ) {
-					RealRigidbody.collisionDetectionMode = value;
+				if ( realRigidbody ) {
+					realRigidbody.collisionDetectionMode = value;
 				}
 			}
 		}
 
-		public Vector3 CenterOfMass {
-			get { return RealRigidbody ? RealRigidbody.centerOfMass : Vector3.zero; }
+		public Vector3 centerOfMass {
+			get { return realRigidbody ? realRigidbody.centerOfMass : Vector3.zero; }
 			set {
-				if ( RealRigidbody ) {
-					RealRigidbody.centerOfMass = value;
+				if ( realRigidbody ) {
+					realRigidbody.centerOfMass = value;
 				}
 			}
 		}
 
-		public float Drag {
-			get { return RealRigidbody ? RealRigidbody.drag : 0.0f; }
+		public float drag {
+			get { return realRigidbody ? realRigidbody.drag : 0.0f; }
 			set {
-				if ( RealRigidbody ) {
-					RealRigidbody.drag = value;
+				if ( realRigidbody ) {
+					realRigidbody.drag = value;
 				}
 			}
 		}
 
-		public Vector3 InertiaTensor {
-			get { return RealRigidbody ? RealRigidbody.inertiaTensor : Vector3.zero; }
+		public Vector3 inertiaTensor {
+			get { return realRigidbody ? realRigidbody.inertiaTensor : Vector3.zero; }
 			set {
-				if ( RealRigidbody ) {
-					RealRigidbody.inertiaTensor = value;
+				if ( realRigidbody ) {
+					realRigidbody.inertiaTensor = value;
 				}
 			}
 		}
 
-		public float Mass {
-			get { return RealRigidbody ? RealRigidbody.mass : 0.0f; }
+		public float mass {
+			get { return realRigidbody ? realRigidbody.mass : 0.0f; }
 			set {
-				if ( RealRigidbody ) {
-					RealRigidbody.mass = value;
+				if ( realRigidbody ) {
+					realRigidbody.mass = value;
 				}
 			}
 		}
 
-		public float MaxDepenetrationVelocity {
-			get { return RealRigidbody ? RealRigidbody.maxDepenetrationVelocity : 0.0f; }
+		public float maxDepenetrationVelocity {
+			get { return realRigidbody ? realRigidbody.maxDepenetrationVelocity : 0.0f; }
 			set {
-				if ( RealRigidbody ) {
-					RealRigidbody.maxDepenetrationVelocity = value;
+				if ( realRigidbody ) {
+					realRigidbody.maxDepenetrationVelocity = value;
 				}
 			}
 		}
 
-		public float SleepThreshold {
-			get { return RealRigidbody ? RealRigidbody.sleepThreshold : 0.0f; }
+		public float sleepThreshold {
+			get { return realRigidbody ? realRigidbody.sleepThreshold : 0.0f; }
 			set {
-				if ( RealRigidbody ) {
-					RealRigidbody.sleepThreshold = value;
+				if ( realRigidbody ) {
+					realRigidbody.sleepThreshold = value;
 				}
 			}
 		}
 
-		public int SolverIterationCount {
-			get { return RealRigidbody ? RealRigidbody.solverIterationCount : 0; }
+		public int solverIterationCount {
+			get { return realRigidbody ? realRigidbody.solverIterationCount : 0; }
 			set {
-				if ( RealRigidbody ) {
-					RealRigidbody.solverIterationCount = value;
+				if ( realRigidbody ) {
+					realRigidbody.solverIterationCount = value;
 				}
 			}
 		}
 		
-		public bool UseGravity {
-			get { return RealRigidbody ? RealRigidbody.useGravity : false; }
+		public bool useGravity {
+			get { return realRigidbody ? realRigidbody.useGravity : false; }
 			set {
-				if ( RealRigidbody ) {
-					RealRigidbody.useGravity = value;
+				if ( realRigidbody ) {
+					realRigidbody.useGravity = value;
 				}
 			}
 		}
 		
-		public Vector3 Velocity {
-			get { return RealRigidbody ? RealRigidbody.velocity : Vector3.zero; }
+		public Vector3 velocity {
+			get { return realRigidbody ? realRigidbody.velocity : Vector3.zero; }
 			set {
-				if ( RealRigidbody ) {
-					RealRigidbody.velocity = value;
+				if ( realRigidbody ) {
+					realRigidbody.velocity = value;
 				}
 			}
 		}
 		
 		public Vector3 worldCenterOfMass {
-			get { return RealRigidbody ? RealRigidbody.worldCenterOfMass : Vector3.zero; }
+			get { return realRigidbody ? realRigidbody.worldCenterOfMass : Vector3.zero; }
 		}
 
 		public void AddExplosionForce(
@@ -163,8 +163,8 @@ namespace IsoTools {
 			float explosion_force, Vector3 explosion_position, float explosion_radius,
 			float upwards_modifier, ForceMode mode)
 		{
-			if ( RealRigidbody ) {
-				RealRigidbody.AddExplosionForce(
+			if ( realRigidbody ) {
+				realRigidbody.AddExplosionForce(
 					explosion_force, explosion_position, explosion_radius,
 					upwards_modifier, mode);
 			}
@@ -175,8 +175,8 @@ namespace IsoTools {
 		}
 
 		public void AddForce(Vector3 force, ForceMode mode) {
-			if ( RealRigidbody ) {
-				RealRigidbody.AddForce(force, mode);
+			if ( realRigidbody ) {
+				realRigidbody.AddForce(force, mode);
 			}
 		}
 
@@ -185,8 +185,8 @@ namespace IsoTools {
 		}
 		
 		public void AddRelativeForce(Vector3 force, ForceMode mode) {
-			if ( RealRigidbody ) {
-				RealRigidbody.AddRelativeForce(force, mode);
+			if ( realRigidbody ) {
+				realRigidbody.AddRelativeForce(force, mode);
 			}
 		}
 
@@ -195,38 +195,38 @@ namespace IsoTools {
 		}
 
 		public void AddForceAtPosition(Vector3 force, Vector3 position, ForceMode mode) {
-			if ( RealRigidbody ) {
-				RealRigidbody.AddForceAtPosition(force, position, mode);
+			if ( realRigidbody ) {
+				realRigidbody.AddForceAtPosition(force, position, mode);
 			}
 		}
 
 		public Vector3 ClosestPointOnBounds(Vector3 position) {
-			return RealRigidbody
-				? RealRigidbody.ClosestPointOnBounds(position)
+			return realRigidbody
+				? realRigidbody.ClosestPointOnBounds(position)
 				: Vector3.zero;
 		}
 
 		public bool IsSleeping() {
-			return RealRigidbody
-				? RealRigidbody.IsSleeping()
+			return realRigidbody
+				? realRigidbody.IsSleeping()
 				: false;
 		}
 
 		public void SetDensity(float density) {
-			if ( RealRigidbody ) {
-				RealRigidbody.SetDensity(density);
+			if ( realRigidbody ) {
+				realRigidbody.SetDensity(density);
 			}
 		}
 
 		public void Sleep() {
-			if ( RealRigidbody ) {
-				RealRigidbody.Sleep();
+			if ( realRigidbody ) {
+				realRigidbody.Sleep();
 			}
 		}
 
 		public void WakeUp() {
-			if ( RealRigidbody ) {
-				RealRigidbody.WakeUp();
+			if ( realRigidbody ) {
+				realRigidbody.WakeUp();
 			}
 		}
 
@@ -236,8 +236,8 @@ namespace IsoTools {
 
 		public bool SweepTest(Vector3 direction, out IsoRaycastHit iso_hit_info, float max_distance) {
 			RaycastHit hit_info;
-			var result = RealRigidbody
-				? RealRigidbody.SweepTest(direction, out hit_info, max_distance)
+			var result = realRigidbody
+				? realRigidbody.SweepTest(direction, out hit_info, max_distance)
 				: false;
 			iso_hit_info = result ? new IsoRaycastHit(hit_info) : new IsoRaycastHit();
 			return result;
@@ -248,35 +248,35 @@ namespace IsoTools {
 		}
 
 		public IsoRaycastHit[] SweepTestAll(Vector3 direction, float max_distance) {
-			return RealRigidbody
-				? IsoUtils.IsoConvertRaycastHits(RealRigidbody.SweepTestAll(direction, max_distance))
+			return realRigidbody
+				? IsoUtils.IsoConvertRaycastHits(realRigidbody.SweepTestAll(direction, max_distance))
 				: new IsoRaycastHit[0];
 		}
 		
 		void Awake() {
-			IsoFakeObject.AddComponent<IsoFakeRigidbody>().Init(this);
-			_realRigidbody                        = IsoFakeObject.AddComponent<Rigidbody>();
+			fakeObject.AddComponent<IsoFakeRigidbody>().Init(this);
+			_realRigidbody                        = fakeObject.AddComponent<Rigidbody>();
 			_realRigidbody.freezeRotation         = true;
-			_realRigidbody.isKinematic            = IsKinematic;
-			_realRigidbody.interpolation          = Interpolation;
-			_realRigidbody.collisionDetectionMode = CollisionDetectionMode;
+			_realRigidbody.isKinematic            = isKinematic;
+			_realRigidbody.interpolation          = interpolation;
+			_realRigidbody.collisionDetectionMode = collisionDetectionMode;
 		}
 
 		void OnEnable() {
-			if ( RealRigidbody ) {
-				RealRigidbody.detectCollisions = true;
+			if ( realRigidbody ) {
+				realRigidbody.detectCollisions = true;
 			}
 		}
 		
 		void OnDisable() {
-			if ( RealRigidbody ) {
-				RealRigidbody.detectCollisions = false;
+			if ( realRigidbody ) {
+				realRigidbody.detectCollisions = false;
 			}
 		}
 		
 		void OnDestroy() {
 			if ( _realRigidbody ) {
-				Destroy(IsoFakeObject.GetComponent<IsoFakeRigidbody>());
+				Destroy(fakeObject.GetComponent<IsoFakeRigidbody>());
 				Destroy(_realRigidbody);
 				_realRigidbody = null;
 			}
@@ -284,17 +284,17 @@ namespace IsoTools {
 
 		#if UNITY_EDITOR
 		void Reset() {
-			IsKinematic            = false;
-			Interpolation          = RigidbodyInterpolation.None;
-			CollisionDetectionMode = CollisionDetectionMode.Discrete;
+			isKinematic            = false;
+			interpolation          = RigidbodyInterpolation.None;
+			collisionDetectionMode = CollisionDetectionMode.Discrete;
 			EditorUtility.SetDirty(this);
 		}
 		
 		void OnValidate() {
-			if ( RealRigidbody ) {
-				RealRigidbody.isKinematic            = IsKinematic;
-				RealRigidbody.interpolation          = Interpolation;
-				RealRigidbody.collisionDetectionMode = CollisionDetectionMode;
+			if ( realRigidbody ) {
+				realRigidbody.isKinematic            = isKinematic;
+				realRigidbody.interpolation          = interpolation;
+				realRigidbody.collisionDetectionMode = collisionDetectionMode;
 			}
 		}
 		#endif
