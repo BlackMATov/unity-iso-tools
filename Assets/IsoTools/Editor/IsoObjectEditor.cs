@@ -29,7 +29,7 @@ namespace IsoTools {
 			}
 		}
 
-		bool IsAnyAlignment {
+		bool isAnyAlignment {
 			get { return _positions.Keys.Any(p => p.isAlignment); }
 		}
 
@@ -47,7 +47,7 @@ namespace IsoTools {
 
 		float ZMoveIsoObjects(float delta) {
 			Undo.RecordObjects(_iso_zpositions.Keys.ToArray(), "Move");
-			var is_any_alignment = IsAnyAlignment;
+			var is_any_alignment = isAnyAlignment;
 			return _iso_zpositions.Aggregate(0.0f, (AccIn, pair) => {
 				var iso_object = pair.Key;
 				var iso_orig_z = pair.Value;
@@ -63,7 +63,7 @@ namespace IsoTools {
 
 		Vector3 XYMoveIsoObjects(Vector3 delta) {
 			Undo.RecordObjects(_positions.Keys.ToArray(), "Move");
-			var is_any_alignment = IsAnyAlignment;
+			var is_any_alignment = isAnyAlignment;
 			return _positions.Aggregate(Vector3.zero, (AccIn, pair) => {
 				var iso_object = pair.Key;
 				var iso_orig_p = pair.Value;

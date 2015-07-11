@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Linq;
 using System.Collections.Generic;
 
 #if UNITY_EDITOR
@@ -7,8 +6,7 @@ using UnityEditor;
 #endif
 
 namespace IsoTools {
-	[ExecuteInEditMode]
-	[DisallowMultipleComponent]
+	[ExecuteInEditMode, DisallowMultipleComponent]
 	public class IsoWorld : MonoBehaviour {
 
 		class ObjectInfo {
@@ -49,9 +47,14 @@ namespace IsoTools {
 		Vector3            _objsMaxNumPos   = Vector3.zero;
 		Vector3            _objsNumPosCount = Vector3.zero;
 
+		// ------------------------------------------------------------------------
+		//
+		// Public
+		//
+		// ------------------------------------------------------------------------
+
 		[SerializeField]
 		public float _tileSize = 32.0f;
-		/// <summary>Isometric tile size.</summary>
 		public float tileSize {
 			get { return _tileSize; }
 			set {
@@ -62,7 +65,6 @@ namespace IsoTools {
 
 		[SerializeField]
 		public float _minDepth = 0.0f;
-		/// <summary>Min sorting depth value.</summary>
 		public float minDepth {
 			get { return _minDepth; }
 			set {
@@ -73,7 +75,6 @@ namespace IsoTools {
 		
 		[SerializeField]
 		public float _maxDepth = 100.0f;
-		/// <summary>Max sorting depth value.</summary>
 		public float maxDepth {
 			get { return _maxDepth; }
 			set {
@@ -81,64 +82,31 @@ namespace IsoTools {
 				ChangeSortingProperty();
 			}
 		}
-		
-		// ------------------------------------------------------------------------
-		/// <summary>
-		/// Marks world for resorting.
-		/// </summary>
-		// ------------------------------------------------------------------------
+
 		public void MarkDirty() {
 			_dirty = true;
 			MarkEditorWorldDirty();
 		}
 
-		// ------------------------------------------------------------------------
-		/// <summary>
-		/// Marks world for resorting.
-		/// </summary>
-		/// <param name="iso_object">Isometric object for resorting.</param>
-		// ------------------------------------------------------------------------ 
 		public void MarkDirty(IsoObject iso_object) {
 			if ( !_dirty && iso_object && _visibles.Contains(iso_object) ) {
 				MarkDirty();
 			}
 		}
-		
-		// ------------------------------------------------------------------------
-		/// <summary>
-		/// Convert isometric coordinates to screen coordinates
-		/// </summary>
-		/// <returns>Screen coordinates</returns>
-		/// <param name="pos">Isometric coordinates.</param>
-		// ------------------------------------------------------------------------
+
 		public Vector2 IsoToScreen(Vector3 pos) {
 			return new Vector2(
 				(pos.x - pos.y),
 				(pos.x + pos.y) * 0.5f + pos.z) * tileSize;
 		}
-		
-		// ------------------------------------------------------------------------
-		/// <summary>
-		/// Convert screen coordinates to isometric coordinates
-		/// </summary>
-		/// <returns>Isometric coordinates</returns>
-		/// <param name="pos">Screen coordinates.</param>
-		// ------------------------------------------------------------------------
+
 		public Vector3 ScreenToIso(Vector2 pos) {
 			return new Vector3(
 				(pos.x * 0.5f + pos.y),
 				(pos.y - pos.x * 0.5f),
 				0.0f) / tileSize;
 		}
-		
-		// ------------------------------------------------------------------------
-		/// <summary>
-		/// Convert screen coordinates to isometric coordinates with specified isometric height
-		/// </summary>
-		/// <returns>Isometric coordinates</returns>
-		/// <param name="pos">Screen coordinates.</param>
-		/// <param name="iso_z">Point isometric height.</param>
-		// ------------------------------------------------------------------------
+
 		public Vector3 ScreenToIso(Vector2 pos, float iso_z) {
 			return IsoUtils.Vec3ChangeZ(
 				ScreenToIso(new Vector2(pos.x, pos.y - iso_z * tileSize)),
@@ -172,9 +140,7 @@ namespace IsoTools {
 
 		void MarkEditorWorldDirty() {
 		#if UNITY_EDITOR
-			if ( Application.isEditor ) {
-				EditorUtility.SetDirty(this);
-			}
+			EditorUtility.SetDirty(this);
 		#endif
 		}
 
@@ -387,6 +353,12 @@ namespace IsoTools {
 				_dirty = false;
 			}
 		}
+
+		// ------------------------------------------------------------------------
+		//
+		// Messages
+		//
+		// ------------------------------------------------------------------------
 
 		void Start() {
 			ChangeSortingProperty();
