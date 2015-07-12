@@ -254,8 +254,8 @@ namespace IsoTools {
 		}
 		
 		void Awake() {
-			fakeObject.AddComponent<IsoFakeRigidbody>().Init(this);
-			_realRigidbody                        = fakeObject.AddComponent<Rigidbody>();
+			IsoUtils.GetOrCreateComponent<IsoFakeRigidbody>(fakeObject).Init(this);
+			_realRigidbody                        = IsoUtils.GetOrCreateComponent<Rigidbody>(fakeObject);
 			_realRigidbody.freezeRotation         = true;
 			_realRigidbody.isKinematic            = isKinematic;
 			_realRigidbody.interpolation          = interpolation;

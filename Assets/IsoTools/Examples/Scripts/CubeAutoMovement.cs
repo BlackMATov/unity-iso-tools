@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace IsoTools { namespace Examples {
-	public class IsoAutoController : MonoBehaviour {
+namespace IsoTools.Examples {
+	public class CubeAutoMovement : MonoBehaviour {
 		public float stepTicks    = 0.5f;
 		public float stepRndTicks = 0.5f;
 
@@ -30,4 +30,4 @@ namespace IsoTools { namespace Examples {
 			}
 		}
 	}
-}} // namespace IsoTools::Examples
+} // namespace IsoTools.Examples
