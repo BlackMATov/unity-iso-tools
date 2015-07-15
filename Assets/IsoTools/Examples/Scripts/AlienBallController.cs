@@ -4,15 +4,26 @@ using System.Collections;
 namespace IsoTools.Examples {
 	[RequireComponent(typeof(IsoRigidbody))]
 	public class AlienBallController : MonoBehaviour {
-		
+
+		IsoObject    _isoObject    = null;
 		IsoRigidbody _isoRigidbody = null;
 		
 		void Start() {
+			_isoObject = GetComponent<IsoObject>();
+			if ( !_isoObject ) {
+				throw new UnityException("AlienBallController. IsoObject component not found!");
+			}
 			_isoRigidbody = GetComponent<IsoRigidbody>();
 			if ( !_isoRigidbody ) {
 				throw new UnityException("AlienBallController. IsoRigidbody component not found!");
 			}
 			StartCoroutine("AddRndForce");
+		}
+
+		void Update() {
+			if ( _isoObject.positionZ < 0.0f ) {
+				Destroy(gameObject);
+			}
 		}
 
 		IEnumerator AddRndForce() {

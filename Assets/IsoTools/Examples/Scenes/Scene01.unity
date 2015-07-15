@@ -4040,6 +4040,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c4844f94ab7c465d89b59b1741b9f39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxAlienCount: 10
   alienBallPrefab: {fileID: 124842, guid: 06bcc27fb69e442558af5bdf0b8e6f86, type: 2}
 --- !u!4 &1378187733
 Transform:
@@ -4993,17 +4994,17 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1927620576}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 90}
+  m_LocalScale: {x: .0153061226, y: .0153061226, z: .0153061226}
   m_Children:
   - {fileID: 527780124}
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 3}
+  m_SizeDelta: {x: 960, y: 600}
+  m_Pivot: {x: .5, y: .5}
 --- !u!114 &1927620578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5049,7 +5050,7 @@ Canvas:
   m_GameObject: {fileID: 1927620576}
   m_Enabled: 1
   serializedVersion: 2
-  m_RenderMode: 1
+  m_RenderMode: 2
   m_Camera: {fileID: 1054981429}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
