@@ -64,7 +64,7 @@ namespace IsoTools {
 		}
 
 		[SerializeField]
-		public float _minDepth = 0.0f;
+		public float _minDepth = 1.0f;
 		public float minDepth {
 			get { return _minDepth; }
 			set {
