@@ -380,7 +380,7 @@ namespace IsoTools {
 		#if UNITY_EDITOR
 		void Reset() {
 			tileSize = 32.0f;
-			minDepth = 0.0f;
+			minDepth = 1.0f;
 			maxDepth = 100.0f;
 		}
 		
