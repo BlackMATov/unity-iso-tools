@@ -182,8 +182,12 @@ namespace IsoTools {
 
 		public void FixTransform() {
 		#if UNITY_EDITOR
-			if ( !Application.isPlaying && isAlignment ) {
-				_position = tilePosition;
+			if ( !Application.isPlaying ) {
+				if ( isAlignment ) {
+					_position = tilePosition;
+				} else if ( Selection.gameObjects.Length == 1 ) {
+					SnappingProcess();
+				}
 			}
 		#endif
 			transform.position = IsoUtils.Vec3ChangeZ(
@@ -198,6 +202,29 @@ namespace IsoTools {
 			position = isoWorld.ScreenToIso(
 				transform.position,
 				positionZ);
+		}
+
+		void SnappingProcess() {
+			var pos_a = position;
+			var size_a = size;
+			var iso_objects = GameObject.FindObjectsOfType<IsoObject>();
+			foreach ( var iso_object_b in iso_objects ) {
+				if ( this != iso_object_b ) {
+					var delta = 0.2f;
+					var pos_b = iso_object_b.position;
+					var size_b = iso_object_b.size;
+					for ( var i = 0; i < 3; ++i ) {
+						var d0 = Mathf.Abs(pos_a[i] - pos_b[i]);
+						var d1 = Mathf.Abs(pos_a[i] + size_a[i] - pos_b[i]);
+						var d2 = Mathf.Abs(pos_a[i] - pos_b[i] - size_b[i]);
+						var d3 = Mathf.Abs(pos_a[i] + size_a[i] - pos_b[i] - size_b[i]);
+						if ( d0 > Mathf.Epsilon && d0 < delta ) _position = IsoUtils.Vec3ChangeI(position, i, pos_b[i]);
+						if ( d1 > Mathf.Epsilon && d1 < delta ) _position = IsoUtils.Vec3ChangeI(position, i, pos_b[i] - size_a[i]);
+						if ( d2 > Mathf.Epsilon && d2 < delta ) _position = IsoUtils.Vec3ChangeI(position, i, pos_b[i] + size_b[i]);
+						if ( d3 > Mathf.Epsilon && d3 < delta ) _position = IsoUtils.Vec3ChangeI(position, i, pos_b[i] + size_b[i] - size_a[i]);
+					}
+				}
+			}
 		}
 
 		void FixLastProperties() {

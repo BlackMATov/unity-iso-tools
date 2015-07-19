@@ -294,6 +294,12 @@ namespace IsoTools {
 			return new Vector2(v.x, y);
 		}
 
+		public static Vector2 Vec2ChangeI(Vector2 v, int index, float n) {
+			var c = v;
+			c[index] = n;
+			return c;
+		}
+
 		// -----------------------------
 		// Vec3Change
 		// -----------------------------
@@ -320,6 +326,12 @@ namespace IsoTools {
 		
 		public static Vector3 Vec3ChangeXZ(Vector3 v, float x, float z) {
 			return new Vector3(x, v.y, z);
+		}
+
+		public static Vector3 Vec3ChangeI(Vector3 v, int index, float n) {
+			var c = v;
+			c[index] = n;
+			return c;
 		}
 
 		// ---------------------------------------------------------------------
