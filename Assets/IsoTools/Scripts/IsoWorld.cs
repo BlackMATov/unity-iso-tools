@@ -14,6 +14,16 @@ namespace IsoTools {
 		HashSet<IsoObject> _visibles   = new HashSet<IsoObject>();
 		HashSet<IsoObject> _isoObjects = new HashSet<IsoObject>();
 
+		class SectorInfo {
+			public List<IsoObject> objects = new List<IsoObject>();
+		}
+
+		List<SectorInfo>   _sectors         = new List<SectorInfo>();
+		float              _objsSectorSize  = 0.0f;
+		Vector3            _objsMinNumPos   = Vector3.zero;
+		Vector3            _objsMaxNumPos   = Vector3.zero;
+		Vector3            _objsNumPosCount = Vector3.zero;
+		
 		// ------------------------------------------------------------------------
 		//
 		// Public
@@ -58,7 +68,7 @@ namespace IsoTools {
 		public void MarkDirty(IsoObject iso_object) {
 			if ( iso_object && _visibles.Contains(iso_object) ) {
 				MarkDirty();
-				SetupIsoObjectDepends(iso_object);
+				iso_object.Moved = true;
 			}
 		}
 
@@ -207,6 +217,135 @@ namespace IsoTools {
 		}
 		*/
 
+		int SectorIndex(Vector3 num_pos) {
+			return Mathf.FloorToInt(
+				num_pos.x + _objsNumPosCount.x * (num_pos.y + num_pos.z * _objsNumPosCount.y));
+		}
+		
+		Vector3 SectorNumPos(int index) {
+			var mz = _objsNumPosCount.x * _objsNumPosCount.y;
+			var my = _objsNumPosCount.x;
+			var vz = Mathf.FloorToInt(index / mz);
+			var vy = Mathf.FloorToInt((index - vz * mz) / my);
+			var vx = Mathf.FloorToInt(index - vz * mz - vy * my);
+			return new Vector3(vx, vy, vz);
+		}
+		
+		SectorInfo FindSector(Vector3 num_pos) {
+			if ( num_pos.x < 0 || num_pos.y < 0 || num_pos.z < 0 ) {
+				return null;
+			}
+			if ( num_pos.x >= _objsNumPosCount.x || num_pos.y >= _objsNumPosCount.y || num_pos.z >= _objsNumPosCount.z ) {
+				return null;
+			}
+			return _sectors[SectorIndex(num_pos)];
+		}
+		
+		void LookUpSectorDepends(Vector3 num_pos, System.Action<SectorInfo> act) {
+			var ms = FindSector(num_pos);
+			if ( ms != null ) {
+				act(ms);
+				var s1 = FindSector(num_pos + new Vector3(-1,  0, 0));
+				var s2 = FindSector(num_pos + new Vector3( 0, -1, 0));
+				var s3 = FindSector(num_pos + new Vector3(-1, -1, 0));
+				if ( s1 != null ) act(s1);
+				if ( s2 != null ) act(s2);
+				if ( s3 != null ) act(s3);
+				for ( var i = 0; i <= _objsNumPosCount.z; ++i ) {
+					var ss1 = FindSector(num_pos + new Vector3( 0 - i,  0 - i, i + 1));
+					var ss2 = FindSector(num_pos + new Vector3(-1 - i,  0 - i, i + 1));
+					var ss3 = FindSector(num_pos + new Vector3( 0 - i, -1 - i, i + 1));
+					var ss4 = FindSector(num_pos + new Vector3(-1 - i, -1 - i, i + 1));
+					var ss5 = FindSector(num_pos + new Vector3(-2 - i, -1 - i, i + 1));
+					var ss6 = FindSector(num_pos + new Vector3(-1 - i, -2 - i, i + 1));
+					var ss7 = FindSector(num_pos + new Vector3(-2 - i, -2 - i, i + 1));
+					if ( ss1 != null ) act(ss1);
+					if ( ss2 != null ) act(ss2);
+					if ( ss3 != null ) act(ss3);
+					if ( ss4 != null ) act(ss4);
+					if ( ss5 != null ) act(ss5);
+					if ( ss6 != null ) act(ss6);
+					if ( ss7 != null ) act(ss7);
+				}
+			}
+		}
+
+		void LookUpSectorRDepends(Vector3 num_pos, System.Action<SectorInfo> act) {
+			var ms = FindSector(num_pos);
+			if ( ms != null ) {
+				act(ms);
+				var s1 = FindSector(num_pos + new Vector3( 1,  0, 0));
+				var s2 = FindSector(num_pos + new Vector3( 0,  1, 0));
+				var s3 = FindSector(num_pos + new Vector3( 1,  1, 0));
+				if ( s1 != null ) act(s1);
+				if ( s2 != null ) act(s2);
+				if ( s3 != null ) act(s3);
+				for ( var i = 0; i <= _objsNumPosCount.z; ++i ) {
+					var ss1 = FindSector(num_pos + new Vector3( 0 + i,  0 + i, -i - 1));
+					var ss2 = FindSector(num_pos + new Vector3( 1 + i,  0 + i, -i - 1));
+					var ss3 = FindSector(num_pos + new Vector3( 0 + i,  1 + i, -i - 1));
+					var ss4 = FindSector(num_pos + new Vector3( 1 + i,  1 + i, -i - 1));
+					var ss5 = FindSector(num_pos + new Vector3( 2 + i,  1 + i, -i - 1));
+					var ss6 = FindSector(num_pos + new Vector3( 1 + i,  2 + i, -i - 1));
+					var ss7 = FindSector(num_pos + new Vector3( 2 + i,  2 + i, -i - 1));
+					if ( ss1 != null ) act(ss1);
+					if ( ss2 != null ) act(ss2);
+					if ( ss3 != null ) act(ss3);
+					if ( ss4 != null ) act(ss4);
+					if ( ss5 != null ) act(ss5);
+					if ( ss6 != null ) act(ss6);
+					if ( ss7 != null ) act(ss7);
+				}
+			}
+		}
+
+		void SetupSectorSize() {
+			_objsSectorSize = 0.0f;
+			var objsSum = 0;
+			foreach ( var obj in _visibles ) {
+				++objsSum;
+				_objsSectorSize += IsoUtils.Vec3MaxF(obj.size);
+			}
+			_objsSectorSize = Mathf.Round(Mathf.Max(3.0f, _objsSectorSize / objsSum));
+		}
+
+		void SetupObjects() {
+			_objsMinNumPos = Vector3.zero;
+			_objsMaxNumPos = Vector3.one;
+			foreach ( var obj in _visibles ) {
+				var max_size = IsoUtils.Vec3Max(Vector3.one, obj.size);
+				var min_npos = IsoUtils.Vec3DivFloor(obj.position, _objsSectorSize);
+				var max_npos = IsoUtils.Vec3DivCeil(obj.position + max_size, _objsSectorSize);
+				_objsMinNumPos = IsoUtils.Vec3Min(_objsMinNumPos, min_npos);
+				_objsMaxNumPos = IsoUtils.Vec3Max(_objsMaxNumPos, max_npos);
+				obj.MinSector = min_npos;
+				obj.MaxSector = max_npos;
+			}
+			_objsNumPosCount = _objsMaxNumPos - _objsMinNumPos;
+		}
+		
+		void SetupSectors() {
+			_sectors.Clear();
+			_sectors.Capacity = Mathf.FloorToInt(_objsNumPosCount.x * _objsNumPosCount.y * _objsNumPosCount.z);
+			while ( _sectors.Count < _sectors.Capacity ) {
+				_sectors.Add(new SectorInfo());
+			}
+			foreach ( var obj in _visibles ) {
+				obj.MinSector -= _objsMinNumPos;
+				obj.MaxSector -= _objsMinNumPos;
+				IsoUtils.LookUpCube(obj.MinSector, obj.MaxSector, p => {
+					var sector = FindSector(p);
+					if ( sector != null ) {
+						sector.objects.Add(obj);
+					}
+				});
+			}
+		}
+
+		/// <summary>
+		///
+		/// </summary>
+
 		float t_up = 0.0f;
 		float t_pl = 0.0f;
 
@@ -234,15 +373,39 @@ namespace IsoTools {
 			var new_all_visibles = CalculateAllVisibles();
 			_visibles = new_all_visibles;
 
+			SetupSectorSize();
+			SetupObjects();
+			SetupSectors();
+
+			var new_missings = new HashSet<IsoObject>(old_all_visibles);
+			new_missings.ExceptWith(new_all_visibles);
+			if ( new_missings.Count > 0 ) {
+				MarkDirty();
+				foreach ( var iso_object in new_missings ) {
+					ClearIsoObjectDepends(iso_object);
+				}
+			}
+
 			var new_visibles = new HashSet<IsoObject>(new_all_visibles);
 			new_visibles.ExceptWith(old_all_visibles);
 			if ( new_visibles.Count > 0 ) {
-				//Debug.LogFormat("New: {0}, Visibles: {1}, All: {2}", new_visibles.Count, _visibles.Count, _isoObjects.Count);
 				MarkDirty();
 				foreach ( var iso_object in new_visibles ) {
 					SetupIsoObjectDepends(iso_object);
 				}
 			}
+
+			foreach ( var iso_object in _visibles ) {
+				if ( iso_object.Moved ) {
+					SetupIsoObjectDepends(iso_object);
+					iso_object.Moved = false;
+				}
+			}
+
+			/*
+			Debug.LogFormat(
+				"New: {0}, Missings: {1}, Visibles: {2}, All: {3}",
+				new_visibles.Count, new_missings.Count, _visibles.Count, _isoObjects.Count);*/
 		}
 
 		HashSet<IsoObject> CalculateAllVisibles() {
@@ -256,12 +419,17 @@ namespace IsoTools {
 			return all_visibles;
 		}
 
-		void SetupIsoObjectDepends(IsoObject iso_object) {
+		void ClearIsoObjectDepends(IsoObject iso_object) {
 			foreach ( var other_iso_object in iso_object.TheirDepends ) {
 				other_iso_object.SelfDepends.Remove(iso_object);
 			}
 			iso_object.SelfDepends.Clear();
 			iso_object.TheirDepends.Clear();
+		}
+
+		/*
+		void SetupIsoObjectDepends(IsoObject iso_object) {
+			ClearIsoObjectDepends(iso_object);
 			foreach ( var other_iso_object in _visibles ) {
 				if ( iso_object != other_iso_object ) {
 					if ( IsDepends(iso_object, other_iso_object) ) {
@@ -272,18 +440,44 @@ namespace IsoTools {
 						other_iso_object.SelfDepends.Add(iso_object);
 						iso_object.TheirDepends.Add(other_iso_object);
 					}
-					/*
-					if ( IsDepends(other_iso_object, iso_object) ) {
-						other_iso_object.Depends.Add(iso_object);
-					} else {
-						other_iso_object.Depends.Remove(iso_object);
-					}*/
 				}
 			}
+		}*/
+		void SetupIsoObjectDepends(IsoObject obj_a) {
+			ClearIsoObjectDepends(obj_a);
+			IsoUtils.LookUpCube(obj_a.MinSector, obj_a.MaxSector, num_pos => {
+				LookUpSectorDepends(num_pos, sec => {
+					foreach ( var obj_b in sec.objects ) {
+						if ( obj_a != obj_b && IsDepends(obj_a, obj_b) ) {
+							obj_a.SelfDepends.Add(obj_b);
+							obj_b.TheirDepends.Add(obj_a);
+						}
+					}
+				});
+			});
+			/*
+			foreach ( var obj_b in _visibles ) {
+				if ( obj_a != obj_b ) {
+					if ( IsDepends(obj_b, obj_a) ) {
+						obj_b.SelfDepends.Add(obj_a);
+						obj_a.TheirDepends.Add(obj_b);
+					}
+				}
+			}*/
+			IsoUtils.LookUpCube(obj_a.MinSector, obj_a.MaxSector, num_pos => {
+				LookUpSectorRDepends(num_pos, sec => {
+					foreach ( var obj_b in sec.objects ) {
+						if ( obj_a != obj_b && IsDepends(obj_b, obj_a) ) {
+							obj_b.SelfDepends.Add(obj_a);
+							obj_a.TheirDepends.Add(obj_b);
+						}
+					}
+				});
+			});
 		}
-
+		
 		int place_num = 0;
-
+		
 		void PlaceAllVisibles() {
 			place_num = 0;
 			var depth = minDepth;

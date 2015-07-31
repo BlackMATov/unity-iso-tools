@@ -10,6 +10,9 @@ namespace IsoTools {
 	public class IsoObject : MonoBehaviour {
 
 		public bool               Visited      = false;
+		public bool               Moved        = false;
+		public Vector3            MinSector    = Vector3.zero;
+		public Vector3            MaxSector    = Vector3.zero;
 		public HashSet<IsoObject> SelfDepends  = new HashSet<IsoObject>();
 		public HashSet<IsoObject> TheirDepends = new HashSet<IsoObject>();
 

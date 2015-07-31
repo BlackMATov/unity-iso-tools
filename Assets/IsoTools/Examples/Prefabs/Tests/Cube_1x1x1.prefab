@@ -41,6 +41,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Visited: 0
+  Moved: 0
+  MinSector: {x: 0, y: 0, z: 0}
+  MaxSector: {x: 0, y: 0, z: 0}
   _size: {x: 1, y: 1, z: 1}
   _position: {x: 0, y: 0, z: 0}
   _isAlignment: 1
