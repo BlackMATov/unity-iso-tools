@@ -6,46 +6,13 @@ using UnityEditor;
 #endif
 
 namespace IsoTools {
+	
 	[ExecuteInEditMode, DisallowMultipleComponent]
 	public class IsoWorld : MonoBehaviour {
 
-		class ObjectInfo {
-			public int       index;
-			public IsoObject isoObject;
-			public Vector3   minSector;
-			public Vector3   maxSector;
-
-			public bool      visited;
-			public int       beginDepend;
-			public int       endDepend;
-
-			public ObjectInfo(int index, IsoObject iso_object, Vector3 min_sector, Vector3 max_sector) {
-				this.index       = index;
-				this.isoObject   = iso_object;
-				this.minSector   = min_sector;
-				this.maxSector   = max_sector;
-			}
-
-			public void Init(int first_depend) {
-				this.visited     = false;
-				this.beginDepend = first_depend;
-				this.endDepend   = first_depend;
-			}
-		}
-
-		class SectorInfo {
-			public List<int> objects = new List<int>();
-		}
-
-		bool               _dirty           = true;
-		List<SectorInfo>   _sectors         = new List<SectorInfo>();
-		List<ObjectInfo>   _objects         = new List<ObjectInfo>();
-		List<int>          _depends         = new List<int>();
-		HashSet<IsoObject> _visibles        = new HashSet<IsoObject>();
-		float              _objsSectorSize  = 0.0f;
-		Vector3            _objsMinNumPos   = Vector3.zero;
-		Vector3            _objsMaxNumPos   = Vector3.zero;
-		Vector3            _objsNumPosCount = Vector3.zero;
+		bool               _dirty      = true;
+		HashSet<IsoObject> _visibles   = new HashSet<IsoObject>();
+		HashSet<IsoObject> _isoObjects = new HashSet<IsoObject>();
 
 		// ------------------------------------------------------------------------
 		//
@@ -89,8 +56,9 @@ namespace IsoTools {
 		}
 
 		public void MarkDirty(IsoObject iso_object) {
-			if ( !_dirty && iso_object && _visibles.Contains(iso_object) ) {
+			if ( iso_object && _visibles.Contains(iso_object) ) {
 				MarkDirty();
+				SetupIsoObjectDepends(iso_object);
 			}
 		}
 
@@ -111,6 +79,15 @@ namespace IsoTools {
 			return IsoUtils.Vec3ChangeZ(
 				ScreenToIso(new Vector2(pos.x, pos.y - iso_z * tileSize)),
 				iso_z);
+		}
+
+
+		public void AddIsoObject(IsoObject iso_object) {
+			_isoObjects.Add(iso_object);
+		}
+
+		public void RemoveIsoObject(IsoObject iso_object) {
+			_isoObjects.Remove(iso_object);
 		}
 
 		// ------------------------------------------------------------------------
@@ -144,77 +121,15 @@ namespace IsoTools {
 		#endif
 		}
 
-		void ApplyToAllIsoObjects(System.Action<IsoObject> act) {
-			var iso_objects = GameObject.FindObjectsOfType<IsoObject>();
-			foreach ( var obj in iso_objects ) {
-				act(obj);
-			}
-		}
-		
 		void FixAllTransforms() {
-			ApplyToAllIsoObjects(obj => obj.FixTransform());
-		}
-
-		void ResetAllIsoWorld() {
-			ApplyToAllIsoObjects(obj => obj.ResetIsoWorld());
+			foreach ( var iso_object in _isoObjects ) {
+				iso_object.FixTransform();
+			}
 		}
 
 		void ChangeSortingProperty() {
 			MarkDirty();
 			FixAllTransforms();
-		}
-
-		int SectorIndex(Vector3 num_pos) {
-			return Mathf.FloorToInt(
-				num_pos.x + _objsNumPosCount.x * (num_pos.y + num_pos.z * _objsNumPosCount.y));
-		}
-
-		Vector3 SectorNumPos(int index) {
-			var mz = _objsNumPosCount.x * _objsNumPosCount.y;
-			var my = _objsNumPosCount.x;
-			var vz = Mathf.FloorToInt(index / mz);
-			var vy = Mathf.FloorToInt((index - vz * mz) / my);
-			var vx = Mathf.FloorToInt(index - vz * mz - vy * my);
-			return new Vector3(vx, vy, vz);
-		}
-
-		SectorInfo FindSector(Vector3 num_pos) {
-			if ( num_pos.x < 0 || num_pos.y < 0 || num_pos.z < 0 ) {
-				return null;
-			}
-			if ( num_pos.x >= _objsNumPosCount.x || num_pos.y >= _objsNumPosCount.y || num_pos.z >= _objsNumPosCount.z ) {
-				return null;
-			}
-			return _sectors[SectorIndex(num_pos)];
-		}
-
-		void LookUpSectorDepends(Vector3 num_pos, System.Action<SectorInfo> act) {
-			var ms = FindSector(num_pos);
-			if ( ms != null ) {
-				act(ms);
-				var s1 = FindSector(num_pos + new Vector3(-1,  0, 0));
-				var s2 = FindSector(num_pos + new Vector3( 0, -1, 0));
-				var s3 = FindSector(num_pos + new Vector3(-1, -1, 0));
-				if ( s1 != null ) act(s1);
-				if ( s2 != null ) act(s2);
-				if ( s3 != null ) act(s3);
-				for ( var i = 0; i <= _objsNumPosCount.z; ++i ) {
-					var ss1 = FindSector(num_pos + new Vector3( 0 - i,  0 - i, i + 1));
-					var ss2 = FindSector(num_pos + new Vector3(-1 - i,  0 - i, i + 1));
-					var ss3 = FindSector(num_pos + new Vector3( 0 - i, -1 - i, i + 1));
-					var ss4 = FindSector(num_pos + new Vector3(-1 - i, -1 - i, i + 1));
-					var ss5 = FindSector(num_pos + new Vector3(-2 - i, -1 - i, i + 1));
-					var ss6 = FindSector(num_pos + new Vector3(-1 - i, -2 - i, i + 1));
-					var ss7 = FindSector(num_pos + new Vector3(-2 - i, -2 - i, i + 1));
-					if ( ss1 != null ) act(ss1);
-					if ( ss2 != null ) act(ss2);
-					if ( ss3 != null ) act(ss3);
-					if ( ss4 != null ) act(ss4);
-					if ( ss5 != null ) act(ss5);
-					if ( ss6 != null ) act(ss6);
-					if ( ss7 != null ) act(ss7);
-				}
-			}
 		}
 
 		bool IsDepends(Vector3 a_min, Vector3 a_size, Vector3 b_min, Vector3 b_size) {
@@ -237,121 +152,164 @@ namespace IsoTools {
 			return a_yesno;
 		}
 
-		void SetupVisibles(IsoObject[] iso_objects) {
+		bool IsDepends(IsoObject a, IsoObject b) {
+			return IsDepends(a.position, a.size, b.position, b.size);
+		}
+
+		/*
+		void CheckAlives() {
 			var new_visibles = new HashSet<IsoObject>();
-			foreach ( var iso_object in iso_objects ) {
+			var new_objects = new List<IsoObject>();
+			foreach ( var iso_object in _isoObjects ) {
 				if ( IsIsoObjectVisible(iso_object) ) {
 					new_visibles.Add(iso_object);
+					if ( !_visibles.Contains(iso_object) ) {
+						new_objects.Add(iso_object);
+					}
 				}
 			}
 			if ( !_visibles.IsSupersetOf(new_visibles) ) {
 				MarkDirty();
 			}
 			_visibles = new_visibles;
-		}
-
-		void SetupSectorSize() {
-			_objsSectorSize = 0.0f;
-			var objsSum = 0;
-			foreach ( var obj in _visibles ) {
-				++objsSum;
-				_objsSectorSize += IsoUtils.Vec3MaxF(obj.size);
-			}
-			_objsSectorSize = Mathf.Round(Mathf.Max(3.0f, _objsSectorSize / objsSum));
+			Debug.LogFormat("AllObjects: {0}, Visibles: {1}", _isoObjects.Count, _visibles.Count);
 		}
 
 		void SetupObjects() {
 			_objects.Clear();
-			_objsMinNumPos = Vector3.zero;
-			_objsMaxNumPos = Vector3.one;
 			foreach ( var obj in _visibles ) {
-				var max_size = IsoUtils.Vec3Max(Vector3.one, obj.size);
-				var min_npos = IsoUtils.Vec3DivFloor(obj.position, _objsSectorSize);
-				var max_npos = IsoUtils.Vec3DivCeil(obj.position + max_size, _objsSectorSize);
-				_objsMinNumPos = IsoUtils.Vec3Min(_objsMinNumPos, min_npos);
-				_objsMaxNumPos = IsoUtils.Vec3Max(_objsMaxNumPos, max_npos);
-				_objects.Add(new ObjectInfo(_objects.Count, obj, min_npos, max_npos));
+				_objects.Add(obj);
 			}
-			_objsNumPosCount = _objsMaxNumPos - _objsMinNumPos;
 		}
 
-		void SetupSectors() {
-			_sectors.Clear();
-			_sectors.Capacity = Mathf.FloorToInt(_objsNumPosCount.x * _objsNumPosCount.y * _objsNumPosCount.z);
-			while ( _sectors.Count < _sectors.Capacity ) {
-				_sectors.Add(new SectorInfo());
+		void SetupObjectDepends(IsoObject obj_ao) {
+			obj_ao.Visited = false;
+			obj_ao.Depends.Clear();
+			for ( var obj_bi = 0; obj_bi < _objects.Count; ++obj_bi ) {
+				var obj_bo = _objects[obj_bi];
+				if ( obj_ao != obj_bo && IsDepends(obj_ao.position, obj_ao.size, obj_bo.position, obj_bo.size) ) {
+					obj_ao.Depends.Add(obj_bi);
+				}
 			}
-			foreach ( var obj in _objects ) {
-				obj.minSector -= _objsMinNumPos;
-				obj.maxSector -= _objsMinNumPos;
-				IsoUtils.LookUpCube(obj.minSector, obj.maxSector, p => {
-					var sector = FindSector(p);
-					if ( sector != null ) {
-						sector.objects.Add(obj.index);
+		}
+
+		void SetupAllObjectDepends() {
+			foreach ( var obj_ao in _objects ) {
+				obj_ao.Visited = false;
+				obj_ao.Depends.Clear();
+				for ( var obj_bi = 0; obj_bi < _objects.Count; ++obj_bi ) {
+					var obj_bo = _objects[obj_bi];
+					if ( obj_ao != obj_bo && IsDepends(obj_ao.position, obj_ao.size, obj_bo.position, obj_bo.size) ) {
+						obj_ao.Depends.Add(obj_bi);
 					}
-				});
+				}
 			}
 		}
+		*/
 
-		void SetupObjectDepends() {
-			_depends.Clear();
-			foreach ( var obj_a in _objects ) {
-				obj_a.Init(_depends.Count);
-				var obj_ao = obj_a.isoObject;
-				IsoUtils.LookUpCube(obj_a.minSector, obj_a.maxSector, num_pos => {
-					LookUpSectorDepends(num_pos, sec => {
-						foreach ( var obj_bi in sec.objects ) {
-							var obj_bo = _objects[obj_bi].isoObject;
-							if ( obj_ao != obj_bo && IsDepends(obj_ao.position, obj_ao.size, obj_bo.position, obj_bo.size) ) {
-								_depends.Add(obj_bi);
-								++obj_a.endDepend;
-							}
-						}
-					});
-				});
-			}
-		}
+		float t_up = 0.0f;
+		float t_pl = 0.0f;
 
-		void PlaceAllObjects() {
-			var depth = minDepth;
-			foreach ( var info in _objects ) {
-				depth = PlaceObject(info, depth);
-			}
-			_sectors.Clear();
-			_objects.Clear();
-			_depends.Clear();
-		}
-		
-		void PlaceObject(IsoObject obj, float depth) {
-			var trans = obj.transform;
-			trans.position = IsoUtils.Vec3ChangeZ(trans.position, depth);
-		}
-		
-		float PlaceObject(ObjectInfo info, float depth) {
-			if ( info.visited ) {
-				return depth;
-			}
-			info.visited = true;
-			for ( var i = info.beginDepend; i < info.endDepend && i < _depends.Count; ++i ) {
-				var obj_index = _depends[i];
-				var obj = _objects[obj_index];
-				depth = PlaceObject(obj, depth);
-			}
-			PlaceObject(info.isoObject, depth);
-			return depth + (maxDepth - minDepth) / _objects.Count;
+		void OnGUI() {
+			GUILayout.Label("UpdateVisibles  : " + (t_up * 1000).ToString());
+			GUILayout.Label("PlaceAllVisibles: " + (t_pl * 1000).ToString());
 		}
 
 		void StepSort() {
-			var iso_objects = GameObject.FindObjectsOfType<IsoObject>();
-			SetupVisibles(iso_objects);
+			var s_up = Time.realtimeSinceStartup;
+			UpdateVisibles();
+			var e_up = Time.realtimeSinceStartup;
+			t_up = e_up - s_up;
 			if ( _dirty ) {
-				SetupSectorSize();
-				SetupObjects();
-				SetupSectors();
-				SetupObjectDepends();
-				PlaceAllObjects();
+				var s_pl = Time.realtimeSinceStartup;
+				PlaceAllVisibles();
+				var e_pl = Time.realtimeSinceStartup;
+				t_pl = e_pl - s_pl;
 				_dirty = false;
 			}
+		}
+
+		void UpdateVisibles() {
+			var old_all_visibles = _visibles;
+			var new_all_visibles = CalculateAllVisibles();
+			_visibles = new_all_visibles;
+
+			var new_visibles = new HashSet<IsoObject>(new_all_visibles);
+			new_visibles.ExceptWith(old_all_visibles);
+			if ( new_visibles.Count > 0 ) {
+				//Debug.LogFormat("New: {0}, Visibles: {1}, All: {2}", new_visibles.Count, _visibles.Count, _isoObjects.Count);
+				MarkDirty();
+				foreach ( var iso_object in new_visibles ) {
+					SetupIsoObjectDepends(iso_object);
+				}
+			}
+		}
+
+		HashSet<IsoObject> CalculateAllVisibles() {
+			var all_visibles = new HashSet<IsoObject>();
+			foreach ( var iso_object in _isoObjects ) {
+				if ( IsIsoObjectVisible(iso_object) ) {
+					iso_object.Visited = false;
+					all_visibles.Add(iso_object);
+				}
+			}
+			return all_visibles;
+		}
+
+		void SetupIsoObjectDepends(IsoObject iso_object) {
+			foreach ( var other_iso_object in iso_object.TheirDepends ) {
+				other_iso_object.SelfDepends.Remove(iso_object);
+			}
+			iso_object.SelfDepends.Clear();
+			iso_object.TheirDepends.Clear();
+			foreach ( var other_iso_object in _visibles ) {
+				if ( iso_object != other_iso_object ) {
+					if ( IsDepends(iso_object, other_iso_object) ) {
+						iso_object.SelfDepends.Add(other_iso_object);
+						other_iso_object.TheirDepends.Add(iso_object);
+					}
+					if ( IsDepends(other_iso_object, iso_object) ) {
+						other_iso_object.SelfDepends.Add(iso_object);
+						iso_object.TheirDepends.Add(other_iso_object);
+					}
+					/*
+					if ( IsDepends(other_iso_object, iso_object) ) {
+						other_iso_object.Depends.Add(iso_object);
+					} else {
+						other_iso_object.Depends.Remove(iso_object);
+					}*/
+				}
+			}
+		}
+
+		int place_num = 0;
+
+		void PlaceAllVisibles() {
+			place_num = 0;
+			var depth = minDepth;
+			foreach ( var iso_object in _visibles ) {
+				depth = RecursivePlaceIsoObject(iso_object, depth);
+			}
+			//Debug.LogFormat("Place: {0}, All: {1}", _visibles.Count, _isoObjects.Count);
+			//Debug.LogFormat("PlaceNum: {0}", place_num);
+		}
+
+		float RecursivePlaceIsoObject(IsoObject iso_object, float depth) {
+			++place_num;
+			if ( iso_object.Visited ) {
+				return depth;
+			}
+			iso_object.Visited = true;
+			foreach ( var depend in iso_object.SelfDepends ) {
+				depth = RecursivePlaceIsoObject(depend, depth);
+			}
+			PlaceIsoObject(iso_object, depth);
+			return depth + (maxDepth - minDepth) / _visibles.Count;
+		}
+
+		void PlaceIsoObject(IsoObject iso_object, float depth) {
+			var trans = iso_object.transform;
+			trans.position = IsoUtils.Vec3ChangeZ(trans.position, depth);
 		}
 
 		// ------------------------------------------------------------------------
@@ -370,11 +328,14 @@ namespace IsoTools {
 		}
 
 		void OnEnable() {
+			_visibles.Clear();
+			_isoObjects = new HashSet<IsoObject>(FindObjectsOfType<IsoObject>());
 			MarkDirty();
 		}
 
 		void OnDisable() {
-			ResetAllIsoWorld();
+			_visibles.Clear();
+			_isoObjects.Clear();
 		}
 
 		#if UNITY_EDITOR

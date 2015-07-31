@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -7,6 +8,10 @@ using UnityEditor;
 namespace IsoTools {
 	[ExecuteInEditMode, DisallowMultipleComponent]
 	public class IsoObject : MonoBehaviour {
+
+		public bool               Visited      = false;
+		public HashSet<IsoObject> SelfDepends  = new HashSet<IsoObject>();
+		public HashSet<IsoObject> TheirDepends = new HashSet<IsoObject>();
 
 		// ------------------------------------------------------------------------
 		//
@@ -166,18 +171,11 @@ namespace IsoTools {
 		IsoWorld _isoWorld = null;
 		public IsoWorld isoWorld {
 			get {
-				if ( (object)_isoWorld == null ) {
+				if ( !_isoWorld ) {
 					_isoWorld = GameObject.FindObjectOfType<IsoWorld>();
-				}
-				if ( (object)_isoWorld == null ) {
-					throw new UnityException("IsoObject. IsoWorld not found!");
 				}
 				return _isoWorld;
 			}
-		}
-
-		public void ResetIsoWorld() {
-			_isoWorld = null;
 		}
 
 		public void FixTransform() {
@@ -186,18 +184,22 @@ namespace IsoTools {
 				_position = tilePosition;
 			}
 		#endif
-			transform.position = IsoUtils.Vec3ChangeZ(
-				isoWorld.IsoToScreen(position),
-				transform.position.z);
+			if ( isoWorld ) {
+				transform.position = IsoUtils.Vec3ChangeZ(
+					isoWorld.IsoToScreen(position),
+					transform.position.z);
+			}
 			FixLastProperties();
 			MartDirtyIsoWorld();
 			MarkEditorObjectDirty();
 		}
 
 		public void FixIsoPosition() {
-			position = isoWorld.ScreenToIso(
-				transform.position,
-				positionZ);
+			if ( isoWorld ) {
+				position = isoWorld.ScreenToIso(
+					transform.position,
+					positionZ);
+			}
 		}
 
 		void FixLastProperties() {
@@ -209,7 +211,9 @@ namespace IsoTools {
 		}
 
 		void MartDirtyIsoWorld() {
-			isoWorld.MarkDirty(this);
+			if ( isoWorld ) {
+				isoWorld.MarkDirty(this);
+			}
 		}
 
 		void MarkEditorObjectDirty() {
@@ -230,7 +234,16 @@ namespace IsoTools {
 		}
 
 		void OnEnable() {
+			if ( isoWorld ) {
+				isoWorld.AddIsoObject(this);
+			}
 			MartDirtyIsoWorld();
+		}
+
+		void OnDisable() {
+			if ( isoWorld ) {
+				isoWorld.RemoveIsoObject(this);
+			}
 		}
 
 		#if UNITY_EDITOR
@@ -245,7 +258,7 @@ namespace IsoTools {
 		}
 
 		void OnDrawGizmos() {
-			if ( isShowBounds ) {
+			if ( isShowBounds && isoWorld ) {
 				IsoUtils.DrawCube(isoWorld, position + size * 0.5f, size, Color.red);
 			}
 		}

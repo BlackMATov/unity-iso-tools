@@ -1,11 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/IsoTools/Scripts/IsoObject.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/IsoTools/Scripts/IsoWorld.cs">
     <Files>
-      <File FileName="Assets/IsoTools/Scripts/IsoBoxCollider.cs" Line="1" Column="1" />
-      <File FileName="Assets/IsoTools/Scripts/IsoObject.cs" Line="168" Column="9" />
-      <File FileName="Assets/IsoTools/Scripts/IsoWorld.cs" Line="1" Column="1" />
-      <File FileName="Assets/IsoTools/Editor/IsoObjectEditor.cs" Line="1" Column="1" />
+      <File FileName="Assets/IsoTools/Scripts/IsoWorld.cs" Line="254" Column="51" />
+      <File FileName="Assets/IsoTools/Scripts/IsoObject.cs" Line="13" Column="54" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
