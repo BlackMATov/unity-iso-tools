@@ -9,13 +9,6 @@ namespace IsoTools {
 	[ExecuteInEditMode, DisallowMultipleComponent]
 	public class IsoObject : MonoBehaviour {
 
-		public bool               Visited      = false;
-		public bool               Moved        = false;
-		public Vector3            MinSector    = Vector3.zero;
-		public Vector3            MaxSector    = Vector3.zero;
-		public HashSet<IsoObject> SelfDepends  = new HashSet<IsoObject>();
-		public HashSet<IsoObject> TheirDepends = new HashSet<IsoObject>();
-
 		// ------------------------------------------------------------------------
 		//
 		// size
@@ -144,6 +137,35 @@ namespace IsoTools {
 
 		// ------------------------------------------------------------------------
 		//
+		// bounds
+		//
+		// ------------------------------------------------------------------------
+
+		Bounds _bounds = new Bounds();
+
+		public Bounds bounds {
+			get { return _bounds; }
+		}
+
+		// ------------------------------------------------------------------------
+		//
+		// internal
+		//
+		// ------------------------------------------------------------------------
+		
+		public class InternalState {
+			public bool               Moved        = false;
+			public bool               Visited      = false;
+			public Vector3            MinSector    = Vector3.zero;
+			public Vector3            MaxSector    = Vector3.zero;
+			public HashSet<IsoObject> SelfDepends  = new HashSet<IsoObject>();
+			public HashSet<IsoObject> TheirDepends = new HashSet<IsoObject>();
+		}
+		
+		public InternalState Internal = new InternalState();
+
+		// ------------------------------------------------------------------------
+		//
 		// For editor
 		//
 		// ------------------------------------------------------------------------
@@ -191,6 +213,7 @@ namespace IsoTools {
 				transform.position = IsoUtils.Vec3ChangeZ(
 					isoWorld.IsoToScreen(position),
 					transform.position.z);
+				_bounds = IsoUtils.GetIsoObjectBounds(isoWorld, this);
 			}
 			FixLastProperties();
 			MartDirtyIsoWorld();

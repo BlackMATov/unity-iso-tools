@@ -56,7 +56,7 @@ namespace IsoTools {
 		}
 
 		public static float Vec3MinF(Vector3 v) {
-			return Mathf.Min(v.x, v.y, v.z);
+			return Mathf.Min(Mathf.Min(v.x, v.y), v.z);
 		}
 		
 		public static Vector2 Vec2Min(Vector2 a, Vector2 b) {
@@ -81,7 +81,7 @@ namespace IsoTools {
 		}
 
 		public static float Vec3MaxF(Vector3 v) {
-			return Mathf.Max(v.x, v.y, v.z);
+			return Mathf.Max(Mathf.Max(v.x, v.y), v.z);
 		}
 
 		public static Vector2 Vec2Max(Vector2 a, Vector2 b) {
@@ -380,6 +380,21 @@ namespace IsoTools {
 			return comp != null
 				? comp
 				: obj.AddComponent<T>();
+		}
+
+		public static Bounds GetIsoObjectBounds(IsoWorld iso_world, IsoObject iso_object) {
+			if ( iso_world ) {
+				var z = iso_object.transform.position.z;
+				var b = iso_world.IsoToScreen(iso_object.position);
+				var t = iso_world.IsoToScreen(iso_object.position + iso_object.size);
+				var l = iso_world.IsoToScreen(iso_object.position + Vec3FromY(iso_object.sizeY));
+				var r = iso_world.IsoToScreen(iso_object.position + Vec3FromX(iso_object.sizeX));
+				return new Bounds(
+					new Vector3((r.x + l.x) * 0.5f, (t.y + b.y) * 0.5f, z),
+					new Vector3(r.x - l.x, t.y - b.y, iso_world.tileSize));
+			} else {
+				return new Bounds();
+			}
 		}
 
 		public static IsoCollider IsoConvertCollider(Collider collider) {

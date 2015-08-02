@@ -104,7 +104,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436798, guid: a60889c79802a4d04a26f078003a2a8d, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 81.25
+      value: 75.3845673
       objectReference: {fileID: 0}
     - target: {fileID: 436798, guid: a60889c79802a4d04a26f078003a2a8d, type: 2}
       propertyPath: m_LocalRotation.x
@@ -195,7 +195,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 96.875
+      value: 92.3076248
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalRotation.x
@@ -229,6 +229,30 @@ Prefab:
       propertyPath: m_Name
       value: Tile (29)
       objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MinSector.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MinSector.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: InternalVisited
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
   m_IsPrefabParent: 0
@@ -253,7 +277,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 482272, guid: c1da36e1b472b4195a4780c9d03c52de, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 20.3125
+      value: 12.3076925
       objectReference: {fileID: 0}
     - target: {fileID: 482272, guid: c1da36e1b472b4195a4780c9d03c52de, type: 2}
       propertyPath: m_LocalRotation.x
@@ -352,7 +376,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 23.4375
+      value: 53.8461304
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalRotation.x
@@ -386,6 +410,22 @@ Prefab:
       propertyPath: m_Name
       value: Tile (13)
       objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: InternalVisited
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
   m_IsPrefabParent: 0
@@ -410,7 +450,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 460460, guid: d0e2c3af2985847769c6fc2e016c0e4d, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 42.1875
+      value: 21.5384617
       objectReference: {fileID: 0}
     - target: {fileID: 460460, guid: d0e2c3af2985847769c6fc2e016c0e4d, type: 2}
       propertyPath: m_LocalRotation.x
@@ -444,6 +484,10 @@ Prefab:
       propertyPath: m_Name
       value: Building (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 199876, guid: d0e2c3af2985847769c6fc2e016c0e4d, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d0e2c3af2985847769c6fc2e016c0e4d, type: 2}
   m_IsPrefabParent: 0
@@ -468,7 +512,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 482272, guid: c1da36e1b472b4195a4780c9d03c52de, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 32.8125
+      value: 13.8461542
       objectReference: {fileID: 0}
     - target: {fileID: 482272, guid: c1da36e1b472b4195a4780c9d03c52de, type: 2}
       propertyPath: m_LocalRotation.x
@@ -567,7 +611,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 78.125
+      value: 72.3076477
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalRotation.x
@@ -601,6 +645,30 @@ Prefab:
       propertyPath: m_Name
       value: Tile (26)
       objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MinSector.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MinSector.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: InternalVisited
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
   m_IsPrefabParent: 0
@@ -625,7 +693,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 482272, guid: c1da36e1b472b4195a4780c9d03c52de, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 68.75
+      value: 49.230751
       objectReference: {fileID: 0}
     - target: {fileID: 482272, guid: c1da36e1b472b4195a4780c9d03c52de, type: 2}
       propertyPath: m_LocalRotation.x
@@ -762,7 +830,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 85.9375
+      value: 79.9999466
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalRotation.x
@@ -796,6 +864,26 @@ Prefab:
       propertyPath: m_Name
       value: Tile (20)
       objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MinSector.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: InternalVisited
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
   m_IsPrefabParent: 0
@@ -820,7 +908,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 84.375
+      value: 78.4614868
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalRotation.x
@@ -854,6 +942,26 @@ Prefab:
       propertyPath: m_Name
       value: Tile (22)
       objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MinSector.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: InternalVisited
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
   m_IsPrefabParent: 0
@@ -878,7 +986,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 4.6875
+      value: 35.384613
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalRotation.x
@@ -912,6 +1020,22 @@ Prefab:
       propertyPath: m_Name
       value: Tile (11)
       objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: InternalVisited
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
   m_IsPrefabParent: 0
@@ -936,7 +1060,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 482272, guid: c1da36e1b472b4195a4780c9d03c52de, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 59.375
+      value: 33.8461533
       objectReference: {fileID: 0}
     - target: {fileID: 482272, guid: c1da36e1b472b4195a4780c9d03c52de, type: 2}
       propertyPath: m_LocalRotation.x
@@ -1031,7 +1155,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436798, guid: a60889c79802a4d04a26f078003a2a8d, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 35.9375
+      value: 18.4615383
       objectReference: {fileID: 0}
     - target: {fileID: 436798, guid: a60889c79802a4d04a26f078003a2a8d, type: 2}
       propertyPath: m_LocalRotation.x
@@ -1155,7 +1279,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 482272, guid: c1da36e1b472b4195a4780c9d03c52de, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 73.4375
+      value: 50.7692108
       objectReference: {fileID: 0}
     - target: {fileID: 482272, guid: c1da36e1b472b4195a4780c9d03c52de, type: 2}
       propertyPath: m_LocalRotation.x
@@ -1254,7 +1378,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 460460, guid: d0e2c3af2985847769c6fc2e016c0e4d, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 98.4375
+      value: 93.8460846
       objectReference: {fileID: 0}
     - target: {fileID: 460460, guid: d0e2c3af2985847769c6fc2e016c0e4d, type: 2}
       propertyPath: m_LocalRotation.x
@@ -1284,6 +1408,10 @@ Prefab:
       propertyPath: _position.y
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 199876, guid: d0e2c3af2985847769c6fc2e016c0e4d, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d0e2c3af2985847769c6fc2e016c0e4d, type: 2}
   m_IsPrefabParent: 0
@@ -1308,7 +1436,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 21.875
+      value: 98.4614639
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalRotation.x
@@ -1341,6 +1469,22 @@ Prefab:
     - target: {fileID: 166186, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_Name
       value: Tile (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: InternalVisited
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
@@ -1432,7 +1576,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 452232, guid: bdd4e0dbed4fd4ea980de2f39dac8c71, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 48.4375
+      value: 29.2307701
       objectReference: {fileID: 0}
     - target: {fileID: 452232, guid: bdd4e0dbed4fd4ea980de2f39dac8c71, type: 2}
       propertyPath: m_LocalRotation.x
@@ -1527,7 +1671,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 482272, guid: c1da36e1b472b4195a4780c9d03c52de, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 43.75
+      value: 23.0769234
       objectReference: {fileID: 0}
     - target: {fileID: 482272, guid: c1da36e1b472b4195a4780c9d03c52de, type: 2}
       propertyPath: m_LocalRotation.x
@@ -1610,7 +1754,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 434702, guid: b89b96b93724d4f7489cd31f4f2fda48, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 26.5625
+      value: 24.6153851
       objectReference: {fileID: 0}
     - target: {fileID: 434702, guid: b89b96b93724d4f7489cd31f4f2fda48, type: 2}
       propertyPath: m_LocalRotation.x
@@ -1632,6 +1776,30 @@ Prefab:
       propertyPath: m_RootOrder
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 121016, guid: b89b96b93724d4f7489cd31f4f2fda48, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11429270, guid: b89b96b93724d4f7489cd31f4f2fda48, type: 2}
+      propertyPath: MinSector.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11429270, guid: b89b96b93724d4f7489cd31f4f2fda48, type: 2}
+      propertyPath: MaxSector.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11429270, guid: b89b96b93724d4f7489cd31f4f2fda48, type: 2}
+      propertyPath: MaxSector.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11429270, guid: b89b96b93724d4f7489cd31f4f2fda48, type: 2}
+      propertyPath: MaxSector.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11429270, guid: b89b96b93724d4f7489cd31f4f2fda48, type: 2}
+      propertyPath: InternalVisited
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b89b96b93724d4f7489cd31f4f2fda48, type: 2}
   m_IsPrefabParent: 0
@@ -1652,7 +1820,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436798, guid: a60889c79802a4d04a26f078003a2a8d, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 82.8125
+      value: 76.923027
       objectReference: {fileID: 0}
     - target: {fileID: 436798, guid: a60889c79802a4d04a26f078003a2a8d, type: 2}
       propertyPath: m_LocalRotation.x
@@ -1743,7 +1911,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 64.0625
+      value: 61.5384293
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalRotation.x
@@ -1777,6 +1945,26 @@ Prefab:
       propertyPath: m_Name
       value: Tile (14)
       objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MinSector.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: InternalVisited
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
   m_IsPrefabParent: 0
@@ -1801,7 +1989,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 39.0625
+      value: 59.9999695
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalRotation.x
@@ -1835,6 +2023,26 @@ Prefab:
       propertyPath: m_Name
       value: Tile (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MinSector.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: InternalVisited
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
   m_IsPrefabParent: 0
@@ -1859,7 +2067,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 482272, guid: c1da36e1b472b4195a4780c9d03c52de, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 17.1875
+      value: 9.23076916
       objectReference: {fileID: 0}
     - target: {fileID: 482272, guid: c1da36e1b472b4195a4780c9d03c52de, type: 2}
       propertyPath: m_LocalRotation.x
@@ -1958,7 +2166,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 95.3125
+      value: 90.769165
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalRotation.x
@@ -1991,6 +2199,30 @@ Prefab:
     - target: {fileID: 166186, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_Name
       value: Tile (30)
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MinSector.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MinSector.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: InternalVisited
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
@@ -2075,7 +2307,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 87.5
+      value: 81.5384064
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalRotation.x
@@ -2109,6 +2341,30 @@ Prefab:
       propertyPath: m_Name
       value: Tile (21)
       objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MinSector.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MinSector.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: InternalVisited
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
   m_IsPrefabParent: 0
@@ -2133,7 +2389,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 14.0625
+      value: 52.3076706
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalRotation.x
@@ -2167,6 +2423,22 @@ Prefab:
       propertyPath: m_Name
       value: Tile (10)
       objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: InternalVisited
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
   m_IsPrefabParent: 0
@@ -2191,7 +2463,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 452232, guid: bdd4e0dbed4fd4ea980de2f39dac8c71, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 45.3125
+      value: 27.6923084
       objectReference: {fileID: 0}
     - target: {fileID: 452232, guid: bdd4e0dbed4fd4ea980de2f39dac8c71, type: 2}
       propertyPath: m_LocalRotation.x
@@ -2282,7 +2554,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 65.625
+      value: 63.076889
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalRotation.x
@@ -2315,6 +2587,30 @@ Prefab:
     - target: {fileID: 166186, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_Name
       value: Tile (33)
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MinSector.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MinSector.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: InternalVisited
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
@@ -2371,7 +2667,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 482272, guid: c1da36e1b472b4195a4780c9d03c52de, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 46.875
+      value: 26.1538467
       objectReference: {fileID: 0}
     - target: {fileID: 482272, guid: c1da36e1b472b4195a4780c9d03c52de, type: 2}
       propertyPath: m_LocalRotation.x
@@ -2470,7 +2766,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436798, guid: a60889c79802a4d04a26f078003a2a8d, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 10.9375
+      value: 3.07692313
       objectReference: {fileID: 0}
     - target: {fileID: 436798, guid: a60889c79802a4d04a26f078003a2a8d, type: 2}
       propertyPath: m_LocalRotation.x
@@ -2561,7 +2857,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 70.3125
+      value: 66.1538086
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalRotation.x
@@ -2595,6 +2891,26 @@ Prefab:
       propertyPath: m_Name
       value: Tile (16)
       objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MinSector.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: InternalVisited
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
   m_IsPrefabParent: 0
@@ -2619,7 +2935,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 452232, guid: bdd4e0dbed4fd4ea980de2f39dac8c71, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 93.75
+      value: 86.1537857
       objectReference: {fileID: 0}
     - target: {fileID: 452232, guid: bdd4e0dbed4fd4ea980de2f39dac8c71, type: 2}
       propertyPath: m_LocalRotation.x
@@ -2714,7 +3030,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 29.6875
+      value: 38.4615326
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalRotation.x
@@ -2748,6 +3064,26 @@ Prefab:
       propertyPath: m_Name
       value: Tile (35)
       objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MinSector.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: InternalVisited
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
   m_IsPrefabParent: 0
@@ -2772,7 +3108,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 452232, guid: bdd4e0dbed4fd4ea980de2f39dac8c71, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 92.1875
+      value: 84.6153259
       objectReference: {fileID: 0}
     - target: {fileID: 452232, guid: bdd4e0dbed4fd4ea980de2f39dac8c71, type: 2}
       propertyPath: m_LocalRotation.x
@@ -2867,7 +3203,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 75
+      value: 69.2307281
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalRotation.x
@@ -2901,6 +3237,26 @@ Prefab:
       propertyPath: m_Name
       value: Tile (25)
       objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MinSector.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: InternalVisited
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
   m_IsPrefabParent: 0
@@ -2925,7 +3281,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 90.625
+      value: 89.2307053
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalRotation.x
@@ -2959,6 +3315,26 @@ Prefab:
       propertyPath: m_Name
       value: Tile (17)
       objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MinSector.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: InternalVisited
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
   m_IsPrefabParent: 0
@@ -2983,7 +3359,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 56.25
+      value: 39.9999924
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalRotation.x
@@ -3016,6 +3392,26 @@ Prefab:
     - target: {fileID: 166186, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_Name
       value: Tile (24)
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MinSector.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: InternalVisited
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
@@ -3074,7 +3470,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436798, guid: a60889c79802a4d04a26f078003a2a8d, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 60.9375
+      value: 43.0769119
       objectReference: {fileID: 0}
     - target: {fileID: 436798, guid: a60889c79802a4d04a26f078003a2a8d, type: 2}
       propertyPath: m_LocalRotation.x
@@ -3165,7 +3561,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 37.5
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalRotation.x
@@ -3199,6 +3595,26 @@ Prefab:
       propertyPath: m_Name
       value: Tile (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MinSector.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: InternalVisited
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
   m_IsPrefabParent: 0
@@ -3223,7 +3639,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 71.875
+      value: 67.6922684
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalRotation.x
@@ -3256,6 +3672,30 @@ Prefab:
     - target: {fileID: 166186, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_Name
       value: Tile (31)
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MinSector.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MinSector.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: InternalVisited
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
@@ -3381,7 +3821,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 9.375
+      value: 96.9230042
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalRotation.x
@@ -3414,6 +3854,22 @@ Prefab:
     - target: {fileID: 166186, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_Name
       value: Tile (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: InternalVisited
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
@@ -3472,7 +3928,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 452232, guid: bdd4e0dbed4fd4ea980de2f39dac8c71, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 1.5625
+      value: 4.61538458
       objectReference: {fileID: 0}
     - target: {fileID: 452232, guid: bdd4e0dbed4fd4ea980de2f39dac8c71, type: 2}
       propertyPath: m_LocalRotation.x
@@ -3567,7 +4023,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 460460, guid: d0e2c3af2985847769c6fc2e016c0e4d, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 57.8125
+      value: 41.5384521
       objectReference: {fileID: 0}
     - target: {fileID: 460460, guid: d0e2c3af2985847769c6fc2e016c0e4d, type: 2}
       propertyPath: m_LocalRotation.x
@@ -3600,6 +4056,10 @@ Prefab:
     - target: {fileID: 199876, guid: d0e2c3af2985847769c6fc2e016c0e4d, type: 2}
       propertyPath: m_Name
       value: Building (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 199876, guid: d0e2c3af2985847769c6fc2e016c0e4d, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d0e2c3af2985847769c6fc2e016c0e4d, type: 2}
@@ -3659,6 +4119,10 @@ Prefab:
       propertyPath: m_Name
       value: Building (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 199876, guid: d0e2c3af2985847769c6fc2e016c0e4d, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d0e2c3af2985847769c6fc2e016c0e4d, type: 2}
   m_IsPrefabParent: 0
@@ -3683,7 +4147,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 79.6875
+      value: 73.8461075
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalRotation.x
@@ -3716,6 +4180,30 @@ Prefab:
     - target: {fileID: 166186, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_Name
       value: Tile (28)
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MinSector.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MinSector.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: InternalVisited
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
@@ -3774,7 +4262,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 482272, guid: c1da36e1b472b4195a4780c9d03c52de, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 67.1875
+      value: 46.1538315
       objectReference: {fileID: 0}
     - target: {fileID: 482272, guid: c1da36e1b472b4195a4780c9d03c52de, type: 2}
       propertyPath: m_LocalRotation.x
@@ -3873,7 +4361,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 482272, guid: c1da36e1b472b4195a4780c9d03c52de, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 28.125
+      value: 30.7692318
       objectReference: {fileID: 0}
     - target: {fileID: 482272, guid: c1da36e1b472b4195a4780c9d03c52de, type: 2}
       propertyPath: m_LocalRotation.x
@@ -3972,7 +4460,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 76.5625
+      value: 70.7691879
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalRotation.x
@@ -4005,6 +4493,26 @@ Prefab:
     - target: {fileID: 166186, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_Name
       value: Tile (27)
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MinSector.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: InternalVisited
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
@@ -4112,6 +4620,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a9c584f9a39449438abc7ba59a68778, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MinSector: {x: 1, y: 1, z: 0}
+  MaxSector: {x: 3, y: 3, z: 1}
+  InternalMoved: 0
+  InternalVisited: 0
   _size: {x: 6, y: 6, z: 0}
   _position: {x: 1.02703384e-08, y: 1.02703384e-08, z: .529999971}
   _isAlignment: 0
@@ -4123,7 +4635,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1458715212}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: .344499975, z: 0}
+  m_LocalPosition: {x: 0, y: .344499975, z: 95.3845444}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -4145,7 +4657,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 89.0625
+      value: 83.0768661
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalRotation.x
@@ -4179,6 +4691,30 @@ Prefab:
       propertyPath: m_Name
       value: Tile (19)
       objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MinSector.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MinSector.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: InternalVisited
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
   m_IsPrefabParent: 0
@@ -4203,7 +4739,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436798, guid: a60889c79802a4d04a26f078003a2a8d, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 18.75
+      value: 10.7692308
       objectReference: {fileID: 0}
     - target: {fileID: 436798, guid: a60889c79802a4d04a26f078003a2a8d, type: 2}
       propertyPath: m_LocalRotation.x
@@ -4294,7 +4830,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 452232, guid: bdd4e0dbed4fd4ea980de2f39dac8c71, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 53.125
+      value: 32.3076935
       objectReference: {fileID: 0}
     - target: {fileID: 452232, guid: bdd4e0dbed4fd4ea980de2f39dac8c71, type: 2}
       propertyPath: m_LocalRotation.x
@@ -4389,7 +4925,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436798, guid: a60889c79802a4d04a26f078003a2a8d, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 62.5
+      value: 44.6153717
       objectReference: {fileID: 0}
     - target: {fileID: 436798, guid: a60889c79802a4d04a26f078003a2a8d, type: 2}
       propertyPath: m_LocalRotation.x
@@ -4480,7 +5016,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 452232, guid: bdd4e0dbed4fd4ea980de2f39dac8c71, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 3.125
+      value: 6.15384626
       objectReference: {fileID: 0}
     - target: {fileID: 452232, guid: bdd4e0dbed4fd4ea980de2f39dac8c71, type: 2}
       propertyPath: m_LocalRotation.x
@@ -4575,7 +5111,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 482272, guid: c1da36e1b472b4195a4780c9d03c52de, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 54.6875
+      value: 47.6922913
       objectReference: {fileID: 0}
     - target: {fileID: 482272, guid: c1da36e1b472b4195a4780c9d03c52de, type: 2}
       propertyPath: m_LocalRotation.x
@@ -4717,7 +5253,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 40.625
+      value: 64.6153488
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalRotation.x
@@ -4751,6 +5287,26 @@ Prefab:
       propertyPath: m_Name
       value: Tile (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MinSector.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: InternalVisited
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
   m_IsPrefabParent: 0
@@ -4775,7 +5331,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 452232, guid: bdd4e0dbed4fd4ea980de2f39dac8c71, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 15.625
+      value: 7.69230795
       objectReference: {fileID: 0}
     - target: {fileID: 452232, guid: bdd4e0dbed4fd4ea980de2f39dac8c71, type: 2}
       propertyPath: m_LocalRotation.x
@@ -4870,7 +5426,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 51.5625
+      value: 58.4615097
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalRotation.x
@@ -4904,6 +5460,26 @@ Prefab:
       propertyPath: m_Name
       value: Tile (32)
       objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MinSector.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: InternalVisited
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
   m_IsPrefabParent: 0
@@ -4928,7 +5504,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 12.5
+      value: 15.3846159
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalRotation.x
@@ -4961,6 +5537,22 @@ Prefab:
     - target: {fileID: 166186, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_Name
       value: Tile (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: InternalVisited
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
@@ -5076,7 +5668,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 50
+      value: 87.6922455
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalRotation.x
@@ -5110,6 +5702,26 @@ Prefab:
       propertyPath: m_Name
       value: Tile (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MinSector.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: InternalVisited
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
   m_IsPrefabParent: 0
@@ -5134,7 +5746,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436798, guid: a60889c79802a4d04a26f078003a2a8d, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 7.8125
+      value: 1.53846157
       objectReference: {fileID: 0}
     - target: {fileID: 436798, guid: a60889c79802a4d04a26f078003a2a8d, type: 2}
       propertyPath: m_LocalRotation.x
@@ -5221,7 +5833,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 34.375
+      value: 16.9230766
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalRotation.x
@@ -5255,6 +5867,26 @@ Prefab:
       propertyPath: m_Name
       value: Tile (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MinSector.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: InternalVisited
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
   m_IsPrefabParent: 0
@@ -5279,7 +5911,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 6.25
+      value: 36.9230728
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalRotation.x
@@ -5313,6 +5945,22 @@ Prefab:
       propertyPath: m_Name
       value: Tile (12)
       objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: InternalVisited
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
   m_IsPrefabParent: 0
@@ -5337,7 +5985,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 31.25
+      value: 55.3845901
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalRotation.x
@@ -5371,6 +6019,26 @@ Prefab:
       propertyPath: m_Name
       value: Tile (34)
       objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MinSector.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: InternalVisited
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
   m_IsPrefabParent: 0
@@ -5395,7 +6063,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 25
+      value: 56.9230499
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalRotation.x
@@ -5428,6 +6096,22 @@ Prefab:
     - target: {fileID: 166186, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_Name
       value: Tile (15)
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: MaxSector.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438418, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
+      propertyPath: InternalVisited
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}

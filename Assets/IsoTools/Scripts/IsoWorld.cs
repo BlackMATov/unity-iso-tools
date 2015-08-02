@@ -6,23 +6,24 @@ using UnityEditor;
 #endif
 
 namespace IsoTools {
-	
 	[ExecuteInEditMode, DisallowMultipleComponent]
 	public class IsoWorld : MonoBehaviour {
 
-		bool               _dirty      = true;
-		HashSet<IsoObject> _visibles   = new HashSet<IsoObject>();
-		HashSet<IsoObject> _isoObjects = new HashSet<IsoObject>();
+		bool               _dirty              = true;
+		HashSet<IsoObject> _objects            = new HashSet<IsoObject>();
+		HashSet<IsoObject> _visibles           = new HashSet<IsoObject>();
+		HashSet<IsoObject> _oldVisibles        = new HashSet<IsoObject>();
 
 		class SectorInfo {
-			public List<IsoObject> objects = new List<IsoObject>();
+			public List<IsoObject> objects     = new List<IsoObject>();
 		}
 
-		List<SectorInfo>   _sectors         = new List<SectorInfo>();
-		float              _objsSectorSize  = 0.0f;
-		Vector3            _objsMinNumPos   = Vector3.zero;
-		Vector3            _objsMaxNumPos   = Vector3.zero;
-		Vector3            _objsNumPosCount = Vector3.zero;
+		List<SectorInfo>   _sectors            = new List<SectorInfo>();
+		Stack<SectorInfo>  _sectorsPool        = new Stack<SectorInfo>();
+		float              _sectorsSize        = 0.0f;
+		Vector3            _sectorsMinNumPos   = Vector3.zero;
+		Vector3            _sectorsMaxNumPos   = Vector3.zero;
+		Vector3            _sectorsNumPosCount = Vector3.zero;
 		
 		// ------------------------------------------------------------------------
 		//
@@ -67,8 +68,8 @@ namespace IsoTools {
 
 		public void MarkDirty(IsoObject iso_object) {
 			if ( iso_object && _visibles.Contains(iso_object) ) {
+				iso_object.Internal.Moved = true;
 				MarkDirty();
-				iso_object.Moved = true;
 			}
 		}
 
@@ -91,13 +92,12 @@ namespace IsoTools {
 				iso_z);
 		}
 
-
 		public void AddIsoObject(IsoObject iso_object) {
-			_isoObjects.Add(iso_object);
+			_objects.Add(iso_object);
 		}
 
 		public void RemoveIsoObject(IsoObject iso_object) {
-			_isoObjects.Remove(iso_object);
+			_objects.Remove(iso_object);
 		}
 
 		// ------------------------------------------------------------------------
@@ -106,25 +106,6 @@ namespace IsoTools {
 		//
 		// ------------------------------------------------------------------------
 
-		bool IsGameObjectVisible(GameObject obj) {
-			var renderer = obj.GetComponent<Renderer>();
-			if ( renderer && renderer.isVisible ) {
-				return true;
-			}
-			var obj_transform = obj.transform;
-			for ( var i = 0; i < obj_transform.childCount; ++i ) {
-				var child_obj = obj_transform.GetChild(i).gameObject;
-				if ( IsGameObjectVisible(child_obj) ) {
-					return true;
-				}
-			}
-			return false;
-		}
-
-		bool IsIsoObjectVisible(IsoObject iso_object) {
-			return IsGameObjectVisible(iso_object.gameObject);
-		}
-
 		void MarkEditorWorldDirty() {
 		#if UNITY_EDITOR
 			EditorUtility.SetDirty(this);
@@ -132,8 +113,9 @@ namespace IsoTools {
 		}
 
 		void FixAllTransforms() {
-			foreach ( var iso_object in _isoObjects ) {
-				iso_object.FixTransform();
+			var objects_iter = _objects.GetEnumerator();
+			while ( objects_iter.MoveNext() ) {
+				objects_iter.Current.FixTransform();
 			}
 		}
 
@@ -142,7 +124,13 @@ namespace IsoTools {
 			FixAllTransforms();
 		}
 
-		bool IsDepends(Vector3 a_min, Vector3 a_size, Vector3 b_min, Vector3 b_size) {
+		bool IsIsoObjectVisible(IsoObject iso_object, Plane[] planes) {
+			return planes != null && planes.Length > 0
+				? GeometryUtility.TestPlanesAABB(planes, iso_object.bounds)
+				: false;
+		}
+
+		bool IsIsoObjectDepends(Vector3 a_min, Vector3 a_size, Vector3 b_min, Vector3 b_size) {
 			var a_max = a_min + a_size;
 			var b_max = b_min + b_size;
 			var a_yesno = a_max.x > b_min.x && a_max.y > b_min.y && b_max.z > a_min.z;
@@ -162,69 +150,29 @@ namespace IsoTools {
 			return a_yesno;
 		}
 
-		bool IsDepends(IsoObject a, IsoObject b) {
-			return IsDepends(a.position, a.size, b.position, b.size);
+		bool IsIsoObjectDepends(IsoObject a, IsoObject b) {
+			return IsIsoObjectDepends(a.position, a.size, b.position, b.size);
 		}
 
-		/*
-		void CheckAlives() {
-			var new_visibles = new HashSet<IsoObject>();
-			var new_objects = new List<IsoObject>();
-			foreach ( var iso_object in _isoObjects ) {
-				if ( IsIsoObjectVisible(iso_object) ) {
-					new_visibles.Add(iso_object);
-					if ( !_visibles.Contains(iso_object) ) {
-						new_objects.Add(iso_object);
-					}
-				}
-			}
-			if ( !_visibles.IsSupersetOf(new_visibles) ) {
-				MarkDirty();
-			}
-			_visibles = new_visibles;
-			Debug.LogFormat("AllObjects: {0}, Visibles: {1}", _isoObjects.Count, _visibles.Count);
+		void PushSectorPool(SectorInfo sector) {
+			sector.objects.Clear();
+			_sectorsPool.Push(sector);
 		}
 
-		void SetupObjects() {
-			_objects.Clear();
-			foreach ( var obj in _visibles ) {
-				_objects.Add(obj);
-			}
+		SectorInfo PopSectorPool() {
+			return _sectorsPool.Count > 0
+				? _sectorsPool.Pop()
+				: new SectorInfo();
 		}
-
-		void SetupObjectDepends(IsoObject obj_ao) {
-			obj_ao.Visited = false;
-			obj_ao.Depends.Clear();
-			for ( var obj_bi = 0; obj_bi < _objects.Count; ++obj_bi ) {
-				var obj_bo = _objects[obj_bi];
-				if ( obj_ao != obj_bo && IsDepends(obj_ao.position, obj_ao.size, obj_bo.position, obj_bo.size) ) {
-					obj_ao.Depends.Add(obj_bi);
-				}
-			}
-		}
-
-		void SetupAllObjectDepends() {
-			foreach ( var obj_ao in _objects ) {
-				obj_ao.Visited = false;
-				obj_ao.Depends.Clear();
-				for ( var obj_bi = 0; obj_bi < _objects.Count; ++obj_bi ) {
-					var obj_bo = _objects[obj_bi];
-					if ( obj_ao != obj_bo && IsDepends(obj_ao.position, obj_ao.size, obj_bo.position, obj_bo.size) ) {
-						obj_ao.Depends.Add(obj_bi);
-					}
-				}
-			}
-		}
-		*/
 
 		int SectorIndex(Vector3 num_pos) {
 			return Mathf.FloorToInt(
-				num_pos.x + _objsNumPosCount.x * (num_pos.y + num_pos.z * _objsNumPosCount.y));
+				num_pos.x + _sectorsNumPosCount.x * (num_pos.y + num_pos.z * _sectorsNumPosCount.y));
 		}
 		
 		Vector3 SectorNumPos(int index) {
-			var mz = _objsNumPosCount.x * _objsNumPosCount.y;
-			var my = _objsNumPosCount.x;
+			var mz = _sectorsNumPosCount.x * _sectorsNumPosCount.y;
+			var my = _sectorsNumPosCount.x;
 			var vz = Mathf.FloorToInt(index / mz);
 			var vy = Mathf.FloorToInt((index - vz * mz) / my);
 			var vx = Mathf.FloorToInt(index - vz * mz - vy * my);
@@ -235,7 +183,7 @@ namespace IsoTools {
 			if ( num_pos.x < 0 || num_pos.y < 0 || num_pos.z < 0 ) {
 				return null;
 			}
-			if ( num_pos.x >= _objsNumPosCount.x || num_pos.y >= _objsNumPosCount.y || num_pos.z >= _objsNumPosCount.z ) {
+			if ( num_pos.x >= _sectorsNumPosCount.x || num_pos.y >= _sectorsNumPosCount.y || num_pos.z >= _sectorsNumPosCount.z ) {
 				return null;
 			}
 			return _sectors[SectorIndex(num_pos)];
@@ -251,7 +199,7 @@ namespace IsoTools {
 				if ( s1 != null ) act(s1);
 				if ( s2 != null ) act(s2);
 				if ( s3 != null ) act(s3);
-				for ( var i = 0; i <= _objsNumPosCount.z; ++i ) {
+				for ( var i = 0; i <= _sectorsNumPosCount.z; ++i ) {
 					var ss1 = FindSector(num_pos + new Vector3( 0 - i,  0 - i, i + 1));
 					var ss2 = FindSector(num_pos + new Vector3(-1 - i,  0 - i, i + 1));
 					var ss3 = FindSector(num_pos + new Vector3( 0 - i, -1 - i, i + 1));
@@ -280,7 +228,7 @@ namespace IsoTools {
 				if ( s1 != null ) act(s1);
 				if ( s2 != null ) act(s2);
 				if ( s3 != null ) act(s3);
-				for ( var i = 0; i <= _objsNumPosCount.z; ++i ) {
+				for ( var i = 0; i <= _sectorsNumPosCount.z; ++i ) {
 					var ss1 = FindSector(num_pos + new Vector3( 0 + i,  0 + i, -i - 1));
 					var ss2 = FindSector(num_pos + new Vector3( 1 + i,  0 + i, -i - 1));
 					var ss3 = FindSector(num_pos + new Vector3( 0 + i,  1 + i, -i - 1));
@@ -300,202 +248,201 @@ namespace IsoTools {
 		}
 
 		void SetupSectorSize() {
-			_objsSectorSize = 0.0f;
-			var objsSum = 0;
-			foreach ( var obj in _visibles ) {
-				++objsSum;
-				_objsSectorSize += IsoUtils.Vec3MaxF(obj.size);
+			_sectorsSize = 0.0f;
+			var visibles_iter = _visibles.GetEnumerator();
+			while ( visibles_iter.MoveNext() ) {
+				_sectorsSize += IsoUtils.Vec3MaxF(visibles_iter.Current.size);
 			}
-			_objsSectorSize = Mathf.Round(Mathf.Max(3.0f, _objsSectorSize / objsSum));
+			_sectorsSize = Mathf.Round(Mathf.Max(3.0f, _sectorsSize / _visibles.Count));
 		}
 
-		void SetupObjects() {
-			_objsMinNumPos = Vector3.zero;
-			_objsMaxNumPos = Vector3.one;
-			foreach ( var obj in _visibles ) {
-				var max_size = IsoUtils.Vec3Max(Vector3.one, obj.size);
-				var min_npos = IsoUtils.Vec3DivFloor(obj.position, _objsSectorSize);
-				var max_npos = IsoUtils.Vec3DivCeil(obj.position + max_size, _objsSectorSize);
-				_objsMinNumPos = IsoUtils.Vec3Min(_objsMinNumPos, min_npos);
-				_objsMaxNumPos = IsoUtils.Vec3Max(_objsMaxNumPos, max_npos);
-				obj.MinSector = min_npos;
-				obj.MaxSector = max_npos;
+		void SetupObjectsSectors() {
+			_sectorsMinNumPos = Vector3.zero;
+			_sectorsMaxNumPos = Vector3.one;
+			var visibles_iter = _visibles.GetEnumerator();
+			while ( visibles_iter.MoveNext() ) {
+				var iso_object = visibles_iter.Current;
+				var max_size = IsoUtils.Vec3Max(Vector3.one, iso_object.size);
+				var min_npos = IsoUtils.Vec3DivFloor(iso_object.position, _sectorsSize);
+				var max_npos = IsoUtils.Vec3DivCeil(iso_object.position + max_size, _sectorsSize);
+				_sectorsMinNumPos = IsoUtils.Vec3Min(_sectorsMinNumPos, min_npos);
+				_sectorsMaxNumPos = IsoUtils.Vec3Max(_sectorsMaxNumPos, max_npos);
+				iso_object.Internal.MinSector = min_npos;
+				iso_object.Internal.MaxSector = max_npos;
 			}
-			_objsNumPosCount = _objsMaxNumPos - _objsMinNumPos;
+			_sectorsNumPosCount = _sectorsMaxNumPos - _sectorsMinNumPos;
+		}
+
+		void ClearSectors() {
+			var sectors_iter = _sectors.GetEnumerator();
+			while ( sectors_iter.MoveNext() ) {
+				PushSectorPool(sectors_iter.Current);
+			}
+			_sectors.Clear();
+		}
+
+		void ResizeSectors(int count) {
+			_sectors.Capacity = count;
+			while ( _sectors.Count < _sectors.Capacity ) {
+				var sector = PopSectorPool();
+				_sectors.Add(sector);
+			}
+		}
+
+		void TuneSectors() {
+			var visibles_iter = _visibles.GetEnumerator();
+			while ( visibles_iter.MoveNext() ) {
+				var iso_object = visibles_iter.Current;
+				iso_object.Internal.MinSector -= _sectorsMinNumPos;
+				iso_object.Internal.MaxSector -= _sectorsMinNumPos;
+
+				/*
+				IsoUtils.LookUpCube(iso_object.Internal.MinSector, iso_object.Internal.MaxSector, p => {
+					var sector = FindSector(p);
+					if ( sector != null ) {
+						sector.objects.Add(iso_object);
+					}
+				});*/
+
+				var min = iso_object.Internal.MinSector;
+				var max = iso_object.Internal.MaxSector;
+				for ( var z = min.z; z < max.z; ++z ) {
+				for ( var y = min.y; y < max.y; ++y ) {
+				for ( var x = min.x; x < max.x; ++x ) {
+					var sector = FindSector(new Vector3(x, y, z));
+					if ( sector != null ) {
+						sector.objects.Add(iso_object);
+					}
+				}}}
+			}
 		}
 		
 		void SetupSectors() {
-			_sectors.Clear();
-			_sectors.Capacity = Mathf.FloorToInt(_objsNumPosCount.x * _objsNumPosCount.y * _objsNumPosCount.z);
-			while ( _sectors.Count < _sectors.Capacity ) {
-				_sectors.Add(new SectorInfo());
-			}
-			foreach ( var obj in _visibles ) {
-				obj.MinSector -= _objsMinNumPos;
-				obj.MaxSector -= _objsMinNumPos;
-				IsoUtils.LookUpCube(obj.MinSector, obj.MaxSector, p => {
-					var sector = FindSector(p);
-					if ( sector != null ) {
-						sector.objects.Add(obj);
-					}
-				});
-			}
-		}
-
-		/// <summary>
-		///
-		/// </summary>
-
-		float t_up = 0.0f;
-		float t_pl = 0.0f;
-
-		void OnGUI() {
-			GUILayout.Label("UpdateVisibles  : " + (t_up * 1000).ToString());
-			GUILayout.Label("PlaceAllVisibles: " + (t_pl * 1000).ToString());
+			ClearSectors();
+			ResizeSectors(Mathf.FloorToInt(_sectorsNumPosCount.x * _sectorsNumPosCount.y * _sectorsNumPosCount.z));
+			TuneSectors();
 		}
 
 		void StepSort() {
-			var s_up = Time.realtimeSinceStartup;
 			UpdateVisibles();
-			var e_up = Time.realtimeSinceStartup;
-			t_up = e_up - s_up;
 			if ( _dirty ) {
-				var s_pl = Time.realtimeSinceStartup;
 				PlaceAllVisibles();
-				var e_pl = Time.realtimeSinceStartup;
-				t_pl = e_pl - s_pl;
 				_dirty = false;
 			}
 		}
 
 		void UpdateVisibles() {
-			var old_all_visibles = _visibles;
-			var new_all_visibles = CalculateAllVisibles();
-			_visibles = new_all_visibles;
+			CalculateNewVisibles();
 
 			SetupSectorSize();
-			SetupObjects();
+			SetupObjectsSectors();
 			SetupSectors();
 
-			var new_missings = new HashSet<IsoObject>(old_all_visibles);
-			new_missings.ExceptWith(new_all_visibles);
-			if ( new_missings.Count > 0 ) {
-				MarkDirty();
-				foreach ( var iso_object in new_missings ) {
+			var new_count = 0;
+			var visibles_iter = _visibles.GetEnumerator();
+			while ( visibles_iter.MoveNext() ) {
+				var iso_object = visibles_iter.Current;
+				if ( iso_object.Internal.Moved || !_oldVisibles.Contains(iso_object) ) {
+					MarkDirty();
+					SetupIsoObjectDepends(iso_object);
+					iso_object.Internal.Moved = false;
+					++new_count;
+				}
+			}
+
+			var old_count = 0;
+			var old_visibles_iter = _oldVisibles.GetEnumerator();
+			while ( old_visibles_iter.MoveNext() ) {
+				var iso_object = old_visibles_iter.Current;
+				if ( !_visibles.Contains(iso_object) ) {
+					MarkDirty();
 					ClearIsoObjectDepends(iso_object);
+					++old_count;
 				}
 			}
 
-			var new_visibles = new HashSet<IsoObject>(new_all_visibles);
-			new_visibles.ExceptWith(old_all_visibles);
-			if ( new_visibles.Count > 0 ) {
-				MarkDirty();
-				foreach ( var iso_object in new_visibles ) {
-					SetupIsoObjectDepends(iso_object);
-				}
+			if ( new_count > 0 || old_count > 0 ) {
+				/*Debug.LogFormat(
+					"New or moved: {0}, Missings: {1}, Visibles: {2}, All: {3}",
+					new_count, old_count, _visibles.Count, _objects.Count);*/
 			}
-
-			foreach ( var iso_object in _visibles ) {
-				if ( iso_object.Moved ) {
-					SetupIsoObjectDepends(iso_object);
-					iso_object.Moved = false;
-				}
-			}
-
-			/*
-			Debug.LogFormat(
-				"New: {0}, Missings: {1}, Visibles: {2}, All: {3}",
-				new_visibles.Count, new_missings.Count, _visibles.Count, _isoObjects.Count);*/
 		}
-
-		HashSet<IsoObject> CalculateAllVisibles() {
-			var all_visibles = new HashSet<IsoObject>();
-			foreach ( var iso_object in _isoObjects ) {
-				if ( IsIsoObjectVisible(iso_object) ) {
-					iso_object.Visited = false;
-					all_visibles.Add(iso_object);
+		
+		void CalculateNewVisibles() {
+			var planes = Camera.current ? GeometryUtility.CalculateFrustumPlanes(Camera.current) : null;
+			_oldVisibles.Clear();
+			var objects_iter = _objects.GetEnumerator();
+			while ( objects_iter.MoveNext() ) {
+				var iso_object = objects_iter.Current;
+				if ( IsIsoObjectVisible(iso_object, planes) ) {
+					iso_object.Internal.Visited = false;
+					_oldVisibles.Add(iso_object);
 				}
 			}
-			return all_visibles;
+			var old_visibles = _visibles;
+			_visibles = _oldVisibles;
+			_oldVisibles = old_visibles;
 		}
 
 		void ClearIsoObjectDepends(IsoObject iso_object) {
-			foreach ( var other_iso_object in iso_object.TheirDepends ) {
-				other_iso_object.SelfDepends.Remove(iso_object);
+			var their_depends_iter = iso_object.Internal.TheirDepends.GetEnumerator();
+			while ( their_depends_iter.MoveNext() ) {
+				their_depends_iter.Current.Internal.SelfDepends.Remove(iso_object);
 			}
-			iso_object.SelfDepends.Clear();
-			iso_object.TheirDepends.Clear();
+			iso_object.Internal.SelfDepends.Clear();
+			iso_object.Internal.TheirDepends.Clear();
 		}
 
-		/*
-		void SetupIsoObjectDepends(IsoObject iso_object) {
-			ClearIsoObjectDepends(iso_object);
-			foreach ( var other_iso_object in _visibles ) {
-				if ( iso_object != other_iso_object ) {
-					if ( IsDepends(iso_object, other_iso_object) ) {
-						iso_object.SelfDepends.Add(other_iso_object);
-						other_iso_object.TheirDepends.Add(iso_object);
-					}
-					if ( IsDepends(other_iso_object, iso_object) ) {
-						other_iso_object.SelfDepends.Add(iso_object);
-						iso_object.TheirDepends.Add(other_iso_object);
-					}
-				}
-			}
-		}*/
 		void SetupIsoObjectDepends(IsoObject obj_a) {
 			ClearIsoObjectDepends(obj_a);
-			IsoUtils.LookUpCube(obj_a.MinSector, obj_a.MaxSector, num_pos => {
-				LookUpSectorDepends(num_pos, sec => {
-					foreach ( var obj_b in sec.objects ) {
-						if ( obj_a != obj_b && IsDepends(obj_a, obj_b) ) {
-							obj_a.SelfDepends.Add(obj_b);
-							obj_b.TheirDepends.Add(obj_a);
+			var min = obj_a.Internal.MinSector;
+			var max = obj_a.Internal.MaxSector;
+			for ( var z = min.z; z < max.z; ++z ) {
+			for ( var y = min.y; y < max.y; ++y ) {
+			for ( var x = min.x; x < max.x; ++x ) {
+				LookUpSectorDepends(new Vector3(x, y, z), sec => {
+					var sec_objects_iter = sec.objects.GetEnumerator();
+					while ( sec_objects_iter.MoveNext() ) {
+						var obj_b = sec_objects_iter.Current;
+						if ( obj_a != obj_b && IsIsoObjectDepends(obj_a, obj_b) ) {
+							obj_a.Internal.SelfDepends.Add(obj_b);
+							obj_b.Internal.TheirDepends.Add(obj_a);
 						}
 					}
 				});
-			});
-			/*
-			foreach ( var obj_b in _visibles ) {
-				if ( obj_a != obj_b ) {
-					if ( IsDepends(obj_b, obj_a) ) {
-						obj_b.SelfDepends.Add(obj_a);
-						obj_a.TheirDepends.Add(obj_b);
-					}
-				}
-			}*/
-			IsoUtils.LookUpCube(obj_a.MinSector, obj_a.MaxSector, num_pos => {
-				LookUpSectorRDepends(num_pos, sec => {
-					foreach ( var obj_b in sec.objects ) {
-						if ( obj_a != obj_b && IsDepends(obj_b, obj_a) ) {
-							obj_b.SelfDepends.Add(obj_a);
-							obj_a.TheirDepends.Add(obj_b);
+			}}}
+			for ( var z = min.z; z < max.z; ++z ) {
+			for ( var y = min.y; y < max.y; ++y ) {
+			for ( var x = min.x; x < max.x; ++x ) {
+				LookUpSectorRDepends(new Vector3(x, y, z), sec => {
+					var sec_objects_iter = sec.objects.GetEnumerator();
+					while ( sec_objects_iter.MoveNext() ) {
+						var obj_b = sec_objects_iter.Current;
+						if ( obj_a != obj_b && IsIsoObjectDepends(obj_b, obj_a) ) {
+							obj_b.Internal.SelfDepends.Add(obj_a);
+							obj_a.Internal.TheirDepends.Add(obj_b);
 						}
 					}
 				});
-			});
+			}}}
 		}
-		
-		int place_num = 0;
-		
+
 		void PlaceAllVisibles() {
-			place_num = 0;
 			var depth = minDepth;
-			foreach ( var iso_object in _visibles ) {
-				depth = RecursivePlaceIsoObject(iso_object, depth);
+			var visibles_iter = _visibles.GetEnumerator();
+			while ( visibles_iter.MoveNext() ) {
+				depth = RecursivePlaceIsoObject(visibles_iter.Current, depth);
 			}
-			//Debug.LogFormat("Place: {0}, All: {1}", _visibles.Count, _isoObjects.Count);
-			//Debug.LogFormat("PlaceNum: {0}", place_num);
 		}
 
 		float RecursivePlaceIsoObject(IsoObject iso_object, float depth) {
-			++place_num;
-			if ( iso_object.Visited ) {
+			if ( iso_object.Internal.Visited ) {
 				return depth;
 			}
-			iso_object.Visited = true;
-			foreach ( var depend in iso_object.SelfDepends ) {
-				depth = RecursivePlaceIsoObject(depend, depth);
+			iso_object.Internal.Visited = true;
+			var self_depends_iter = iso_object.Internal.SelfDepends.GetEnumerator();
+			while ( self_depends_iter.MoveNext() ) {
+				depth = RecursivePlaceIsoObject(self_depends_iter.Current, depth);
 			}
 			PlaceIsoObject(iso_object, depth);
 			return depth + (maxDepth - minDepth) / _visibles.Count;
@@ -522,14 +469,16 @@ namespace IsoTools {
 		}
 
 		void OnEnable() {
+			_objects = new HashSet<IsoObject>(FindObjectsOfType<IsoObject>());
 			_visibles.Clear();
-			_isoObjects = new HashSet<IsoObject>(FindObjectsOfType<IsoObject>());
+			_sectors.Clear();
 			MarkDirty();
 		}
 
 		void OnDisable() {
+			_objects.Clear();
 			_visibles.Clear();
-			_isoObjects.Clear();
+			_sectors.Clear();
 		}
 
 		#if UNITY_EDITOR
