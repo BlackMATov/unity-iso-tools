@@ -68,10 +68,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a9c584f9a39449438abc7ba59a68778, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MinSector: {x: 0, y: 0, z: 0}
-  MaxSector: {x: 0, y: 0, z: 0}
-  InternalMoved: 0
-  InternalVisited: 0
   _size: {x: 1, y: 1, z: .529999971}
   _position: {x: 3, y: 5, z: 0}
   _isAlignment: 1

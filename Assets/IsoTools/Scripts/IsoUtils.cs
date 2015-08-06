@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -6,6 +7,36 @@ using UnityEditor;
 
 namespace IsoTools {
 	public static class IsoUtils {
+
+		// ---------------------------------------------------------------------
+		//
+		// Poolable/Pool
+		//
+		// ---------------------------------------------------------------------
+
+		public interface IPoolable {
+			void Reset();
+		}
+
+		public class Pool<T> where T : IPoolable {
+			System.Func<T> _createFn = null;
+			Stack<T>       _capacity = new Stack<T>();
+
+			public Pool(System.Func<T> create_fn) {
+				_createFn = create_fn;
+			}
+
+			public T Pop() {
+				return _capacity.Count > 0
+					? _capacity.Pop()
+					: _createFn();
+			}
+
+			public void Push(T value) {
+				value.Reset();
+				_capacity.Push(value);
+			}
+		}
 
 		// ---------------------------------------------------------------------
 		//
@@ -382,7 +413,7 @@ namespace IsoTools {
 				: obj.AddComponent<T>();
 		}
 
-		public static Bounds GetIsoObjectBounds(IsoWorld iso_world, IsoObject iso_object) {
+		public static Bounds IsoObjectScreenBounds(IsoWorld iso_world, IsoObject iso_object) {
 			if ( iso_world ) {
 				var z = iso_object.transform.position.z;
 				var b = iso_world.IsoToScreen(iso_object.position);

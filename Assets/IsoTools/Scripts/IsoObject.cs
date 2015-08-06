@@ -213,7 +213,7 @@ namespace IsoTools {
 				transform.position = IsoUtils.Vec3ChangeZ(
 					isoWorld.IsoToScreen(position),
 					transform.position.z);
-				_bounds = IsoUtils.GetIsoObjectBounds(isoWorld, this);
+				_bounds = IsoUtils.IsoObjectScreenBounds(isoWorld, this);
 			}
 			FixLastProperties();
 			MartDirtyIsoWorld();
@@ -255,6 +255,11 @@ namespace IsoTools {
 		// ------------------------------------------------------------------------
 
 		void Awake() {
+			Internal.SelfDepends  = new HashSet<IsoObject>(new IsoObject[51]);
+			Internal.TheirDepends = new HashSet<IsoObject>(new IsoObject[51]);
+			Internal.SelfDepends.Clear();
+			Internal.TheirDepends.Clear();
+
 			FixLastProperties();
 			FixIsoPosition();
 		}
