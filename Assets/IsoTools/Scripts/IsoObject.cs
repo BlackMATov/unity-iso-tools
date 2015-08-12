@@ -11,7 +11,7 @@ namespace IsoTools {
 
 		// ------------------------------------------------------------------------
 		//
-		// size
+		// Size
 		//
 		// ------------------------------------------------------------------------
 
@@ -55,7 +55,7 @@ namespace IsoTools {
 
 		// ------------------------------------------------------------------------
 		//
-		// position
+		// Position
 		//
 		// ------------------------------------------------------------------------
 
@@ -99,7 +99,7 @@ namespace IsoTools {
 
 		// ------------------------------------------------------------------------
 		//
-		// tilePosition
+		// TilePosition
 		//
 		// ------------------------------------------------------------------------
 
@@ -137,7 +137,7 @@ namespace IsoTools {
 
 		// ------------------------------------------------------------------------
 		//
-		// bounds
+		// Bounds
 		//
 		// ------------------------------------------------------------------------
 
@@ -149,12 +149,12 @@ namespace IsoTools {
 
 		// ------------------------------------------------------------------------
 		//
-		// internal
+		// Internal
 		//
 		// ------------------------------------------------------------------------
 		
 		public class InternalState {
-			public bool               Moved        = false;
+			public bool               Dirty        = false;
 			public bool               Visited      = false;
 			public Vector3            MinSector    = Vector3.zero;
 			public Vector3            MaxSector    = Vector3.zero;
@@ -255,11 +255,10 @@ namespace IsoTools {
 		// ------------------------------------------------------------------------
 
 		void Awake() {
-			Internal.SelfDepends  = new HashSet<IsoObject>(new IsoObject[51]);
-			Internal.TheirDepends = new HashSet<IsoObject>(new IsoObject[51]);
+			Internal.SelfDepends = new HashSet<IsoObject>(new IsoObject[19]);
 			Internal.SelfDepends.Clear();
+			Internal.TheirDepends = new HashSet<IsoObject>(new IsoObject[19]);
 			Internal.TheirDepends.Clear();
-
 			FixLastProperties();
 			FixIsoPosition();
 		}

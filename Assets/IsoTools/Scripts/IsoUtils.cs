@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -7,36 +6,6 @@ using UnityEditor;
 
 namespace IsoTools {
 	public static class IsoUtils {
-
-		// ---------------------------------------------------------------------
-		//
-		// Poolable/Pool
-		//
-		// ---------------------------------------------------------------------
-
-		public interface IPoolable {
-			void Reset();
-		}
-
-		public class Pool<T> where T : IPoolable {
-			System.Func<T> _createFn = null;
-			Stack<T>       _capacity = new Stack<T>();
-
-			public Pool(System.Func<T> create_fn) {
-				_createFn = create_fn;
-			}
-
-			public T Pop() {
-				return _capacity.Count > 0
-					? _capacity.Pop()
-					: _createFn();
-			}
-
-			public void Push(T value) {
-				value.Reset();
-				_capacity.Push(value);
-			}
-		}
 
 		// ---------------------------------------------------------------------
 		//
@@ -377,27 +346,6 @@ namespace IsoTools {
 
 		public static bool Vec3Approximately(Vector3 a, Vector3 b) {
 			return a == b;
-		}
-
-		// ---------------------------------------------------------------------
-		//
-		// LookUpCube
-		//
-		// ---------------------------------------------------------------------
-
-		public static void LookUpCube(Vector2 min, Vector2 max, System.Action<Vector2> act) {
-			for ( var y = min.y; y < max.y; ++y ) {
-			for ( var x = min.x; x < max.x; ++x ) {
-				act(new Vector2(x, y));
-			}}
-		}
-
-		public static void LookUpCube(Vector3 min, Vector3 max, System.Action<Vector3> act) {
-			for ( var z = min.z; z < max.z; ++z ) {
-			for ( var y = min.y; y < max.y; ++y ) {
-			for ( var x = min.x; x < max.x; ++x ) {
-				act(new Vector3(x, y, z));
-			}}}
 		}
 
 		// ---------------------------------------------------------------------
