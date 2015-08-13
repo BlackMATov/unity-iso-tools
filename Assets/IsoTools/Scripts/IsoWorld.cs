@@ -9,10 +9,10 @@ namespace IsoTools {
 	[ExecuteInEditMode, DisallowMultipleComponent]
 	public class IsoWorld : MonoBehaviour {
 
-		bool               _dirty              = true;
-		HashSet<IsoObject> _objects            = new HashSet<IsoObject>();
-		HashSet<IsoObject> _visibles           = new HashSet<IsoObject>();
-		HashSet<IsoObject> _oldVisibles        = new HashSet<IsoObject>();
+		bool               _dirty       = false;
+		HashSet<IsoObject> _objects     = new HashSet<IsoObject>();
+		HashSet<IsoObject> _visibles    = new HashSet<IsoObject>();
+		HashSet<IsoObject> _oldVisibles = new HashSet<IsoObject>();
 
 		class Sector {
 			public List<IsoObject> objects = new List<IsoObject>();
@@ -21,11 +21,11 @@ namespace IsoTools {
 			}
 		}
 
-		List<Sector>       _sectors            = new List<Sector>();
-		float              _sectorsSize        = 0.0f;
-		Vector3            _sectorsMinNumPos   = Vector3.zero;
-		Vector3            _sectorsMaxNumPos   = Vector3.zero;
-		Vector3            _sectorsNumPosCount = Vector3.zero;
+		List<Sector> _sectors            = new List<Sector>();
+		float        _sectorsSize        = 0.0f;
+		Vector3      _sectorsMinNumPos   = Vector3.zero;
+		Vector3      _sectorsMaxNumPos   = Vector3.zero;
+		Vector3      _sectorsNumPosCount = Vector3.zero;
 		
 		// ------------------------------------------------------------------------
 		//
