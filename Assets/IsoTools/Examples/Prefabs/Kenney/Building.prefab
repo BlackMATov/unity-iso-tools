@@ -83,7 +83,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 199876}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .649999976, y: 2.27499986, z: 52.7777863}
+  m_LocalPosition: {x: 16, y: 56, z: 52.7777863}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 492676}
@@ -128,6 +128,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _size: {x: 1, y: 1, z: 2}
   _position: {x: 4, y: 3, z: 0}
+  Internal:
+    Dirty: 0
+    Visited: 0
+    Bounds:
+      m_Center: {x: 16, y: 80, z: 52.7777863}
+      m_Extent: {x: 16, y: 24, z: 0}
+    Bounds3d:
+      m_Center: {x: 16, y: 57.375, z: 52.5777855}
+      m_Extent: {x: .495000362, y: .299999237, z: .0999984741}
+    MinSector: {x: 0, y: 0, z: 0}
+    MaxSector: {x: 0, y: 0, z: 0}
   _isAlignment: 1
   _isShowBounds: 0
 --- !u!212 &21224890

@@ -11,6 +11,28 @@ namespace IsoTools {
 
 		// ------------------------------------------------------------------------
 		//
+		// Mode
+		//
+		// ------------------------------------------------------------------------
+
+		public enum Mode {
+			Mode2d,
+			Mode3d
+		}
+
+		[SerializeField]
+		Mode _mode = Mode.Mode2d;
+
+		public Mode mode {
+			get { return _mode; }
+			set {
+				_mode = value;
+				FixTransform();
+			}
+		}
+
+		// ------------------------------------------------------------------------
+		//
 		// Size
 		//
 		// ------------------------------------------------------------------------
@@ -137,31 +159,23 @@ namespace IsoTools {
 
 		// ------------------------------------------------------------------------
 		//
-		// Bounds
-		//
-		// ------------------------------------------------------------------------
-
-		Bounds _bounds = new Bounds();
-
-		public Bounds bounds {
-			get { return _bounds; }
-		}
-
-		// ------------------------------------------------------------------------
-		//
 		// Internal
 		//
 		// ------------------------------------------------------------------------
-		
+
+		[System.Serializable]
 		public class InternalState {
 			public bool               Dirty        = false;
 			public bool               Visited      = false;
+			public Bounds             Bounds       = new Bounds();
+			public Bounds             Bounds3d     = new Bounds();
+			public float              Offset3d     = 0.0f;
 			public Vector3            MinSector    = Vector3.zero;
 			public Vector3            MaxSector    = Vector3.zero;
 			public HashSet<IsoObject> SelfDepends  = new HashSet<IsoObject>();
 			public HashSet<IsoObject> TheirDepends = new HashSet<IsoObject>();
 		}
-		
+
 		public InternalState Internal = new InternalState();
 
 		// ------------------------------------------------------------------------
@@ -213,7 +227,9 @@ namespace IsoTools {
 				transform.position = IsoUtils.Vec3ChangeZ(
 					isoWorld.IsoToScreen(position),
 					transform.position.z);
-				_bounds = IsoUtils.IsoObjectScreenBounds(isoWorld, this);
+				Internal.Bounds   = IsoUtils.IsoObjectScreenBounds(isoWorld, this);
+				Internal.Bounds3d = IsoUtils.IsoObject3DBounds(this);
+				Internal.Offset3d = transform.position.z - Internal.Bounds3d.center.z;
 			}
 			FixLastProperties();
 			MartDirtyIsoWorld();

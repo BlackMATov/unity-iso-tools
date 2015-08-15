@@ -44,21 +44,21 @@ namespace IsoTools {
 		}
 
 		[SerializeField]
-		public float _minDepth = 1.0f;
-		public float minDepth {
-			get { return _minDepth; }
+		public float _stepDepth = 0.1f;
+		public float stepDepth {
+			get { return _stepDepth; }
 			set {
-				_minDepth = value;
+				_stepDepth = value;
 				ChangeSortingProperty();
 			}
 		}
-		
+
 		[SerializeField]
-		public float _maxDepth = 100.0f;
-		public float maxDepth {
-			get { return _maxDepth; }
+		public float _startDepth = 1.0f;
+		public float startDepth {
+			get { return _startDepth; }
 			set {
-				_maxDepth = value;
+				_startDepth = value;
 				ChangeSortingProperty();
 			}
 		}
@@ -136,7 +136,7 @@ namespace IsoTools {
 
 		bool IsIsoObjectVisible(IsoObject iso_object, Plane[] planes) {
 			return planes != null && planes.Length > 0 && iso_object.isActiveAndEnabled
-				? GeometryUtility.TestPlanesAABB(planes, iso_object.bounds)
+				? GeometryUtility.TestPlanesAABB(planes, iso_object.Internal.Bounds)
 				: false;
 		}
 
@@ -422,7 +422,7 @@ namespace IsoTools {
 		}
 
 		void PlaceAllVisibles() {
-			var depth = minDepth;
+			var depth = startDepth;
 			var visibles_iter = _visibles.GetEnumerator();
 			while ( visibles_iter.MoveNext() ) {
 				depth = RecursivePlaceIsoObject(visibles_iter.Current, depth);
@@ -438,8 +438,10 @@ namespace IsoTools {
 			while ( self_depends_iter.MoveNext() ) {
 				depth = RecursivePlaceIsoObject(self_depends_iter.Current, depth);
 			}
-			PlaceIsoObject(iso_object, depth);
-			return depth + (maxDepth - minDepth) / _visibles.Count;
+			var zoffset = iso_object.mode == IsoObject.Mode.Mode3d ? iso_object.Internal.Offset3d : 0.0f;
+			var extents = iso_object.mode == IsoObject.Mode.Mode3d ? iso_object.Internal.Bounds3d.extents.z : 0.0f;
+			PlaceIsoObject(iso_object, depth + extents + zoffset);
+			return depth + extents * 2.0f + stepDepth;
 		}
 
 		void PlaceIsoObject(IsoObject iso_object, float depth) {
@@ -477,15 +479,15 @@ namespace IsoTools {
 
 		#if UNITY_EDITOR
 		void Reset() {
-			tileSize = 32.0f;
-			minDepth = 1.0f;
-			maxDepth = 100.0f;
+			tileSize   = 32.0f;
+			stepDepth  = 0.1f;
+			startDepth = 1.0f;
 		}
 		
 		void OnValidate() {
-			tileSize = _tileSize;
-			minDepth = _minDepth;
-			maxDepth = _maxDepth;
+			tileSize   = _tileSize;
+			stepDepth  = _stepDepth;
+			startDepth = _startDepth;
 		}
 
 		void OnRenderObject() {

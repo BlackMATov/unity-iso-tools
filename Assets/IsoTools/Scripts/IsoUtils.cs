@@ -361,6 +361,30 @@ namespace IsoTools {
 				: obj.AddComponent<T>();
 		}
 
+		static Bounds IsoObject3DBounds(GameObject obj, bool exist, Bounds bounds) {
+			var renderer = obj.GetComponent<Renderer>();
+			if ( renderer ) {
+				if ( exist ) {
+					bounds.Encapsulate(renderer.bounds);
+				} else {
+					exist = true;
+					bounds = renderer.bounds;
+				}
+			}
+			var obj_transform = obj.transform;
+			for ( var i = 0; i < obj_transform.childCount; ++i ) {
+				var child_obj = obj_transform.GetChild(i).gameObject;
+				bounds = IsoObject3DBounds(child_obj, exist, bounds);
+			}
+			return bounds;
+		}
+
+		public static Bounds IsoObject3DBounds(IsoObject iso_object) {
+			return iso_object
+				? IsoObject3DBounds(iso_object.gameObject, false, new Bounds())
+				: new Bounds();
+		}
+
 		public static Bounds IsoObjectScreenBounds(IsoWorld iso_world, IsoObject iso_object) {
 			if ( iso_world ) {
 				var z = iso_object.transform.position.z;
@@ -370,7 +394,7 @@ namespace IsoTools {
 				var r = iso_world.IsoToScreen(iso_object.position + Vec3FromX(iso_object.sizeX));
 				return new Bounds(
 					new Vector3((r.x + l.x) * 0.5f, (t.y + b.y) * 0.5f, z),
-					new Vector3(r.x - l.x, t.y - b.y, iso_world.tileSize));
+					new Vector3(r.x - l.x, t.y - b.y, Mathf.Epsilon));
 			} else {
 				return new Bounds();
 			}

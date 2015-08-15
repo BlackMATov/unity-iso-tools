@@ -43,7 +43,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 121016}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.59553313, y: 1.54941559, z: 30.3571491}
+  m_LocalPosition: {x: -39.274662, y: 38.1394615, z: 30.3571491}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 442418}
@@ -74,6 +74,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _size: {x: .300000012, y: .300000012, z: .600000024}
   _position: {x: .626383245, y: 3.08104968, z: .529999971}
+  Internal:
+    Dirty: 0
+    Visited: 0
+    Bounds:
+      m_Center: {x: -39.274662, y: 45.3394623, z: 30.3571491}
+      m_Extent: {x: 4.79999924, y: 7.20000076, z: 0}
+    Bounds3d:
+      m_Center: {x: -39.274662, y: 38.4364624, z: 30.3571491}
+      m_Extent: {x: .165000916, y: .229999542, z: .0499992371}
+    MinSector: {x: 0, y: 0, z: 0}
+    MaxSector: {x: 0, y: 0, z: 0}
   _isAlignment: 0
   _isShowBounds: 0
 --- !u!114 &11445356
