@@ -9,10 +9,11 @@ namespace IsoTools {
 	[ExecuteInEditMode, DisallowMultipleComponent]
 	public class IsoWorld : MonoBehaviour {
 
-		bool               _dirty       = false;
-		HashSet<IsoObject> _objects     = new HashSet<IsoObject>();
-		HashSet<IsoObject> _visibles    = new HashSet<IsoObject>();
-		HashSet<IsoObject> _oldVisibles = new HashSet<IsoObject>();
+		bool               _dirty        = false;
+		HashSet<IsoObject> _objects      = new HashSet<IsoObject>();
+		HashSet<IsoObject> _visibles     = new HashSet<IsoObject>();
+		HashSet<IsoObject> _oldVisibles  = new HashSet<IsoObject>();
+		List<Renderer>     _tmpRenderers = new List<Renderer>();
 
 		class Sector {
 			public List<IsoObject> objects = new List<IsoObject>();
@@ -132,7 +133,7 @@ namespace IsoTools {
 
 		bool CheckIsoObjectChangeBounds3d(IsoObject iso_object) {
 			if ( iso_object.mode == IsoObject.Mode.Mode3d ) {
-				var bounds3d = IsoUtils.IsoObject3DBounds(iso_object);
+				var bounds3d = IsoObject3DBounds(iso_object);
 				var offset3d = iso_object.transform.position.z - bounds3d.center.z;
 				if ( iso_object.Internal.Bounds3d.extents != bounds3d.extents ||
 				     !Mathf.Approximately(iso_object.Internal.Offset3d, offset3d) )
@@ -144,24 +145,27 @@ namespace IsoTools {
 			}
 			return false;
 		}
-
-		bool IsGameObjectVisible(GameObject obj) {
-			var renderer = obj.GetComponent<Renderer>();
-			if ( renderer && renderer.isVisible ) {
-				return true;
+		
+		Bounds IsoObject3DBounds(IsoObject iso_object) {
+			var bounds = new Bounds();
+			iso_object.GetComponentsInChildren<Renderer>(_tmpRenderers);
+			if ( _tmpRenderers.Count > 0 ) {
+				bounds = _tmpRenderers[0].bounds;
+				for ( var i = 1; i < _tmpRenderers.Count; ++i ) {
+					bounds.Encapsulate(_tmpRenderers[i].bounds);
+				}
 			}
-			var obj_transform = obj.transform;
-			for ( var i = 0; i < obj_transform.childCount; ++i ) {
-				var child_obj = obj_transform.GetChild(i).gameObject;
-				if ( IsGameObjectVisible(child_obj) ) {
+			return bounds;
+		}
+
+		bool IsIsoObjectVisible(IsoObject iso_object) {
+			iso_object.GetComponentsInChildren<Renderer>(_tmpRenderers);
+			for ( var i = 0; i < _tmpRenderers.Count; ++i ) {
+				if ( _tmpRenderers[i].isVisible ) {
 					return true;
 				}
 			}
 			return false;
-		}
-		
-		bool IsIsoObjectVisible(IsoObject iso_object) {
-			return IsGameObjectVisible(iso_object.gameObject);
 		}
 
 		bool IsIsoObjectDepends(Vector3 a_min, Vector3 a_size, Vector3 b_min, Vector3 b_size) {

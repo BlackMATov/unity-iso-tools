@@ -51,7 +51,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 128698}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.12775278, y: 2.6389122, z: 43.75}
+  m_LocalPosition: {x: 52.3754539, y: 64.95784, z: 43.75}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 461496}
@@ -74,12 +74,9 @@ MonoBehaviour:
   Internal:
     Dirty: 0
     Visited: 0
-    Bounds:
-      m_Center: {x: 2.12775278, y: 2.89891219, z: 43.75}
-      m_Extent: {x: .195000112, y: .25999999, z: 0}
     Bounds3d:
-      m_Center: {x: 2.12775278, y: 2.90991211, z: 43.75}
-      m_Extent: {x: .160000026, y: .224999905, z: .0999984741}
+      m_Center: {x: 0, y: 0, z: 0}
+      m_Extent: {x: 0, y: 0, z: 0}
     Offset3d: 0
     MinSector: {x: 0, y: 0, z: 0}
     MaxSector: {x: 0, y: 0, z: 0}

@@ -361,30 +361,6 @@ namespace IsoTools {
 				: obj.AddComponent<T>();
 		}
 
-		static Bounds IsoObject3DBounds(GameObject obj, bool exist, Bounds bounds) {
-			var renderer = obj.GetComponent<Renderer>();
-			if ( renderer ) {
-				if ( exist ) {
-					bounds.Encapsulate(renderer.bounds);
-				} else {
-					exist = true;
-					bounds = renderer.bounds;
-				}
-			}
-			var obj_transform = obj.transform;
-			for ( var i = 0; i < obj_transform.childCount; ++i ) {
-				var child_obj = obj_transform.GetChild(i).gameObject;
-				bounds = IsoObject3DBounds(child_obj, exist, bounds);
-			}
-			return bounds;
-		}
-
-		public static Bounds IsoObject3DBounds(IsoObject iso_object) {
-			return iso_object
-				? IsoObject3DBounds(iso_object.gameObject, false, new Bounds())
-				: new Bounds();
-		}
-
 		public static IsoCollider IsoConvertCollider(Collider collider) {
 			var fake_collider = collider ? collider.GetComponent<IsoFakeCollider>() : null;
 			return fake_collider ? fake_collider.isoCollider : null;
