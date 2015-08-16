@@ -385,21 +385,6 @@ namespace IsoTools {
 				: new Bounds();
 		}
 
-		public static Bounds IsoObjectScreenBounds(IsoWorld iso_world, IsoObject iso_object) {
-			if ( iso_world ) {
-				var z = iso_object.transform.position.z;
-				var b = iso_world.IsoToScreen(iso_object.position);
-				var t = iso_world.IsoToScreen(iso_object.position + iso_object.size);
-				var l = iso_world.IsoToScreen(iso_object.position + Vec3FromY(iso_object.sizeY));
-				var r = iso_world.IsoToScreen(iso_object.position + Vec3FromX(iso_object.sizeX));
-				return new Bounds(
-					new Vector3((r.x + l.x) * 0.5f, (t.y + b.y) * 0.5f, z),
-					new Vector3(r.x - l.x, t.y - b.y, Mathf.Epsilon));
-			} else {
-				return new Bounds();
-			}
-		}
-
 		public static IsoCollider IsoConvertCollider(Collider collider) {
 			var fake_collider = collider ? collider.GetComponent<IsoFakeCollider>() : null;
 			return fake_collider ? fake_collider.isoCollider : null;

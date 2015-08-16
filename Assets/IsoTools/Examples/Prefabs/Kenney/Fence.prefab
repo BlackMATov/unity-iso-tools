@@ -51,7 +51,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 129934}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 8.47999954, z: 0}
+  m_LocalPosition: {x: 0, y: .344499975, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 403766}
@@ -68,17 +68,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a9c584f9a39449438abc7ba59a68778, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mode: 0
   _size: {x: 1, y: .0700000003, z: .430000007}
   _position: {x: 0, y: 0, z: .529999971}
   Internal:
     Dirty: 0
     Visited: 0
     Bounds:
-      m_Center: {x: 7.44000006, y: 16.2000008, z: 0}
-      m_Extent: {x: 8.56000042, y: 7.72000027, z: 0}
+      m_Center: {x: .302249998, y: .658124983, z: 0}
+      m_Extent: {x: .347749978, y: .313624978, z: 0}
     Bounds3d:
-      m_Center: {x: .305000007, y: 8.78999996, z: 0}
-      m_Extent: {x: .354999959, y: .319999695, z: .100000001}
+      m_Center: {x: .305000007, y: .654500008, z: 0}
+      m_Extent: {x: .354999959, y: .319999993, z: .100000001}
+    Offset3d: 0
     MinSector: {x: 0, y: 0, z: 0}
     MaxSector: {x: 0, y: 0, z: 0}
   _isAlignment: 0

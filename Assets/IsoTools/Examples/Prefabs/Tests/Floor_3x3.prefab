@@ -43,18 +43,6 @@ MonoBehaviour:
   _mode: 0
   _size: {x: 3, y: 3, z: 0}
   _position: {x: 0, y: 0, z: 0}
-  Internal:
-    Dirty: 0
-    Visited: 0
-    Bounds:
-      m_Center: {x: 0, y: 24, z: 0}
-      m_Extent: {x: 48, y: 24, z: 0}
-    Bounds3d:
-      m_Center: {x: 0, y: 24.5, z: 0}
-      m_Extent: {x: 49, y: 24.5, z: .100000001}
-    Offset3d: 0
-    MinSector: {x: 0, y: 0, z: 0}
-    MaxSector: {x: 0, y: 0, z: 0}
   _isAlignment: 1
   _isShowBounds: 0
 --- !u!212 &21253404

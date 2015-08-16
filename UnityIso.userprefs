@@ -1,9 +1,23 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/IsoTools/Examples/Scripts/AlienBallController.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/IsoTools/Scripts/IsoWorld.cs">
     <Files>
-      <File FileName="Assets/IsoTools/Examples/Scripts/AlienBallController.cs" Line="1" Column="1" />
+      <File FileName="Assets/IsoTools/Scripts/IsoObject.cs" Line="163" Column="5" />
+      <File FileName="Assets/IsoTools/Scripts/IsoWorld.cs" Line="158" Column="37" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="Assembly-CSharp" expanded="True">
+            <Node name="IsoTools" expanded="True">
+              <Node name="Scripts" expanded="True">
+                <Node name="IsoWorld.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />

@@ -47,8 +47,8 @@ MonoBehaviour:
     Dirty: 0
     Visited: 0
     Bounds:
-      m_Center: {x: 0, y: 8, z: 0}
-      m_Extent: {x: 16, y: 8, z: 0}
+      m_Center: {x: 0, y: .324999988, z: 0}
+      m_Extent: {x: .649999976, y: .324999988, z: 0}
     Bounds3d:
       m_Center: {x: 0, y: 8.5, z: 0}
       m_Extent: {x: 17, y: 8.5, z: .100000001}

@@ -163,11 +163,9 @@ namespace IsoTools {
 		//
 		// ------------------------------------------------------------------------
 
-		[System.Serializable]
 		public class InternalState {
 			public bool               Dirty        = false;
 			public bool               Visited      = false;
-			public Bounds             Bounds       = new Bounds();
 			public Bounds             Bounds3d     = new Bounds();
 			public float              Offset3d     = 0.0f;
 			public Vector3            MinSector    = Vector3.zero;
@@ -227,13 +225,9 @@ namespace IsoTools {
 				transform.position = IsoUtils.Vec3ChangeZ(
 					isoWorld.IsoToScreen(position),
 					transform.position.z);
-				Internal.Bounds   = IsoUtils.IsoObjectScreenBounds(isoWorld, this);
-				Internal.Bounds3d = IsoUtils.IsoObject3DBounds(this);
-				Internal.Offset3d = transform.position.z - Internal.Bounds3d.center.z;
 			}
 			FixLastProperties();
 			MartDirtyIsoWorld();
-			MarkEditorObjectDirty();
 		}
 
 		public void FixIsoPosition() {
@@ -256,9 +250,6 @@ namespace IsoTools {
 			if ( isoWorld ) {
 				isoWorld.MarkDirty(this);
 			}
-		}
-
-		void MarkEditorObjectDirty() {
 		#if UNITY_EDITOR
 			EditorUtility.SetDirty(this);
 		#endif

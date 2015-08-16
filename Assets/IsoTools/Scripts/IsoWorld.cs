@@ -91,7 +91,9 @@ namespace IsoTools {
 		public void MarkDirty() {
 			if ( !_dirty ) {
 				_dirty = true;
-				MarkEditorWorldDirty();
+			#if UNITY_EDITOR
+				EditorUtility.SetDirty(this);
+			#endif
 			}
 		}
 		
@@ -116,12 +118,6 @@ namespace IsoTools {
 		//
 		// ------------------------------------------------------------------------
 
-		void MarkEditorWorldDirty() {
-		#if UNITY_EDITOR
-			EditorUtility.SetDirty(this);
-		#endif
-		}
-
 		void FixAllTransforms() {
 			var objects_iter = _objects.GetEnumerator();
 			while ( objects_iter.MoveNext() ) {
@@ -134,10 +130,38 @@ namespace IsoTools {
 			FixAllTransforms();
 		}
 
-		bool IsIsoObjectVisible(IsoObject iso_object, Plane[] planes) {
-			return planes != null && planes.Length > 0 && iso_object.isActiveAndEnabled
-				? GeometryUtility.TestPlanesAABB(planes, iso_object.Internal.Bounds)
-				: false;
+		bool CheckIsoObjectChangeBounds3d(IsoObject iso_object) {
+			if ( iso_object.mode == IsoObject.Mode.Mode3d ) {
+				var bounds3d = IsoUtils.IsoObject3DBounds(iso_object);
+				var offset3d = iso_object.transform.position.z - bounds3d.center.z;
+				if ( iso_object.Internal.Bounds3d.extents != bounds3d.extents ||
+				     !Mathf.Approximately(iso_object.Internal.Offset3d, offset3d) )
+				{
+					iso_object.Internal.Bounds3d = bounds3d;
+					iso_object.Internal.Offset3d = offset3d;
+					return true;
+				}
+			}
+			return false;
+		}
+
+		bool IsGameObjectVisible(GameObject obj) {
+			var renderer = obj.GetComponent<Renderer>();
+			if ( renderer && renderer.isVisible ) {
+				return true;
+			}
+			var obj_transform = obj.transform;
+			for ( var i = 0; i < obj_transform.childCount; ++i ) {
+				var child_obj = obj_transform.GetChild(i).gameObject;
+				if ( IsGameObjectVisible(child_obj) ) {
+					return true;
+				}
+			}
+			return false;
+		}
+		
+		bool IsIsoObjectVisible(IsoObject iso_object) {
+			return IsGameObjectVisible(iso_object.gameObject);
 		}
 
 		bool IsIsoObjectDepends(Vector3 a_min, Vector3 a_size, Vector3 b_min, Vector3 b_size) {
@@ -347,20 +371,47 @@ namespace IsoTools {
 		}
 
 		void UpdateVisibles() {
+			Profiler.BeginSample("CalculateNewVisibles");
 			CalculateNewVisibles();
+			Profiler.EndSample();
 
+			Profiler.BeginSample("CalculateSectors");
 			SetupSectorSize();
 			SetupObjectsSectors();
 			SetupSectors();
+			Profiler.EndSample();
 
+			Profiler.BeginSample("ResolveVisibles");
+			ResolveVisibles();
+			Profiler.EndSample();
+		}
+
+		void CalculateNewVisibles() {
+			_oldVisibles.Clear();
+			var objects_iter = _objects.GetEnumerator();
+			while ( objects_iter.MoveNext() ) {
+				var iso_object = objects_iter.Current;
+				if ( IsIsoObjectVisible(iso_object) ) {
+					iso_object.Internal.Visited = false;
+					_oldVisibles.Add(iso_object);
+				}
+			}
+			var old_visibles = _visibles;
+			_visibles = _oldVisibles;
+			_oldVisibles = old_visibles;
+		}
+
+		void ResolveVisibles() {
 			var visibles_iter = _visibles.GetEnumerator();
 			while ( visibles_iter.MoveNext() ) {
 				var iso_object = visibles_iter.Current;
 				if ( iso_object.Internal.Dirty || !_oldVisibles.Contains(iso_object) ) {
 					iso_object.Internal.Dirty = true;
+				} else if ( CheckIsoObjectChangeBounds3d(iso_object) ) {
+					MarkDirty();
 				}
 			}
-
+			
 			visibles_iter = _visibles.GetEnumerator();
 			while ( visibles_iter.MoveNext() ) {
 				var iso_object = visibles_iter.Current;
@@ -370,7 +421,7 @@ namespace IsoTools {
 					iso_object.Internal.Dirty = false;
 				}
 			}
-
+			
 			var old_visibles_iter = _oldVisibles.GetEnumerator();
 			while ( old_visibles_iter.MoveNext() ) {
 				var iso_object = old_visibles_iter.Current;
@@ -378,24 +429,6 @@ namespace IsoTools {
 					MarkDirty();
 					ClearIsoObjectDepends(iso_object);
 				}
-			}
-		}
-		
-		void CalculateNewVisibles() {
-			var planes = Camera.current ? GeometryUtility.CalculateFrustumPlanes(Camera.current) : null;
-			if ( planes != null && planes.Length > 0 ) {
-				_oldVisibles.Clear();
-				var objects_iter = _objects.GetEnumerator();
-				while ( objects_iter.MoveNext() ) {
-					var iso_object = objects_iter.Current;
-					if ( IsIsoObjectVisible(iso_object, planes) ) {
-						iso_object.Internal.Visited = false;
-						_oldVisibles.Add(iso_object);
-					}
-				}
-				var old_visibles = _visibles;
-				_visibles = _oldVisibles;
-				_oldVisibles = old_visibles;
 			}
 		}
 
@@ -438,10 +471,16 @@ namespace IsoTools {
 			while ( self_depends_iter.MoveNext() ) {
 				depth = RecursivePlaceIsoObject(self_depends_iter.Current, depth);
 			}
-			var zoffset = iso_object.mode == IsoObject.Mode.Mode3d ? iso_object.Internal.Offset3d : 0.0f;
-			var extents = iso_object.mode == IsoObject.Mode.Mode3d ? iso_object.Internal.Bounds3d.extents.z : 0.0f;
-			PlaceIsoObject(iso_object, depth + extents + zoffset);
-			return depth + extents * 2.0f + stepDepth;
+
+			if ( iso_object.mode == IsoObject.Mode.Mode3d ) {
+				var zoffset = iso_object.Internal.Offset3d;
+				var extents = iso_object.Internal.Bounds3d.extents.z;
+				PlaceIsoObject(iso_object, depth + extents + zoffset);
+				return depth + extents * 2.0f + stepDepth;
+			} else {
+				PlaceIsoObject(iso_object, depth);
+				return depth + stepDepth;
+			}
 		}
 
 		void PlaceIsoObject(IsoObject iso_object, float depth) {
