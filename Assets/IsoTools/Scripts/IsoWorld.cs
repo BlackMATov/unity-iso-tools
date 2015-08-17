@@ -13,6 +13,9 @@ namespace IsoTools {
 		HashSet<IsoObject> _objects      = new HashSet<IsoObject>();
 		HashSet<IsoObject> _visibles     = new HashSet<IsoObject>();
 		HashSet<IsoObject> _oldVisibles  = new HashSet<IsoObject>();
+
+		Matrix4x4          _isoMatrix    = Matrix4x4.identity;
+		Matrix4x4          _isoRMatrix   = Matrix4x4.identity;
 		List<Renderer>     _tmpRenderers = new List<Renderer>();
 
 		class Sector {
@@ -45,6 +48,26 @@ namespace IsoTools {
 		}
 
 		[SerializeField]
+		public float _tileRatio = 0.5f;
+		public float tileRatio {
+			get { return _tileRatio; }
+			set {
+				_tileRatio = Mathf.Clamp(value, 0.25f, 1.0f);
+				ChangeSortingProperty();
+			}
+		}
+
+		[SerializeField]
+		public float _tileAngle = 45.0f;
+		public float tileAngle {
+			get { return _tileAngle; }
+			set {
+				_tileAngle = Mathf.Clamp(value, 0.0f, 45.0f);
+				ChangeSortingProperty();
+			}
+		}
+
+		[SerializeField]
 		public float _stepDepth = 0.1f;
 		public float stepDepth {
 			get { return _stepDepth; }
@@ -64,17 +87,34 @@ namespace IsoTools {
 			}
 		}
 
-		public Vector2 IsoToScreen(Vector3 pos) {
+		public Vector2 IsoToScreen(Vector3 iso_pnt) {
+			/*
 			return new Vector2(
 				(pos.x - pos.y),
-				(pos.x + pos.y) * 0.5f + pos.z) * tileSize;
+				(pos.x + pos.y) * tileRatio + pos.z) * tileSize;//*/
+
+			/*
+			var result = new Vector2(
+				(pos.x - pos.y),
+				(pos.x + pos.y) * tileRatio + pos.z) * tileSize;
+
+			result.x += (pos.x + pos.y) * tileSkewX * tileSize;
+			result.y += (pos.x - pos.y) * tileSkewY * tileSize;*/
+
+			var screen_pos = _isoMatrix.MultiplyPoint(iso_pnt);
+			return new Vector2(
+				screen_pos.x,
+				screen_pos.y + iso_pnt.z * tileSize);
 		}
 
 		public Vector3 ScreenToIso(Vector2 pos) {
+			/*
 			return new Vector3(
-				(pos.x * 0.5f + pos.y),
-				(pos.y - pos.x * 0.5f),
-				0.0f) / tileSize;
+				pos.y / (tileRatio * 2.0f) + pos.x * 0.5f,
+				pos.y / (tileRatio * 2.0f) - pos.x * 0.5f,
+				0.0f) / tileSize;*/
+
+			return _isoRMatrix.MultiplyPoint(new Vector3(pos.x, pos.y, 0.0f));
 		}
 
 		public Vector3 ScreenToIso(Vector2 pos, float iso_z) {
@@ -119,6 +159,16 @@ namespace IsoTools {
 		//
 		// ------------------------------------------------------------------------
 
+		void UpdateIsoMatrix() {
+			_isoMatrix =
+				Matrix4x4.Scale(new Vector3(1.0f, tileRatio, 1.0f)) *
+				Matrix4x4.TRS(
+					Vector3.zero,
+					Quaternion.AngleAxis(90.0f - tileAngle, IsoUtils.vec3OneZ),
+					IsoUtils.Vec3From(tileSize * Mathf.Sqrt(2)));
+			_isoRMatrix = _isoMatrix.inverse;
+		}
+
 		void FixAllTransforms() {
 			var objects_iter = _objects.GetEnumerator();
 			while ( objects_iter.MoveNext() ) {
@@ -128,6 +178,7 @@ namespace IsoTools {
 
 		void ChangeSortingProperty() {
 			MarkDirty();
+			UpdateIsoMatrix();
 			FixAllTransforms();
 		}
 
@@ -523,12 +574,16 @@ namespace IsoTools {
 		#if UNITY_EDITOR
 		void Reset() {
 			tileSize   = 32.0f;
+			tileRatio  = 0.5f;
+			tileAngle  = 45.0f;
 			stepDepth  = 0.1f;
 			startDepth = 1.0f;
 		}
 		
 		void OnValidate() {
 			tileSize   = _tileSize;
+			tileRatio  = _tileRatio;
+			tileAngle  = _tileAngle;
 			stepDepth  = _stepDepth;
 			startDepth = _startDepth;
 		}

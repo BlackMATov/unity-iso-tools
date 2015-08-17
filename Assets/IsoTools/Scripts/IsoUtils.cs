@@ -224,6 +224,10 @@ namespace IsoTools {
 		// Vec2From
 		// -----------------------------
 
+		public static Vector2 Vec2From(float v) {
+			return new Vector2(v, v);
+		}
+
 		public static Vector2 Vec2FromX(float x) {
 			return new Vector2(x, 0.0f);
 		}
@@ -243,7 +247,11 @@ namespace IsoTools {
 		// -----------------------------
 		// Vec3From
 		// -----------------------------
-		
+
+		public static Vector3 Vec3From(float v) {
+			return new Vector3(v, v, v);
+		}
+
 		public static Vector3 Vec3FromX(float x) {
 			return new Vector3(x, 0.0f, 0.0f);
 		}
