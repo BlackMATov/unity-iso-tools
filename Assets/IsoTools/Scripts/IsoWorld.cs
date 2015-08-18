@@ -9,11 +9,12 @@ namespace IsoTools {
 	[ExecuteInEditMode, DisallowMultipleComponent]
 	public class IsoWorld : MonoBehaviour {
 
-		bool               _dirty        = false;
+		bool               _dirty        = true;
 		HashSet<IsoObject> _objects      = new HashSet<IsoObject>();
 		HashSet<IsoObject> _visibles     = new HashSet<IsoObject>();
 		HashSet<IsoObject> _oldVisibles  = new HashSet<IsoObject>();
 
+		bool               _dirtyMat     = true;
 		Matrix4x4          _isoMatrix    = Matrix4x4.identity;
 		Matrix4x4          _isoRMatrix   = Matrix4x4.identity;
 		List<Renderer>     _tmpRenderers = new List<Renderer>();
@@ -62,7 +63,7 @@ namespace IsoTools {
 		public float tileAngle {
 			get { return _tileAngle; }
 			set {
-				_tileAngle = Mathf.Clamp(value, 0.0f, 45.0f);
+				_tileAngle = Mathf.Clamp(value, 0.0f, 90.0f);
 				ChangeSortingProperty();
 			}
 		}
@@ -88,19 +89,10 @@ namespace IsoTools {
 		}
 
 		public Vector2 IsoToScreen(Vector3 iso_pnt) {
-			/*
-			return new Vector2(
-				(pos.x - pos.y),
-				(pos.x + pos.y) * tileRatio + pos.z) * tileSize;//*/
-
-			/*
-			var result = new Vector2(
-				(pos.x - pos.y),
-				(pos.x + pos.y) * tileRatio + pos.z) * tileSize;
-
-			result.x += (pos.x + pos.y) * tileSkewX * tileSize;
-			result.y += (pos.x - pos.y) * tileSkewY * tileSize;*/
-
+			if ( _dirtyMat ) {
+				UpdateIsoMatrix();
+				_dirtyMat = false;
+			}
 			var screen_pos = _isoMatrix.MultiplyPoint(iso_pnt);
 			return new Vector2(
 				screen_pos.x,
@@ -108,12 +100,10 @@ namespace IsoTools {
 		}
 
 		public Vector3 ScreenToIso(Vector2 pos) {
-			/*
-			return new Vector3(
-				pos.y / (tileRatio * 2.0f) + pos.x * 0.5f,
-				pos.y / (tileRatio * 2.0f) - pos.x * 0.5f,
-				0.0f) / tileSize;*/
-
+			if ( _dirtyMat ) {
+				UpdateIsoMatrix();
+				_dirtyMat = false;
+			}
 			return _isoRMatrix.MultiplyPoint(new Vector3(pos.x, pos.y, 0.0f));
 		}
 
@@ -159,6 +149,10 @@ namespace IsoTools {
 		//
 		// ------------------------------------------------------------------------
 
+		void MarkDirtyIsoMatrix() {
+			_dirtyMat = true;
+		}
+
 		void UpdateIsoMatrix() {
 			_isoMatrix =
 				Matrix4x4.Scale(new Vector3(1.0f, tileRatio, 1.0f)) *
@@ -178,7 +172,7 @@ namespace IsoTools {
 
 		void ChangeSortingProperty() {
 			MarkDirty();
-			UpdateIsoMatrix();
+			MarkDirtyIsoMatrix();
 			FixAllTransforms();
 		}
 
