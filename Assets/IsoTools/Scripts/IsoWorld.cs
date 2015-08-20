@@ -165,13 +165,6 @@ namespace IsoTools {
 			_isoRMatrix = _isoMatrix.inverse;
 		}
 
-		void ResetAllWorlds() {
-			var objects_iter = _objects.GetEnumerator();
-			while ( objects_iter.MoveNext() ) {
-				objects_iter.Current.ResetWorld();
-			}
-		}
-
 		void FixAllTransforms() {
 			var objects_iter = _objects.GetEnumerator();
 			while ( objects_iter.MoveNext() ) {
@@ -559,13 +552,13 @@ namespace IsoTools {
 
 		void OnEnable() {
 			_objects = new HashSet<IsoObject>(FindObjectsOfType<IsoObject>());
+			_objects.RemoveWhere(iso_object => !iso_object.enabled);
 			_visibles.Clear();
 			_sectors.Clear();
 			MarkDirty();
 		}
 
 		void OnDisable() {
-			ResetAllWorlds();
 			_objects.Clear();
 			_visibles.Clear();
 			_sectors.Clear();
