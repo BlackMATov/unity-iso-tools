@@ -141,6 +141,8 @@ namespace IsoTools {
 
 		public void RemoveIsoObject(IsoObject iso_object) {
 			_objects.Remove(iso_object);
+			_visibles.Remove(iso_object);
+			_oldVisibles.Remove(iso_object);
 		}
 
 		// ------------------------------------------------------------------------
