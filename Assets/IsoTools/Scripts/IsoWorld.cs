@@ -9,7 +9,7 @@ namespace IsoTools {
 	[ExecuteInEditMode, DisallowMultipleComponent]
 	public class IsoWorld : MonoBehaviour {
 
-		bool               _dirty        = true;
+		bool               _dirty        = false;
 		HashSet<IsoObject> _objects      = new HashSet<IsoObject>();
 		HashSet<IsoObject> _visibles     = new HashSet<IsoObject>();
 		HashSet<IsoObject> _oldVisibles  = new HashSet<IsoObject>();
@@ -129,7 +129,7 @@ namespace IsoTools {
 		}
 		
 		public void MarkDirty(IsoObject iso_object) {
-			if ( iso_object && _visibles.Contains(iso_object) ) {
+			if ( !iso_object.Internal.Dirty && _visibles.Contains(iso_object) ) {
 				iso_object.Internal.Dirty = true;
 				MarkDirty();
 			}
@@ -163,6 +163,13 @@ namespace IsoTools {
 			_isoRMatrix = _isoMatrix.inverse;
 		}
 
+		void ResetAllWorlds() {
+			var objects_iter = _objects.GetEnumerator();
+			while ( objects_iter.MoveNext() ) {
+				objects_iter.Current.ResetWorld();
+			}
+		}
+
 		void FixAllTransforms() {
 			var objects_iter = _objects.GetEnumerator();
 			while ( objects_iter.MoveNext() ) {
@@ -176,7 +183,7 @@ namespace IsoTools {
 			FixAllTransforms();
 		}
 
-		bool CheckIsoObjectChangeBounds3d(IsoObject iso_object) {
+		bool UpdateIsoObjectBounds3d(IsoObject iso_object) {
 			if ( iso_object.mode == IsoObject.Mode.Mode3d ) {
 				var bounds3d = IsoObject3DBounds(iso_object);
 				var offset3d = iso_object.transform.position.z - bounds3d.center.z;
@@ -455,19 +462,12 @@ namespace IsoTools {
 			while ( visibles_iter.MoveNext() ) {
 				var iso_object = visibles_iter.Current;
 				if ( iso_object.Internal.Dirty || !_oldVisibles.Contains(iso_object) ) {
-					iso_object.Internal.Dirty = true;
-				} else if ( CheckIsoObjectChangeBounds3d(iso_object) ) {
-					MarkDirty();
-				}
-			}
-			
-			visibles_iter = _visibles.GetEnumerator();
-			while ( visibles_iter.MoveNext() ) {
-				var iso_object = visibles_iter.Current;
-				if ( iso_object.Internal.Dirty ) {
 					MarkDirty();
 					SetupIsoObjectDepends(iso_object);
 					iso_object.Internal.Dirty = false;
+				}
+				if ( UpdateIsoObjectBounds3d(iso_object) ) {
+					MarkDirty();
 				}
 			}
 			
@@ -484,7 +484,10 @@ namespace IsoTools {
 		void ClearIsoObjectDepends(IsoObject iso_object) {
 			var their_depends_iter = iso_object.Internal.TheirDepends.GetEnumerator();
 			while ( their_depends_iter.MoveNext() ) {
-				their_depends_iter.Current.Internal.SelfDepends.Remove(iso_object);
+				var their_iso_object = their_depends_iter.Current;
+				if ( !their_iso_object.Internal.Dirty ) {
+					their_depends_iter.Current.Internal.SelfDepends.Remove(iso_object);
+				}
 			}
 			iso_object.Internal.SelfDepends.Clear();
 			iso_object.Internal.TheirDepends.Clear();
@@ -560,6 +563,7 @@ namespace IsoTools {
 		}
 
 		void OnDisable() {
+			ResetAllWorlds();
 			_objects.Clear();
 			_visibles.Clear();
 			_sectors.Clear();

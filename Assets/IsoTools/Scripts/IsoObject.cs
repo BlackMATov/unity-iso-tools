@@ -208,11 +208,15 @@ namespace IsoTools {
 		IsoWorld _isoWorld = null;
 		public IsoWorld isoWorld {
 			get {
-				if ( !_isoWorld ) {
+				if ( (object)_isoWorld == null ) {
 					_isoWorld = GameObject.FindObjectOfType<IsoWorld>();
 				}
 				return _isoWorld;
 			}
+		}
+
+		public void ResetWorld() {
+			_isoWorld = null;
 		}
 
 		public void FixTransform() {
@@ -221,7 +225,7 @@ namespace IsoTools {
 				_position = tilePosition;
 			}
 		#endif
-			if ( isoWorld ) {
+			if ( (object)isoWorld != null ) {
 				transform.position = IsoUtils.Vec3ChangeZ(
 					isoWorld.IsoToScreen(position),
 					transform.position.z);
@@ -231,7 +235,7 @@ namespace IsoTools {
 		}
 
 		public void FixIsoPosition() {
-			if ( isoWorld ) {
+			if ( (object)isoWorld != null ) {
 				position = isoWorld.ScreenToIso(
 					transform.position,
 					positionZ);
@@ -247,7 +251,7 @@ namespace IsoTools {
 		}
 
 		void MartDirtyIsoWorld() {
-			if ( isoWorld ) {
+			if ( (object)isoWorld != null ) {
 				isoWorld.MarkDirty(this);
 			}
 		#if UNITY_EDITOR
@@ -262,23 +266,23 @@ namespace IsoTools {
 		// ------------------------------------------------------------------------
 
 		void Awake() {
-			Internal.SelfDepends = new HashSet<IsoObject>(new IsoObject[19]);
+			Internal.SelfDepends = new HashSet<IsoObject>(new IsoObject[47]);
 			Internal.SelfDepends.Clear();
-			Internal.TheirDepends = new HashSet<IsoObject>(new IsoObject[19]);
+			Internal.TheirDepends = new HashSet<IsoObject>(new IsoObject[47]);
 			Internal.TheirDepends.Clear();
 			FixLastProperties();
 			FixIsoPosition();
 		}
 
 		void OnEnable() {
-			if ( isoWorld ) {
+			if ( (object)isoWorld != null ) {
 				isoWorld.AddIsoObject(this);
 			}
 			MartDirtyIsoWorld();
 		}
 
 		void OnDisable() {
-			if ( isoWorld ) {
+			if ( (object)isoWorld != null ) {
 				isoWorld.RemoveIsoObject(this);
 			}
 		}
@@ -295,7 +299,7 @@ namespace IsoTools {
 		}
 
 		void OnDrawGizmos() {
-			if ( isShowBounds && isoWorld ) {
+			if ( isShowBounds && (object)isoWorld != null ) {
 				IsoUtils.DrawCube(isoWorld, position + size * 0.5f, size, Color.red);
 			}
 		}
