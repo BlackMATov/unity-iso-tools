@@ -192,10 +192,12 @@ namespace IsoTools {
 
 		public bool isAlignment {
 			get { return _isAlignment; }
+			set { _isAlignment = value; }
 		}
 
 		public bool isShowBounds {
 			get { return _isShowBounds; }
+			set { _isShowBounds = value; }
 		}
 		#endif
 

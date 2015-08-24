@@ -1,14 +1,16 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/IsoTools/Scripts/IsoWorld.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/IsoTools/Editor/IsoObjectEditor.cs">
     <Files>
-      <File FileName="Assets/IsoTools/Scripts/IsoCollision.cs" Line="20" Column="24" />
-      <File FileName="Assets/IsoTools/Scripts/IsoWorld.cs" Line="535" Column="39" />
-      <File FileName="Assets/IsoTools/Scripts/IsoObject.cs" Line="234" Column="17" />
+      <File FileName="Assets/IsoTools/Scripts/IsoObject.cs" Line="1" Column="1" />
+      <File FileName="Assets/IsoTools/Editor/IsoObjectEditor.cs" Line="29" Column="27" />
+      <File FileName="Assets/IsoTools/Scripts/IsoWorld.cs" Line="534" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="/Users/blackmat/Programming/Projects/UnityIso/Assets/IsoTools/Editor/IsoObjectEditor.cs" line="34" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

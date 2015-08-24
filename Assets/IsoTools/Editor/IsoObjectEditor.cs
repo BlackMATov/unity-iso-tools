@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using System.Linq;
+using System.Reflection;
 using System.Collections.Generic;
 
 namespace IsoTools {
@@ -26,6 +27,19 @@ namespace IsoTools {
 				_center = _viewCenter = _positions.Aggregate(Vector3.zero, (AccIn, p) => {
 					return AccIn + IsoUtils.Vec3FromVec2(iso_world.IsoToScreen(p.Key.position + p.Key.size * 0.5f));
 				}) / _positions.Count;
+			}
+		}
+
+		void DirtyTargetPosition() {
+			var position_prop = serializedObject.FindProperty("_position");
+			if ( position_prop != null ) {
+				var last_value = position_prop.vector3Value;
+				position_prop.vector3Value = last_value + Vector3.one;
+				PrefabUtility.RecordPrefabInstancePropertyModifications(target);
+				serializedObject.ApplyModifiedProperties();
+				position_prop.vector3Value = last_value;
+				PrefabUtility.RecordPrefabInstancePropertyModifications(target);
+				serializedObject.ApplyModifiedProperties();
 			}
 		}
 
@@ -154,10 +168,33 @@ namespace IsoTools {
 
 		public override void OnInspectorGUI() {
 			DrawDefaultInspector();
+
 			GrabPositions();
+			DirtyTargetPosition();
+
+			/*
+			serializedObject.Update();
+
+			var position_prop = serializedObject.FindProperty("_position");
+			EditorGUILayout.PropertyField(position_prop);
+
+			var size_prop = serializedObject.FindProperty("_size");
+			EditorGUILayout.PropertyField(size_prop);
+
+			var alignment_prop = serializedObject.FindProperty("_isAlignment");
+			EditorGUILayout.PropertyField(alignment_prop);
+
+			var show_bounds_prop = serializedObject.FindProperty("_isShowBounds");
+			EditorGUILayout.PropertyField(show_bounds_prop);
+
+			var mode_prop = serializedObject.FindProperty("_mode");
+			EditorGUILayout.PropertyField(mode_prop);
+
+			serializedObject.ApplyModifiedProperties();
+			
 			if ( GUILayout.Button("Alignment selection") ) {
 				AlignmentSelection();
-			}
+			}*/
 		}
 	}
 } // namespace IsoTools
