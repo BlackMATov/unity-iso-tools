@@ -292,8 +292,10 @@ namespace IsoTools {
 		}
 
 		void OnValidate() {
-			size     = _size;
-			position = _position;
+			if ( gameObject.activeInHierarchy ) {
+				size     = _size;
+				position = _position;
+			}
 		}
 
 		void OnDrawGizmos() {

@@ -31,15 +31,17 @@ namespace IsoTools {
 		}
 
 		void DirtyTargetPosition() {
-			var position_prop = serializedObject.FindProperty("_position");
-			if ( position_prop != null ) {
-				var last_value = position_prop.vector3Value;
-				position_prop.vector3Value = last_value + Vector3.one;
-				PrefabUtility.RecordPrefabInstancePropertyModifications(target);
-				serializedObject.ApplyModifiedProperties();
-				position_prop.vector3Value = last_value;
-				PrefabUtility.RecordPrefabInstancePropertyModifications(target);
-				serializedObject.ApplyModifiedProperties();
+			if ( targets.Length == 1 ) {
+				var position_prop = serializedObject.FindProperty("_position");
+				if ( position_prop != null ) {
+					var last_value = position_prop.vector3Value;
+					position_prop.vector3Value = last_value + Vector3.one;
+					PrefabUtility.RecordPrefabInstancePropertyModifications(target);
+					serializedObject.ApplyModifiedProperties();
+					position_prop.vector3Value = last_value;
+					PrefabUtility.RecordPrefabInstancePropertyModifications(target);
+					serializedObject.ApplyModifiedProperties();
+				}
 			}
 		}
 
@@ -168,7 +170,6 @@ namespace IsoTools {
 
 		public override void OnInspectorGUI() {
 			DrawDefaultInspector();
-
 			GrabPositions();
 			DirtyTargetPosition();
 
