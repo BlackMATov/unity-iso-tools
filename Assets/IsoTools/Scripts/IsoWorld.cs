@@ -140,6 +140,7 @@ namespace IsoTools {
 		}
 
 		public void RemoveIsoObject(IsoObject iso_object) {
+			ClearIsoObjectDepends(iso_object);
 			_objects.Remove(iso_object);
 			_visibles.Remove(iso_object);
 			_oldVisibles.Remove(iso_object);
@@ -236,7 +237,9 @@ namespace IsoTools {
 		}
 
 		bool IsIsoObjectDepends(IsoObject a, IsoObject b) {
-			return IsIsoObjectDepends(a.position, a.size, b.position, b.size);
+			return
+				a.Internal.IsoRect.Overlaps(b.Internal.IsoRect) &&
+				IsIsoObjectDepends(a.position, a.size, b.position, b.size);
 		}
 
 		int SectorIndex(Vector3 num_pos) {

@@ -454,6 +454,22 @@ namespace IsoTools {
 					radius * iso_world.tileSize * 2.0f);
 			}
 		}
+
+		public static void DrawRect(IsoWorld iso_world, Rect rect, float z, Color color) {
+			if ( iso_world ) {
+				Handles.color = color;
+				var points = new Vector3[]{
+					new Vector3(rect.x,              rect.y,               z),
+					new Vector3(rect.x,              rect.y + rect.height, z),
+					new Vector3(rect.x + rect.width, rect.y + rect.height, z),
+					new Vector3(rect.x + rect.width, rect.y,               z)
+				};
+				Handles.DrawLine(points[0], points[1]);
+				Handles.DrawLine(points[1], points[2]);
+				Handles.DrawLine(points[2], points[3]);
+				Handles.DrawLine(points[3], points[0]);
+			}
+		}
 		#endif
 	}
 }

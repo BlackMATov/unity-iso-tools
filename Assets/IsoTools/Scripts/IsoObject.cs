@@ -166,6 +166,7 @@ namespace IsoTools {
 		public class InternalState {
 			public bool               Dirty        = false;
 			public bool               Visited      = false;
+			public Rect               IsoRect      = new Rect();
 			public Bounds             Bounds3d     = new Bounds();
 			public float              Offset3d     = 0.0f;
 			public Vector3            MinSector    = Vector3.zero;
@@ -227,6 +228,7 @@ namespace IsoTools {
 				transform.position = IsoUtils.Vec3ChangeZ(
 					isoWorld.IsoToScreen(position),
 					transform.position.z);
+				FixInternalIsoRect();
 			}
 			FixLastProperties();
 			MartDirtyIsoWorld();
@@ -237,6 +239,16 @@ namespace IsoTools {
 				position = isoWorld.ScreenToIso(
 					transform.position,
 					positionZ);
+			}
+		}
+
+		void FixInternalIsoRect() {
+			if ( isoWorld ) {
+				var l = isoWorld.IsoToScreen(position + IsoUtils.Vec3FromY(size.y)).x;
+				var r = isoWorld.IsoToScreen(position + IsoUtils.Vec3FromX(size.x)).x;
+				var b = isoWorld.IsoToScreen(position).y;
+				var t = isoWorld.IsoToScreen(position + size).y;
+				Internal.IsoRect = new Rect(l, t, r - l, t - b);
 			}
 		}
 
@@ -299,6 +311,7 @@ namespace IsoTools {
 		void OnDrawGizmos() {
 			if ( isShowBounds && isoWorld ) {
 				IsoUtils.DrawCube(isoWorld, position + size * 0.5f, size, Color.red);
+				IsoUtils.DrawRect(isoWorld, Internal.IsoRect, transform.position.z, Color.green);
 			}
 		}
 
