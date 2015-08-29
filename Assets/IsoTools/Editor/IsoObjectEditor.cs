@@ -172,30 +172,6 @@ namespace IsoTools {
 			DrawDefaultInspector();
 			GrabPositions();
 			DirtyTargetPosition();
-
-			/*
-			serializedObject.Update();
-
-			var position_prop = serializedObject.FindProperty("_position");
-			EditorGUILayout.PropertyField(position_prop);
-
-			var size_prop = serializedObject.FindProperty("_size");
-			EditorGUILayout.PropertyField(size_prop);
-
-			var alignment_prop = serializedObject.FindProperty("_isAlignment");
-			EditorGUILayout.PropertyField(alignment_prop);
-
-			var show_bounds_prop = serializedObject.FindProperty("_isShowBounds");
-			EditorGUILayout.PropertyField(show_bounds_prop);
-
-			var mode_prop = serializedObject.FindProperty("_mode");
-			EditorGUILayout.PropertyField(mode_prop);
-
-			serializedObject.ApplyModifiedProperties();
-			
-			if ( GUILayout.Button("Alignment selection") ) {
-				AlignmentSelection();
-			}*/
 		}
 	}
 } // namespace IsoTools
