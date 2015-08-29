@@ -34,7 +34,7 @@ namespace IsoTools {
 		
 		// ------------------------------------------------------------------------
 		//
-		// Public
+		// Sorting properties
 		//
 		// ------------------------------------------------------------------------
 
@@ -98,6 +98,12 @@ namespace IsoTools {
 			}
 		}
 
+		// ------------------------------------------------------------------------
+		//
+		// IsoToScreen/ScreenToIso
+		//
+		// ------------------------------------------------------------------------
+
 		public Vector2 IsoToScreen(Vector3 iso_pnt) {
 			if ( _dirtyMat ) {
 				UpdateIsoMatrix();
@@ -121,6 +127,118 @@ namespace IsoTools {
 			return IsoUtils.Vec3ChangeZ(
 				ScreenToIso(new Vector2(pos.x, pos.y - iso_z * tileHeight)),
 				iso_z);
+		}
+
+		// ------------------------------------------------------------------------
+		//
+		// TouchIsoPosition
+		//
+		// ------------------------------------------------------------------------
+
+		public Vector3 TouchIsoPosition(int touch_index) {
+			return TouchIsoPosition(touch_index, 0.0f);
+		}
+
+		public Vector3 TouchIsoPosition(int touch_index, float iso_z) {
+			if ( !Camera.main ) {
+				Debug.LogError("Main camera not found!", this);
+				return Vector3.zero;
+			}
+			return TouchIsoPosition(touch_index, Camera.main, iso_z);
+		}
+
+		public Vector3 TouchIsoPosition(int touch_index, Camera camera) {
+			return TouchIsoPosition(touch_index, camera, 0.0f);
+		}
+
+		public Vector3 TouchIsoPosition(int touch_index, Camera camera, float iso_z) {
+			if ( touch_index < 0 || touch_index >= Input.touchCount ) {
+				Debug.LogError("Touch index argument is incorrect!", this);
+				return Vector3.zero;
+			}
+			if ( !camera ) {
+				Debug.LogError("Camera argument is incorrect!", this);
+				return Vector3.zero;
+			}
+			return ScreenToIso(
+				camera.ScreenToWorldPoint(Input.GetTouch(touch_index).position),
+				iso_z);
+		}
+
+		// ------------------------------------------------------------------------
+		//
+		// TouchIsoTilePosition
+		//
+		// ------------------------------------------------------------------------
+		
+		public Vector3 TouchIsoTilePosition(int touch_index) {
+			return IsoUtils.Vec3Floor(TouchIsoPosition(touch_index));
+		}
+		
+		public Vector3 TouchIsoTilePosition(int touch_index, float iso_z) {
+			return IsoUtils.Vec3Floor(TouchIsoPosition(touch_index, iso_z));
+		}
+		
+		public Vector3 TouchIsoTilePosition(int touch_index, Camera camera) {
+			return IsoUtils.Vec3Floor(TouchIsoPosition(touch_index, camera));
+		}
+		
+		public Vector3 TouchIsoTilePosition(int touch_index, Camera camera, float iso_z) {
+			return IsoUtils.Vec3Floor(TouchIsoPosition(touch_index, camera, iso_z));
+		}
+
+		// ------------------------------------------------------------------------
+		//
+		// MouseIsoPosition
+		//
+		// ------------------------------------------------------------------------
+
+		public Vector3 MouseIsoPosition() {
+			return MouseIsoPosition(0.0f);
+		}
+
+		public Vector3 MouseIsoPosition(float iso_z) {
+			if ( !Camera.main ) {
+				Debug.LogError("Main camera not found!", this);
+				return Vector3.zero;
+			}
+			return MouseIsoPosition(Camera.main, iso_z);
+		}
+
+		public Vector3 MouseIsoPosition(Camera camera) {
+			return MouseIsoPosition(camera, 0.0f);
+		}
+
+		public Vector3 MouseIsoPosition(Camera camera, float iso_z) {
+			if ( !camera ) {
+				Debug.LogError("Camera argument is incorrect!", this);
+				return Vector3.zero;
+			}
+			return ScreenToIso(
+				camera.ScreenToWorldPoint(Input.mousePosition),
+				iso_z);
+		}
+
+		// ------------------------------------------------------------------------
+		//
+		// MouseIsoTilePosition
+		//
+		// ------------------------------------------------------------------------
+
+		public Vector3 MouseIsoTilePosition() {
+			return IsoUtils.Vec3Floor(MouseIsoPosition());
+		}
+
+		public Vector3 MouseIsoTilePosition(float iso_z) {
+			return IsoUtils.Vec3Floor(MouseIsoPosition(iso_z));
+		}
+
+		public Vector3 MouseIsoTilePosition(Camera camera) {
+			return IsoUtils.Vec3Floor(MouseIsoPosition(camera));
+		}
+		
+		public Vector3 MouseIsoTilePosition(Camera camera, float iso_z) {
+			return IsoUtils.Vec3Floor(MouseIsoPosition(camera, iso_z));
 		}
 
 		// ------------------------------------------------------------------------
