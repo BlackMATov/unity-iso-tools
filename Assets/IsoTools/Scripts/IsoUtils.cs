@@ -58,13 +58,26 @@ namespace IsoTools {
 		public static float Vec3MinF(Vector3 v) {
 			return Mathf.Min(Mathf.Min(v.x, v.y), v.z);
 		}
+
+		public static Vector2 Vec2Min(Vector2 a, float b) {
+			return new Vector2(
+				Mathf.Min(a.x, b),
+				Mathf.Min(a.y, b));
+		}
 		
 		public static Vector2 Vec2Min(Vector2 a, Vector2 b) {
 			return new Vector2(
 				Mathf.Min(a.x, b.x),
 				Mathf.Min(a.y, b.y));
 		}
-		
+
+		public static Vector3 Vec3Min(Vector3 a, float b) {
+			return new Vector3(
+				Mathf.Min(a.x, b),
+				Mathf.Min(a.y, b),
+				Mathf.Min(a.z, b));
+		}
+
 		public static Vector3 Vec3Min(Vector3 a, Vector3 b) {
 			return new Vector3(
 				Mathf.Min(a.x, b.x),
@@ -84,10 +97,23 @@ namespace IsoTools {
 			return Mathf.Max(Mathf.Max(v.x, v.y), v.z);
 		}
 
+		public static Vector2 Vec2Max(Vector2 a, float b) {
+			return new Vector2(
+				Mathf.Max(a.x, b),
+				Mathf.Max(a.y, b));
+		}
+
 		public static Vector2 Vec2Max(Vector2 a, Vector2 b) {
 			return new Vector2(
 				Mathf.Max(a.x, b.x),
 				Mathf.Max(a.y, b.y));
+		}
+
+		public static Vector3 Vec3Max(Vector3 a, float b) {
+			return new Vector3(
+				Mathf.Max(a.x, b),
+				Mathf.Max(a.y, b),
+				Mathf.Max(a.z, b));
 		}
 
 		public static Vector3 Vec3Max(Vector3 a, Vector3 b) {

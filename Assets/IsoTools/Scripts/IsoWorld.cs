@@ -69,6 +69,16 @@ namespace IsoTools {
 		}
 
 		[SerializeField]
+		public float _tileHeight = 32.0f;
+		public float tileHeight {
+			get { return _tileHeight; }
+			set {
+				_tileHeight = Mathf.Max(value, Mathf.Epsilon);
+				ChangeSortingProperty();
+			}
+		}
+
+		[SerializeField]
 		public float _stepDepth = 0.1f;
 		public float stepDepth {
 			get { return _stepDepth; }
@@ -96,7 +106,7 @@ namespace IsoTools {
 			var screen_pos = _isoMatrix.MultiplyPoint(iso_pnt);
 			return new Vector2(
 				screen_pos.x,
-				screen_pos.y + iso_pnt.z * tileSize);
+				screen_pos.y + iso_pnt.z * tileHeight);
 		}
 
 		public Vector3 ScreenToIso(Vector2 pos) {
@@ -109,7 +119,7 @@ namespace IsoTools {
 
 		public Vector3 ScreenToIso(Vector2 pos, float iso_z) {
 			return IsoUtils.Vec3ChangeZ(
-				ScreenToIso(new Vector2(pos.x, pos.y - iso_z * tileSize)),
+				ScreenToIso(new Vector2(pos.x, pos.y - iso_z * tileHeight)),
 				iso_z);
 		}
 
@@ -162,7 +172,7 @@ namespace IsoTools {
 				Matrix4x4.TRS(
 					Vector3.zero,
 					Quaternion.AngleAxis(90.0f - tileAngle, IsoUtils.vec3OneZ),
-					IsoUtils.Vec3From(tileSize * Mathf.Sqrt(2)));
+					new Vector3(tileSize * Mathf.Sqrt(2), tileSize * Mathf.Sqrt(2), tileHeight));
 			_isoRMatrix = _isoMatrix.inverse;
 		}
 
@@ -506,6 +516,7 @@ namespace IsoTools {
 			tileSize   = 32.0f;
 			tileRatio  = 0.5f;
 			tileAngle  = 45.0f;
+			tileHeight = 32.0f;
 			stepDepth  = 0.1f;
 			startDepth = 1.0f;
 		}
@@ -514,6 +525,7 @@ namespace IsoTools {
 			tileSize   = _tileSize;
 			tileRatio  = _tileRatio;
 			tileAngle  = _tileAngle;
+			tileHeight = _tileHeight;
 			stepDepth  = _stepDepth;
 			startDepth = _startDepth;
 		}

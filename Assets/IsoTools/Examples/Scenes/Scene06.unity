@@ -618,7 +618,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 453620, guid: dbd21aa1b9a2cdf4a944f50e64d145a1, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 1.20000005
+      value: 26.1023369
       objectReference: {fileID: 0}
     - target: {fileID: 453620, guid: dbd21aa1b9a2cdf4a944f50e64d145a1, type: 2}
       propertyPath: m_LocalRotation.x
@@ -742,6 +742,7 @@ MonoBehaviour:
   _tileSize: 16
   _tileRatio: .5
   _tileAngle: 45
+  _tileHeight: 16
   _stepDepth: .100000001
   _startDepth: 1
 --- !u!81 &600542279
@@ -1946,7 +1947,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 478240, guid: 2104b310477ba4cfc9aba14f852031b9, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 13.4726658
+      value: 38.3750038
       objectReference: {fileID: 0}
     - target: {fileID: 478240, guid: 2104b310477ba4cfc9aba14f852031b9, type: 2}
       propertyPath: m_LocalRotation.x
@@ -2066,7 +2067,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 478240, guid: 2104b310477ba4cfc9aba14f852031b9, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 38.3750038
+      value: 13.3726654
       objectReference: {fileID: 0}
     - target: {fileID: 478240, guid: 2104b310477ba4cfc9aba14f852031b9, type: 2}
       propertyPath: m_LocalRotation.x

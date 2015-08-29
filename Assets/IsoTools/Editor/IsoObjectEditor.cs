@@ -99,8 +99,8 @@ namespace IsoTools {
 				Handles.color = Handles.zAxisColor;
 				var delta = Handles.Slider(_viewCenter, IsoUtils.vec3OneY) - _viewCenter;
 				if ( Mathf.Abs(delta.y) > Mathf.Epsilon ) {
-					float tmp_y = ZMoveIsoObjects((_viewCenter.y - _center.y + delta.y) / iso_world.tileSize);
-					_viewCenter = _center + IsoUtils.Vec3FromY(tmp_y * iso_world.tileSize);
+					float tmp_y = ZMoveIsoObjects((_viewCenter.y - _center.y + delta.y) / iso_world.tileHeight);
+					_viewCenter = _center + IsoUtils.Vec3FromY(tmp_y * iso_world.tileHeight);
 				}
 			}
 		}
