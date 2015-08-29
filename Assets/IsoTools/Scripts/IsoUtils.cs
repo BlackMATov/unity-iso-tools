@@ -164,6 +164,18 @@ namespace IsoTools {
 		// Div
 		// -----------------------------
 
+		public static Vector2 Vec2Div(Vector2 a, float b) {
+			return new Vector2(
+				a.x / b,
+				a.y / b);
+		}
+
+		public static Vector2 Vec2Div(Vector2 a, Vector2 b) {
+			return new Vector2(
+				a.x / b.x,
+				a.y / b.y);
+		}
+
 		public static Vector3 Vec3Div(Vector3 a, float b) {
 			return new Vector3(
 				a.x / b,
@@ -182,6 +194,14 @@ namespace IsoTools {
 		// DivCeil
 		// -----------------------------
 
+		public static Vector2 Vec2DivCeil(Vector2 a, float b) {
+			return Vec2Ceil(Vec2Div(a, b));
+		}
+
+		public static Vector2 Vec2DivCeil(Vector2 a, Vector2 b) {
+			return Vec2Ceil(Vec2Div(a, b));
+		}
+
 		public static Vector3 Vec3DivCeil(Vector3 a, float b) {
 			return Vec3Ceil(Vec3Div(a, b));
 		}
@@ -193,7 +213,15 @@ namespace IsoTools {
 		// -----------------------------
 		// DivFloor
 		// -----------------------------
-		
+
+		public static Vector2 Vec2DivFloor(Vector2 a, float b) {
+			return Vec2Floor(Vec2Div(a, b));
+		}
+
+		public static Vector2 Vec2DivFloor(Vector2 a, Vector2 b) {
+			return Vec2Floor(Vec2Div(a, b));
+		}
+
 		public static Vector3 Vec3DivFloor(Vector3 a, float b) {
 			return Vec3Floor(Vec3Div(a, b));
 		}
@@ -205,11 +233,19 @@ namespace IsoTools {
 		// -----------------------------
 		// DivRound
 		// -----------------------------
-		
+
+		public static Vector2 Vec2DivRound(Vector2 a, float b) {
+			return Vec2Round(Vec2Div(a, b));
+		}
+
+		public static Vector2 Vec2DivRound(Vector2 a, Vector2 b) {
+			return Vec2Round(Vec2Div(a, b));
+		}
+
 		public static Vector3 Vec3DivRound(Vector3 a, float b) {
 			return Vec3Round(Vec3Div(a, b));
 		}
-		
+
 		public static Vector3 Vec3DivRound(Vector3 a, Vector3 b) {
 			return Vec3Round(Vec3Div(a, b));
 		}

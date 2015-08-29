@@ -28,9 +28,9 @@ namespace IsoTools {
 
 		List<Sector> _sectors            = new List<Sector>();
 		float        _sectorsSize        = 0.0f;
-		Vector3      _sectorsMinNumPos   = Vector3.zero;
-		Vector3      _sectorsMaxNumPos   = Vector3.zero;
-		Vector3      _sectorsNumPosCount = Vector3.zero;
+		Vector2      _sectorsMinNumPos   = Vector2.zero;
+		Vector2      _sectorsMaxNumPos   = Vector2.zero;
+		Vector2      _sectorsNumPosCount = Vector2.zero;
 		
 		// ------------------------------------------------------------------------
 		//
@@ -238,110 +238,48 @@ namespace IsoTools {
 
 		bool IsIsoObjectDepends(IsoObject a, IsoObject b) {
 			return
-				a.Internal.IsoRect.Overlaps(b.Internal.IsoRect) &&
+				a.Internal.ScreenRect.Overlaps(b.Internal.ScreenRect) &&
 				IsIsoObjectDepends(a.position, a.size, b.position, b.size);
 		}
 
-		int SectorIndex(Vector3 num_pos) {
-			return Mathf.FloorToInt(
-				num_pos.x + _sectorsNumPosCount.x * (num_pos.y + num_pos.z * _sectorsNumPosCount.y));
+		int SectorIndex(Vector2 num_pos) {
+			return Mathf.FloorToInt(num_pos.x + _sectorsNumPosCount.x * num_pos.y);
 		}
 		
-		Vector3 SectorNumPos(int index) {
-			var mz = _sectorsNumPosCount.x * _sectorsNumPosCount.y;
-			var my = _sectorsNumPosCount.x;
-			var vz = Mathf.FloorToInt(index / mz);
-			var vy = Mathf.FloorToInt((index - vz * mz) / my);
-			var vx = Mathf.FloorToInt(index - vz * mz - vy * my);
-			return new Vector3(vx, vy, vz);
-		}
-		
-		Sector FindSector(Vector3 num_pos) {
-			if ( num_pos.x < 0 || num_pos.y < 0 || num_pos.z < 0 ) {
+		Sector FindSector(Vector2 num_pos) {
+			if ( num_pos.x < 0 || num_pos.y < 0 ) {
 				return null;
 			}
-			if ( num_pos.x >= _sectorsNumPosCount.x || num_pos.y >= _sectorsNumPosCount.y || num_pos.z >= _sectorsNumPosCount.z ) {
+			if ( num_pos.x >= _sectorsNumPosCount.x || num_pos.y >= _sectorsNumPosCount.y ) {
 				return null;
 			}
 			return _sectors[SectorIndex(num_pos)];
 		}
 		
-		void LookUpSectorDepends(Vector3 num_pos, IsoObject obj_a) {
-			var ms = FindSector(num_pos);
-			if ( ms != null ) {
-				LookUpSectorDepends(ms, obj_a);
-				var s1 = FindSector(num_pos + new Vector3(-1,  0, 0));
-				var s2 = FindSector(num_pos + new Vector3( 0, -1, 0));
-				var s3 = FindSector(num_pos + new Vector3(-1, -1, 0));
-				if ( s1 != null ) LookUpSectorDepends(s1, obj_a);
-				if ( s2 != null ) LookUpSectorDepends(s2, obj_a);
-				if ( s3 != null ) LookUpSectorDepends(s3, obj_a);
-				for ( var i = 0; i <= _sectorsNumPosCount.z; ++i ) {
-					var ss1 = FindSector(num_pos + new Vector3( 0 - i,  0 - i, i + 1));
-					var ss2 = FindSector(num_pos + new Vector3(-1 - i,  0 - i, i + 1));
-					var ss3 = FindSector(num_pos + new Vector3( 0 - i, -1 - i, i + 1));
-					var ss4 = FindSector(num_pos + new Vector3(-1 - i, -1 - i, i + 1));
-					var ss5 = FindSector(num_pos + new Vector3(-2 - i, -1 - i, i + 1));
-					var ss6 = FindSector(num_pos + new Vector3(-1 - i, -2 - i, i + 1));
-					var ss7 = FindSector(num_pos + new Vector3(-2 - i, -2 - i, i + 1));
-					if ( ss1 != null ) LookUpSectorDepends(ss1, obj_a);
-					if ( ss2 != null ) LookUpSectorDepends(ss2, obj_a);
-					if ( ss3 != null ) LookUpSectorDepends(ss3, obj_a);
-					if ( ss4 != null ) LookUpSectorDepends(ss4, obj_a);
-					if ( ss5 != null ) LookUpSectorDepends(ss5, obj_a);
-					if ( ss6 != null ) LookUpSectorDepends(ss6, obj_a);
-					if ( ss7 != null ) LookUpSectorDepends(ss7, obj_a);
+		void LookUpSectorDepends(Vector2 num_pos, IsoObject obj_a) {
+			var sec = FindSector(num_pos);
+			if ( sec != null ) {
+				var sec_objects_iter = sec.objects.GetEnumerator();
+				while ( sec_objects_iter.MoveNext() ) {
+					var obj_b = sec_objects_iter.Current;
+					if ( obj_a != obj_b && !obj_b.Internal.Dirty && IsIsoObjectDepends(obj_a, obj_b) ) {
+						obj_a.Internal.SelfDepends.Add(obj_b);
+						obj_b.Internal.TheirDepends.Add(obj_a);
+					}
 				}
 			}
 		}
 
-		void LookUpSectorDepends(Sector sec, IsoObject obj_a) {
-			var sec_objects_iter = sec.objects.GetEnumerator();
-			while ( sec_objects_iter.MoveNext() ) {
-				var obj_b = sec_objects_iter.Current;
-				if ( obj_a != obj_b && !obj_b.Internal.Dirty && IsIsoObjectDepends(obj_a, obj_b) ) {
-					obj_a.Internal.SelfDepends.Add(obj_b);
-					obj_b.Internal.TheirDepends.Add(obj_a);
-				}
-			}
-		}
-
-		void LookUpSectorRDepends(Vector3 num_pos, IsoObject obj_a) {
-			var ms = FindSector(num_pos);
-			if ( ms != null ) {
-				LookUpSectorRDepends(ms, obj_a);
-				var s1 = FindSector(num_pos + new Vector3( 1,  0, 0));
-				var s2 = FindSector(num_pos + new Vector3( 0,  1, 0));
-				var s3 = FindSector(num_pos + new Vector3( 1,  1, 0));
-				if ( s1 != null ) LookUpSectorRDepends(s1, obj_a);
-				if ( s2 != null ) LookUpSectorRDepends(s2, obj_a);
-				if ( s3 != null ) LookUpSectorRDepends(s3, obj_a);
-				for ( var i = 0; i <= _sectorsNumPosCount.z; ++i ) {
-					var ss1 = FindSector(num_pos + new Vector3( 0 + i,  0 + i, -i - 1));
-					var ss2 = FindSector(num_pos + new Vector3( 1 + i,  0 + i, -i - 1));
-					var ss3 = FindSector(num_pos + new Vector3( 0 + i,  1 + i, -i - 1));
-					var ss4 = FindSector(num_pos + new Vector3( 1 + i,  1 + i, -i - 1));
-					var ss5 = FindSector(num_pos + new Vector3( 2 + i,  1 + i, -i - 1));
-					var ss6 = FindSector(num_pos + new Vector3( 1 + i,  2 + i, -i - 1));
-					var ss7 = FindSector(num_pos + new Vector3( 2 + i,  2 + i, -i - 1));
-					if ( ss1 != null ) LookUpSectorRDepends(ss1, obj_a);
-					if ( ss2 != null ) LookUpSectorRDepends(ss2, obj_a);
-					if ( ss3 != null ) LookUpSectorRDepends(ss3, obj_a);
-					if ( ss4 != null ) LookUpSectorRDepends(ss4, obj_a);
-					if ( ss5 != null ) LookUpSectorRDepends(ss5, obj_a);
-					if ( ss6 != null ) LookUpSectorRDepends(ss6, obj_a);
-					if ( ss7 != null ) LookUpSectorRDepends(ss7, obj_a);
-				}
-			}
-		}
-
-		void LookUpSectorRDepends(Sector sec, IsoObject obj_a) {
-			var sec_objects_iter = sec.objects.GetEnumerator();
-			while ( sec_objects_iter.MoveNext() ) {
-				var obj_b = sec_objects_iter.Current;
-				if ( obj_a != obj_b && !obj_b.Internal.Dirty && IsIsoObjectDepends(obj_b, obj_a) ) {
-					obj_b.Internal.SelfDepends.Add(obj_a);
-					obj_a.Internal.TheirDepends.Add(obj_b);
+		void LookUpSectorRDepends(Vector2 num_pos, IsoObject obj_a) {
+			var sec = FindSector(num_pos);
+			if ( sec != null ) {
+				var sec_objects_iter = sec.objects.GetEnumerator();
+				while ( sec_objects_iter.MoveNext() ) {
+					var obj_b = sec_objects_iter.Current;
+					if ( obj_a != obj_b && !obj_b.Internal.Dirty && IsIsoObjectDepends(obj_b, obj_a) ) {
+						obj_b.Internal.SelfDepends.Add(obj_a);
+						obj_a.Internal.TheirDepends.Add(obj_b);
+					}
 				}
 			}
 		}
@@ -350,24 +288,22 @@ namespace IsoTools {
 			_sectorsSize = 0.0f;
 			var visibles_iter = _visibles.GetEnumerator();
 			while ( visibles_iter.MoveNext() ) {
-				_sectorsSize += IsoUtils.Vec3MaxF(visibles_iter.Current.size);
+				_sectorsSize += IsoUtils.Vec2MaxF(visibles_iter.Current.Internal.ScreenRect.size);
 			}
-			_sectorsSize = Mathf.Round(Mathf.Max(3.0f, _sectorsSize / _visibles.Count));
+			var min_sector_size = IsoToScreen(IsoUtils.vec3OneX).x - IsoToScreen(Vector3.zero).x;
+			_sectorsSize = Mathf.Round(Mathf.Max(min_sector_size, _sectorsSize / _visibles.Count));
 		}
 
 		void SetupObjectsSectors() {
-			_sectorsMinNumPos = Vector3.zero;
-			_sectorsMaxNumPos = Vector3.one;
+			_sectorsMinNumPos = Vector2.zero;
+			_sectorsMaxNumPos = Vector2.one;
 			var visibles_iter = _visibles.GetEnumerator();
 			while ( visibles_iter.MoveNext() ) {
-				var iso_object = visibles_iter.Current;
-				var max_size = IsoUtils.Vec3Max(Vector3.one, iso_object.size);
-				var min_npos = IsoUtils.Vec3DivFloor(iso_object.position, _sectorsSize);
-				var max_npos = IsoUtils.Vec3DivCeil(iso_object.position + max_size, _sectorsSize);
-				_sectorsMinNumPos = IsoUtils.Vec3Min(_sectorsMinNumPos, min_npos);
-				_sectorsMaxNumPos = IsoUtils.Vec3Max(_sectorsMaxNumPos, max_npos);
-				iso_object.Internal.MinSector = min_npos;
-				iso_object.Internal.MaxSector = max_npos;
+				var iso_internal = visibles_iter.Current.Internal;
+				iso_internal.MinSector = IsoUtils.Vec3DivFloor(iso_internal.ScreenRect.min, _sectorsSize);
+				iso_internal.MaxSector = IsoUtils.Vec3DivCeil (iso_internal.ScreenRect.max, _sectorsSize);
+				_sectorsMinNumPos = IsoUtils.Vec3Min(_sectorsMinNumPos, iso_internal.MinSector);
+				_sectorsMaxNumPos = IsoUtils.Vec3Max(_sectorsMaxNumPos, iso_internal.MaxSector);
 			}
 			_sectorsNumPosCount = _sectorsMaxNumPos - _sectorsMinNumPos;
 		}
@@ -396,19 +332,18 @@ namespace IsoTools {
 				iso_object.Internal.MaxSector -= _sectorsMinNumPos;
 				var min = iso_object.Internal.MinSector;
 				var max = iso_object.Internal.MaxSector;
-				for ( var z = min.z; z < max.z; ++z ) {
 				for ( var y = min.y; y < max.y; ++y ) {
 				for ( var x = min.x; x < max.x; ++x ) {
-					var sector = FindSector(new Vector3(x, y, z));
+					var sector = FindSector(new Vector2(x, y));
 					if ( sector != null ) {
 						sector.objects.Add(iso_object);
 					}
-				}}}
+				}}
 			}
 		}
 		
 		void SetupSectors() {
-			ResizeSectors(Mathf.FloorToInt(_sectorsNumPosCount.x * _sectorsNumPosCount.y * _sectorsNumPosCount.z));
+			ResizeSectors(Mathf.FloorToInt(_sectorsNumPosCount.x * _sectorsNumPosCount.y));
 			TuneSectors();
 		}
 
@@ -495,13 +430,12 @@ namespace IsoTools {
 			ClearIsoObjectDepends(obj_a);
 			var min = obj_a.Internal.MinSector;
 			var max = obj_a.Internal.MaxSector;
-			for ( var z = min.z; z < max.z; ++z ) {
 			for ( var y = min.y; y < max.y; ++y ) {
 			for ( var x = min.x; x < max.x; ++x ) {
-				var v = new Vector3(x, y, z);
+				var v = new Vector2(x, y);
 				LookUpSectorDepends(v, obj_a);
 				LookUpSectorRDepends(v, obj_a);
-			}}}
+			}}
 		}
 
 		void PlaceAllVisibles() {

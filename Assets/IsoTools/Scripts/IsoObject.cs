@@ -166,11 +166,11 @@ namespace IsoTools {
 		public class InternalState {
 			public bool               Dirty        = false;
 			public bool               Visited      = false;
-			public Rect               IsoRect      = new Rect();
+			public Rect               ScreenRect   = new Rect();
 			public Bounds             Bounds3d     = new Bounds();
 			public float              Offset3d     = 0.0f;
-			public Vector3            MinSector    = Vector3.zero;
-			public Vector3            MaxSector    = Vector3.zero;
+			public Vector2            MinSector    = Vector2.zero;
+			public Vector2            MaxSector    = Vector2.zero;
 			public HashSet<IsoObject> SelfDepends  = new HashSet<IsoObject>();
 			public HashSet<IsoObject> TheirDepends = new HashSet<IsoObject>();
 		}
@@ -228,7 +228,7 @@ namespace IsoTools {
 				transform.position = IsoUtils.Vec3ChangeZ(
 					isoWorld.IsoToScreen(position),
 					transform.position.z);
-				FixInternalIsoRect();
+				FixScreenRect();
 			}
 			FixLastProperties();
 			MartDirtyIsoWorld();
@@ -242,13 +242,13 @@ namespace IsoTools {
 			}
 		}
 
-		void FixInternalIsoRect() {
+		void FixScreenRect() {
 			if ( isoWorld ) {
 				var l = isoWorld.IsoToScreen(position + IsoUtils.Vec3FromY(size.y)).x;
 				var r = isoWorld.IsoToScreen(position + IsoUtils.Vec3FromX(size.x)).x;
 				var b = isoWorld.IsoToScreen(position).y;
 				var t = isoWorld.IsoToScreen(position + size).y;
-				Internal.IsoRect = new Rect(l, t, r - l, t - b);
+				Internal.ScreenRect = new Rect(l, b, r - l, t - b);
 			}
 		}
 
@@ -311,7 +311,6 @@ namespace IsoTools {
 		void OnDrawGizmos() {
 			if ( isShowBounds && isoWorld ) {
 				IsoUtils.DrawCube(isoWorld, position + size * 0.5f, size, Color.red);
-				IsoUtils.DrawRect(isoWorld, Internal.IsoRect, transform.position.z, Color.green);
 			}
 		}
 
