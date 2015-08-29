@@ -210,7 +210,7 @@ namespace IsoTools {
 		IsoWorld _isoWorld = null;
 		public IsoWorld isoWorld {
 			get {
-				if ( !_isoWorld ) {
+				if ( !_isoWorld && gameObject.activeInHierarchy ) {
 					_isoWorld = GameObject.FindObjectOfType<IsoWorld>();
 				}
 				return _isoWorld;
@@ -292,10 +292,8 @@ namespace IsoTools {
 		}
 
 		void OnValidate() {
-			if ( gameObject.activeInHierarchy ) {
-				size     = _size;
-				position = _position;
-			}
+			size     = _size;
+			position = _position;
 		}
 
 		void OnDrawGizmos() {
