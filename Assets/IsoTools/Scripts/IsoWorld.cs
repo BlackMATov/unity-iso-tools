@@ -423,8 +423,8 @@ namespace IsoTools {
 		}
 
 		void SetupObjectsSectors() {
-			_sectorsMinNumPos = Vector2.zero;
-			_sectorsMaxNumPos = Vector2.one;
+			_sectorsMinNumPos = IsoUtils.Vec2From(float.MaxValue);
+			_sectorsMaxNumPos = IsoUtils.Vec2From(float.MinValue);
 			var visibles_iter = _visibles.GetEnumerator();
 			while ( visibles_iter.MoveNext() ) {
 				var iso_internal = visibles_iter.Current.Internal;
