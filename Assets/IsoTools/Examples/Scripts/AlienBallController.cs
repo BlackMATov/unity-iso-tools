@@ -28,8 +28,8 @@ namespace IsoTools.Examples {
 
 		IEnumerator AddRndForce() {
 			while ( true ) {
-				var dx = Random.Range(0.0f, 2.0f);
-				var dy = Random.Range(0.0f, 2.0f);
+				var dx = Random.Range(-2.0f, 2.0f);
+				var dy = Random.Range(-2.0f, 2.0f);
 				_isoRigidbody.AddForce(new Vector3(dx, dy, 0.0f), ForceMode.Impulse);
 				yield return new WaitForSeconds(1);
 			}
