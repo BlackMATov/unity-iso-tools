@@ -3,9 +3,8 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>10.0.20506</ProductVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
     <ProjectGuid>{95166F85-0462-AC59-009C-63E7F7F767D5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -34,46 +33,46 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.XML" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="UnityEngine">
-      <HintPath>/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEngine.dll</HintPath>
+      <HintPath>..\..\..\..\..\Applications\Unity\Unity.app\Contents\Frameworks\Managed\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor">
-      <HintPath>/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEditor.dll</HintPath>
+      <HintPath>..\..\..\..\..\Applications\Unity\Unity.app\Contents\Frameworks\Managed\UnityEditor.dll</HintPath>
     </Reference>
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\IsoTools\Examples\Scripts\AlienBallController.cs" />
-     <Compile Include="Assets\IsoTools\Examples\Scripts\AlienBallSpawner.cs" />
-     <Compile Include="Assets\IsoTools\Examples\Scripts\CircleFly.cs" />
-     <Compile Include="Assets\IsoTools\Examples\Scripts\CubeAutoMovement.cs" />
-     <Compile Include="Assets\IsoTools\Examples\Scripts\IsoEchoListener.cs" />
-     <Compile Include="Assets\IsoTools\Examples\Scripts\PlayerController.cs" />
-     <Compile Include="Assets\IsoTools\Scripts\IsoBoxCollider.cs" />
-     <Compile Include="Assets\IsoTools\Scripts\IsoCollider.cs" />
-     <Compile Include="Assets\IsoTools\Scripts\IsoCollision.cs" />
-     <Compile Include="Assets\IsoTools\Scripts\IsoContactPoint.cs" />
-     <Compile Include="Assets\IsoTools\Scripts\IsoFakeCollider.cs" />
-     <Compile Include="Assets\IsoTools\Scripts\IsoFakeObject.cs" />
-     <Compile Include="Assets\IsoTools\Scripts\IsoFakeRigidbody.cs" />
-     <Compile Include="Assets\IsoTools\Scripts\IsoObject.cs" />
-     <Compile Include="Assets\IsoTools\Scripts\IsoPhysicHelper.cs" />
-     <Compile Include="Assets\IsoTools\Scripts\IsoRaycastHit.cs" />
-     <Compile Include="Assets\IsoTools\Scripts\IsoRigidbody.cs" />
-     <Compile Include="Assets\IsoTools\Scripts\IsoSphereCollider.cs" />
-     <Compile Include="Assets\IsoTools\Scripts\IsoUtils.cs" />
-     <Compile Include="Assets\IsoTools\Scripts\IsoWorld.cs" />
- <Reference Include="UnityEngine.UI">
- <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
- </Reference>
- <Reference Include="UnityEngine.Networking">
- <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
- </Reference>
- <Reference Include="UnityEditor.iOS.Extensions.Xcode">
- <HintPath>/Applications/Unity/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
- </Reference>
+    <Compile Include="Assets\IsoTools\Examples\Scripts\AlienBallController.cs" />
+    <Compile Include="Assets\IsoTools\Examples\Scripts\AlienBallSpawner.cs" />
+    <Compile Include="Assets\IsoTools\Examples\Scripts\CircleFly.cs" />
+    <Compile Include="Assets\IsoTools\Examples\Scripts\CubeAutoMovement.cs" />
+    <Compile Include="Assets\IsoTools\Examples\Scripts\IsoEchoListener.cs" />
+    <Compile Include="Assets\IsoTools\Examples\Scripts\PlayerController.cs" />
+    <Compile Include="Assets\IsoTools\Scripts\IsoBoxCollider.cs" />
+    <Compile Include="Assets\IsoTools\Scripts\IsoCollider.cs" />
+    <Compile Include="Assets\IsoTools\Scripts\IsoCollision.cs" />
+    <Compile Include="Assets\IsoTools\Scripts\IsoContactPoint.cs" />
+    <Compile Include="Assets\IsoTools\Scripts\IsoFakeCollider.cs" />
+    <Compile Include="Assets\IsoTools\Scripts\IsoFakeObject.cs" />
+    <Compile Include="Assets\IsoTools\Scripts\IsoFakeRigidbody.cs" />
+    <Compile Include="Assets\IsoTools\Scripts\IsoObject.cs" />
+    <Compile Include="Assets\IsoTools\Scripts\IsoPhysicHelper.cs" />
+    <Compile Include="Assets\IsoTools\Scripts\IsoRaycastHit.cs" />
+    <Compile Include="Assets\IsoTools\Scripts\IsoRigidbody.cs" />
+    <Compile Include="Assets\IsoTools\Scripts\IsoSphereCollider.cs" />
+    <Compile Include="Assets\IsoTools\Scripts\IsoUtils.cs" />
+    <Compile Include="Assets\IsoTools\Scripts\IsoWorld.cs" />
+    <Reference Include="UnityEngine.UI">
+      <HintPath>..\..\..\..\..\Applications\Unity\Unity.app\Contents\UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Networking">
+      <HintPath>..\..\..\..\..\Applications\Unity\Unity.app\Contents\UnityExtensions\Unity\Networking\UnityEngine.Networking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
+      <HintPath>..\..\..\..\..\Applications\Unity\PlaybackEngines\iOSSupport\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -83,5 +82,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  
 </Project>

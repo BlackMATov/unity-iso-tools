@@ -8,7 +8,7 @@ namespace IsoTools {
 		public Vector3     point         { get; private set; }
 		public IsoCollider thisCollider  { get; private set; }
 
-		public IsoContactPoint(ContactPoint contact_point) {
+		public IsoContactPoint(ContactPoint contact_point) : this() {
 			normal        = contact_point.normal;
 			otherCollider = IsoUtils.IsoConvertCollider(contact_point.otherCollider);
 			point         = contact_point.point;

@@ -1,8 +1,10 @@
-﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/IsoTools/Scripts/IsoWorld.cs">
     <Files>
-      <File FileName="Assets/IsoTools/Scripts/IsoWorld.cs" Line="575" Column="4" />
+      <File FileName="Assets/IsoTools/Scripts/IsoWorld.cs" Line="24" Column="24" />
+      <File FileName="Assets/IsoTools/Scripts/IsoUtils.cs" Line="8" Column="2" />
+      <File FileName="Assets/IsoTools/Scripts/IsoObject.cs" Line="278" Column="8" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

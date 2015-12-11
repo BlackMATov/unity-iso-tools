@@ -9,7 +9,7 @@ namespace IsoTools {
 		public Vector3      point     { get; private set; }
 		public IsoRigidbody rigidbody { get; private set; }
 
-		public IsoRaycastHit(RaycastHit hit_info) {
+		public IsoRaycastHit(RaycastHit hit_info) : this() {
 			collider  = IsoUtils.IsoConvertCollider(hit_info.collider);
 			distance  = hit_info.distance;
 			normal    = hit_info.normal;
