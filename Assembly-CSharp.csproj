@@ -3,8 +3,9 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
+    <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
+    <RootNamespace></RootNamespace>
     <ProjectGuid>{95166F85-0462-AC59-009C-63E7F7F767D5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -18,7 +19,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>Temp\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;UNITY_5_3_0;UNITY_5_3;UNITY_5;ENABLE_NEW_BUGREPORTER;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_FRAME_DEBUGGER;ENABLE_GENERICS;ENABLE_HOME_SCREEN;ENABLE_IMAGEEFFECTS;ENABLE_LIGHT_PROBES_LEGACY;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_PLUGIN_INSPECTOR;ENABLE_SHADOWS;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_SPRITE_POLYGON;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;INCLUDE_IL2CPP;INCLUDE_DIRECTX12;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_LOCALIZATION;ENABLE_ANDROID_ATLAS_ETC1_COMPRESSION;ENABLE_EDITOR_TESTS_RUNNER;UNITY_STANDALONE_OSX;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_GAMECENTER;ENABLE_TEXTUREID_MAP;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_LOG_MIXED_STACKTRACE;ENABLE_UNITYWEBREQUEST;ENABLE_CLUSTERINPUT;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_OSX</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;UNITY_5_3_0;UNITY_5_3;UNITY_5;ENABLE_NEW_BUGREPORTER;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_FRAME_DEBUGGER;ENABLE_GENERICS;ENABLE_HOME_SCREEN;ENABLE_IMAGEEFFECTS;ENABLE_LIGHT_PROBES_LEGACY;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_PLUGIN_INSPECTOR;ENABLE_SHADOWS;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_SPRITE_POLYGON;ENABLE_TERRAIN;ENABLE_UNET;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;INCLUDE_IL2CPP;INCLUDE_DIRECTX12;RENDER_SOFTWARE_CURSOR;ENABLE_LOCALIZATION;ENABLE_ANDROID_ATLAS_ETC1_COMPRESSION;ENABLE_EDITOR_TESTS_RUNNER;UNITY_WEBGL;UNITY_WEBGL_API;UNITY_DISABLE_WEB_VERIFICATION;ENABLE_TEXTUREID_MAP;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_LOG_MIXED_STACKTRACE;ENABLE_IL2CPP;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_OSX</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169</NoWarn>
@@ -33,46 +34,46 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.XML" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\..\..\Applications\Unity\Unity.app\Contents\Frameworks\Managed\UnityEngine.dll</HintPath>
+      <HintPath>/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor">
-      <HintPath>..\..\..\..\..\Applications\Unity\Unity.app\Contents\Frameworks\Managed\UnityEditor.dll</HintPath>
+      <HintPath>/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEditor.dll</HintPath>
     </Reference>
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\IsoTools\Examples\Scripts\AlienBallController.cs" />
-    <Compile Include="Assets\IsoTools\Examples\Scripts\AlienBallSpawner.cs" />
-    <Compile Include="Assets\IsoTools\Examples\Scripts\CircleFly.cs" />
-    <Compile Include="Assets\IsoTools\Examples\Scripts\CubeAutoMovement.cs" />
-    <Compile Include="Assets\IsoTools\Examples\Scripts\IsoEchoListener.cs" />
-    <Compile Include="Assets\IsoTools\Examples\Scripts\PlayerController.cs" />
-    <Compile Include="Assets\IsoTools\Scripts\IsoBoxCollider.cs" />
-    <Compile Include="Assets\IsoTools\Scripts\IsoCollider.cs" />
-    <Compile Include="Assets\IsoTools\Scripts\IsoCollision.cs" />
-    <Compile Include="Assets\IsoTools\Scripts\IsoContactPoint.cs" />
-    <Compile Include="Assets\IsoTools\Scripts\IsoFakeCollider.cs" />
-    <Compile Include="Assets\IsoTools\Scripts\IsoFakeObject.cs" />
-    <Compile Include="Assets\IsoTools\Scripts\IsoFakeRigidbody.cs" />
-    <Compile Include="Assets\IsoTools\Scripts\IsoObject.cs" />
-    <Compile Include="Assets\IsoTools\Scripts\IsoPhysicHelper.cs" />
-    <Compile Include="Assets\IsoTools\Scripts\IsoRaycastHit.cs" />
-    <Compile Include="Assets\IsoTools\Scripts\IsoRigidbody.cs" />
-    <Compile Include="Assets\IsoTools\Scripts\IsoSphereCollider.cs" />
-    <Compile Include="Assets\IsoTools\Scripts\IsoUtils.cs" />
-    <Compile Include="Assets\IsoTools\Scripts\IsoWorld.cs" />
-    <Reference Include="UnityEngine.UI">
-      <HintPath>..\..\..\..\..\Applications\Unity\Unity.app\Contents\UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.Networking">
-      <HintPath>..\..\..\..\..\Applications\Unity\Unity.app\Contents\UnityExtensions\Unity\Networking\UnityEngine.Networking.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
-      <HintPath>..\..\..\..\..\Applications\Unity\PlaybackEngines\iOSSupport\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
-    </Reference>
+     <Compile Include="Assets\IsoTools\Examples\Scripts\AlienBallController.cs" />
+     <Compile Include="Assets\IsoTools\Examples\Scripts\AlienBallSpawner.cs" />
+     <Compile Include="Assets\IsoTools\Examples\Scripts\CircleFly.cs" />
+     <Compile Include="Assets\IsoTools\Examples\Scripts\CubeAutoMovement.cs" />
+     <Compile Include="Assets\IsoTools\Examples\Scripts\IsoEchoListener.cs" />
+     <Compile Include="Assets\IsoTools\Examples\Scripts\PlayerController.cs" />
+     <Compile Include="Assets\IsoTools\Scripts\IsoBoxCollider.cs" />
+     <Compile Include="Assets\IsoTools\Scripts\IsoCollider.cs" />
+     <Compile Include="Assets\IsoTools\Scripts\IsoCollision.cs" />
+     <Compile Include="Assets\IsoTools\Scripts\IsoContactPoint.cs" />
+     <Compile Include="Assets\IsoTools\Scripts\IsoFakeCollider.cs" />
+     <Compile Include="Assets\IsoTools\Scripts\IsoFakeObject.cs" />
+     <Compile Include="Assets\IsoTools\Scripts\IsoFakeRigidbody.cs" />
+     <Compile Include="Assets\IsoTools\Scripts\IsoObject.cs" />
+     <Compile Include="Assets\IsoTools\Scripts\IsoPhysicHelper.cs" />
+     <Compile Include="Assets\IsoTools\Scripts\IsoRaycastHit.cs" />
+     <Compile Include="Assets\IsoTools\Scripts\IsoRigidbody.cs" />
+     <Compile Include="Assets\IsoTools\Scripts\IsoSphereCollider.cs" />
+     <Compile Include="Assets\IsoTools\Scripts\IsoUtils.cs" />
+     <Compile Include="Assets\IsoTools\Scripts\IsoWorld.cs" />
+ <Reference Include="UnityEngine.UI">
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.Networking">
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor.iOS.Extensions.Xcode">
+ <HintPath>/Applications/Unity/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
+ </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -82,4 +83,5 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  
 </Project>

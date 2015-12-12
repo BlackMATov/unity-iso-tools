@@ -1,9 +1,9 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{95166F85-0462-AC59-009C-63E7F7F767D5}"
+# Visual Studio 2008
+
+Project("{9D0FFEC9-0383-4C40-DA01-96F3C6394847}") = "unityiso", "Assembly-CSharp.csproj", "{95166F85-0462-AC59-009C-63E7F7F767D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-Editor", "Assembly-CSharp-Editor.csproj", "{BD090B74-59E6-B8B4-61B5-2814183903F0}"
+Project("{9D0FFEC9-0383-4C40-DA01-96F3C6394847}") = "unityiso", "Assembly-CSharp-Editor.csproj", "{BD090B74-59E6-B8B4-61B5-2814183903F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,6 +19,9 @@ Global
 		{BD090B74-59E6-B8B4-61B5-2814183903F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD090B74-59E6-B8B4-61B5-2814183903F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD090B74-59E6-B8B4-61B5-2814183903F0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0
@@ -66,8 +69,5 @@ Global
 		$0.DotNetNamingPolicy = $4
 		$4.DirectoryNamespaceAssociation = None
 		$4.ResourceNamePolicy = FileFormatDefault
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal
