@@ -4,8 +4,9 @@ using HutongGames.PlayMaker;
 namespace IsoTools.PlayMaker.Actions {
 	[ActionCategory("IsoTools")]
 	[HutongGames.PlayMaker.Tooltip("Translates a IsoObject. Use a Vector3 variable and/or XYZ components. To leave any axis unchanged, set variable to 'None'.")]
-	public class IsoTranslate : FsmStateAction {
+	public class IsoTranslate : IsoComponentAction<IsoObject> {
 		[RequiredField]
+		[CheckForComponent(typeof(IsoObject))]
 		public FsmOwnerDefault gameObject;
 
 		[UIHint(UIHint.Variable)]
@@ -69,8 +70,7 @@ namespace IsoTools.PlayMaker.Actions {
 
 		void DoTranlate() {
 			var go = Fsm.GetOwnerDefaultTarget(gameObject);
-			var iso_object = go ? go.GetComponent<IsoObject>() : null;
-			if ( iso_object ) {
+			if ( UpdateCache(go) ) {
 				var translate = vector.IsNone
 					? new Vector3(x.Value, y.Value, z.Value)
 					: vector.Value;
@@ -85,7 +85,7 @@ namespace IsoTools.PlayMaker.Actions {
 					translate.z = z.Value;
 				}
 
-				iso_object.position +=
+				isoObject.position +=
 					translate * (perSecond ? Time.deltaTime : 1.0f);
 			}
 		}

@@ -4,8 +4,9 @@ using HutongGames.PlayMaker;
 namespace IsoTools.PlayMaker.Actions {
 	[ActionCategory("IsoTools")]
 	[HutongGames.PlayMaker.Tooltip("Sets the Position of a IsoObject. To leave any axis unchanged, set variable to 'None'.")]
-	public class IsoSetPosition : FsmStateAction {
+	public class IsoSetPosition : IsoComponentAction<IsoObject> {
 		[RequiredField]
+		[CheckForComponent(typeof(IsoObject))]
 		public FsmOwnerDefault gameObject;
 
 		[UIHint(UIHint.Variable)]
@@ -52,10 +53,9 @@ namespace IsoTools.PlayMaker.Actions {
 
 		void DoSetPosition() {
 			var go = Fsm.GetOwnerDefaultTarget(gameObject);
-			var iso_object = go ? go.GetComponent<IsoObject>() : null;
-			if ( iso_object ) {
+			if ( UpdateCache(go) ) {
 				var position = vector.IsNone
-					? iso_object.position
+					? isoObject.position
 					: vector.Value;
 
 				if ( !x.IsNone ) {
@@ -68,7 +68,7 @@ namespace IsoTools.PlayMaker.Actions {
 					position.z = z.Value;
 				}
 
-				iso_object.position = position;
+				isoObject.position = position;
 			}
 		}
 	}
