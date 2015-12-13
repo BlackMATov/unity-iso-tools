@@ -37,20 +37,20 @@ namespace IsoTools.PlayMaker.Actions {
 
 		public override void OnEnter() {
 			if ( !everyFrame && !lateUpdate && !fixedUpdate ) {
-				DoSetSize();
+				DoAction();
 				Finish();
 			}
 		}
 
 		public override void OnUpdate() {
 			if ( !lateUpdate && !fixedUpdate ) {
-				DoSetSize();
+				DoAction();
 			}
 		}
 
 		public override void OnLateUpdate() {
 			if ( lateUpdate ) {
-				DoSetSize();
+				DoAction();
 			}
 			if ( !everyFrame ) {
 				Finish();
@@ -59,14 +59,14 @@ namespace IsoTools.PlayMaker.Actions {
 
 		public override void OnFixedUpdate() {
 			if ( fixedUpdate ) {
-				DoSetSize();
+				DoAction();
 			}
 			if ( !everyFrame ) {
 				Finish();
 			}
 		}
 
-		void DoSetSize() {
+		void DoAction() {
 			var go = Fsm.GetOwnerDefaultTarget(gameObject);
 			if ( UpdateCache(go) ) {
 				var value = vector.IsNone

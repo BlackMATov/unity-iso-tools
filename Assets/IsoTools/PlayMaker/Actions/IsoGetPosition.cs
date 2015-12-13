@@ -33,17 +33,17 @@ namespace IsoTools.PlayMaker.Actions {
 		}
 
 		public override void OnEnter() {
-			DoGetPosition();
+			DoAction();
 			if ( !everyFrame ) {
 				Finish();
 			}
 		}
 
 		public override void OnUpdate() {
-			DoGetPosition();
+			DoAction();
 		}
 
-		void DoGetPosition() {
+		void DoAction() {
 			var go = Fsm.GetOwnerDefaultTarget(gameObject);
 			if ( UpdateCache(go) ) {
 				var value    = isoObject.position;

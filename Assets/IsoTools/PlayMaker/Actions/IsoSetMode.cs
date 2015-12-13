@@ -12,17 +12,54 @@ namespace IsoTools.PlayMaker.Actions {
 		[ObjectType(typeof(IsoObject.Mode))]
 		public FsmEnum mode;
 
+		public bool everyFrame;
+		public bool lateUpdate;
+		public bool fixedUpdate;
+
 		public override void Reset() {
-			gameObject = null;
-			mode       = IsoObject.Mode.Mode2d;
+			gameObject  = null;
+			mode        = new FsmEnum{UseVariable = true};
+			everyFrame  = false;
+			lateUpdate  = false;
+			fixedUpdate = false;
+		}
+
+		public override void OnPreprocess() {
+			Fsm.HandleFixedUpdate = true;
 		}
 
 		public override void OnEnter() {
-			DoSetMode();
-			Finish();
+			if ( !everyFrame && !lateUpdate && !fixedUpdate ) {
+				DoAction();
+				Finish();
+			}
 		}
 
-		void DoSetMode() {
+		public override void OnUpdate() {
+			if ( !lateUpdate && !fixedUpdate ) {
+				DoAction();
+			}
+		}
+
+		public override void OnLateUpdate() {
+			if ( lateUpdate ) {
+				DoAction();
+			}
+			if ( !everyFrame ) {
+				Finish();
+			}
+		}
+
+		public override void OnFixedUpdate() {
+			if ( fixedUpdate ) {
+				DoAction();
+			}
+			if ( !everyFrame ) {
+				Finish();
+			}
+		}
+
+		void DoAction() {
 			var go = Fsm.GetOwnerDefaultTarget(gameObject);
 			if ( UpdateCache(go) ) {
 				isoObject.mode = (IsoObject.Mode)mode.Value;
