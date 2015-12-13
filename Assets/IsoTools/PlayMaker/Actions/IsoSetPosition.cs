@@ -6,21 +6,16 @@ namespace IsoTools.PlayMaker.Actions {
 	[HutongGames.PlayMaker.Tooltip("Sets the Position of a IsoObject. To leave any axis unchanged, set variable to 'None'.")]
 	public class IsoSetPosition : FsmStateAction {
 		[RequiredField]
-		[HutongGames.PlayMaker.Tooltip("The GameObject to position.")]
 		public FsmOwnerDefault gameObject;
 
 		[UIHint(UIHint.Variable)]
-		[HutongGames.PlayMaker.Tooltip("Use a stored Vector3 position, and/or set individual axis below.")]
 		public FsmVector3 vector;
 
 		public FsmFloat x;
 		public FsmFloat y;
 		public FsmFloat z;
 
-		[HutongGames.PlayMaker.Tooltip("Repeat every frame.")]
 		public bool everyFrame;
-
-		[HutongGames.PlayMaker.Tooltip("Perform in LateUpdate. This is useful if you want to override the position of objects that are animated or otherwise positioned in Update.")]
 		public bool lateUpdate;
 
 		public override void Reset() {

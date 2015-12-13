@@ -3,8 +3,8 @@ using HutongGames.PlayMaker;
 
 namespace IsoTools.PlayMaker.Actions {
 	[ActionCategory("IsoTools")]
-	[HutongGames.PlayMaker.Tooltip("Sets the TilePosition of a IsoObject. To leave any axis unchanged, set variable to 'None'.")]
-	public class IsoSetTilePosition : FsmStateAction {
+	[HutongGames.PlayMaker.Tooltip("Sets the Size of a IsoObject. To leave any axis unchanged, set variable to 'None'.")]
+	public class IsoSetSize : FsmStateAction {
 		[RequiredField]
 		public FsmOwnerDefault gameObject;
 
@@ -30,45 +30,45 @@ namespace IsoTools.PlayMaker.Actions {
 
 		public override void OnEnter() {
 			if ( !everyFrame && !lateUpdate ) {
-				DoSetTilePosition();
+				DoSetSize();
 				Finish();
 			}
 		}
 
 		public override void OnUpdate() {
 			if ( !lateUpdate ) {
-				DoSetTilePosition();
+				DoSetSize();
 			}
 		}
 
 		public override void OnLateUpdate() {
 			if ( lateUpdate ) {
-				DoSetTilePosition();
+				DoSetSize();
 			}
 			if ( !everyFrame ) {
 				Finish();
 			}
 		}
 
-		void DoSetTilePosition() {
+		void DoSetSize() {
 			var go = Fsm.GetOwnerDefaultTarget(gameObject);
 			var iso_object = go ? go.GetComponent<IsoObject>() : null;
 			if ( iso_object ) {
-				var tile_position = vector.IsNone
-					? iso_object.tilePosition
+				var size = vector.IsNone
+					? iso_object.size
 					: vector.Value;
 
 				if ( !x.IsNone ) {
-					tile_position.x = x.Value;
+					size.x = x.Value;
 				}
 				if ( !y.IsNone ) {
-					tile_position.y = y.Value;
+					size.y = y.Value;
 				}
 				if ( !z.IsNone ) {
-					tile_position.z = z.Value;
+					size.z = z.Value;
 				}
 
-				iso_object.tilePosition = tile_position;
+				iso_object.size = size;
 			}
 		}
 	}

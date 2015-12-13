@@ -52,8 +52,10 @@
      <Compile Include="Assets\IsoTools\Examples\Scripts\IsoEchoListener.cs" />
      <Compile Include="Assets\IsoTools\Examples\Scripts\PlayerController.cs" />
      <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoGetPosition.cs" />
+     <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoGetSize.cs" />
      <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoGetTilePosition.cs" />
      <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoSetPosition.cs" />
+     <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoSetSize.cs" />
      <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoSetTilePosition.cs" />
      <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoTranslate.cs" />
      <Compile Include="Assets\IsoTools\Scripts\IsoBoxCollider.cs" />
