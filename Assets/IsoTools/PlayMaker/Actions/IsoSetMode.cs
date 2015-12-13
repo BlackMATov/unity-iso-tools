@@ -9,6 +9,7 @@ namespace IsoTools.PlayMaker.Actions {
 		[CheckForComponent(typeof(IsoObject))]
 		public FsmOwnerDefault gameObject;
 
+		[RequiredField]
 		[ObjectType(typeof(IsoObject.Mode))]
 		public FsmEnum mode;
 

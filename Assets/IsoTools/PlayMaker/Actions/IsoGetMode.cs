@@ -9,34 +9,25 @@ namespace IsoTools.PlayMaker.Actions {
 		[CheckForComponent(typeof(IsoObject))]
 		public FsmOwnerDefault gameObject;
 
+		[RequiredField]
 		[ObjectType(typeof(IsoObject.Mode))]
 		[UIHint(UIHint.Variable)]
 		public FsmEnum mode;
 
-		public bool everyFrame;
-
 		public override void Reset() {
 			gameObject = null;
 			mode       = null;
-			everyFrame = false;
 		}
 
 		public override void OnEnter() {
 			DoAction();
-			if ( !everyFrame ) {
-				Finish();
-			}
-		}
-
-		public override void OnUpdate() {
-			DoAction();
+			Finish();
 		}
 
 		void DoAction() {
 			var go = Fsm.GetOwnerDefaultTarget(gameObject);
 			if ( UpdateCache(go) ) {
-				var value  = isoObject.mode;
-				mode.Value = value;
+				mode.Value = isoObject.mode;
 			}
 		}
 	}

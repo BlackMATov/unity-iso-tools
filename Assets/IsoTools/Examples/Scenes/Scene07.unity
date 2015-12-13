@@ -102,7 +102,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 453404, guid: d10e5320df9f84d4186bda0ba98db9ff, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 1.3000001
+      value: 1.4000001
       objectReference: {fileID: 0}
     - target: {fileID: 453404, guid: d10e5320df9f84d4186bda0ba98db9ff, type: 2}
       propertyPath: m_LocalRotation.x
@@ -441,10 +441,10 @@ MonoBehaviour:
       actionData:
         actionNames:
         - IsoTools.PlayMaker.Actions.IsoTranslate
-        - HutongGames.PlayMaker.Actions.Wait
         - IsoTools.PlayMaker.Actions.IsoGetPosition
         - IsoTools.PlayMaker.Actions.IsoGetSize
         - IsoTools.PlayMaker.Actions.IsoGetMode
+        - HutongGames.PlayMaker.Actions.Wait
         - PlayMaker.ConditionalExpression.ConditionalExpression
         customNames:
         - 
@@ -454,9 +454,9 @@ MonoBehaviour:
         - 
         - 
         actionEnabled: 010101010101
-        actionIsOpen: 000000000100
-        actionStartIndex: 00000000090000000c00000012000000180000001b000000
-        actionHashCodes: 8ef8760048c011017ebd02027ebd020236f6fc01490c8701
+        actionIsOpen: 000000010100
+        actionStartIndex: 00000000090000000f00000015000000170000001a000000
+        actionHashCodes: 8ef876007ebd02027ebd0202672cde0348c01101490c8701
         unityObjectParams: []
         fsmGameObjectParams: []
         fsmOwnerDefaultParams:
@@ -535,12 +535,6 @@ MonoBehaviour:
           showInInspector: 0
           networkSync: 0
           value: 0
-        - useVariable: 0
-          name: 
-          tooltip: 
-          showInInspector: 0
-          networkSync: 0
-          value: 1
         - useVariable: 1
           name: iso_x
           tooltip: 
@@ -577,6 +571,12 @@ MonoBehaviour:
           showInInspector: 0
           networkSync: 0
           value: 0
+        - useVariable: 0
+          name: 
+          tooltip: 
+          showInInspector: 0
+          networkSync: 0
+          value: 1
         fsmIntParams: []
         fsmBoolParams:
         - useVariable: 1
@@ -612,12 +612,12 @@ MonoBehaviour:
         - FINISHED
         - TO_RESET_POSITION
         - 
-        byteData: 00000000010000000000
+        byteData: 000000000000010000
         arrayParamSizes: 
         arrayParamTypes: []
         customTypeSizes: 
         customTypeNames: []
-        paramDataType: 140000001c0000000f0000000f0000000f000000010000000100000001000000010000000f0000001700000001000000140000001c0000000f0000000f0000000f00000001000000140000001c0000000f0000000f0000000f00000001000000140000002a00000001000000120000001700000017000000010000000100000011000000
+        paramDataType: 140000001c0000000f0000000f0000000f00000001000000010000000100000001000000140000001c0000000f0000000f0000000f00000001000000140000001c0000000f0000000f0000000f00000001000000140000002a0000000f0000001700000001000000120000001700000017000000010000000100000011000000
         paramName:
         - gameObject
         - vector
@@ -628,9 +628,6 @@ MonoBehaviour:
         - everyFrame
         - lateUpdate
         - fixedUpdate
-        - time
-        - finishEvent
-        - realTime
         - gameObject
         - vector
         - x
@@ -645,15 +642,17 @@ MonoBehaviour:
         - everyFrame
         - gameObject
         - mode
-        - everyFrame
+        - time
+        - finishEvent
+        - realTime
         - expression
         - isTrueEvent
         - isFalseEvent
         - everyFrame
         - rawResult
         - storeResult
-        paramDataPos: 000000000000000000000000010000000200000000000000010000000200000003000000030000000000000004000000010000000100000004000000050000000600000005000000020000000200000007000000080000000900000006000000030000000000000007000000000000000100000002000000080000000900000000000000
-        paramByteDataSize: 000000000000000000000000000000000000000001000000010000000100000001000000000000000000000001000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000001000000000000000000000001000000000000000000000000000000010000000100000000000000
+        paramDataPos: 0000000000000000000000000100000002000000000000000100000002000000030000000100000001000000030000000400000005000000040000000200000002000000060000000700000008000000050000000300000000000000090000000000000006000000000000000100000002000000070000000800000000000000
+        paramByteDataSize: 0000000000000000000000000000000000000000010000000100000001000000010000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000010000000000000000000000000000000000000001000000000000000000000000000000010000000100000000000000
     - name: State 3
       description: 
       colorIndex: 0
@@ -895,7 +894,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 453404, guid: d10e5320df9f84d4186bda0ba98db9ff, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 1.4000001
+      value: 1.3000001
       objectReference: {fileID: 0}
     - target: {fileID: 453404, guid: d10e5320df9f84d4186bda0ba98db9ff, type: 2}
       propertyPath: m_LocalRotation.x
@@ -953,7 +952,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 453404, guid: d10e5320df9f84d4186bda0ba98db9ff, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 1.1
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 453404, guid: d10e5320df9f84d4186bda0ba98db9ff, type: 2}
       propertyPath: m_LocalRotation.x
@@ -999,11 +998,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 417528, guid: c1b9b2ad3a021c549aa9190df3101248, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -0.0000019073486
+      value: -0.0000038146973
       objectReference: {fileID: 0}
     - target: {fileID: 417528, guid: c1b9b2ad3a021c549aa9190df3101248, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 15.999999
+      value: 31.999998
       objectReference: {fileID: 0}
     - target: {fileID: 417528, guid: c1b9b2ad3a021c549aa9190df3101248, type: 2}
       propertyPath: m_LocalPosition.z
@@ -1031,11 +1030,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11417528, guid: c1b9b2ad3a021c549aa9190df3101248, type: 2}
       propertyPath: _position.x
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 11417528, guid: c1b9b2ad3a021c549aa9190df3101248, type: 2}
       propertyPath: _position.y
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 11417528, guid: c1b9b2ad3a021c549aa9190df3101248, type: 2}
       propertyPath: _position.z
@@ -1112,7 +1111,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 453404, guid: d10e5320df9f84d4186bda0ba98db9ff, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 1.2
+      value: 1.1
       objectReference: {fileID: 0}
     - target: {fileID: 453404, guid: d10e5320df9f84d4186bda0ba98db9ff, type: 2}
       propertyPath: m_LocalRotation.x
