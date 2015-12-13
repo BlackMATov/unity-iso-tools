@@ -55,6 +55,8 @@
      <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoGetPosition.cs" />
      <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoGetSize.cs" />
      <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoGetTilePosition.cs" />
+     <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoResize.cs" />
+     <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoSetMode.cs" />
      <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoSetPosition.cs" />
      <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoSetSize.cs" />
      <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoSetTilePosition.cs" />

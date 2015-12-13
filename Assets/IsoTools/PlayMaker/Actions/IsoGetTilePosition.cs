@@ -46,11 +46,11 @@ namespace IsoTools.PlayMaker.Actions {
 		void DoGetPosition() {
 			var go = Fsm.GetOwnerDefaultTarget(gameObject);
 			if ( UpdateCache(go) ) {
-				var position = isoObject.tilePosition;
-				vector.Value = position;
-				x.Value      = position.x;
-				y.Value      = position.y;
-				z.Value      = position.z;
+				var value    = isoObject.tilePosition;
+				vector.Value = value;
+				x.Value      = value.x;
+				y.Value      = value.y;
+				z.Value      = value.z;
 			}
 		}
 	}

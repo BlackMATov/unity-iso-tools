@@ -3,8 +3,8 @@ using HutongGames.PlayMaker;
 
 namespace IsoTools.PlayMaker.Actions {
 	[ActionCategory("IsoTools")]
-	[HutongGames.PlayMaker.Tooltip("Sets the Position of a IsoObject. To leave any axis unchanged, set variable to 'None'.")]
-	public class IsoSetPosition : IsoComponentAction<IsoObject> {
+	[HutongGames.PlayMaker.Tooltip("Resizes a IsoObject. Use a Vector3 variable and/or XYZ components. To leave any axis unchanged, set variable to 'None'.")]
+	public class IsoResize : IsoComponentAction<IsoObject> {
 		[RequiredField]
 		[CheckForComponent(typeof(IsoObject))]
 		public FsmOwnerDefault gameObject;
@@ -16,6 +16,7 @@ namespace IsoTools.PlayMaker.Actions {
 		public FsmFloat y;
 		public FsmFloat z;
 
+		public bool perSecond;
 		public bool everyFrame;
 		public bool lateUpdate;
 		public bool fixedUpdate;
@@ -26,7 +27,8 @@ namespace IsoTools.PlayMaker.Actions {
 			x           = new FsmFloat{UseVariable = true};
 			y           = new FsmFloat{UseVariable = true};
 			z           = new FsmFloat{UseVariable = true};
-			everyFrame  = false;
+			perSecond   = true;
+			everyFrame  = true;
 			lateUpdate  = false;
 			fixedUpdate = false;
 		}
@@ -37,20 +39,20 @@ namespace IsoTools.PlayMaker.Actions {
 
 		public override void OnEnter() {
 			if ( !everyFrame && !lateUpdate && !fixedUpdate ) {
-				DoSetPosition();
+				DoResize();
 				Finish();
 			}
 		}
 
 		public override void OnUpdate() {
 			if ( !lateUpdate && !fixedUpdate ) {
-				DoSetPosition();
+				DoResize();
 			}
 		}
 
 		public override void OnLateUpdate() {
 			if ( lateUpdate ) {
-				DoSetPosition();
+				DoResize();
 			}
 			if ( !everyFrame ) {
 				Finish();
@@ -59,18 +61,18 @@ namespace IsoTools.PlayMaker.Actions {
 
 		public override void OnFixedUpdate() {
 			if ( fixedUpdate ) {
-				DoSetPosition();
+				DoResize();
 			}
 			if ( !everyFrame ) {
 				Finish();
 			}
 		}
 
-		void DoSetPosition() {
+		void DoResize() {
 			var go = Fsm.GetOwnerDefaultTarget(gameObject);
 			if ( UpdateCache(go) ) {
 				var value = vector.IsNone
-					? isoObject.position
+					? new Vector3(x.Value, y.Value, z.Value)
 					: vector.Value;
 
 				if ( !x.IsNone ) {
@@ -83,7 +85,8 @@ namespace IsoTools.PlayMaker.Actions {
 					value.z = z.Value;
 				}
 
-				isoObject.position = value;
+				isoObject.size +=
+					value * (perSecond ? Time.deltaTime : 1.0f);
 			}
 		}
 	}

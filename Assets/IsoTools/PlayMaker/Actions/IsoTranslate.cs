@@ -71,22 +71,22 @@ namespace IsoTools.PlayMaker.Actions {
 		void DoTranlate() {
 			var go = Fsm.GetOwnerDefaultTarget(gameObject);
 			if ( UpdateCache(go) ) {
-				var translate = vector.IsNone
+				var value = vector.IsNone
 					? new Vector3(x.Value, y.Value, z.Value)
 					: vector.Value;
 
 				if ( !x.IsNone ) {
-					translate.x = x.Value;
+					value.x = x.Value;
 				}
 				if ( !y.IsNone ) {
-					translate.y = y.Value;
+					value.y = y.Value;
 				}
 				if ( !z.IsNone ) {
-					translate.z = z.Value;
+					value.z = z.Value;
 				}
 
 				isoObject.position +=
-					translate * (perSecond ? Time.deltaTime : 1.0f);
+					value * (perSecond ? Time.deltaTime : 1.0f);
 			}
 		}
 	}

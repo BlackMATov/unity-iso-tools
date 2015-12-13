@@ -18,26 +18,32 @@ namespace IsoTools.PlayMaker.Actions {
 
 		public bool everyFrame;
 		public bool lateUpdate;
+		public bool fixedUpdate;
 
 		public override void Reset() {
-			gameObject = null;
-			vector     = null;
-			x          = new FsmFloat{UseVariable = true};
-			y          = new FsmFloat{UseVariable = true};
-			z          = new FsmFloat{UseVariable = true};
-			everyFrame = false;
-			lateUpdate = false;
+			gameObject  = null;
+			vector      = null;
+			x           = new FsmFloat{UseVariable = true};
+			y           = new FsmFloat{UseVariable = true};
+			z           = new FsmFloat{UseVariable = true};
+			everyFrame  = false;
+			lateUpdate  = false;
+			fixedUpdate = false;
+		}
+
+		public override void OnPreprocess() {
+			Fsm.HandleFixedUpdate = true;
 		}
 
 		public override void OnEnter() {
-			if ( !everyFrame && !lateUpdate ) {
+			if ( !everyFrame && !lateUpdate && !fixedUpdate ) {
 				DoSetTilePosition();
 				Finish();
 			}
 		}
 
 		public override void OnUpdate() {
-			if ( !lateUpdate ) {
+			if ( !lateUpdate && !fixedUpdate ) {
 				DoSetTilePosition();
 			}
 		}
@@ -51,24 +57,33 @@ namespace IsoTools.PlayMaker.Actions {
 			}
 		}
 
+		public override void OnFixedUpdate() {
+			if ( fixedUpdate ) {
+				DoSetTilePosition();
+			}
+			if ( !everyFrame ) {
+				Finish();
+			}
+		}
+
 		void DoSetTilePosition() {
 			var go = Fsm.GetOwnerDefaultTarget(gameObject);
 			if ( UpdateCache(go) ) {
-				var tile_position = vector.IsNone
+				var value = vector.IsNone
 					? isoObject.tilePosition
 					: vector.Value;
 
 				if ( !x.IsNone ) {
-					tile_position.x = x.Value;
+					value.x = x.Value;
 				}
 				if ( !y.IsNone ) {
-					tile_position.y = y.Value;
+					value.y = y.Value;
 				}
 				if ( !z.IsNone ) {
-					tile_position.z = z.Value;
+					value.z = z.Value;
 				}
 
-				isoObject.tilePosition = tile_position;
+				isoObject.tilePosition = value;
 			}
 		}
 	}

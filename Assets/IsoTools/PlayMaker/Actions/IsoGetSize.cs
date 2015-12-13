@@ -46,11 +46,11 @@ namespace IsoTools.PlayMaker.Actions {
 		void DoGetSize() {
 			var go = Fsm.GetOwnerDefaultTarget(gameObject);
 			if ( UpdateCache(go) ) {
-				var size     = isoObject.size;
-				vector.Value = size;
-				x.Value      = size.x;
-				y.Value      = size.y;
-				z.Value      = size.z;
+				var value    = isoObject.size;
+				vector.Value = value;
+				x.Value      = value.x;
+				y.Value      = value.y;
+				z.Value      = value.z;
 			}
 		}
 	}

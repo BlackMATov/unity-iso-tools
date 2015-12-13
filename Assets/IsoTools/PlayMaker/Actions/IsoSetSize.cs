@@ -18,26 +18,32 @@ namespace IsoTools.PlayMaker.Actions {
 
 		public bool everyFrame;
 		public bool lateUpdate;
+		public bool fixedUpdate;
 
 		public override void Reset() {
-			gameObject = null;
-			vector     = null;
-			x          = new FsmFloat{UseVariable = true};
-			y          = new FsmFloat{UseVariable = true};
-			z          = new FsmFloat{UseVariable = true};
-			everyFrame = false;
-			lateUpdate = false;
+			gameObject  = null;
+			vector      = null;
+			x           = new FsmFloat{UseVariable = true};
+			y           = new FsmFloat{UseVariable = true};
+			z           = new FsmFloat{UseVariable = true};
+			everyFrame  = false;
+			lateUpdate  = false;
+			fixedUpdate = false;
+		}
+
+		public override void OnPreprocess() {
+			Fsm.HandleFixedUpdate = true;
 		}
 
 		public override void OnEnter() {
-			if ( !everyFrame && !lateUpdate ) {
+			if ( !everyFrame && !lateUpdate && !fixedUpdate ) {
 				DoSetSize();
 				Finish();
 			}
 		}
 
 		public override void OnUpdate() {
-			if ( !lateUpdate ) {
+			if ( !lateUpdate && !fixedUpdate ) {
 				DoSetSize();
 			}
 		}
@@ -51,24 +57,33 @@ namespace IsoTools.PlayMaker.Actions {
 			}
 		}
 
+		public override void OnFixedUpdate() {
+			if ( fixedUpdate ) {
+				DoSetSize();
+			}
+			if ( !everyFrame ) {
+				Finish();
+			}
+		}
+
 		void DoSetSize() {
 			var go = Fsm.GetOwnerDefaultTarget(gameObject);
 			if ( UpdateCache(go) ) {
-				var size = vector.IsNone
+				var value = vector.IsNone
 					? isoObject.size
 					: vector.Value;
 
 				if ( !x.IsNone ) {
-					size.x = x.Value;
+					value.x = x.Value;
 				}
 				if ( !y.IsNone ) {
-					size.y = y.Value;
+					value.y = y.Value;
 				}
 				if ( !z.IsNone ) {
-					size.z = z.Value;
+					value.z = z.Value;
 				}
 
-				isoObject.size = size;
+				isoObject.size = value;
 			}
 		}
 	}
