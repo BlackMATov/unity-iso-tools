@@ -102,7 +102,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 453404, guid: d10e5320df9f84d4186bda0ba98db9ff, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 1.3000001
+      value: 1.4000001
       objectReference: {fileID: 0}
     - target: {fileID: 453404, guid: d10e5320df9f84d4186bda0ba98db9ff, type: 2}
       propertyPath: m_LocalRotation.x
@@ -422,8 +422,8 @@ MonoBehaviour:
       colorIndex: 0
       position:
         serializedVersion: 2
-        x: 240.82031
-        y: 102.17969
+        x: 84.453125
+        y: 167.6875
         width: 100
         height: 32
       isBreakpoint: 0
@@ -442,16 +442,28 @@ MonoBehaviour:
         actionNames:
         - IsoTools.PlayMaker.Actions.IsoTranslate
         - HutongGames.PlayMaker.Actions.Wait
+        - IsoTools.PlayMaker.Actions.IsoGetPosition
+        - PlayMaker.ConditionalExpression.ConditionalExpression
         customNames:
         - 
         - 
-        actionEnabled: 0101
-        actionIsOpen: 0101
-        actionStartIndex: 0000000009000000
-        actionHashCodes: 8ef8760048c01101
+        - 
+        - 
+        actionEnabled: 01010101
+        actionIsOpen: 01010101
+        actionStartIndex: 00000000090000000c00000012000000
+        actionHashCodes: 8ef8760048c011017ebd0202490c8701
         unityObjectParams: []
         fsmGameObjectParams: []
         fsmOwnerDefaultParams:
+        - ownerOption: 0
+          gameObject:
+            useVariable: 0
+            name: 
+            tooltip: 
+            showInInspector: 0
+            networkSync: 0
+            value: {fileID: 0}
         - ownerOption: 0
           gameObject:
             useVariable: 0
@@ -466,7 +478,13 @@ MonoBehaviour:
         fsmEventTargetParams: []
         fsmPropertyParams: []
         layoutOptionParams: []
-        fsmStringParams: []
+        fsmStringParams:
+        - useVariable: 0
+          name: 
+          tooltip: 
+          showInInspector: 0
+          networkSync: 0
+          value: iso_x == 5
         fsmObjectParams: []
         fsmVarParams: []
         fsmArrayParams: []
@@ -496,6 +514,165 @@ MonoBehaviour:
           showInInspector: 0
           networkSync: 0
           value: 1
+        - useVariable: 1
+          name: iso_x
+          tooltip: 
+          showInInspector: 1
+          networkSync: 0
+          value: 0
+        - useVariable: 1
+          name: 
+          tooltip: 
+          showInInspector: 0
+          networkSync: 0
+          value: 0
+        - useVariable: 1
+          name: 
+          tooltip: 
+          showInInspector: 0
+          networkSync: 0
+          value: 0
+        fsmIntParams: []
+        fsmBoolParams:
+        - useVariable: 1
+          name: 
+          tooltip: 
+          showInInspector: 0
+          networkSync: 0
+          value: 0
+        fsmVector2Params: []
+        fsmVector3Params:
+        - useVariable: 1
+          name: 
+          tooltip: 
+          showInInspector: 0
+          networkSync: 0
+          value: {x: 0, y: 0, z: 0}
+        - useVariable: 1
+          name: iso_position
+          tooltip: 
+          showInInspector: 1
+          networkSync: 0
+          value: {x: 0, y: 0, z: 0}
+        fsmColorParams: []
+        fsmRectParams: []
+        fsmQuaternionParams: []
+        stringParams:
+        - FINISHED
+        - TO_RESET_POSITION
+        - 
+        byteData: 0000000001000000
+        arrayParamSizes: 
+        arrayParamTypes: []
+        customTypeSizes: 
+        customTypeNames: []
+        paramDataType: 140000001c0000000f0000000f0000000f000000010000000100000001000000010000000f0000001700000001000000140000001c0000000f0000000f0000000f00000001000000120000001700000017000000010000000100000011000000
+        paramName:
+        - gameObject
+        - vector
+        - x
+        - y
+        - z
+        - perSecond
+        - everyFrame
+        - lateUpdate
+        - fixedUpdate
+        - time
+        - finishEvent
+        - realTime
+        - gameObject
+        - vector
+        - x
+        - y
+        - z
+        - everyFrame
+        - expression
+        - isTrueEvent
+        - isFalseEvent
+        - everyFrame
+        - rawResult
+        - storeResult
+        paramDataPos: 000000000000000000000000010000000200000000000000010000000200000003000000030000000000000004000000010000000100000004000000050000000600000005000000000000000100000002000000060000000700000000000000
+        paramByteDataSize: 000000000000000000000000000000000000000001000000010000000100000001000000000000000000000001000000000000000000000000000000000000000000000001000000000000000000000000000000010000000100000000000000
+    - name: State 3
+      description: 
+      colorIndex: 0
+      position:
+        serializedVersion: 2
+        x: 382.17188
+        y: 149.6875
+        width: 146
+        height: 32
+      isBreakpoint: 0
+      isSequence: 0
+      hideUnused: 0
+      transitions:
+      - fsmEvent:
+          name: FINISHED
+          isSystemEvent: 1
+          isGlobal: 0
+        toState: State 1
+        linkStyle: 0
+        linkConstraint: 0
+        colorIndex: 0
+      actionData:
+        actionNames:
+        - IsoTools.PlayMaker.Actions.IsoSetPosition
+        - HutongGames.PlayMaker.Actions.Wait
+        customNames:
+        - 
+        - 
+        actionEnabled: 0101
+        actionIsOpen: 0101
+        actionStartIndex: 0000000007000000
+        actionHashCodes: afff110548c01101
+        unityObjectParams: []
+        fsmGameObjectParams: []
+        fsmOwnerDefaultParams:
+        - ownerOption: 0
+          gameObject:
+            useVariable: 0
+            name: 
+            tooltip: 
+            showInInspector: 0
+            networkSync: 0
+            value: {fileID: 0}
+        animationCurveParams: []
+        functionCallParams: []
+        fsmTemplateControlParams: []
+        fsmEventTargetParams: []
+        fsmPropertyParams: []
+        layoutOptionParams: []
+        fsmStringParams: []
+        fsmObjectParams: []
+        fsmVarParams: []
+        fsmArrayParams: []
+        fsmEnumParams: []
+        fsmFloatParams:
+        - useVariable: 0
+          name: 
+          tooltip: 
+          showInInspector: 0
+          networkSync: 0
+          value: 0
+        - useVariable: 0
+          name: 
+          tooltip: 
+          showInInspector: 0
+          networkSync: 0
+          value: 0
+        - useVariable: 1
+          name: 
+          tooltip: 
+          showInInspector: 0
+          networkSync: 0
+          value: 0
+        - useVariable: 0
+          name: 
+          tooltip: 
+          showInInspector: 0
+          networkSync: 0
+          value: 1
         fsmIntParams: []
         fsmBoolParams: []
         fsmVector2Params: []
@@ -511,39 +688,60 @@ MonoBehaviour:
         fsmQuaternionParams: []
         stringParams:
         - FINISHED
-        byteData: 0000000001
+        byteData: 000001
         arrayParamSizes: 
         arrayParamTypes: []
         customTypeSizes: 
         customTypeNames: []
-        paramDataType: 140000001c0000000f0000000f0000000f000000010000000100000001000000010000000f0000001700000001000000
+        paramDataType: 140000001c0000000f0000000f0000000f00000001000000010000000f0000001700000001000000
         paramName:
         - gameObject
         - vector
         - x
         - y
         - z
-        - perSecond
         - everyFrame
         - lateUpdate
-        - fixedUpdate
         - time
         - finishEvent
         - realTime
-        paramDataPos: 000000000000000000000000010000000200000000000000010000000200000003000000030000000000000004000000
-        paramByteDataSize: 000000000000000000000000000000000000000001000000010000000100000001000000000000000000000001000000
+        paramDataPos: 00000000000000000000000001000000020000000000000001000000030000000000000002000000
+        paramByteDataSize: 00000000000000000000000000000000000000000100000001000000000000000000000001000000
     events:
     - name: FINISHED
       isSystemEvent: 1
       isGlobal: 0
-    globalTransitions: []
+    - name: TO_RESET_POSITION
+      isSystemEvent: 0
+      isGlobal: 0
+    globalTransitions:
+    - fsmEvent:
+        name: TO_RESET_POSITION
+        isSystemEvent: 0
+        isGlobal: 0
+      toState: State 3
+      linkStyle: 0
+      linkConstraint: 0
+      colorIndex: 0
     variables:
-      floatVariables: []
+      floatVariables:
+      - useVariable: 1
+        name: iso_x
+        tooltip: 
+        showInInspector: 1
+        networkSync: 0
+        value: 0
       intVariables: []
       boolVariables: []
       stringVariables: []
       vector2Variables: []
-      vector3Variables: []
+      vector3Variables:
+      - useVariable: 1
+        name: iso_position
+        tooltip: 
+        showInInspector: 1
+        networkSync: 0
+        value: {x: 0, y: 0, z: 0}
       colorVariables: []
       rectVariables: []
       quaternionVariables: []
@@ -555,7 +753,7 @@ MonoBehaviour:
       enumVariables: []
       categories:
       - 
-      variableCategoryIDs: 
+      variableCategoryIDs: 0000000000000000
     description: 
     docUrl: 
     showStateLabel: 1
@@ -577,7 +775,7 @@ MonoBehaviour:
     handleCollisionExit: 0
     handleCollisionStay: 0
     handleOnGUI: 0
-    handleFixedUpdate: 0
+    handleFixedUpdate: 1
     handleApplicationEvents: 0
   fsmTemplate: {fileID: 0}
   eventHandlerComponentsAdded: 0
@@ -598,7 +796,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 453404, guid: d10e5320df9f84d4186bda0ba98db9ff, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 1.4000001
+      value: 1.3000001
       objectReference: {fileID: 0}
     - target: {fileID: 453404, guid: d10e5320df9f84d4186bda0ba98db9ff, type: 2}
       propertyPath: m_LocalRotation.x
@@ -656,7 +854,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 453404, guid: d10e5320df9f84d4186bda0ba98db9ff, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 1.1
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 453404, guid: d10e5320df9f84d4186bda0ba98db9ff, type: 2}
       propertyPath: m_LocalRotation.x
@@ -811,7 +1009,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 453404, guid: d10e5320df9f84d4186bda0ba98db9ff, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 1.2
+      value: 1.1
       objectReference: {fileID: 0}
     - target: {fileID: 453404, guid: d10e5320df9f84d4186bda0ba98db9ff, type: 2}
       propertyPath: m_LocalRotation.x

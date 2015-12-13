@@ -85,22 +85,22 @@ namespace IsoTools.PlayMaker.Actions {
 			var go = Fsm.GetOwnerDefaultTarget(gameObject);
 			var iso_object = go ? go.GetComponent<IsoObject>() : null;
 			if ( iso_object ) {
-				var trans = vector.IsNone
+				var translate = vector.IsNone
 					? new Vector3(x.Value, y.Value, z.Value)
 					: vector.Value;
 
 				if ( !x.IsNone ) {
-					trans.x = x.Value;
+					translate.x = x.Value;
 				}
 				if ( !y.IsNone ) {
-					trans.y = y.Value;
+					translate.y = y.Value;
 				}
 				if ( !z.IsNone ) {
-					trans.z = z.Value;
+					translate.z = z.Value;
 				}
 
-				iso_object.position = iso_object.position +
-					trans * (perSecond ? Time.deltaTime : 1.0f);
+				iso_object.position +=
+					translate * (perSecond ? Time.deltaTime : 1.0f);
 			}
 		}
 	}
