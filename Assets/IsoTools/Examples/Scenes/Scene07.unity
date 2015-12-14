@@ -102,7 +102,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 453404, guid: d10e5320df9f84d4186bda0ba98db9ff, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 5
+      value: 1.4000001
       objectReference: {fileID: 0}
     - target: {fileID: 453404, guid: d10e5320df9f84d4186bda0ba98db9ff, type: 2}
       propertyPath: m_LocalRotation.x
@@ -179,7 +179,7 @@ MonoBehaviour:
   _tileRatio: 0.5
   _tileAngle: 45
   _tileHeight: 16
-  _stepDepth: 1
+  _stepDepth: 0.1
   _startDepth: 1
 --- !u!81 &600542279
 AudioListener:
@@ -676,6 +676,7 @@ MonoBehaviour:
         colorIndex: 0
       actionData:
         actionNames:
+        - IsoTools.PlayMaker.Actions.IsoGetWorldProps
         - IsoTools.PlayMaker.Actions.IsoSetWorldProps
         - IsoTools.PlayMaker.Actions.IsoSetMode
         - IsoTools.PlayMaker.Actions.IsoSetPosition
@@ -685,13 +686,22 @@ MonoBehaviour:
         - 
         - 
         - 
-        actionEnabled: 01010101
-        actionIsOpen: 01010101
-        actionStartIndex: 00000000070000000900000011000000
-        actionHashCodes: 7607ca02672cde03ac9f610448c01101
+        - 
+        actionEnabled: 0101010101
+        actionIsOpen: 0101000000
+        actionStartIndex: 00000000080000000f0000001100000019000000
+        actionHashCodes: c30d6a037607ca02672cde03ac9f610448c01101
         unityObjectParams: []
         fsmGameObjectParams: []
         fsmOwnerDefaultParams:
+        - ownerOption: 1
+          gameObject:
+            useVariable: 0
+            name: 
+            tooltip: 
+            showInInspector: 0
+            networkSync: 0
+            value: {fileID: 600542277}
         - ownerOption: 1
           gameObject:
             useVariable: 0
@@ -736,23 +746,59 @@ MonoBehaviour:
           intValue: 1
         fsmFloatParams:
         - useVariable: 1
+          name: tile_size
+          tooltip: 
+          showInInspector: 1
+          networkSync: 0
+          value: 0
+        - useVariable: 1
+          name: tile_ratio
+          tooltip: 
+          showInInspector: 1
+          networkSync: 0
+          value: 0
+        - useVariable: 1
+          name: tile_angle
+          tooltip: 
+          showInInspector: 1
+          networkSync: 0
+          value: 0
+        - useVariable: 1
+          name: tile_height
+          tooltip: 
+          showInInspector: 1
+          networkSync: 0
+          value: 0
+        - useVariable: 1
+          name: step_depth
+          tooltip: 
+          showInInspector: 1
+          networkSync: 0
+          value: 0
+        - useVariable: 1
+          name: start_depth
+          tooltip: 
+          showInInspector: 1
+          networkSync: 0
+          value: 0
+        - useVariable: 1
           name: 
           tooltip: 
           showInInspector: 0
           networkSync: 0
-          value: 32
+          value: 0
         - useVariable: 1
           name: 
           tooltip: 
           showInInspector: 0
           networkSync: 0
           value: 1
-        - useVariable: 1
+        - useVariable: 0
           name: 
           tooltip: 
           showInInspector: 0
           networkSync: 0
-          value: 90.58
+          value: 56
         - useVariable: 1
           name: 
           tooltip: 
@@ -810,13 +856,21 @@ MonoBehaviour:
         fsmQuaternionParams: []
         stringParams:
         - FINISHED
-        byteData: 00000001
+        byteData: 0000000001
         arrayParamSizes: 
         arrayParamTypes: []
         customTypeSizes: 
         customTypeNames: []
-        paramDataType: 140000000f0000000f0000000f0000000f0000000f0000000f000000140000002a000000140000001c0000000f0000000f0000000f0000000100000001000000010000000f0000001700000001000000
+        paramDataType: 140000000f0000000f0000000f0000000f0000000f0000000f00000001000000140000000f0000000f0000000f0000000f0000000f0000000f000000140000002a000000140000001c0000000f0000000f0000000f0000000100000001000000010000000f0000001700000001000000
         paramName:
+        - gameObject
+        - tileSize
+        - tileRatio
+        - tileAngle
+        - tileHeight
+        - stepDepth
+        - startDepth
+        - everyFrame
         - gameObject
         - tileSize
         - tileRatio
@@ -837,8 +891,8 @@ MonoBehaviour:
         - time
         - finishEvent
         - realTime
-        paramDataPos: 0000000000000000010000000200000003000000040000000500000001000000000000000200000000000000060000000700000008000000000000000100000002000000090000000000000003000000
-        paramByteDataSize: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000100000001000000000000000000000001000000
+        paramDataPos: 000000000000000001000000020000000300000004000000050000000000000001000000060000000700000008000000090000000a0000000b000000020000000000000003000000000000000c0000000d0000000e0000000100000002000000030000000f0000000000000004000000
+        paramByteDataSize: 00000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000100000001000000000000000000000001000000
     events:
     - name: FINISHED
       isSystemEvent: 1
@@ -865,6 +919,42 @@ MonoBehaviour:
         value: 0
       - useVariable: 1
         name: iso_x
+        tooltip: 
+        showInInspector: 1
+        networkSync: 0
+        value: 0
+      - useVariable: 1
+        name: start_depth
+        tooltip: 
+        showInInspector: 1
+        networkSync: 0
+        value: 0
+      - useVariable: 1
+        name: step_depth
+        tooltip: 
+        showInInspector: 1
+        networkSync: 0
+        value: 0
+      - useVariable: 1
+        name: tile_angle
+        tooltip: 
+        showInInspector: 1
+        networkSync: 0
+        value: 0
+      - useVariable: 1
+        name: tile_height
+        tooltip: 
+        showInInspector: 1
+        networkSync: 0
+        value: 0
+      - useVariable: 1
+        name: tile_ratio
+        tooltip: 
+        showInInspector: 1
+        networkSync: 0
+        value: 0
+      - useVariable: 1
+        name: tile_size
         tooltip: 
         showInInspector: 1
         networkSync: 0
@@ -904,7 +994,7 @@ MonoBehaviour:
         intValue: 0
       categories:
       - 
-      variableCategoryIDs: 0000000000000000000000000000000000000000
+      variableCategoryIDs: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
     description: 
     docUrl: 
     showStateLabel: 1
@@ -947,7 +1037,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 453404, guid: d10e5320df9f84d4186bda0ba98db9ff, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 4
+      value: 1.3000001
       objectReference: {fileID: 0}
     - target: {fileID: 453404, guid: d10e5320df9f84d4186bda0ba98db9ff, type: 2}
       propertyPath: m_LocalRotation.x
@@ -1005,7 +1095,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 453404, guid: d10e5320df9f84d4186bda0ba98db9ff, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 3
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 453404, guid: d10e5320df9f84d4186bda0ba98db9ff, type: 2}
       propertyPath: m_LocalRotation.x
@@ -1164,7 +1254,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 453404, guid: d10e5320df9f84d4186bda0ba98db9ff, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 2
+      value: 1.1
       objectReference: {fileID: 0}
     - target: {fileID: 453404, guid: d10e5320df9f84d4186bda0ba98db9ff, type: 2}
       propertyPath: m_LocalRotation.x
