@@ -3,10 +3,12 @@ using HutongGames.PlayMaker;
 
 namespace IsoTools.PlayMaker.Actions {
 	[ActionCategory("IsoTools")]
-	[HutongGames.PlayMaker.Tooltip("Sets the Mode of a IsoObject.")]
+	[HutongGames.PlayMaker.Tooltip(
+		"Sets the Mode of a IsoObject.")]
 	public class IsoSetMode : IsoComponentAction<IsoObject> {
 		[RequiredField]
 		[CheckForComponent(typeof(IsoObject))]
+		[HutongGames.PlayMaker.Tooltip("The IsoObject to mode.")]
 		public FsmOwnerDefault gameObject;
 
 		[RequiredField]

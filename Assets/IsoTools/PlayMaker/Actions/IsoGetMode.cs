@@ -3,7 +3,8 @@ using HutongGames.PlayMaker;
 
 namespace IsoTools.PlayMaker.Actions {
 	[ActionCategory("IsoTools")]
-	[HutongGames.PlayMaker.Tooltip("Gets the Mode of a IsoObject and stores it in a Enum Variable")]
+	[HutongGames.PlayMaker.Tooltip(
+		"Gets the Mode of a IsoObject and stores it in a Enum Variable")]
 	public class IsoGetMode : IsoComponentAction<IsoObject> {
 		[RequiredField]
 		[CheckForComponent(typeof(IsoObject))]

@@ -3,22 +3,36 @@ using HutongGames.PlayMaker;
 
 namespace IsoTools.PlayMaker.Actions {
 	[ActionCategory("IsoTools")]
-	[HutongGames.PlayMaker.Tooltip("Translates a IsoObject. Use a Vector3 variable and/or XYZ components. To leave any axis unchanged, set variable to 'None'.")]
+	[HutongGames.PlayMaker.Tooltip(
+		"Translates a IsoObject. " +
+		"Use a Vector3 variable and/or XYZ components. " +
+		"To leave any axis unchanged, set variable to 'None'.")]
 	public class IsoTranslate : IsoComponentAction<IsoObject> {
 		[RequiredField]
 		[CheckForComponent(typeof(IsoObject))]
+		[HutongGames.PlayMaker.Tooltip("The IsoObject to translate.")]
 		public FsmOwnerDefault gameObject;
 
 		[UIHint(UIHint.Variable)]
+		[HutongGames.PlayMaker.Tooltip(
+			"Use a stored translation Vector3, " +
+			"and/or set individual axis below.")]
 		public FsmVector3 vector;
 
 		public FsmFloat x;
 		public FsmFloat y;
 		public FsmFloat z;
 
+		[HutongGames.PlayMaker.Tooltip("Translate over one second")]
 		public bool perSecond;
+
+		[HutongGames.PlayMaker.Tooltip("Repeat every frame.")]
 		public bool everyFrame;
+
+		[HutongGames.PlayMaker.Tooltip("Perform the translate in LateUpdate.")]
 		public bool lateUpdate;
+
+		[HutongGames.PlayMaker.Tooltip("Perform the translate in FixedUpdate.")]
 		public bool fixedUpdate;
 
 		public override void Reset() {
@@ -71,22 +85,12 @@ namespace IsoTools.PlayMaker.Actions {
 		void DoAction() {
 			var go = Fsm.GetOwnerDefaultTarget(gameObject);
 			if ( UpdateCache(go) ) {
-				var value = vector.IsNone
-					? Vector3.zero
-					: vector.Value;
-
-				if ( !x.IsNone ) {
-					value.x = x.Value;
-				}
-				if ( !y.IsNone ) {
-					value.y = y.Value;
-				}
-				if ( !z.IsNone ) {
-					value.z = z.Value;
-				}
-
+				var value = vector.IsNone ? Vector3.zero : vector.Value;
+				if ( !x.IsNone ) { value.x = x.Value; }
+				if ( !y.IsNone ) { value.y = y.Value; }
+				if ( !z.IsNone ) { value.z = z.Value; }
 				isoObject.position +=
-					value * (perSecond ? Time.deltaTime : 1.0f);
+					perSecond ? value * Time.deltaTime : value;
 			}
 		}
 	}

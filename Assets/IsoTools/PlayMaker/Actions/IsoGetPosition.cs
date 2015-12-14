@@ -3,7 +3,9 @@ using HutongGames.PlayMaker;
 
 namespace IsoTools.PlayMaker.Actions {
 	[ActionCategory("IsoTools")]
-	[HutongGames.PlayMaker.Tooltip("Gets the Position of a IsoObject and stores it in a Vector3 Variable or each Axis in a Float Variable")]
+	[HutongGames.PlayMaker.Tooltip(
+		"Gets the Position of a IsoObject and stores it " +
+		"in a Vector3 Variable or each Axis in a Float Variable")]
 	public class IsoGetPosition : IsoComponentAction<IsoObject> {
 		[RequiredField]
 		[CheckForComponent(typeof(IsoObject))]
