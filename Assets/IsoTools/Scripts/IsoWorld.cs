@@ -31,7 +31,37 @@ namespace IsoTools {
 		Vector2      _sectorsMinNumPos   = Vector2.zero;
 		Vector2      _sectorsMaxNumPos   = Vector2.zero;
 		Vector2      _sectorsNumPosCount = Vector2.zero;
-		
+
+		// ------------------------------------------------------------------------
+		//
+		// Constants
+		//
+		// ------------------------------------------------------------------------
+
+		public static readonly float DefTileSize   = 32.0f;
+		public static readonly float MinTileSize   = Mathf.Epsilon;
+		public static readonly float MaxTileSize   = float.MaxValue;
+
+		public static readonly float DefTileRatio  = 0.5f;
+		public static readonly float MinTileRatio  = 0.25f;
+		public static readonly float MaxTileRatio  = 1.0f;
+
+		public static readonly float DefTileAngle  = 45.0f;
+		public static readonly float MinTileAngle  = 0.0f;
+		public static readonly float MaxTileAngle  = 90.0f;
+
+		public static readonly float DefTileHeight = DefTileSize;
+		public static readonly float MinTileHeight = MinTileSize;
+		public static readonly float MaxTileHeight = MaxTileSize;
+
+		public static readonly float DefStepDepth  = 0.1f;
+		public static readonly float MinStepDepth  = Mathf.Epsilon;
+		public static readonly float MaxStepDepth  = float.MaxValue;
+
+		public static readonly float DefStartDepth = 1.0f;
+		public static readonly float MinStartDepth = float.MinValue;
+		public static readonly float MaxStartDepth = float.MaxValue;
+
 		// ------------------------------------------------------------------------
 		//
 		// Sorting properties
@@ -39,61 +69,61 @@ namespace IsoTools {
 		// ------------------------------------------------------------------------
 
 		[SerializeField]
-		public float _tileSize = 32.0f;
+		public float _tileSize = DefTileSize;
 		public float tileSize {
 			get { return _tileSize; }
 			set {
-				_tileSize = Mathf.Max(value, Mathf.Epsilon);
+				_tileSize = Mathf.Clamp(value, MinTileSize, MaxTileSize);
 				ChangeSortingProperty();
 			}
 		}
 
 		[SerializeField]
-		public float _tileRatio = 0.5f;
+		public float _tileRatio = DefTileRatio;
 		public float tileRatio {
 			get { return _tileRatio; }
 			set {
-				_tileRatio = Mathf.Clamp(value, 0.25f, 1.0f);
+				_tileRatio = Mathf.Clamp(value, MinTileRatio, MaxTileRatio);
 				ChangeSortingProperty();
 			}
 		}
 
 		[SerializeField]
-		public float _tileAngle = 45.0f;
+		public float _tileAngle = DefTileAngle;
 		public float tileAngle {
 			get { return _tileAngle; }
 			set {
-				_tileAngle = Mathf.Clamp(value, 0.0f, 90.0f);
+				_tileAngle = Mathf.Clamp(value, MinTileAngle, MaxTileAngle);
 				ChangeSortingProperty();
 			}
 		}
 
 		[SerializeField]
-		public float _tileHeight = 32.0f;
+		public float _tileHeight = DefTileHeight;
 		public float tileHeight {
 			get { return _tileHeight; }
 			set {
-				_tileHeight = Mathf.Max(value, Mathf.Epsilon);
+				_tileHeight = Mathf.Clamp(value, MinTileHeight, MaxTileHeight);
 				ChangeSortingProperty();
 			}
 		}
 
 		[SerializeField]
-		public float _stepDepth = 0.1f;
+		public float _stepDepth = DefStepDepth;
 		public float stepDepth {
 			get { return _stepDepth; }
 			set {
-				_stepDepth = value;
+				_stepDepth = Mathf.Clamp(value, MinStepDepth, MaxStepDepth);
 				ChangeSortingProperty();
 			}
 		}
 
 		[SerializeField]
-		public float _startDepth = 1.0f;
+		public float _startDepth = DefStartDepth;
 		public float startDepth {
 			get { return _startDepth; }
 			set {
-				_startDepth = value;
+				_startDepth = Mathf.Clamp(value, MinStartDepth, MaxStartDepth);
 				ChangeSortingProperty();
 			}
 		}
@@ -631,12 +661,12 @@ namespace IsoTools {
 
 		#if UNITY_EDITOR
 		void Reset() {
-			tileSize   = 32.0f;
-			tileRatio  = 0.5f;
-			tileAngle  = 45.0f;
-			tileHeight = 32.0f;
-			stepDepth  = 0.1f;
-			startDepth = 1.0f;
+			tileSize   = DefTileSize;
+			tileRatio  = DefTileRatio;
+			tileAngle  = DefTileAngle;
+			tileHeight = DefTileHeight;
+			stepDepth  = DefStepDepth;
+			startDepth = DefStartDepth;
 		}
 		
 		void OnValidate() {

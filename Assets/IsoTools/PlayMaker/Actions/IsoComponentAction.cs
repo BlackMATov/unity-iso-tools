@@ -45,5 +45,15 @@ namespace IsoTools.PlayMaker.Actions {
 			}
 			return _cachedComponent != null;
 		}
+
+		protected bool IsErrorVarClamp(float v, float min, float max) {
+			return v < min || v > max;
+		}
+
+		protected string ErrorVarClampMsg(string name, float min, float max) {
+			return string.Format(
+				"{0} must be greater than {1} and less than {2}",
+				name, min, max);
+		}
 	}
 } // IsoTools.PlayMaker.Actions
