@@ -33,7 +33,7 @@ namespace IsoTools.PlayMaker.Actions {
 				return ErrorVarClampMsg("TileSize", IsoWorld.MinTileSize, IsoWorld.MaxTileSize);
 			}
 			if ( !tileRatio.IsNone && IsErrorVarClamp(tileRatio.Value, IsoWorld.MinTileRatio, IsoWorld.MaxTileRatio) ) {
-				return ErrorVarClampMsg("TileRation", IsoWorld.MinTileRatio, IsoWorld.MaxTileRatio);
+				return ErrorVarClampMsg("TileRatio", IsoWorld.MinTileRatio, IsoWorld.MaxTileRatio);
 			}
 			if ( !tileAngle.IsNone && IsErrorVarClamp(tileAngle.Value, IsoWorld.MinTileAngle, IsoWorld.MaxTileAngle)) {
 				return ErrorVarClampMsg("TileAngle", IsoWorld.MinTileAngle, IsoWorld.MaxTileAngle);
