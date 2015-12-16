@@ -8,11 +8,12 @@ namespace IsoTools.PlayMaker.Actions {
 	public class IsoSetMode : IsoComponentAction<IsoObject> {
 		[RequiredField]
 		[CheckForComponent(typeof(IsoObject))]
-		[HutongGames.PlayMaker.Tooltip("The IsoObject to mode.")]
+		[HutongGames.PlayMaker.Title("IsoObject (In)")]
 		public FsmOwnerDefault gameObject;
 
 		[RequiredField]
 		[ObjectType(typeof(IsoObject.Mode))]
+		[HutongGames.PlayMaker.Title("Mode (In)")]
 		public FsmEnum mode;
 
 		public override void Reset() {

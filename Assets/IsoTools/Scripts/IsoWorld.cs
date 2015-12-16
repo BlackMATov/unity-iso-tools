@@ -165,34 +165,37 @@ namespace IsoTools {
 		//
 		// ------------------------------------------------------------------------
 
-		public Vector3 TouchIsoPosition(int touch_index) {
-			return TouchIsoPosition(touch_index, 0.0f);
+		public Vector3 TouchIsoPosition(int finger_id) {
+			return TouchIsoPosition(finger_id, 0.0f);
 		}
 
-		public Vector3 TouchIsoPosition(int touch_index, float iso_z) {
+		public Vector3 TouchIsoPosition(int finger_id, float iso_z) {
 			if ( !Camera.main ) {
 				Debug.LogError("Main camera not found!", this);
 				return Vector3.zero;
 			}
-			return TouchIsoPosition(touch_index, Camera.main, iso_z);
+			return TouchIsoPosition(finger_id, Camera.main, iso_z);
 		}
 
-		public Vector3 TouchIsoPosition(int touch_index, Camera camera) {
-			return TouchIsoPosition(touch_index, camera, 0.0f);
+		public Vector3 TouchIsoPosition(int finger_id, Camera camera) {
+			return TouchIsoPosition(finger_id, camera, 0.0f);
 		}
 
-		public Vector3 TouchIsoPosition(int touch_index, Camera camera, float iso_z) {
-			if ( touch_index < 0 || touch_index >= Input.touchCount ) {
-				Debug.LogError("Touch index argument is incorrect!", this);
-				return Vector3.zero;
-			}
+		public Vector3 TouchIsoPosition(int finger_id, Camera camera, float iso_z) {
 			if ( !camera ) {
 				Debug.LogError("Camera argument is incorrect!", this);
 				return Vector3.zero;
 			}
-			return ScreenToIso(
-				camera.ScreenToWorldPoint(Input.GetTouch(touch_index).position),
-				iso_z);
+			for ( var i = 0; i < Input.touchCount; ++i ) {
+				var touch = Input.GetTouch(i);
+				if ( touch.fingerId == finger_id ) {
+					return ScreenToIso(
+						camera.ScreenToWorldPoint(touch.position),
+						iso_z);
+				}
+			}
+			Debug.LogError("Touch finger id argument is incorrect!", this);
+			return Vector3.zero;
 		}
 
 		// ------------------------------------------------------------------------
@@ -201,20 +204,20 @@ namespace IsoTools {
 		//
 		// ------------------------------------------------------------------------
 		
-		public Vector3 TouchIsoTilePosition(int touch_index) {
-			return IsoUtils.Vec3Floor(TouchIsoPosition(touch_index));
+		public Vector3 TouchIsoTilePosition(int finger_id) {
+			return IsoUtils.Vec3Floor(TouchIsoPosition(finger_id));
 		}
 		
-		public Vector3 TouchIsoTilePosition(int touch_index, float iso_z) {
-			return IsoUtils.Vec3Floor(TouchIsoPosition(touch_index, iso_z));
+		public Vector3 TouchIsoTilePosition(int finger_id, float iso_z) {
+			return IsoUtils.Vec3Floor(TouchIsoPosition(finger_id, iso_z));
 		}
 		
-		public Vector3 TouchIsoTilePosition(int touch_index, Camera camera) {
-			return IsoUtils.Vec3Floor(TouchIsoPosition(touch_index, camera));
+		public Vector3 TouchIsoTilePosition(int finger_id, Camera camera) {
+			return IsoUtils.Vec3Floor(TouchIsoPosition(finger_id, camera));
 		}
 		
-		public Vector3 TouchIsoTilePosition(int touch_index, Camera camera, float iso_z) {
-			return IsoUtils.Vec3Floor(TouchIsoPosition(touch_index, camera, iso_z));
+		public Vector3 TouchIsoTilePosition(int finger_id, Camera camera, float iso_z) {
+			return IsoUtils.Vec3Floor(TouchIsoPosition(finger_id, camera, iso_z));
 		}
 
 		// ------------------------------------------------------------------------

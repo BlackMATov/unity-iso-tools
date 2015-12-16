@@ -8,24 +8,31 @@ namespace IsoTools.PlayMaker.Actions {
 	public class IsoGetWorldProps : IsoComponentAction<IsoWorld> {
 		[RequiredField]
 		[CheckForComponent(typeof(IsoWorld))]
+		[HutongGames.PlayMaker.Title("IsoWorld (In)")]
 		public FsmOwnerDefault gameObject;
 
 		[UIHint(UIHint.Variable)]
+		[HutongGames.PlayMaker.Title("Tile Size (Out)")]
 		public FsmFloat tileSize;
 
 		[UIHint(UIHint.Variable)]
+		[HutongGames.PlayMaker.Title("Tile Ratio (Out)")]
 		public FsmFloat tileRatio;
 
 		[UIHint(UIHint.Variable)]
+		[HutongGames.PlayMaker.Title("Tile Angle (Out)")]
 		public FsmFloat tileAngle;
 
 		[UIHint(UIHint.Variable)]
+		[HutongGames.PlayMaker.Title("Tile Height (Out)")]
 		public FsmFloat tileHeight;
 
 		[UIHint(UIHint.Variable)]
+		[HutongGames.PlayMaker.Title("Step Depth (Out)")]
 		public FsmFloat stepDepth;
 
 		[UIHint(UIHint.Variable)]
+		[HutongGames.PlayMaker.Title("Start Depth (Out)")]
 		public FsmFloat startDepth;
 
 		public bool everyFrame;

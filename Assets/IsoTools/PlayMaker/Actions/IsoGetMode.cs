@@ -8,16 +8,18 @@ namespace IsoTools.PlayMaker.Actions {
 	public class IsoGetMode : IsoComponentAction<IsoObject> {
 		[RequiredField]
 		[CheckForComponent(typeof(IsoObject))]
+		[HutongGames.PlayMaker.Title("IsoObject (In)")]
 		public FsmOwnerDefault gameObject;
 
 		[RequiredField]
 		[ObjectType(typeof(IsoObject.Mode))]
 		[UIHint(UIHint.Variable)]
-		public FsmEnum mode;
+		[HutongGames.PlayMaker.Title("Store Mode (Out)")]
+		public FsmEnum storeMode;
 
 		public override void Reset() {
 			gameObject = null;
-			mode       = null;
+			storeMode  = null;
 		}
 
 		public override void OnEnter() {
@@ -28,7 +30,7 @@ namespace IsoTools.PlayMaker.Actions {
 		void DoAction() {
 			var go = Fsm.GetOwnerDefaultTarget(gameObject);
 			if ( UpdateCache(go) ) {
-				mode.Value = isoObject.mode;
+				storeMode.Value = isoObject.mode;
 			}
 		}
 	}

@@ -52,11 +52,14 @@
      <Compile Include="Assets\IsoTools\Examples\Scripts\IsoEchoListener.cs" />
      <Compile Include="Assets\IsoTools\Examples\Scripts\PlayerController.cs" />
      <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoComponentAction.cs" />
-     <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoConvertIsoToScreen.cs" />
-     <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoConvertScreenToIso.cs" />
+     <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoConvertIsometricToScreen.cs" />
+     <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoConvertScreenToIsometric.cs" />
      <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoGetMode.cs" />
      <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoGetPosition.cs" />
      <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoGetSize.cs" />
+     <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoGetTilePosition.cs" />
+     <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoGetTouchIsoPosition.cs" />
+     <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoGetTouchIsoTilePosition.cs" />
      <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoGetWorldProps.cs" />
      <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoResize.cs" />
      <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoSetMode.cs" />

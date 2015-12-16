@@ -10,17 +10,24 @@ namespace IsoTools.PlayMaker.Actions {
 	public class IsoResize : IsoComponentAction<IsoObject> {
 		[RequiredField]
 		[CheckForComponent(typeof(IsoObject))]
+		[HutongGames.PlayMaker.Title("IsoObject (In)")]
 		[HutongGames.PlayMaker.Tooltip("The IsoObject to resize.")]
 		public FsmOwnerDefault gameObject;
 
 		[UIHint(UIHint.Variable)]
+		[HutongGames.PlayMaker.Title("Vector (In)")]
 		[HutongGames.PlayMaker.Tooltip(
 			"Use a stored resize Vector3, " +
 			"and/or set individual axis below.")]
 		public FsmVector3 vector;
 
+		[HutongGames.PlayMaker.Title("X (In)")]
 		public FsmFloat x;
+
+		[HutongGames.PlayMaker.Title("Y (In)")]
 		public FsmFloat y;
+
+		[HutongGames.PlayMaker.Title("Z (In)")]
 		public FsmFloat z;
 
 		[HutongGames.PlayMaker.Tooltip("Resize over one second")]
