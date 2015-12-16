@@ -55,6 +55,8 @@
      <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoConvertIsometricToScreen.cs" />
      <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoConvertScreenToIsometric.cs" />
      <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoGetMode.cs" />
+     <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoGetMouseIsoPosition.cs" />
+     <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoGetMouseIsoTilePosition.cs" />
      <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoGetPosition.cs" />
      <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoGetSize.cs" />
      <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoGetTilePosition.cs" />

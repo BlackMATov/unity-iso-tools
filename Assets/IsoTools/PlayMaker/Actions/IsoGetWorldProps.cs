@@ -35,6 +35,7 @@ namespace IsoTools.PlayMaker.Actions {
 		[HutongGames.PlayMaker.Title("Start Depth (Out)")]
 		public FsmFloat startDepth;
 
+		[HutongGames.PlayMaker.Tooltip("Repeat every frame.")]
 		public bool everyFrame;
 
 		public override void Reset() {
