@@ -18,7 +18,7 @@ namespace HutongGames.PlayMakerEditor
     public class PlayMakerWelcomeWindow : EditorWindow
     {
         private const string installCurrentVersion = "1.7.8.4";
-        private const string installBetaVersion = "1.8.0 BETA RC35";
+        private const string installBetaVersion = "1.8.0 BETA RC37";
 
         private const string editorPrefsShowAtStartup = "PlayMaker.ShowWelcomeScreen.1.7.8.4"; // Add version to ensure first time open
         private const string editorPrefsSavedPage = "PlayMaker.WelcomeScreenPage";
