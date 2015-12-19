@@ -6,6 +6,12 @@ namespace IsoTools.PlayMaker.Actions {
 		T          _cachedComponent;
 		GameObject _cachedGameObject;
 
+		public virtual void DoIsoTriggerEnter(IsoCollider collider) {}
+		public virtual void DoIsoTriggerExit (IsoCollider collider) {}
+
+		public virtual void DoIsoCollisionEnter(IsoCollision collision) {}
+		public virtual void DoIsoCollisionExit (IsoCollision collision) {}
+
 		protected IsoWorld isoWorld {
 			get { return _cachedComponent as IsoWorld; }
 		}

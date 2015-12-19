@@ -51,9 +51,11 @@
      <Compile Include="Assets\IsoTools\Examples\Scripts\CubeAutoMovement.cs" />
      <Compile Include="Assets\IsoTools\Examples\Scripts\IsoEchoListener.cs" />
      <Compile Include="Assets\IsoTools\Examples\Scripts\PlayerController.cs" />
+     <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoCollisionEvent.cs" />
      <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoComponentAction.cs" />
      <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoConvertIsometricToScreen.cs" />
      <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoConvertScreenToIsometric.cs" />
+     <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoFSMEvents.cs" />
      <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoGetMode.cs" />
      <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoGetMouseIsoPosition.cs" />
      <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoGetMouseIsoTilePosition.cs" />
@@ -69,6 +71,7 @@
      <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoSetSize.cs" />
      <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoSetWorldProps.cs" />
      <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoTranslate.cs" />
+     <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoTriggerEvent.cs" />
      <Compile Include="Assets\IsoTools\Scripts\IsoBoxCollider.cs" />
      <Compile Include="Assets\IsoTools\Scripts\IsoCollider.cs" />
      <Compile Include="Assets\IsoTools\Scripts\IsoCollision.cs" />
