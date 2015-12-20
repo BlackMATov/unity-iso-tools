@@ -4,7 +4,7 @@
 using UnityEditor;
 #endif
 
-namespace IsoTools {
+namespace IsoTools.Internal {
 	public static class IsoUtils {
 
 		// ---------------------------------------------------------------------
@@ -534,4 +534,4 @@ namespace IsoTools {
 		}
 		#endif
 	}
-}
+} // namespace IsoTools.Internal

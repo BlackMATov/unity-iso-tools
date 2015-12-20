@@ -26,16 +26,24 @@ namespace IsoTools.Examples {
 
 		void Update () {
 			if ( Input.GetKey(KeyCode.LeftArrow) ) {
-				_isoRigidbody.velocity = IsoUtils.Vec3ChangeX(_isoRigidbody.velocity, -speed);
+				var velocity = _isoRigidbody.velocity;
+				velocity.x = -speed;
+				_isoRigidbody.velocity = velocity;
 			}
 			else if ( Input.GetKey(KeyCode.RightArrow) ) {
-				_isoRigidbody.velocity = IsoUtils.Vec3ChangeX(_isoRigidbody.velocity,  speed);
+				var velocity = _isoRigidbody.velocity;
+				velocity.x = speed;
+				_isoRigidbody.velocity = velocity;
 			}
 			else if ( Input.GetKey(KeyCode.DownArrow) ) {
-				_isoRigidbody.velocity = IsoUtils.Vec3ChangeY(_isoRigidbody.velocity, -speed);
+				var velocity = _isoRigidbody.velocity;
+				velocity.y = -speed;
+				_isoRigidbody.velocity = velocity;
 			}
 			else if ( Input.GetKey(KeyCode.UpArrow) ) {
-				_isoRigidbody.velocity = IsoUtils.Vec3ChangeY(_isoRigidbody.velocity,  speed);
+				var velocity = _isoRigidbody.velocity;
+				velocity.y = speed;
+				_isoRigidbody.velocity = velocity;
 			}
 		}
 	}

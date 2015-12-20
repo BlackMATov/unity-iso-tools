@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace IsoTools {
+namespace IsoTools.Internal {
 	public class IsoFakeObject : MonoBehaviour {
 
 		IsoObject _isoObject    = null;
@@ -52,4 +52,4 @@ namespace IsoTools {
 				SendMessageOptions.DontRequireReceiver);
 		}
 	}
-} // namespace IsoTools
+} // namespace IsoTools.Internal

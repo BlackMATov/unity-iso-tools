@@ -3,7 +3,7 @@ using UnityEditor;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace IsoTools {
+namespace IsoTools.Internal {
 	[CustomEditor(typeof(IsoObject)), CanEditMultipleObjects]
 	class IsoObjectEditor : Editor {
 

@@ -1,4 +1,5 @@
 using UnityEngine;
+using IsoTools.Internal;
 using System.Collections.Generic;
 
 #if UNITY_EDITOR

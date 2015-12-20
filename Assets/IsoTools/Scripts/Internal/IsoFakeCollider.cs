@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace IsoTools {
+namespace IsoTools.Internal {
 	public class IsoFakeCollider : MonoBehaviour {
 		
 		IsoCollider _isoCollider = null;
@@ -13,4 +13,4 @@ namespace IsoTools {
 			get { return _isoCollider; }
 		}
 	}
-} // namespace IsoTools
+} // namespace IsoTools.Internal

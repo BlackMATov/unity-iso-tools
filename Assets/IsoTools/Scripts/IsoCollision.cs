@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using IsoTools.Internal;
 
 namespace IsoTools {
 	public class IsoCollision {

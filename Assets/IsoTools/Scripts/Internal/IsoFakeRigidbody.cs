@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace IsoTools {
+namespace IsoTools.Internal {
 	public class IsoFakeRigidbody : MonoBehaviour {
 		
 		IsoRigidbody _isoRigidbody = null;
@@ -13,4 +13,4 @@ namespace IsoTools {
 			get { return _isoRigidbody; }
 		}
 	}
-} // namespace IsoTools
+} // namespace IsoTools.Internal
