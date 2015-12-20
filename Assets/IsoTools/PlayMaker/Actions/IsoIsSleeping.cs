@@ -1,0 +1,50 @@
+﻿using UnityEngine;
+using HutongGames.PlayMaker;
+using IsoTools.PlayMaker.Internal;
+
+namespace IsoTools.PlayMaker.Actions {
+	[ActionCategory("IsoTools.Physics")]
+	[HutongGames.PlayMaker.Tooltip(
+		"Tests if a IsoRigidbody is sleeping.")]
+	public class IsoIsSleeping : IsoComponentAction<IsoRigidbody> {
+		[RequiredField]
+		[CheckForComponent(typeof(IsoRigidbody))]
+		public FsmOwnerDefault gameObject;
+
+		public FsmEvent trueEvent;
+		public FsmEvent falseEvent;
+
+		[UIHint(UIHint.Variable)]
+		public FsmBool storeResult;
+
+		public bool everyFrame;
+
+		public override void Reset() {
+			gameObject  = null;
+			trueEvent   = null;
+			falseEvent  = null;
+			storeResult = null;
+			everyFrame  = false;
+		}
+
+		public override void OnEnter() {
+			DoAction();
+			if ( !everyFrame ) {
+				Finish();
+			}
+		}
+
+		public override void OnUpdate() {
+			DoAction();
+		}
+
+		void DoAction() {
+			var go = Fsm.GetOwnerDefaultTarget(gameObject);
+			if ( UpdateCache(go) ) {
+				var value = isoRigidbody.IsSleeping();
+				storeResult.Value = value;
+				Fsm.Event(value ? trueEvent : falseEvent);
+			}
+		}
+	}
+} // IsoTools.PlayMaker.Actions
