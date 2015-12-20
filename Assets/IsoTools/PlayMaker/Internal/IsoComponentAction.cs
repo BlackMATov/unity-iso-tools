@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using HutongGames.PlayMaker;
 
-namespace IsoTools.PlayMaker.Actions {
+namespace IsoTools.PlayMaker.Internal {
 	public abstract class IsoComponentAction<T> : FsmStateAction where T : Component {
 		T          _cachedComponent;
 		GameObject _cachedGameObject;

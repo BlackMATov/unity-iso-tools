@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using HutongGames.PlayMaker;
+using IsoTools.PlayMaker.Internal;
 
 namespace IsoTools.PlayMaker.Actions {
 	public enum IsoCollisionType {

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using HutongGames.PlayMaker;
 
-namespace IsoTools.PlayMaker.Actions {
+namespace IsoTools.PlayMaker.Internal {
 	public class IsoFSMEvents : MonoBehaviour {
 		IsoComponentAction<IsoObject> _action  = null;
 		bool                          _started = false;
