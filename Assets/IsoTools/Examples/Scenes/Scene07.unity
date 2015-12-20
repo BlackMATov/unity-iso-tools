@@ -1734,15 +1734,17 @@ MonoBehaviour:
       transitions: []
       actionData:
         actionNames:
+        - IsoTools.PlayMaker.Actions.IsoGetVelocity
         - IsoTools.PlayMaker.Events.IsoTriggerEvent
         - IsoTools.PlayMaker.Events.IsoCollisionEvent
         customNames:
         - 
         - 
-        actionEnabled: 0101
-        actionIsOpen: 0101
-        actionStartIndex: 0000000005000000
-        actionHashCodes: 8802cd006a86ae01
+        - 
+        actionEnabled: 010101
+        actionIsOpen: 010101
+        actionStartIndex: 00000000060000000b000000
+        actionHashCodes: 7ebd02028802cd006a86ae01
         unityObjectParams: []
         fsmGameObjectParams:
         - useVariable: 1
@@ -1758,6 +1760,14 @@ MonoBehaviour:
           networkSync: 0
           value: {fileID: 0}
         fsmOwnerDefaultParams:
+        - ownerOption: 0
+          gameObject:
+            useVariable: 0
+            name: 
+            tooltip: 
+            showInInspector: 0
+            networkSync: 0
+            value: {fileID: 0}
         - ownerOption: 0
           gameObject:
             useVariable: 0
@@ -1804,23 +1814,53 @@ MonoBehaviour:
           showInInspector: 0
           networkSync: 0
           value: 0
+        - useVariable: 1
+          name: 
+          tooltip: 
+          showInInspector: 0
+          networkSync: 0
+          value: 0
+        - useVariable: 1
+          name: 
+          tooltip: 
+          showInInspector: 0
+          networkSync: 0
+          value: 0
+        - useVariable: 1
+          name: 
+          tooltip: 
+          showInInspector: 0
+          networkSync: 0
+          value: 0
         fsmIntParams: []
         fsmBoolParams: []
         fsmVector2Params: []
-        fsmVector3Params: []
+        fsmVector3Params:
+        - useVariable: 1
+          name: iso_vel
+          tooltip: 
+          showInInspector: 1
+          networkSync: 0
+          value: {x: 0, y: 0, z: 0}
         fsmColorParams: []
         fsmRectParams: []
         fsmQuaternionParams: []
         stringParams:
         - TO_UP
         - TO_UP
-        byteData: 0000000000000000
+        byteData: 010000000000000000
         arrayParamSizes: 
         arrayParamTypes: []
         customTypeSizes: 
         customTypeNames: []
-        paramDataType: 140000000700000012000000170000001300000014000000070000001200000017000000130000000f000000
+        paramDataType: 140000001c0000000f0000000f0000000f00000001000000140000000700000012000000170000001300000014000000070000001200000017000000130000000f000000
         paramName:
+        - gameObject
+        - storeVector
+        - storeX
+        - storeY
+        - storeZ
+        - everyFrame
         - gameObject
         - triggerType
         - collideTag
@@ -1832,8 +1872,8 @@ MonoBehaviour:
         - sendEvent
         - storeIsoCollider
         - storeForce
-        paramDataPos: 0000000000000000000000000000000000000000010000000400000001000000010000000100000000000000
-        paramByteDataSize: 0000000004000000000000000000000000000000000000000400000000000000000000000000000000000000
+        paramDataPos: 0000000000000000000000000100000002000000000000000100000001000000000000000000000000000000020000000500000001000000010000000100000003000000
+        paramByteDataSize: 0000000000000000000000000000000000000000010000000000000004000000000000000000000000000000000000000400000000000000000000000000000000000000
     - name: up
       description: 
       colorIndex: 0
@@ -1957,7 +1997,13 @@ MonoBehaviour:
       boolVariables: []
       stringVariables: []
       vector2Variables: []
-      vector3Variables: []
+      vector3Variables:
+      - useVariable: 1
+        name: iso_vel
+        tooltip: 
+        showInInspector: 1
+        networkSync: 0
+        value: {x: 0, y: 0, z: 0}
       colorVariables: []
       rectVariables: []
       quaternionVariables: []
@@ -1969,7 +2015,7 @@ MonoBehaviour:
       enumVariables: []
       categories:
       - 
-      variableCategoryIDs: 
+      variableCategoryIDs: 00000000
     description: 
     docUrl: 
     showStateLabel: 1
