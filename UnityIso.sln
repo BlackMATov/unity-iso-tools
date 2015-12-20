@@ -70,5 +70,4 @@ Global
 		$4.DirectoryNamespaceAssociation = None
 		$4.ResourceNamePolicy = FileFormatDefault
 	EndGlobalSection
-
 EndGlobal
