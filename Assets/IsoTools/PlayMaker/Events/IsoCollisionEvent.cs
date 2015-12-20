@@ -2,7 +2,7 @@
 using HutongGames.PlayMaker;
 using IsoTools.PlayMaker.Internal;
 
-namespace IsoTools.PlayMaker.Actions {
+namespace IsoTools.PlayMaker.Events {
 	public enum IsoCollisionType {
 		IsoCollisionEnter,
 		IsoCollisionExit

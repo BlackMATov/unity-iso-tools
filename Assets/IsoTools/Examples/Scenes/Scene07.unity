@@ -1590,13 +1590,13 @@ MonoBehaviour:
       transitions: []
       actionData:
         actionNames:
-        - IsoTools.PlayMaker.Actions.IsoTriggerEvent
+        - IsoTools.PlayMaker.Events.IsoTriggerEvent
         customNames:
         - 
         actionEnabled: 01
         actionIsOpen: 01
         actionStartIndex: 00000000
-        actionHashCodes: 0e080104
+        actionHashCodes: 8802cd00
         unityObjectParams: []
         fsmGameObjectParams:
         - useVariable: 1
@@ -1800,7 +1800,7 @@ MonoBehaviour:
     watermark: 
     password: 
     locked: 0
-    preprocessed: 1
+    preprocessed: 0
     ExposedEvents: []
     RestartOnEnable: 1
     EnableDebugFlow: 0
