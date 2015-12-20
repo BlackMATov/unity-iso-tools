@@ -1,9 +1,9 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2008
 
-Project("{FC4F6A56-AFEC-B525-6A4B-81854AE4BE94}") = "UnityIso", "Assembly-CSharp-vs.csproj", "{7D717A69-578D-258F-954A-2360437723EF}"
+Project("{9D0FFEC9-0383-4C40-DA01-96F3C6394847}") = "unityiso", "Assembly-CSharp-vs.csproj", "{95166F85-0462-AC59-009C-63E7F7F767D5}"
 EndProject
-Project("{FC4F6A56-AFEC-B525-6A4B-81854AE4BE94}") = "UnityIso", "Assembly-CSharp-Editor-vs.csproj", "{9DD045DD-22BE-903A-2049-EB7A7F7A784D}"
+Project("{9D0FFEC9-0383-4C40-DA01-96F3C6394847}") = "unityiso", "Assembly-CSharp-Editor-vs.csproj", "{BD090B74-59E6-B8B4-61B5-2814183903F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,35 +11,64 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7D717A69-578D-258F-954A-2360437723EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7D717A69-578D-258F-954A-2360437723EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7D717A69-578D-258F-954A-2360437723EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7D717A69-578D-258F-954A-2360437723EF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9DD045DD-22BE-903A-2049-EB7A7F7A784D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9DD045DD-22BE-903A-2049-EB7A7F7A784D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9DD045DD-22BE-903A-2049-EB7A7F7A784D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9DD045DD-22BE-903A-2049-EB7A7F7A784D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95166F85-0462-AC59-009C-63E7F7F767D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95166F85-0462-AC59-009C-63E7F7F767D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95166F85-0462-AC59-009C-63E7F7F767D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95166F85-0462-AC59-009C-63E7F7F767D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD090B74-59E6-B8B4-61B5-2814183903F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD090B74-59E6-B8B4-61B5-2814183903F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD090B74-59E6-B8B4-61B5-2814183903F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD090B74-59E6-B8B4-61B5-2814183903F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-																																																																																																																																																																																																																							GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Assembly-CSharp.csproj
+																	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0
 		$0.TextStylePolicy = $1
-		$1.inheritsSet = null
+		$1.TabsToSpaces = False
+		$1.NoTabsAfterNonTabs = True
+		$1.EolMarker = Unix
+		$1.inheritsSet = VisualStudio
+		$1.inheritsScope = text/plain
 		$1.scope = text/x-csharp
 		$0.CSharpFormattingPolicy = $2
+		$2.NamespaceBraceStyle = EndOfLine
+		$2.ClassBraceStyle = EndOfLine
+		$2.InterfaceBraceStyle = EndOfLine
+		$2.StructBraceStyle = EndOfLine
+		$2.EnumBraceStyle = EndOfLine
+		$2.MethodBraceStyle = EndOfLine
+		$2.ConstructorBraceStyle = EndOfLine
+		$2.DestructorBraceStyle = EndOfLine
+		$2.BeforeMethodDeclarationParentheses = False
+		$2.BeforeMethodCallParentheses = False
+		$2.BeforeConstructorDeclarationParentheses = False
+		$2.BeforeIndexerDeclarationBracket = False
+		$2.BeforeDelegateDeclarationParentheses = False
+		$2.NewParentheses = False
+		$2.WithinIfParentheses = True
+		$2.WithinWhileParentheses = True
+		$2.WithinForParentheses = True
+		$2.WithinForEachParentheses = True
+		$2.WithinCatchParentheses = True
+		$2.WithinSwitchParentheses = True
+		$2.WithinLockParentheses = True
+		$2.WithinUsingParentheses = True
+		$2.SpacesBeforeBrackets = False
 		$2.inheritsSet = Mono
 		$2.inheritsScope = text/x-csharp
 		$2.scope = text/x-csharp
 		$0.TextStylePolicy = $3
-		$3.FileWidth = 120
-		$3.TabWidth = 4
+		$3.TabsToSpaces = False
+		$3.NoTabsAfterNonTabs = True
 		$3.EolMarker = Unix
-		$3.inheritsSet = Mono
+		$3.inheritsSet = VisualStudio
 		$3.inheritsScope = text/plain
 		$3.scope = text/plain
+		$0.DotNetNamingPolicy = $4
+		$4.DirectoryNamespaceAssociation = None
+		$4.ResourceNamePolicy = FileFormatDefault
 	EndGlobalSection
 
 EndGlobal

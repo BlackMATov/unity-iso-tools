@@ -1,8 +1,17 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/IsoTools/PlayMaker/Actions/IsoConvertIsometricToScreen.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/IsoTools/PlayMaker/Internal/IsoFSMEvents.cs">
     <Files>
-      <File FileName="Assets/IsoTools/PlayMaker/Actions/IsoConvertIsometricToScreen.cs" Line="10" Column="34" />
+      <File FileName="Assets/IsoTools/PlayMaker/Actions/IsoAddExplosionForce.cs" Line="54" Column="33" />
+      <File FileName="Assets/IsoTools/PlayMaker/Actions/IsoAddForce.cs" Line="64" Column="33" />
+      <File FileName="Assets/IsoTools/PlayMaker/Actions/IsoResize.cs" Line="58" Column="33" />
+      <File FileName="Assets/IsoTools/PlayMaker/Actions/IsoSetPosition.cs" Line="46" Column="33" />
+      <File FileName="Assets/IsoTools/PlayMaker/Actions/IsoSetSize.cs" Line="46" Column="33" />
+      <File FileName="Assets/IsoTools/PlayMaker/Actions/IsoSetVelocity.cs" Line="33" Column="33" />
+      <File FileName="Assets/IsoTools/PlayMaker/Actions/IsoTranslate.cs" Line="58" Column="33" />
+      <File FileName="Assets/IsoTools/PlayMaker/Actions/IsoGetMode.cs" Line="35" Column="7" />
+      <File FileName="Assets/IsoTools/PlayMaker/Actions/IsoSetMode.cs" Line="32" Column="26" />
+      <File FileName="Assets/IsoTools/PlayMaker/Internal/IsoFSMEvents.cs" Line="23" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
