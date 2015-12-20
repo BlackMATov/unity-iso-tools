@@ -3,7 +3,7 @@ using HutongGames.PlayMaker;
 using IsoTools.PlayMaker.Internal;
 
 namespace IsoTools.PlayMaker.Actions {
-	[ActionCategory("IsoTools")]
+	[ActionCategory("IsoTools.Physics")]
 	[HutongGames.PlayMaker.Tooltip(
 		"Sets the Velocity of a IsoRigidbody. " +
 		"To leave any axis unchanged, set variable to 'None'.")]

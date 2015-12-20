@@ -7,7 +7,7 @@ namespace IsoTools.PlayMaker.Events {
 		IsoCollisionEnter,
 		IsoCollisionExit
 	}
-	[ActionCategory("IsoTools")]
+	[ActionCategory("IsoTools.Physics")]
 	[HutongGames.PlayMaker.Tooltip(
 		"Detect physics collision events.")]
 	public class IsoCollisionEvent : IsoComponentAction<IsoObject> {

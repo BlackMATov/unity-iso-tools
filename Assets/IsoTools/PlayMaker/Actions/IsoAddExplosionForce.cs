@@ -3,7 +3,7 @@ using HutongGames.PlayMaker;
 using IsoTools.PlayMaker.Internal;
 
 namespace IsoTools.PlayMaker.Actions {
-	[ActionCategory("IsoTools")]
+	[ActionCategory("IsoTools.Physics")]
 	[HutongGames.PlayMaker.Tooltip(
 		"Applies a force to a IsoRigidbody that simulates explosion effects. " +
 		"The explosion force will fall off linearly with distance.")]

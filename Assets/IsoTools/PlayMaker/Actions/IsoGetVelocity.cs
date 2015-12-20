@@ -3,7 +3,7 @@ using HutongGames.PlayMaker;
 using IsoTools.PlayMaker.Internal;
 
 namespace IsoTools.PlayMaker.Actions {
-	[ActionCategory("IsoTools")]
+	[ActionCategory("IsoTools.Physics")]
 	[HutongGames.PlayMaker.Tooltip(
 		"Gets the Velocity of a IsoRigidbody and stores it " +
 		"in a Vector3 Variable or each Axis in a Float Variable")]

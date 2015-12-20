@@ -3,7 +3,7 @@ using HutongGames.PlayMaker;
 using IsoTools.PlayMaker.Internal;
 
 namespace IsoTools.PlayMaker.Actions {
-	[ActionCategory("IsoTools")]
+	[ActionCategory("IsoTools.Physics")]
 	[HutongGames.PlayMaker.Tooltip(
 		"Adds a force to a IsoRigidbody. " +
 		"Use Vector3 variable and/or Float variables for each axis.")]
