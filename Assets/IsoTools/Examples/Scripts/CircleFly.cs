@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace IsoTools { namespace Examples {
+namespace IsoTools.Examples {
 	public class CircleFly : MonoBehaviour {
 		public float flyRadius = 150.0f;
 		public float flySpeed  = 1.0f;
@@ -22,4 +22,4 @@ namespace IsoTools { namespace Examples {
 				_start_pos.z);
 		}
 	}
-}} // namespace IsoTools::Examples
+} // namespace IsoTools.Examples
