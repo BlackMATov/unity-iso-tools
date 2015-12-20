@@ -60,6 +60,7 @@
      <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoGetMouseIsoTilePosition.cs" />
      <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoGetPosition.cs" />
      <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoGetSize.cs" />
+     <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoGetSpeed.cs" />
      <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoGetTilePosition.cs" />
      <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoGetTouchIsoPosition.cs" />
      <Compile Include="Assets\IsoTools\PlayMaker\Actions\IsoGetTouchIsoTilePosition.cs" />

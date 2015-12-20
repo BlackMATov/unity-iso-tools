@@ -1734,6 +1734,7 @@ MonoBehaviour:
       transitions: []
       actionData:
         actionNames:
+        - IsoTools.PlayMaker.Actions.IsoGetSpeed
         - IsoTools.PlayMaker.Actions.IsoGetVelocity
         - IsoTools.PlayMaker.Events.IsoTriggerEvent
         - IsoTools.PlayMaker.Events.IsoCollisionEvent
@@ -1741,10 +1742,11 @@ MonoBehaviour:
         - 
         - 
         - 
-        actionEnabled: 010101
-        actionIsOpen: 010101
-        actionStartIndex: 00000000060000000b000000
-        actionHashCodes: 7ebd02028802cd006a86ae01
+        - 
+        actionEnabled: 01010101
+        actionIsOpen: 01010101
+        actionStartIndex: 0000000003000000090000000e000000
+        actionHashCodes: 32d594027ebd02028802cd006a86ae01
         unityObjectParams: []
         fsmGameObjectParams:
         - useVariable: 1
@@ -1760,6 +1762,14 @@ MonoBehaviour:
           networkSync: 0
           value: {fileID: 0}
         fsmOwnerDefaultParams:
+        - ownerOption: 0
+          gameObject:
+            useVariable: 0
+            name: 
+            tooltip: 
+            showInInspector: 0
+            networkSync: 0
+            value: {fileID: 0}
         - ownerOption: 0
           gameObject:
             useVariable: 0
@@ -1809,6 +1819,12 @@ MonoBehaviour:
         fsmEnumParams: []
         fsmFloatParams:
         - useVariable: 1
+          name: iso_speed
+          tooltip: 
+          showInInspector: 0
+          networkSync: 0
+          value: 0
+        - useVariable: 1
           name: 
           tooltip: 
           showInInspector: 0
@@ -1848,13 +1864,16 @@ MonoBehaviour:
         stringParams:
         - TO_UP
         - TO_UP
-        byteData: 010000000000000000
+        byteData: 01010000000000000000
         arrayParamSizes: 
         arrayParamTypes: []
         customTypeSizes: 
         customTypeNames: []
-        paramDataType: 140000001c0000000f0000000f0000000f00000001000000140000000700000012000000170000001300000014000000070000001200000017000000130000000f000000
+        paramDataType: 140000000f00000001000000140000001c0000000f0000000f0000000f00000001000000140000000700000012000000170000001300000014000000070000001200000017000000130000000f000000
         paramName:
+        - gameObject
+        - storeResult
+        - everyFrame
         - gameObject
         - storeVector
         - storeX
@@ -1872,8 +1891,8 @@ MonoBehaviour:
         - sendEvent
         - storeIsoCollider
         - storeForce
-        paramDataPos: 0000000000000000000000000100000002000000000000000100000001000000000000000000000000000000020000000500000001000000010000000100000003000000
-        paramByteDataSize: 0000000000000000000000000000000000000000010000000000000004000000000000000000000000000000000000000400000000000000000000000000000000000000
+        paramDataPos: 0000000000000000000000000100000000000000010000000200000003000000010000000200000002000000000000000000000000000000030000000600000001000000010000000100000004000000
+        paramByteDataSize: 0000000000000000010000000000000000000000000000000000000000000000010000000000000004000000000000000000000000000000000000000400000000000000000000000000000000000000
     - name: up
       description: 
       colorIndex: 0
@@ -1992,7 +2011,13 @@ MonoBehaviour:
       linkConstraint: 0
       colorIndex: 0
     variables:
-      floatVariables: []
+      floatVariables:
+      - useVariable: 1
+        name: iso_speed
+        tooltip: 
+        showInInspector: 1
+        networkSync: 0
+        value: 0
       intVariables: []
       boolVariables: []
       stringVariables: []
@@ -2015,7 +2040,7 @@ MonoBehaviour:
       enumVariables: []
       categories:
       - 
-      variableCategoryIDs: 00000000
+      variableCategoryIDs: 0000000000000000
     description: 
     docUrl: 
     showStateLabel: 1
