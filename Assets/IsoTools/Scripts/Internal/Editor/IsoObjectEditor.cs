@@ -30,7 +30,7 @@ namespace IsoTools.Internal {
 		}
 
 		void DirtyTargetPosition() {
-			if ( targets.Length == 1 ) {
+			if ( targets.Length == 1 && (target is IsoObject) && (target as IsoObject).gameObject.activeInHierarchy ) {
 				var position_prop = serializedObject.FindProperty("_position");
 				if ( position_prop != null ) {
 					var last_value = position_prop.vector3Value;
