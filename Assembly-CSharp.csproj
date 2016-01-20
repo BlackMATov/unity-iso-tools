@@ -65,6 +65,7 @@
      <Compile Include="Assets\IsoTools\Scripts\IsoRigidbody.cs" />
      <Compile Include="Assets\IsoTools\Scripts\IsoSphereCollider.cs" />
      <Compile Include="Assets\IsoTools\Scripts\IsoWorld.cs" />
+     <Compile Include="Assets\IsoTools\Tiled\TiledMapAsset.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity_5.3/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

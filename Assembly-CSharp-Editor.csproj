@@ -46,6 +46,8 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\IsoTools\Scripts\Internal\Editor\IsoObjectEditor.cs" />
+     <Compile Include="Assets\IsoTools\Tiled\Internal\Editor\TiledMapAssetEditor.cs" />
+     <Compile Include="Assets\IsoTools\Tiled\Internal\Editor\TiledMapPostprocessor.cs" />
  <Reference Include="UnityEditor.Advertisements">
  <HintPath>/Applications/Unity_5.3/Unity.app/Contents/UnityExtensions/Unity/Advertisements/Editor/UnityEditor.Advertisements.dll</HintPath>
  </Reference>

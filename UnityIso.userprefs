@@ -1,17 +1,10 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/IsoTools/PlayMaker/Internal/IsoFSMEvents.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/IsoTools/Tiled/Internal/Editor/TiledMapPostprocessor.cs">
     <Files>
-      <File FileName="Assets/IsoTools/PlayMaker/Actions/IsoAddExplosionForce.cs" Line="54" Column="33" />
-      <File FileName="Assets/IsoTools/PlayMaker/Actions/IsoAddForce.cs" Line="64" Column="33" />
-      <File FileName="Assets/IsoTools/PlayMaker/Actions/IsoResize.cs" Line="58" Column="33" />
-      <File FileName="Assets/IsoTools/PlayMaker/Actions/IsoSetPosition.cs" Line="46" Column="33" />
-      <File FileName="Assets/IsoTools/PlayMaker/Actions/IsoSetSize.cs" Line="46" Column="33" />
-      <File FileName="Assets/IsoTools/PlayMaker/Actions/IsoSetVelocity.cs" Line="33" Column="33" />
-      <File FileName="Assets/IsoTools/PlayMaker/Actions/IsoTranslate.cs" Line="58" Column="33" />
-      <File FileName="Assets/IsoTools/PlayMaker/Actions/IsoGetMode.cs" Line="35" Column="7" />
-      <File FileName="Assets/IsoTools/PlayMaker/Actions/IsoSetMode.cs" Line="32" Column="26" />
-      <File FileName="Assets/IsoTools/PlayMaker/Internal/IsoFSMEvents.cs" Line="23" Column="3" />
+      <File FileName="Assets/IsoTools/Tiled/Internal/Editor/TiledMapAssetEditor.cs" Line="20" Column="25" />
+      <File FileName="Assets/IsoTools/Tiled/Internal/Editor/TiledMapPostprocessor.cs" Line="14" Column="54" />
+      <File FileName="Assets/IsoTools/Tiled/TiledMapAsset.cs" Line="15" Column="3" NotebookId="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

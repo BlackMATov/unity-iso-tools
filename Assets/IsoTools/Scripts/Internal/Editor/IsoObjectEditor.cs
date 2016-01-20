@@ -173,4 +173,4 @@ namespace IsoTools.Internal {
 			DirtyTargetPosition();
 		}
 	}
-} // namespace IsoTools
+} // namespace IsoTools.Internal
