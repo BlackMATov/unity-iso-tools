@@ -43,6 +43,7 @@ namespace IsoTools.Tiled.Internal {
 				LoadTiledMapOptsFromTmxRootElem(tmx_root_elem, tiled_map_data);
 				LoadTiledMapLayersFromTmxRootElem(tmx_root_elem, tiled_map_data);
 				LoadTiledMapTilesetsFromTmxRootElem(tmx_root_elem, tiled_map_data);
+				LoadTiledMapTilesetsTextures(tmx_path, tiled_map_data);
 				return tiled_map_data;
 			} catch ( Exception e ) {
 				Debug.LogErrorFormat("Parsing TMX file error: {0}", e.Message);
@@ -62,7 +63,7 @@ namespace IsoTools.Tiled.Internal {
 				break;
 			default:
 				throw new UnityException(string.Format(
-					"Parsing TMX file error: unsupported orientation ({0})",
+					"unsupported orientation ({0})",
 					orientation_str));
 			}
 			SafeLoadPropertiesFromOwnerElem(root_elem, data.Properties);
@@ -120,9 +121,47 @@ namespace IsoTools.Tiled.Internal {
 			tileset.TileOffsetX = SafeLoadIntFromElemAttr(tileset_elem.Element("tileoffset"), "x"     , tileset.TileOffsetX);
 			tileset.TileOffsetY = SafeLoadIntFromElemAttr(tileset_elem.Element("tileoffset"), "y"     , tileset.TileOffsetY);
 			tileset.Image       = SafeLoadStrFromElemAttr(tileset_elem.Element("image"     ), "source", tileset.Image);
-			tileset.ImageWidth  = SafeLoadIntFromElemAttr(tileset_elem.Element("image"     ), "widht" , tileset.ImageWidth);
+			tileset.ImageWidth  = SafeLoadIntFromElemAttr(tileset_elem.Element("image"     ), "width" , tileset.ImageWidth);
 			tileset.ImageHeight = SafeLoadIntFromElemAttr(tileset_elem.Element("image"     ), "height", tileset.ImageHeight);
 			SafeLoadPropertiesFromOwnerElem(tileset_elem, tileset.Properties);
+		}
+
+		// -----------------------------
+		// Textures
+		// -----------------------------
+
+		static void LoadTiledMapTilesetsTextures(string tmx_path, TiledMapData data) {
+			foreach ( var tileset in data.Tilesets ) {
+				if ( !string.IsNullOrEmpty(tileset.Image) ) {
+					var base_path  = Path.GetDirectoryName(tmx_path);
+					var image_path = Path.Combine(base_path, tileset.Image);
+
+					var importer = AssetImporter.GetAtPath(image_path) as TextureImporter;
+					if ( !importer ) {
+						throw new UnityException(string.Format(
+							"tileset ({0}) image importer not found ({1})",
+							tileset.Name, image_path));
+					}
+
+					var meta_data = new List<SpriteMetaData>();
+					for ( var i = tileset.ImageHeight - tileset.TileHeight - tileset.Margin; i >= tileset.Margin; i -= tileset.TileHeight + tileset.Spacing ) {
+						for ( var j = tileset.Margin; j <= tileset.ImageWidth - tileset.Margin - tileset.TileWidth; j += tileset.TileWidth + tileset.Spacing ) {
+							var meta_elem  = new SpriteMetaData();
+							meta_elem.name = string.Format(
+								"{0}_{1}",
+								Path.GetFileNameWithoutExtension(image_path),
+								meta_data.Count + tileset.FirstGid);
+							meta_elem.rect = new Rect(j, i, tileset.TileWidth, tileset.TileHeight);
+							meta_data.Add(meta_elem);
+						}
+					}
+
+					importer.spritesheet      = meta_data.ToArray();
+					importer.textureType      = TextureImporterType.Sprite;
+					importer.spriteImportMode = SpriteImportMode.Multiple;
+					AssetDatabase.ImportAsset(image_path, ImportAssetOptions.ForceUpdate);
+				}
+			}
 		}
 
 		// -----------------------------
