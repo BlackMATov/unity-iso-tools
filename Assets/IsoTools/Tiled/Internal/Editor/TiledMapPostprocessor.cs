@@ -81,7 +81,7 @@ namespace IsoTools.Tiled.Internal {
 		}
 
 		static void LoadTiledMapLayerFromTmxLayerElem(XElement layer_elem, TiledMapLayerData layer) {
-			layer.Name    = SafeLoadStrFromElemAttr (layer_elem, "name"   , string.Empty);
+			layer.Name    = SafeLoadStrFromElemAttr (layer_elem, "name"   , layer.Name);
 			layer.Width   = SafeLoadIntFromElemAttr (layer_elem, "width"  , layer.Width);
 			layer.Height  = SafeLoadIntFromElemAttr (layer_elem, "height" , layer.Height);
 			layer.OffsetX = SafeLoadIntFromElemAttr (layer_elem, "offsetx", layer.OffsetX);
@@ -138,7 +138,7 @@ namespace IsoTools.Tiled.Internal {
 
 		static int SafeLoadIntFromElemAttr(XElement elem, string attr_name, int def_value) {
 			int value;
-			if ( int.TryParse(SafeLoadStrFromElemAttr(elem, attr_name, ""), out value) ) {
+			if ( elem != null && int.TryParse(SafeLoadStrFromElemAttr(elem, attr_name, ""), out value) ) {
 				return value;
 			}
 			return def_value;
@@ -146,7 +146,7 @@ namespace IsoTools.Tiled.Internal {
 
 		static bool SafeLoadBoolFromElemAttr(XElement elem, string attr_name, bool def_value) {
 			int value;
-			if ( int.TryParse(SafeLoadStrFromElemAttr(elem, attr_name, ""), out value) ) {
+			if ( elem != null && int.TryParse(SafeLoadStrFromElemAttr(elem, attr_name, ""), out value) ) {
 				return value != 0;
 			}
 			return def_value;
@@ -158,8 +158,10 @@ namespace IsoTools.Tiled.Internal {
 				foreach ( var prop_elem in props_elem.Elements("property") ) {
 					var prop_name  = SafeLoadStrFromElemAttr(prop_elem, "name" , string.Empty);
 					var prop_value = SafeLoadStrFromElemAttr(prop_elem, "value", string.Empty);
-					props.Add(prop_name);
-					props.Add(prop_value);
+					if ( !string.IsNullOrEmpty(prop_name) && prop_value != string.Empty ) {
+						props.Add(prop_name);
+						props.Add(prop_value);
+					}
 				}
 			}
 		}

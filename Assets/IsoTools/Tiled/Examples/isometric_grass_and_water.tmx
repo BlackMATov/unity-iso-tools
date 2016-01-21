@@ -45,6 +45,7 @@
  </tileset>
  <layer name="Tile Layer 2" width="25" height="25" visible="0" offsetx="32" offsety="16">
   <properties>
+   <property name="em" value=""/>
    <property name="layer prop" value="765"/>
   </properties>
   <data>
