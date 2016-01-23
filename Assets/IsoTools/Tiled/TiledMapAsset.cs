@@ -9,8 +9,6 @@ namespace IsoTools.Tiled {
 	[System.Serializable]
 	public class TiledMapLayerData {
 		public string       Name       = "";
-		public int          Width      = 0;
-		public int          Height     = 0;
 		public int          OffsetX    = 0;
 		public int          OffsetY    = 0;
 		public bool         Visible    = true;
@@ -29,9 +27,7 @@ namespace IsoTools.Tiled {
 		public int          TileCount   = 0;
 		public int          TileOffsetX = 0;
 		public int          TileOffsetY = 0;
-		public string       Image       = "";
-		public int          ImageWidth  = 0;
-		public int          ImageHeight = 0;
+		public string       ImageSource = "";
 		public List<string> Properties  = new List<string>();
 	}
 

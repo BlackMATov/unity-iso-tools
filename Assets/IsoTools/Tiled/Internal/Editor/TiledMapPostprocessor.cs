@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
+using System.Reflection;
 using System.Collections.Generic;
 
 namespace IsoTools.Tiled.Internal {
@@ -83,8 +84,6 @@ namespace IsoTools.Tiled.Internal {
 
 		static void LoadTiledMapLayerFromTmxLayerElem(XElement layer_elem, TiledMapLayerData layer) {
 			layer.Name    = SafeLoadStrFromElemAttr (layer_elem, "name"   , layer.Name);
-			layer.Width   = SafeLoadIntFromElemAttr (layer_elem, "width"  , layer.Width);
-			layer.Height  = SafeLoadIntFromElemAttr (layer_elem, "height" , layer.Height);
 			layer.OffsetX = SafeLoadIntFromElemAttr (layer_elem, "offsetx", layer.OffsetX);
 			layer.OffsetY = SafeLoadIntFromElemAttr (layer_elem, "offsety", layer.OffsetY);
 			layer.Visible = SafeLoadBoolFromElemAttr(layer_elem, "visible", layer.Visible);
@@ -120,9 +119,7 @@ namespace IsoTools.Tiled.Internal {
 			tileset.TileCount   = SafeLoadIntFromElemAttr(tileset_elem, "tilecount" , tileset.TileCount);
 			tileset.TileOffsetX = SafeLoadIntFromElemAttr(tileset_elem.Element("tileoffset"), "x"     , tileset.TileOffsetX);
 			tileset.TileOffsetY = SafeLoadIntFromElemAttr(tileset_elem.Element("tileoffset"), "y"     , tileset.TileOffsetY);
-			tileset.Image       = SafeLoadStrFromElemAttr(tileset_elem.Element("image"     ), "source", tileset.Image);
-			tileset.ImageWidth  = SafeLoadIntFromElemAttr(tileset_elem.Element("image"     ), "width" , tileset.ImageWidth);
-			tileset.ImageHeight = SafeLoadIntFromElemAttr(tileset_elem.Element("image"     ), "height", tileset.ImageHeight);
+			tileset.ImageSource = SafeLoadStrFromElemAttr(tileset_elem.Element("image"     ), "source", tileset.ImageSource);
 			SafeLoadPropertiesFromOwnerElem(tileset_elem, tileset.Properties);
 		}
 
@@ -132,9 +129,9 @@ namespace IsoTools.Tiled.Internal {
 
 		static void LoadTiledMapTilesetsTextures(string tmx_path, TiledMapData data) {
 			foreach ( var tileset in data.Tilesets ) {
-				if ( !string.IsNullOrEmpty(tileset.Image) ) {
+				if ( !string.IsNullOrEmpty(tileset.ImageSource) ) {
 					var base_path  = Path.GetDirectoryName(tmx_path);
-					var image_path = Path.Combine(base_path, tileset.Image);
+					var image_path = Path.Combine(base_path, tileset.ImageSource);
 
 					var importer = AssetImporter.GetAtPath(image_path) as TextureImporter;
 					if ( !importer ) {
@@ -143,9 +140,16 @@ namespace IsoTools.Tiled.Internal {
 							tileset.Name, image_path));
 					}
 
+					var method_args = new object[2]{0,0};
+					typeof(TextureImporter)
+						.GetMethod("GetWidthAndHeight", BindingFlags.NonPublic | BindingFlags.Instance)
+						.Invoke(importer, method_args);
+					var image_width  = (int)method_args[0];
+					var image_height = (int)method_args[1];
+
 					var meta_data = new List<SpriteMetaData>();
-					for ( var i = tileset.ImageHeight - tileset.TileHeight - tileset.Margin; i >= tileset.Margin; i -= tileset.TileHeight + tileset.Spacing ) {
-						for ( var j = tileset.Margin; j <= tileset.ImageWidth - tileset.Margin - tileset.TileWidth; j += tileset.TileWidth + tileset.Spacing ) {
+					for ( var i = image_height - tileset.TileHeight - tileset.Margin; i >= tileset.Margin; i -= tileset.TileHeight + tileset.Spacing ) {
+						for ( var j = tileset.Margin; j <= image_width - tileset.Margin - tileset.TileWidth; j += tileset.TileWidth + tileset.Spacing ) {
 							var meta_elem  = new SpriteMetaData();
 							meta_elem.name = string.Format(
 								"{0}_{1}",
