@@ -100,7 +100,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mode: 0
   _size: {x: 1, y: 1, z: 0.53}
-  _position: {x: -2, y: -1, z: 0}
+  _position: {x: 0, y: 0, z: 0}
   _isAlignment: 1
   _isShowBounds: 0
 --- !u!198 &19803878
@@ -1629,7 +1629,15 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: _position.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: _position.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 194730}

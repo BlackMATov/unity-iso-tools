@@ -9,8 +9,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 436798}
   - 114: {fileID: 11470110}
-  - 114: {fileID: 11460480}
-  - 114: {fileID: 11461334}
   m_Layer: 0
   m_Name: Fence
   m_TagString: Untagged
@@ -53,41 +51,12 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 129934}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.65, y: 0.6694999, z: 1.1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 403766}
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!114 &11460480
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 129934}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b256250c588ee4e4590a3e58eaa69b1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _material: {fileID: 0}
-  _isTrigger: 0
-  _size: {x: 1, y: 0.07, z: 0.43}
-  _offset: {x: 0.5, y: 0.035, z: 0.215}
---- !u!114 &11461334
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 129934}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4febe544112bb4678bdd59fa963c802d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _isKinematic: 1
-  _interpolation: 0
-  _collisionDetectionMode: 0
 --- !u!114 &11470110
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -101,7 +70,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mode: 0
   _size: {x: 1, y: 0.07, z: 0.43}
-  _position: {x: 0.99999994, y: -0.00000025377824, z: 0.53}
+  _position: {x: 0, y: 0, z: 0}
   _isAlignment: 0
   _isShowBounds: 0
 --- !u!212 &21295688
@@ -140,7 +109,31 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: _position.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: _position.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: _position.z
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 129934}
