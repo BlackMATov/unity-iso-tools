@@ -16,11 +16,11 @@ namespace IsoTools.Internal {
 			var iso_world = GameObject.FindObjectOfType<IsoWorld>();
 			if ( iso_world ) {
 				_positions = targets
-					.Where(p => p as IsoObject)
+					.Where(p => p is IsoObject)
 					.Select(p => p as IsoObject)
 					.ToDictionary(p => p, p => p.transform.position);
 				_iso_zpositions = targets
-					.Where(p => p as IsoObject)
+					.Where(p => p is IsoObject)
 					.Select(p => p as IsoObject)
 					.ToDictionary(p => p, p => p.position.z);
 				_center = _viewCenter = _positions.Aggregate(Vector3.zero, (AccIn, p) => {

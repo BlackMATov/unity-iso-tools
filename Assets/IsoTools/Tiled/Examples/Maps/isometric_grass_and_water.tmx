@@ -268,7 +268,7 @@
    <tile gid="4"/>
   </data>
  </layer>
- <layer name="Tile Layer 2" width="14" height="16">
+ <layer name="Tile Layer 2" width="14" height="16" visible="0" offsetx="150" offsety="-150">
   <properties>
    <property name="em" value=""/>
    <property name="layer prop" value="765"/>
@@ -334,6 +334,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="4"/>
+   <tile gid="3"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -346,10 +348,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="4"/>
+   <tile gid="3"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>

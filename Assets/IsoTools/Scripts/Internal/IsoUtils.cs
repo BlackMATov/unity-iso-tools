@@ -348,7 +348,7 @@ namespace IsoTools.Internal {
 
 		// ---------------------------------------------------------------------
 		//
-		// ChangeX
+		// XChange
 		//
 		// ---------------------------------------------------------------------
 
@@ -401,6 +401,34 @@ namespace IsoTools.Internal {
 		public static Vector3 Vec3ChangeI(Vector3 v, int index, float n) {
 			var c = v;
 			c[index] = n;
+			return c;
+		}
+
+		// -----------------------------
+		// ColorChange
+		// -----------------------------
+
+		public static Color ColorChangeA(Color color, float a) {
+			var c = color;
+			c.a = a;
+			return c;
+		}
+
+		public static Color ColorChangeR(Color color, float r) {
+			var c = color;
+			c.r = r;
+			return c;
+		}
+
+		public static Color ColorChangeG(Color color, float g) {
+			var c = color;
+			c.g = g;
+			return c;
+		}
+
+		public static Color ColorChangeB(Color color, float b) {
+			var c = color;
+			c.b = b;
 			return c;
 		}
 
@@ -517,19 +545,21 @@ namespace IsoTools.Internal {
 			}
 		}
 
-		public static void DrawRect(IsoWorld iso_world, Rect rect, float z, Color color) {
+		public static void DrawGrid(IsoWorld iso_world, Vector3 pos, Vector3 size, Color color) {
 			if ( iso_world ) {
 				Handles.color = color;
-				var points = new Vector3[]{
-					new Vector3(rect.x,              rect.y,               z),
-					new Vector3(rect.x,              rect.y + rect.height, z),
-					new Vector3(rect.x + rect.width, rect.y + rect.height, z),
-					new Vector3(rect.x + rect.width, rect.y,               z)
-				};
-				Handles.DrawLine(points[0], points[1]);
-				Handles.DrawLine(points[1], points[2]);
-				Handles.DrawLine(points[2], points[3]);
-				Handles.DrawLine(points[3], points[0]);
+				var size_x = Mathf.RoundToInt(size.x);
+				var size_y = Mathf.RoundToInt(size.y);
+				for ( var i = 0; i <= size_x; ++i ) {
+					Handles.DrawLine(
+						iso_world.IsoToScreen(new Vector3(pos.x + i, pos.y + 0.0f  , pos.z)),
+						iso_world.IsoToScreen(new Vector3(pos.x + i, pos.y + size_y, pos.z)));
+				}
+				for ( var i = 0; i <= size_y; ++i ) {
+					Handles.DrawLine(
+						iso_world.IsoToScreen(new Vector3(pos.x + 0.0f  , pos.y + i, pos.z)),
+						iso_world.IsoToScreen(new Vector3(pos.x + size_x, pos.y + i, pos.z)));
+				}
 			}
 		}
 		#endif
