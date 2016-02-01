@@ -132,6 +132,7 @@ namespace IsoTools.Tiled.Internal {
 					Debug.LogErrorFormat("Create tiled map error: {0}", e.Message);
 					DestroyImmediate(map_go, true);
 				}
+				Undo.RegisterCreatedObjectUndo(map_go, "Create TiledMap");
 			}
 		}
 	}
