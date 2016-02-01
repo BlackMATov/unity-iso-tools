@@ -14,6 +14,14 @@ namespace IsoTools.Tiled {
 			_properties = properties;
 		}
 
+		public int Count {
+			get {
+				return _properties != null
+					? _properties.Count / 2
+					: 0;
+			}
+		}
+
 		public bool Has(string property_name) {
 			if ( _properties != null ) {
 				for ( var i = 0; i < _properties.Count / 2; ++i ) {
