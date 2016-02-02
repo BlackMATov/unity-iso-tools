@@ -168,8 +168,8 @@ namespace IsoTools {
 			public bool               Dirty        = false;
 			public bool               Visited      = false;
 			public Rect               ScreenRect   = new Rect();
-			public Bounds             Bounds3d     = new Bounds();
 			public float              Offset3d     = 0.0f;
+			public IsoUtils.MinMax    MinMax3d     = IsoUtils.MinMax.zero;
 			public Vector2            MinSector    = Vector2.zero;
 			public Vector2            MaxSector    = Vector2.zero;
 			public HashSet<IsoObject> SelfDepends  = new HashSet<IsoObject>();

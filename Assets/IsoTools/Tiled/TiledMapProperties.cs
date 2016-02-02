@@ -24,7 +24,7 @@ namespace IsoTools.Tiled {
 
 		public bool Has(string property_name) {
 			if ( _properties != null ) {
-				for ( var i = 0; i < _properties.Count / 2; ++i ) {
+				for ( int i = 0, e = _properties.Count / 2; i < e; ++i ) {
 					if ( _properties[i * 2] == property_name ) {
 						return true;
 					}
@@ -165,7 +165,7 @@ namespace IsoTools.Tiled {
 
 		public bool TryGetAsString(string property_name, out string value) {
 			if ( _properties != null ) {
-				for ( var i = 0; i < _properties.Count / 2; ++i ) {
+				for ( int i = 0, e = _properties.Count / 2; i < e; ++i ) {
 					if ( _properties[i * 2] == property_name ) {
 						value = _properties[i * 2 + 1];
 						return true;

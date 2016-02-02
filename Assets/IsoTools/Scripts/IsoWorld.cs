@@ -343,34 +343,49 @@ namespace IsoTools {
 
 		bool UpdateIsoObjectBounds3d(IsoObject iso_object) {
 			if ( iso_object.mode == IsoObject.Mode.Mode3d ) {
-				var bounds3d = IsoObject3DBounds(iso_object);
-				var offset3d = iso_object.transform.position.z - bounds3d.center.z;
-				if ( iso_object.Internal.Bounds3d.extents != bounds3d.extents ||
-				     !Mathf.Approximately(iso_object.Internal.Offset3d, offset3d) )
+				var minmax3d = IsoObjectMinMax3D(iso_object);
+				var offset3d = iso_object.transform.position.z - minmax3d.center;
+				if ( !Mathf.Approximately(iso_object.Internal.Offset3d, offset3d) ||
+					iso_object.Internal.MinMax3d.Approximately(minmax3d) )
 				{
-					iso_object.Internal.Bounds3d = bounds3d;
 					iso_object.Internal.Offset3d = offset3d;
+					iso_object.Internal.MinMax3d = minmax3d;
 					return true;
 				}
 			}
 			return false;
 		}
-		
-		Bounds IsoObject3DBounds(IsoObject iso_object) {
-			var bounds = new Bounds();
+
+		IsoUtils.MinMax IsoObjectMinMax3D(IsoObject iso_object) {
 			iso_object.GetComponentsInChildren<Renderer>(_tmpRenderers);
-			if ( _tmpRenderers.Count > 0 ) {
-				bounds = _tmpRenderers[0].bounds;
-				for ( var i = 1; i < _tmpRenderers.Count; ++i ) {
-					bounds.Encapsulate(_tmpRenderers[i].bounds);
+			if  ( _tmpRenderers.Count < 1 ) {
+				return IsoUtils.MinMax.zero;
+			}
+			var bounds    = _tmpRenderers[0].bounds;
+			var center    = bounds.center.z;
+			var extent    = bounds.extents.z;
+			var minbounds = center - extent;
+			var maxbounds = center + extent;
+			var minmax = new IsoUtils.MinMax(center - extent, center + extent);
+			for ( int i = 1, e = _tmpRenderers.Count; i < e; ++i ) {
+				bounds    = _tmpRenderers[i].bounds;
+				center    = bounds.center.z;
+				extent    = bounds.extents.z;
+				minbounds = center - extent;
+				maxbounds = center + extent;
+				if ( minbounds < minmax.min ) {
+					minmax.min = minbounds;
+				}
+				if ( maxbounds > minmax.max ) {
+					minmax.max = maxbounds;
 				}
 			}
-			return bounds;
+			return minmax;
 		}
 
 		bool IsIsoObjectVisible(IsoObject iso_object) {
 			iso_object.GetComponentsInChildren<Renderer>(_tmpRenderers);
-			for ( var i = 0; i < _tmpRenderers.Count; ++i ) {
+			for ( int i = 0, e = _tmpRenderers.Count; i < e; ++i ) {
 				if ( _tmpRenderers[i].isVisible ) {
 					return true;
 				}
@@ -617,10 +632,9 @@ namespace IsoTools {
 			while ( self_depends_iter.MoveNext() ) {
 				depth = RecursivePlaceIsoObject(self_depends_iter.Current, depth);
 			}
-
 			if ( iso_object.mode == IsoObject.Mode.Mode3d ) {
 				var zoffset = iso_object.Internal.Offset3d;
-				var extents = iso_object.Internal.Bounds3d.extents.z;
+				var extents = iso_object.Internal.MinMax3d.size;
 				PlaceIsoObject(iso_object, depth + extents + zoffset);
 				return depth + extents * 2.0f + stepDepth;
 			} else {

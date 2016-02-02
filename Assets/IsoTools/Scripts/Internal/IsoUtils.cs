@@ -26,6 +26,40 @@ namespace IsoTools.Internal {
 
 		// ---------------------------------------------------------------------
 		//
+		// MinMax
+		//
+		// ---------------------------------------------------------------------
+
+		public struct MinMax {
+			public float min;
+			public float max;
+
+			public MinMax(float min, float max) {
+				this.min = min;
+				this.max = max;
+			}
+				
+			public float size {
+				get { return max - min; }
+			}
+
+			public float center {
+				get { return min / 2.0f + max / 2.0f; }
+			}
+
+			public bool Approximately(MinMax minmax) {
+				return
+					Mathf.Approximately(min, minmax.min) &&
+					Mathf.Approximately(max, minmax.max);
+			}
+
+			static public MinMax zero {
+				get { return new MinMax(); }
+			}
+		}
+
+		// ---------------------------------------------------------------------
+		//
 		// Abs/Min/Max
 		//
 		// ---------------------------------------------------------------------
@@ -477,7 +511,7 @@ namespace IsoTools.Internal {
 		
 		public static IsoContactPoint[] IsoConvertContactPoints(ContactPoint[] points) {
 			var iso_points = new IsoContactPoint[points.Length];
-			for ( var i = 0; i < points.Length; ++i ) {
+			for ( int i = 0, e = points.Length; i < e; ++i ) {
 				iso_points[i] = new IsoContactPoint(points[i]);
 			}
 			return iso_points;
@@ -485,7 +519,7 @@ namespace IsoTools.Internal {
 
 		public static IsoRaycastHit[] IsoConvertRaycastHits(RaycastHit[] hits) {
 			var iso_hits = new IsoRaycastHit[hits.Length];
-			for ( var i = 0; i < hits.Length; ++i ) {
+			for ( int i = 0, e = hits.Length; i < e; ++i ) {
 				iso_hits[i] = new IsoRaycastHit(hits[i]);
 			}
 			return iso_hits;
