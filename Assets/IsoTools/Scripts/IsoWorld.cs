@@ -637,8 +637,8 @@ namespace IsoTools {
 			if ( iso_object.mode == IsoObject.Mode.Mode3d ) {
 				var zoffset = iso_object.Internal.Offset3d;
 				var extents = iso_object.Internal.MinMax3d.size;
-				PlaceIsoObject(iso_object, depth + extents + zoffset);
-				return depth + extents * 2.0f + stepDepth;
+				PlaceIsoObject(iso_object, depth + extents * 0.5f + zoffset);
+				return depth + extents + stepDepth;
 			} else {
 				PlaceIsoObject(iso_object, depth);
 				return depth + stepDepth;
