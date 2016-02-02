@@ -361,26 +361,28 @@ namespace IsoTools {
 			if  ( _tmpRenderers.Count < 1 ) {
 				return IsoUtils.MinMax.zero;
 			}
-			var bounds    = _tmpRenderers[0].bounds;
-			var center    = bounds.center.z;
-			var extent    = bounds.extents.z;
-			var minbounds = center - extent;
-			var maxbounds = center + extent;
-			var minmax = new IsoUtils.MinMax(center - extent, center + extent);
-			for ( int i = 1, e = _tmpRenderers.Count; i < e; ++i ) {
+			// high performance tricks
+			var bounds     = _tmpRenderers[0].bounds;
+			var center     = bounds.center.z;
+			var extent     = bounds.extents.z;
+			var minbounds  = center - extent;
+			var maxbounds  = center + extent;
+			var result_min = minbounds;
+			var result_max = maxbounds;
+			for ( int i = _tmpRenderers.Count - 1; i > 0; --i ) {
 				bounds    = _tmpRenderers[i].bounds;
 				center    = bounds.center.z;
 				extent    = bounds.extents.z;
 				minbounds = center - extent;
 				maxbounds = center + extent;
-				if ( minbounds < minmax.min ) {
-					minmax.min = minbounds;
+				if ( minbounds < result_min ) {
+					result_min = minbounds;
 				}
-				if ( maxbounds > minmax.max ) {
-					minmax.max = maxbounds;
+				if ( maxbounds > result_max ) {
+					result_max = maxbounds;
 				}
 			}
-			return minmax;
+			return new IsoUtils.MinMax(result_min, result_max);
 		}
 
 		bool IsIsoObjectVisible(IsoObject iso_object) {
