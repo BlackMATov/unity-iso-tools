@@ -57,4 +57,4 @@ namespace IsoTools.Tiled {
 		}
 		#endif
 	}
-} // namespace IsoTools.Tiled
+}

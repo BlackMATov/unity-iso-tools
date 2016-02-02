@@ -13,4 +13,4 @@ namespace IsoTools.Internal {
 			get { return _isoRigidbody; }
 		}
 	}
-} // namespace IsoTools.Internal
+}

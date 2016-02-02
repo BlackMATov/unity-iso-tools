@@ -18,4 +18,4 @@ namespace IsoTools {
 			rigidbody = IsoUtils.IsoConvertRigidbody(hit_info.rigidbody);
 		}
 	}
-} // namespace IsoTools
+}

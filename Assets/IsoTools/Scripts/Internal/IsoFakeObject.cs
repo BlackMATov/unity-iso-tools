@@ -52,4 +52,4 @@ namespace IsoTools.Internal {
 				SendMessageOptions.DontRequireReceiver);
 		}
 	}
-} // namespace IsoTools.Internal
+}

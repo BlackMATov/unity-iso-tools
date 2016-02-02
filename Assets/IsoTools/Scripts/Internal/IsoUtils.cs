@@ -598,4 +598,4 @@ namespace IsoTools.Internal {
 		}
 		#endif
 	}
-} // namespace IsoTools.Internal
+}

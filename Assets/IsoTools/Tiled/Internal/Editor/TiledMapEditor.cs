@@ -32,4 +32,4 @@ namespace IsoTools.Tiled.Internal {
 			}
 		}
 	}
-} // namespace IsoTools.Tiled.Internal
+}

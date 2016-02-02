@@ -176,4 +176,4 @@ namespace IsoTools.Tiled {
 			return false;
 		}
 	}
-} // namespace IsoTools.Tiled
+}

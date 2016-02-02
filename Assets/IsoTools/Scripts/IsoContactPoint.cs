@@ -16,4 +16,4 @@ namespace IsoTools {
 			thisCollider  = IsoUtils.IsoConvertCollider(contact_point.thisCollider);
 		}
 	}
-} // namespace IsoTools
+}

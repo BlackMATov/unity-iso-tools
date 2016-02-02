@@ -46,4 +46,4 @@ namespace IsoTools.Tiled {
 	public class TiledMapAsset : ScriptableObject {
 		public TiledMapData Data = new TiledMapData();
 	}
-} // namespace IsoTools.Tiled
+}

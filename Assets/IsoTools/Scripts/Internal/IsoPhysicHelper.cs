@@ -27,4 +27,4 @@ namespace IsoTools.Internal {
 			}
 		}
 	}
-} // namespace IsoTools.Internal
+}

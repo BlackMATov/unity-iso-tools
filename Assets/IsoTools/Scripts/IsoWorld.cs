@@ -438,9 +438,8 @@ namespace IsoTools {
 		void LookUpSectorDepends(Vector2 num_pos, IsoObject obj_a) {
 			var sec = FindSector(num_pos);
 			if ( sec != null ) {
-				var sec_objects_iter = sec.objects.GetEnumerator();
-				while ( sec_objects_iter.MoveNext() ) {
-					var obj_b = sec_objects_iter.Current;
+				for ( int i = 0, e = sec.objects.Count; i < e; ++i ) {
+					var obj_b = sec.objects[i];
 					if ( obj_a != obj_b && !obj_b.Internal.Dirty && IsIsoObjectDepends(obj_a, obj_b) ) {
 						obj_a.Internal.SelfDepends.Add(obj_b);
 						obj_b.Internal.TheirDepends.Add(obj_a);
@@ -452,9 +451,8 @@ namespace IsoTools {
 		void LookUpSectorRDepends(Vector2 num_pos, IsoObject obj_a) {
 			var sec = FindSector(num_pos);
 			if ( sec != null ) {
-				var sec_objects_iter = sec.objects.GetEnumerator();
-				while ( sec_objects_iter.MoveNext() ) {
-					var obj_b = sec_objects_iter.Current;
+				for ( int i = 0, e = sec.objects.Count; i < e; ++i ) {
+					var obj_b = sec.objects[i];
 					if ( obj_a != obj_b && !obj_b.Internal.Dirty && IsIsoObjectDepends(obj_b, obj_a) ) {
 						obj_b.Internal.SelfDepends.Add(obj_a);
 						obj_a.Internal.TheirDepends.Add(obj_b);
@@ -496,10 +494,8 @@ namespace IsoTools {
 					_sectors.Add(new Sector());
 				}
 			}
-
-			var sectors_iter = _sectors.GetEnumerator();
-			while ( sectors_iter.MoveNext() ) {
-				sectors_iter.Current.Reset();
+			for ( int i = 0, e = _sectors.Count; i < e; ++i ) {
+				_sectors[i].Reset();
 			}
 		}
 
@@ -679,7 +675,7 @@ namespace IsoTools {
 			_sectors.Clear();
 		}
 
-		#if UNITY_EDITOR
+	#if UNITY_EDITOR
 		void Reset() {
 			tileSize   = DefTileSize;
 			tileRatio  = DefTileRatio;
@@ -703,6 +699,6 @@ namespace IsoTools {
 				StepSort();
 			}
 		}
-		#endif
+	#endif
 	}
-} // namespace IsoTools
+}

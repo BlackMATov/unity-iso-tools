@@ -298,7 +298,7 @@ namespace IsoTools {
 			}
 		}
 
-		#if UNITY_EDITOR
+	#if UNITY_EDITOR
 		void Reset() {
 			size     = Vector3.one;
 			position = Vector3.zero;
@@ -326,6 +326,6 @@ namespace IsoTools {
 				FixIsoPosition();
 			}
 		}
-		#endif
+	#endif
 	}
-} // namespace IsoTools
+}

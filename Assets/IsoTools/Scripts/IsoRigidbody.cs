@@ -300,4 +300,4 @@ namespace IsoTools {
 		}
 		#endif
 	}
-} // namespace IsoTools
+}

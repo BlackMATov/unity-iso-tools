@@ -13,4 +13,4 @@ namespace IsoTools.Tiled {
 		public TiledMapAsset      Asset      = null;
 		public TiledMapProperties Properties = null;
 	}
-} // namespace IsoTools.Tiled
+}

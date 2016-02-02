@@ -119,4 +119,4 @@ namespace IsoTools.Tiled.Internal {
 			Assert.AreEqual(props.GetAsString("string2"), v7);
 		}
 	}
-} // namespace IsoTools.Tiled.Internal
+}
