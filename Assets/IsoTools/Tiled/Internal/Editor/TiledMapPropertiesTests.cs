@@ -20,18 +20,20 @@ namespace IsoTools.Tiled.Internal {
 				"prop1", "val1",
 				"prop2", "val2",
 				"prop3", "val3",
+				"prop4", "",
 				"fakep"
 			};
 			var props = new TiledMapProperties(prop_list);
-			Assert.AreEqual(props.Count, 3);
+			Assert.AreEqual(props.Count, 4);
 
 			Assert.True(props.Has("prop1"));
 			Assert.True(props.Has("prop2"));
 			Assert.True(props.Has("prop3"));
+			Assert.True(props.Has("prop4"));
 
 			Assert.False(props.Has(null));
 			Assert.False(props.Has("val2"));
-			Assert.False(props.Has("prop4"));
+			Assert.False(props.Has("prop5"));
 			Assert.False(props.Has(string.Empty));
 		}
 
@@ -69,13 +71,14 @@ namespace IsoTools.Tiled.Internal {
 		[Test]
 		public void Test04() {
 			var prop_list = new List<string>{
-				"bool"  , "true",
-				"short" , "64",
-				"int"   , "128",
-				"long"  , "1024",
-				"float" , "1.2",
-				"double", "1.23",
-				"string", "hello"
+				"bool"   , "true",
+				"short"  , "64",
+				"int"    , "128",
+				"long"   , "1024",
+				"float"  , "1.2",
+				"double" , "1.23",
+				"string1", "hello",
+				"string2", ""
 			};
 			var props = new TiledMapProperties(prop_list);
 
@@ -86,14 +89,16 @@ namespace IsoTools.Tiled.Internal {
 			float  v4;
 			double v5;
 			string v6;
+			string v7;
 
-			Assert.True(props.TryGetAsBool  ("bool"  , out v0));
-			Assert.True(props.TryGetAsShort ("short" , out v1));
-			Assert.True(props.TryGetAsInt   ("int"   , out v2));
-			Assert.True(props.TryGetAsLong  ("long"  , out v3));
-			Assert.True(props.TryGetAsFloat ("float" , out v4));
-			Assert.True(props.TryGetAsDouble("double", out v5));
-			Assert.True(props.TryGetAsString("string", out v6));
+			Assert.True(props.TryGetAsBool  ("bool"   , out v0));
+			Assert.True(props.TryGetAsShort ("short"  , out v1));
+			Assert.True(props.TryGetAsInt   ("int"    , out v2));
+			Assert.True(props.TryGetAsLong  ("long"   , out v3));
+			Assert.True(props.TryGetAsFloat ("float"  , out v4));
+			Assert.True(props.TryGetAsDouble("double" , out v5));
+			Assert.True(props.TryGetAsString("string1", out v6));
+			Assert.True(props.TryGetAsString("string2", out v7));
 
 			Assert.AreEqual(v0, true);
 			Assert.AreEqual(v1, 64);
@@ -102,14 +107,16 @@ namespace IsoTools.Tiled.Internal {
 			Assert.AreEqual(v4, 1.2f);
 			Assert.AreEqual(v5, 1.23);
 			Assert.AreEqual(v6, "hello");
+			Assert.AreEqual(v7, "");
 
-			Assert.AreEqual(props.GetAsBool  ("bool"  ), v0);
-			Assert.AreEqual(props.GetAsShort ("short" ), v1);
-			Assert.AreEqual(props.GetAsInt   ("int"   ), v2);
-			Assert.AreEqual(props.GetAsLong  ("long"  ), v3);
-			Assert.AreEqual(props.GetAsFloat ("float" ), v4);
-			Assert.AreEqual(props.GetAsDouble("double"), v5);
-			Assert.AreEqual(props.GetAsString("string"), v6);
+			Assert.AreEqual(props.GetAsBool  ("bool"   ), v0);
+			Assert.AreEqual(props.GetAsShort ("short"  ), v1);
+			Assert.AreEqual(props.GetAsInt   ("int"    ), v2);
+			Assert.AreEqual(props.GetAsLong  ("long"   ), v3);
+			Assert.AreEqual(props.GetAsFloat ("float"  ), v4);
+			Assert.AreEqual(props.GetAsDouble("double" ), v5);
+			Assert.AreEqual(props.GetAsString("string1"), v6);
+			Assert.AreEqual(props.GetAsString("string2"), v7);
 		}
 	}
 } // namespace IsoTools.Tiled.Internal

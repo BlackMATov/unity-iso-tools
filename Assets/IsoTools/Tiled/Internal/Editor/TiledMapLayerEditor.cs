@@ -4,7 +4,7 @@ using IsoTools.Tiled;
 using IsoTools.Internal;
 
 namespace IsoTools.Tiled.Internal {
-	[CustomEditor(typeof(TiledMapLayer))]
+	[CustomEditor(typeof(TiledMapLayer)), CanEditMultipleObjects]
 	public class TiledMapLayerEditor : Editor {
 		TiledMapLayer _layer = null;
 
