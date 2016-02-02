@@ -199,9 +199,9 @@ namespace IsoTools.Tiled.Internal {
 			var props_elem = owner_elem != null ? owner_elem.Element("properties") : null;
 			if ( props_elem != null ) {
 				foreach ( var prop_elem in props_elem.Elements("property") ) {
-					var prop_name  = SafeLoadStrFromElemAttr(prop_elem, "name" , string.Empty);
-					var prop_value = SafeLoadStrFromElemAttr(prop_elem, "value", string.Empty);
-					if ( !string.IsNullOrEmpty(prop_name) && prop_value != string.Empty ) {
+					var prop_name  = SafeLoadStrFromElemAttr(prop_elem, "name" , null);
+					var prop_value = SafeLoadStrFromElemAttr(prop_elem, "value", null);
+					if ( !string.IsNullOrEmpty(prop_name) && prop_value != null ) {
 						props.Add(prop_name);
 						props.Add(prop_value);
 					}

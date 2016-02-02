@@ -26,7 +26,8 @@ namespace IsoTools.Tiled.Internal {
 			iso_object.isShowBounds = true;
 
 			var tiled_map  = map_go.AddComponent<TiledMap>();
-			tiled_map.Asset = _asset;
+			tiled_map.Asset      = _asset;
+			tiled_map.Properties = new TiledMapProperties(_asset.Data.Properties);
 			foreach ( var layer in _asset.Data.Layers ) {
 				CreateTiledMapLayer(tiled_map, layer);
 			}
@@ -39,7 +40,8 @@ namespace IsoTools.Tiled.Internal {
 			layer_go.SetActive(layer_data.Visible);
 
 			var tiled_layer = layer_go.AddComponent<TiledMapLayer>();
-			tiled_layer.Asset = _asset;
+			tiled_layer.Asset      = _asset;
+			tiled_layer.Properties = new TiledMapProperties(layer_data.Properties);
 			for ( var i = 0; i < _asset.Data.Height; ++i ) {
 				for ( var j = 0; j < _asset.Data.Width; ++j ) {
 					CreateTileMapTile(tiled_layer, layer_data, j, i);
@@ -99,7 +101,8 @@ namespace IsoTools.Tiled.Internal {
 					-(i + j) * iso_world.stepDepth);
 
 				var tiled_tile = tile_go.AddComponent<TiledMapTile>();
-				tiled_tile.Asset = _asset;
+				tiled_tile.Asset      = _asset;
+				tiled_tile.Properties = new TiledMapProperties(tileset.Properties);
 
 				var tile_spr = tile_go.AddComponent<SpriteRenderer>();
 				tile_spr.sprite = tile_sprite;

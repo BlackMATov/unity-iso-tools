@@ -9,7 +9,7 @@ namespace IsoTools.Tiled.Internal {
 		public void Test00() {
 			var props = new TiledMapProperties(null);
 			Assert.AreEqual(props.Count, 0);
-			Assert.False(props.Has(""));
+			Assert.False(props.Has(null));
 			Assert.False(props.Has(string.Empty));
 			Assert.False(props.Has("prop1"));
 		}
@@ -29,7 +29,7 @@ namespace IsoTools.Tiled.Internal {
 			Assert.True(props.Has("prop2"));
 			Assert.True(props.Has("prop3"));
 
-			Assert.False(props.Has(""));
+			Assert.False(props.Has(null));
 			Assert.False(props.Has("val2"));
 			Assert.False(props.Has("prop4"));
 			Assert.False(props.Has(string.Empty));

@@ -11,7 +11,8 @@ namespace IsoTools.Tiled {
 	[RequireComponent(typeof(IsoObject))]
 	public class TiledMap : MonoBehaviour {
 
-		public TiledMapAsset Asset = null;
+		public TiledMapAsset      Asset      = null;
+		public TiledMapProperties Properties = null;
 
 		// ---------------------------------------------------------------------
 		//
