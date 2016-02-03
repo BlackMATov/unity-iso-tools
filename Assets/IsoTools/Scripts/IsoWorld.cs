@@ -441,7 +441,12 @@ namespace IsoTools {
 				for ( int i = 0, e = sec.objects.Count; i < e; ++i ) {
 					var obj_b = sec.objects[i];
 					if ( obj_a != obj_b && !obj_b.Internal.Dirty && IsIsoObjectDepends(obj_a, obj_b) ) {
-						obj_a.Internal.SelfDepends.Add(obj_b);
+						var a_depends_d = obj_a.Internal.SelfDependsD;
+						var a_depends_l = obj_a.Internal.SelfDependsL;
+						if ( !a_depends_d.ContainsKey(obj_b) ) {
+							a_depends_d.Add(obj_b, a_depends_l.Count);
+							a_depends_l.Add(obj_b);
+						}
 						obj_b.Internal.TheirDepends.Add(obj_a);
 					}
 				}
@@ -454,7 +459,12 @@ namespace IsoTools {
 				for ( int i = 0, e = sec.objects.Count; i < e; ++i ) {
 					var obj_b = sec.objects[i];
 					if ( obj_a != obj_b && !obj_b.Internal.Dirty && IsIsoObjectDepends(obj_b, obj_a) ) {
-						obj_b.Internal.SelfDepends.Add(obj_a);
+						var b_depends_d = obj_b.Internal.SelfDependsD;
+						var b_depends_l = obj_b.Internal.SelfDependsL;
+						if ( !b_depends_d.ContainsKey(obj_a) ) {
+							b_depends_d.Add(obj_a, b_depends_l.Count);
+							b_depends_l.Add(obj_a);
+						}
 						obj_a.Internal.TheirDepends.Add(obj_b);
 					}
 				}
@@ -594,10 +604,22 @@ namespace IsoTools {
 			while ( their_depends_iter.MoveNext() ) {
 				var their_iso_object = their_depends_iter.Current;
 				if ( !their_iso_object.Internal.Dirty ) {
-					their_depends_iter.Current.Internal.SelfDepends.Remove(iso_object);
+					var their_depends_d = their_depends_iter.Current.Internal.SelfDependsD;
+					var their_depends_l = their_depends_iter.Current.Internal.SelfDependsL;
+					int index;
+					if ( their_depends_d.TryGetValue(iso_object, out index) ) {
+						their_depends_d.Remove(iso_object);
+						if ( index != their_depends_l.Count - 1 ) {
+							var last_obj = their_depends_l[their_depends_l.Count - 1];
+							their_depends_d[last_obj] = index;
+							their_depends_l[index] = last_obj;
+						}
+						their_depends_l.RemoveAt(their_depends_l.Count - 1);
+					}
 				}
 			}
-			iso_object.Internal.SelfDepends.Clear();
+			iso_object.Internal.SelfDependsD.Clear();
+			iso_object.Internal.SelfDependsL.Clear();
 			iso_object.Internal.TheirDepends.Clear();
 		}
 		
@@ -626,9 +648,10 @@ namespace IsoTools {
 				return depth;
 			}
 			iso_object.Internal.Visited = true;
-			var self_depends_iter = iso_object.Internal.SelfDepends.GetEnumerator();
-			while ( self_depends_iter.MoveNext() ) {
-				depth = RecursivePlaceIsoObject(self_depends_iter.Current, depth);
+
+			var depends_l = iso_object.Internal.SelfDependsL;
+			for ( int i = 0, e = iso_object.Internal.SelfDependsL.Count; i < e; ++i ) {
+				depth = RecursivePlaceIsoObject(depends_l[i], depth);
 			}
 			if ( iso_object.mode == IsoObject.Mode.Mode3d ) {
 				var zoffset = iso_object.Internal.Offset3d;
