@@ -166,14 +166,14 @@ namespace IsoTools {
 
 		public class InternalState {
 			public bool                       Dirty        = false;
-			public bool                       Visited      = false;
+			public bool                       Placed       = false;
 			public Rect                       ScreenRect   = new Rect();
 			public float                      Offset3d     = 0.0f;
 			public IsoUtils.MinMax            MinMax3d     = IsoUtils.MinMax.zero;
 			public Vector2                    MinSector    = Vector2.zero;
 			public Vector2                    MaxSector    = Vector2.zero;
 			public Dictionary<IsoObject, int> SelfDependsD = new Dictionary<IsoObject, int>();
-			public List<IsoObject>            SelfDependsL = new List<IsoObject>();
+			public IsoList<IsoObject>         SelfDependsL = new IsoList<IsoObject>();
 			public HashSet<IsoObject>         TheirDepends = new HashSet<IsoObject>();
 		}
 
@@ -279,7 +279,7 @@ namespace IsoTools {
 
 		void Awake() {
 			Internal.SelfDependsD = new Dictionary<IsoObject, int>(47);
-			Internal.SelfDependsL = new List<IsoObject>(47);
+			Internal.SelfDependsL = new IsoList<IsoObject>(47);
 			Internal.TheirDepends = new HashSet<IsoObject>(new IsoObject[47]);
 			Internal.TheirDepends.Clear();
 			FixLastProperties();

@@ -10,7 +10,7 @@ using System.Reflection;
 using System.Collections.Generic;
 
 namespace IsoTools.Tiled.Internal {
-	public class TiledMapPostprocessor : AssetPostprocessor {
+	class TiledMapPostprocessor : AssetPostprocessor {
 		static void OnPostprocessAllAssets(
 			string[] imported_assets, string[] deleted_assets,
 			string[] moved_assets, string[] moved_from_asset_paths)

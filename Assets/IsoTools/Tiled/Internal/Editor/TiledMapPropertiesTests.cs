@@ -3,7 +3,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 
 namespace IsoTools.Tiled.Internal {
-	public class TiledMapPropertiesTests {
+	class TiledMapPropertiesTests {
 
 		[Test]
 		public void Test00() {

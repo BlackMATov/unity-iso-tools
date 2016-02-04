@@ -21,17 +21,17 @@ namespace IsoTools {
 		List<Renderer>     _tmpRenderers = new List<Renderer>();
 
 		class Sector {
-			public List<IsoObject> objects = new List<IsoObject>();
+			public IsoList<IsoObject> objects = new IsoList<IsoObject>();
 			public void Reset() {
 				objects.Clear();
 			}
 		}
 
-		List<Sector> _sectors            = new List<Sector>();
-		float        _sectorsSize        = 0.0f;
-		Vector2      _sectorsMinNumPos   = Vector2.zero;
-		Vector2      _sectorsMaxNumPos   = Vector2.zero;
-		Vector2      _sectorsNumPosCount = Vector2.zero;
+		IsoList<Sector> _sectors            = new IsoList<Sector>();
+		float           _sectorsSize        = 0.0f;
+		Vector2         _sectorsMinNumPos   = Vector2.zero;
+		Vector2         _sectorsMaxNumPos   = Vector2.zero;
+		Vector2         _sectorsNumPosCount = Vector2.zero;
 
 		// ---------------------------------------------------------------------
 		//
@@ -445,7 +445,7 @@ namespace IsoTools {
 						var a_depends_l = obj_a.Internal.SelfDependsL;
 						if ( !a_depends_d.ContainsKey(obj_b) ) {
 							a_depends_d.Add(obj_b, a_depends_l.Count);
-							a_depends_l.Add(obj_b);
+							a_depends_l.Push(obj_b);
 						}
 						obj_b.Internal.TheirDepends.Add(obj_a);
 					}
@@ -463,7 +463,7 @@ namespace IsoTools {
 						var b_depends_l = obj_b.Internal.SelfDependsL;
 						if ( !b_depends_d.ContainsKey(obj_a) ) {
 							b_depends_d.Add(obj_a, b_depends_l.Count);
-							b_depends_l.Add(obj_a);
+							b_depends_l.Push(obj_a);
 						}
 						obj_a.Internal.TheirDepends.Add(obj_b);
 					}
@@ -501,7 +501,7 @@ namespace IsoTools {
 					_sectors.Capacity = count;
 				}
 				while ( _sectors.Count < _sectors.Capacity ) {
-					_sectors.Add(new Sector());
+					_sectors.Push(new Sector());
 				}
 			}
 			for ( int i = 0, e = _sectors.Count; i < e; ++i ) {
@@ -521,7 +521,7 @@ namespace IsoTools {
 				for ( var x = min.x; x < max.x; ++x ) {
 					var sector = FindSector(new Vector2(x, y));
 					if ( sector != null ) {
-						sector.objects.Add(iso_object);
+						sector.objects.Push(iso_object);
 					}
 				}}
 			}
@@ -566,7 +566,7 @@ namespace IsoTools {
 			while ( objects_iter.MoveNext() ) {
 				var iso_object = objects_iter.Current;
 				if ( IsIsoObjectVisible(iso_object) ) {
-					iso_object.Internal.Visited = false;
+					iso_object.Internal.Placed = false;
 					_oldVisibles.Add(iso_object);
 				}
 			}
@@ -609,12 +609,10 @@ namespace IsoTools {
 					int index;
 					if ( their_depends_d.TryGetValue(iso_object, out index) ) {
 						their_depends_d.Remove(iso_object);
-						if ( index != their_depends_l.Count - 1 ) {
-							var last_obj = their_depends_l[their_depends_l.Count - 1];
-							their_depends_d[last_obj] = index;
-							their_depends_l[index] = last_obj;
+						var reordered = their_depends_l.UnorderedRemoveAt(index);
+						if ( reordered != iso_object ) {
+							their_depends_d[reordered] = index;
 						}
-						their_depends_l.RemoveAt(their_depends_l.Count - 1);
 					}
 				}
 			}
@@ -644,11 +642,10 @@ namespace IsoTools {
 		}
 
 		float RecursivePlaceIsoObject(IsoObject iso_object, float depth) {
-			if ( iso_object.Internal.Visited ) {
+			if ( iso_object.Internal.Placed ) {
 				return depth;
 			}
-			iso_object.Internal.Visited = true;
-
+			iso_object.Internal.Placed = true;
 			var depends_l = iso_object.Internal.SelfDependsL;
 			for ( int i = 0, e = iso_object.Internal.SelfDependsL.Count; i < e; ++i ) {
 				depth = RecursivePlaceIsoObject(depends_l[i], depth);

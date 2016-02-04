@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace IsoTools.Tiled.Internal {
 	[CustomEditor(typeof(TiledMapAsset))]
-	public class TiledMapAssetEditor : Editor {
+	class TiledMapAssetEditor : Editor {
 		TiledMapAsset _asset = null;
 
 		// ------------------------------------------------------------------------

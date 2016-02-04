@@ -54,6 +54,7 @@
      <Compile Include="Assets\IsoTools\Scripts\Internal\IsoFakeCollider.cs" />
      <Compile Include="Assets\IsoTools\Scripts\Internal\IsoFakeObject.cs" />
      <Compile Include="Assets\IsoTools\Scripts\Internal\IsoFakeRigidbody.cs" />
+     <Compile Include="Assets\IsoTools\Scripts\Internal\IsoList.cs" />
      <Compile Include="Assets\IsoTools\Scripts\Internal\IsoPhysicHelper.cs" />
      <Compile Include="Assets\IsoTools\Scripts\Internal\IsoUtils.cs" />
      <Compile Include="Assets\IsoTools\Scripts\IsoBoxCollider.cs" />
