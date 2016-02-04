@@ -25,6 +25,18 @@ namespace IsoTools.Internal {
 			}
 		}
 
+		public Dictionary<T, int> RawDict {
+			get {
+				return _dict;
+			}
+		}
+
+		public int Count {
+			get {
+				return _list.Count;
+			}
+		}
+
 		public void Add(T item) {
 			if ( !_dict.ContainsKey(item) ) {
 				_dict.Add(item, _list.Count);
