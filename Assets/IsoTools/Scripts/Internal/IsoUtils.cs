@@ -13,9 +13,9 @@ namespace IsoTools.Internal {
 		//
 		// ---------------------------------------------------------------------
 
-		public static Vector3 vec2OneX  { get { return new Vector2(1.0f, 0.0f); } }
-		public static Vector3 vec2OneY  { get { return new Vector2(0.0f, 1.0f); } }
-		public static Vector3 vec2OneXY { get { return new Vector2(1.0f, 1.0f); } }
+		public static Vector2 vec2OneX  { get { return new Vector2(1.0f, 0.0f); } }
+		public static Vector2 vec2OneY  { get { return new Vector2(0.0f, 1.0f); } }
+		public static Vector2 vec2OneXY { get { return new Vector2(1.0f, 1.0f); } }
 
 		public static Vector3 vec3OneX  { get { return new Vector3(1.0f, 0.0f, 0.0f); } }
 		public static Vector3 vec3OneY  { get { return new Vector3(0.0f, 1.0f, 0.0f); } }
@@ -69,16 +69,26 @@ namespace IsoTools.Internal {
 		// -----------------------------
 
 		public static Vector2 Vec2Abs(Vector2 v) {
-			return new Vector2(
-				Mathf.Abs(v.x),
-				Mathf.Abs(v.y));
+			if ( v.x < 0.0f ) {
+				v.x = -v.x;
+			}
+			if ( v.y < 0.0f ) {
+				v.y = -v.y;
+			}
+			return v;
 		}
 		
 		public static Vector3 Vec3Abs(Vector3 v) {
-			return new Vector3(
-				Mathf.Abs(v.x),
-				Mathf.Abs(v.y),
-				Mathf.Abs(v.z));
+			if ( v.x < 0.0f ) {
+				v.x = -v.x;
+			}
+			if ( v.y < 0.0f ) {
+				v.y = -v.y;
+			}
+			if ( v.z < 0.0f ) {
+				v.z = -v.z;
+			}
+			return v;
 		}
 
 		// -----------------------------
@@ -86,37 +96,58 @@ namespace IsoTools.Internal {
 		// -----------------------------
 
 		public static float Vec2MinF(Vector2 v) {
-			return Mathf.Min(v.x, v.y);
+			return v.x < v.y ? v.x : v.y;
 		}
 
 		public static float Vec3MinF(Vector3 v) {
-			return Mathf.Min(Mathf.Min(v.x, v.y), v.z);
+			var mxy = v.x < v.y ? v.x : v.y;
+			return mxy < v.z ? mxy : v.z;
 		}
 
 		public static Vector2 Vec2Min(Vector2 a, float b) {
-			return new Vector2(
-				Mathf.Min(a.x, b),
-				Mathf.Min(a.y, b));
+			if ( b < a.x ) {
+				a.x = b;
+			}
+			if ( b < a.y ) {
+				a.y = b;
+			}
+			return a;
 		}
 		
 		public static Vector2 Vec2Min(Vector2 a, Vector2 b) {
-			return new Vector2(
-				Mathf.Min(a.x, b.x),
-				Mathf.Min(a.y, b.y));
+			if ( b.x < a.x ) {
+				a.x = b.x;
+			}
+			if ( b.y < a.y ) {
+				a.y = b.y;
+			}
+			return a;
 		}
 
 		public static Vector3 Vec3Min(Vector3 a, float b) {
-			return new Vector3(
-				Mathf.Min(a.x, b),
-				Mathf.Min(a.y, b),
-				Mathf.Min(a.z, b));
+			if ( b < a.x ) {
+				a.x = b;
+			}
+			if ( b < a.y ) {
+				a.y = b;
+			}
+			if ( b < a.z ) {
+				a.z = b;
+			}
+			return a;
 		}
 
 		public static Vector3 Vec3Min(Vector3 a, Vector3 b) {
-			return new Vector3(
-				Mathf.Min(a.x, b.x),
-				Mathf.Min(a.y, b.y),
-				Mathf.Min(a.z, b.z));
+			if ( b.x < a.x ) {
+				a.x = b.x;
+			}
+			if ( b.y < a.y ) {
+				a.y = b.y;
+			}
+			if ( b.z < a.z ) {
+				a.z = b.z;
+			}
+			return a;
 		}
 
 		// -----------------------------
@@ -124,37 +155,58 @@ namespace IsoTools.Internal {
 		// -----------------------------
 
 		public static float Vec2MaxF(Vector2 v) {
-			return Mathf.Max(v.x, v.y);
+			return v.x > v.y ? v.x : v.y;
 		}
 
 		public static float Vec3MaxF(Vector3 v) {
-			return Mathf.Max(Mathf.Max(v.x, v.y), v.z);
+			var mxy = v.x > v.y ? v.x : v.y;
+			return mxy > v.z ? mxy : v.z;
 		}
 
 		public static Vector2 Vec2Max(Vector2 a, float b) {
-			return new Vector2(
-				Mathf.Max(a.x, b),
-				Mathf.Max(a.y, b));
+			if ( b > a.x ) {
+				a.x = b;
+			}
+			if ( b > a.y ) {
+				a.y = b;
+			}
+			return a;
 		}
 
 		public static Vector2 Vec2Max(Vector2 a, Vector2 b) {
-			return new Vector2(
-				Mathf.Max(a.x, b.x),
-				Mathf.Max(a.y, b.y));
+			if ( b.x > a.x ) {
+				a.x = b.x;
+			}
+			if ( b.y > a.y ) {
+				a.y = b.y;
+			}
+			return a;
 		}
 
 		public static Vector3 Vec3Max(Vector3 a, float b) {
-			return new Vector3(
-				Mathf.Max(a.x, b),
-				Mathf.Max(a.y, b),
-				Mathf.Max(a.z, b));
+			if ( b > a.x ) {
+				a.x = b;
+			}
+			if ( b > a.y ) {
+				a.y = b;
+			}
+			if ( b > a.z ) {
+				a.z = b;
+			}
+			return a;
 		}
 
 		public static Vector3 Vec3Max(Vector3 a, Vector3 b) {
-			return new Vector3(
-				Mathf.Max(a.x, b.x),
-				Mathf.Max(a.y, b.y),
-				Mathf.Max(a.z, b.z));
+			if ( b.x > a.x ) {
+				a.x = b.x;
+			}
+			if ( b.y > a.y ) {
+				a.y = b.y;
+			}
+			if ( b.z > a.z ) {
+				a.z = b.z;
+			}
+			return a;
 		}
 
 		// ---------------------------------------------------------------------
@@ -212,102 +264,6 @@ namespace IsoTools.Internal {
 				Mathf.Round(v.x),
 				Mathf.Round(v.y),
 				Mathf.Round(v.z));
-		}
-
-		// ---------------------------------------------------------------------
-		//
-		// Div/DivCeil/DivFloor/DivRound
-		//
-		// ---------------------------------------------------------------------
-
-		// -----------------------------
-		// Div
-		// -----------------------------
-
-		public static Vector2 Vec2Div(Vector2 a, float b) {
-			return new Vector2(
-				a.x / b,
-				a.y / b);
-		}
-
-		public static Vector2 Vec2Div(Vector2 a, Vector2 b) {
-			return new Vector2(
-				a.x / b.x,
-				a.y / b.y);
-		}
-
-		public static Vector3 Vec3Div(Vector3 a, float b) {
-			return new Vector3(
-				a.x / b,
-				a.y / b,
-				a.z / b);
-		}
-		
-		public static Vector3 Vec3Div(Vector3 a, Vector3 b) {
-			return new Vector3(
-				a.x / b.x,
-				a.y / b.y,
-				a.z / b.z);
-		}
-
-		// -----------------------------
-		// DivCeil
-		// -----------------------------
-
-		public static Vector2 Vec2DivCeil(Vector2 a, float b) {
-			return Vec2Ceil(Vec2Div(a, b));
-		}
-
-		public static Vector2 Vec2DivCeil(Vector2 a, Vector2 b) {
-			return Vec2Ceil(Vec2Div(a, b));
-		}
-
-		public static Vector3 Vec3DivCeil(Vector3 a, float b) {
-			return Vec3Ceil(Vec3Div(a, b));
-		}
-
-		public static Vector3 Vec3DivCeil(Vector3 a, Vector3 b) {
-			return Vec3Ceil(Vec3Div(a, b));
-		}
-
-		// -----------------------------
-		// DivFloor
-		// -----------------------------
-
-		public static Vector2 Vec2DivFloor(Vector2 a, float b) {
-			return Vec2Floor(Vec2Div(a, b));
-		}
-
-		public static Vector2 Vec2DivFloor(Vector2 a, Vector2 b) {
-			return Vec2Floor(Vec2Div(a, b));
-		}
-
-		public static Vector3 Vec3DivFloor(Vector3 a, float b) {
-			return Vec3Floor(Vec3Div(a, b));
-		}
-		
-		public static Vector3 Vec3DivFloor(Vector3 a, Vector3 b) {
-			return Vec3Floor(Vec3Div(a, b));
-		}
-
-		// -----------------------------
-		// DivRound
-		// -----------------------------
-
-		public static Vector2 Vec2DivRound(Vector2 a, float b) {
-			return Vec2Round(Vec2Div(a, b));
-		}
-
-		public static Vector2 Vec2DivRound(Vector2 a, Vector2 b) {
-			return Vec2Round(Vec2Div(a, b));
-		}
-
-		public static Vector3 Vec3DivRound(Vector3 a, float b) {
-			return Vec3Round(Vec3Div(a, b));
-		}
-
-		public static Vector3 Vec3DivRound(Vector3 a, Vector3 b) {
-			return Vec3Round(Vec3Div(a, b));
 		}
 
 		// ---------------------------------------------------------------------
