@@ -468,14 +468,32 @@ namespace IsoTools {
 		}
 
 		void SetupObjectsSectors() {
-			_sectorsMinNumPos = IsoUtils.Vec2From(float.MaxValue);
-			_sectorsMaxNumPos = IsoUtils.Vec2From(float.MinValue);
+			_sectorsMinNumPos = new Vector2(float.MaxValue, float.MaxValue);
+			_sectorsMaxNumPos = new Vector2(float.MinValue, float.MinValue);
 			for ( int i = 0, e = _visibles.RawList.Count; i < e; ++i ) {
 				var iso_internal = _visibles.RawList[i].Internal;
-				iso_internal.MinSector = IsoUtils.Vec3DivFloor(iso_internal.ScreenRect.min, _sectorsSize);
-				iso_internal.MaxSector = IsoUtils.Vec3DivCeil (iso_internal.ScreenRect.max, _sectorsSize);
-				_sectorsMinNumPos = IsoUtils.Vec3Min(_sectorsMinNumPos, iso_internal.MinSector);
-				_sectorsMaxNumPos = IsoUtils.Vec3Max(_sectorsMaxNumPos, iso_internal.MaxSector);
+
+				// high performance tricks
+				var min_x = iso_internal.ScreenRect.xMin / _sectorsSize;
+				var min_y = iso_internal.ScreenRect.yMin / _sectorsSize;
+				var max_x = iso_internal.ScreenRect.xMax / _sectorsSize;
+				var max_y = iso_internal.ScreenRect.yMax / _sectorsSize;
+				iso_internal.MinSector.x = (int)(min_x >= 0.0F ? min_x : min_x - 1.0F);
+				iso_internal.MinSector.y = (int)(min_y >= 0.0F ? min_y : min_y - 1.0F);
+				iso_internal.MaxSector.x = (int)(max_x >= 0.0F ? max_x + 1.0F : max_x);
+				iso_internal.MaxSector.y = (int)(max_y >= 0.0F ? max_y + 1.0F : max_y);
+				if ( _sectorsMinNumPos.x > iso_internal.MinSector.x ) {
+					_sectorsMinNumPos.x = iso_internal.MinSector.x;
+				}
+				if ( _sectorsMinNumPos.y > iso_internal.MinSector.y ) {
+					_sectorsMinNumPos.y = iso_internal.MinSector.y;
+				}
+				if ( _sectorsMaxNumPos.x < iso_internal.MaxSector.x ) {
+					_sectorsMaxNumPos.x = iso_internal.MaxSector.x;
+				}
+				if ( _sectorsMaxNumPos.y < iso_internal.MaxSector.y ) {
+					_sectorsMaxNumPos.y = iso_internal.MaxSector.y;
+				}
 			}
 			_sectorsNumPosCount = _sectorsMaxNumPos - _sectorsMinNumPos;
 		}
