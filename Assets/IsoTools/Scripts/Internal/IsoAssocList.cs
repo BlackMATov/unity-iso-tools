@@ -19,15 +19,15 @@ namespace IsoTools.Internal {
 			_comparer = EqualityComparer<T>.Default;
 		}
 
-		public IsoList<T> RawList {
+		public T this[int index] {
 			get {
-				return _list;
+				return _list[index];
 			}
 		}
 
-		public Dictionary<T, int> RawDict {
+		public int this[T item] {
 			get {
-				return _dict;
+				return _dict[item];
 			}
 		}
 
@@ -35,6 +35,10 @@ namespace IsoTools.Internal {
 			get {
 				return _list.Count;
 			}
+		}
+
+		public bool Contains(T value) {
+			return _dict.ContainsKey(value);
 		}
 
 		public void Add(T item) {
