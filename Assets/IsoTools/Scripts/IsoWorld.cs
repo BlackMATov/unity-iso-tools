@@ -416,7 +416,7 @@ namespace IsoTools {
 
 		bool IsIsoObjectDepends(IsoObject a, IsoObject b) {
 			return
-				a.Internal.ScreenRect.Overlaps(b.Internal.ScreenRect) &&
+				a.Internal.ScreenRect.Overlaps(b.Internal.ScreenRect, false) &&
 				IsIsoObjectDepends(a.position, a.size, b.position, b.size);
 		}
 		

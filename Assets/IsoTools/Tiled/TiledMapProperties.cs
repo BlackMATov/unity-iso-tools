@@ -1,6 +1,11 @@
 ﻿using UnityEngine;
+using System;
 using System.Globalization;
 using System.Collections.Generic;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace IsoTools.Tiled {
 	public class TiledMapProperties {
@@ -20,6 +25,20 @@ namespace IsoTools.Tiled {
 					? _properties.Count / 2
 					: 0;
 			}
+		}
+
+		public string GetKeyByIndex(int index) {
+			if ( (uint)index >= (uint)Count ) {
+				throw new IndexOutOfRangeException();
+			}
+			return _properties[index * 2];
+		}
+
+		public string GetValueByIndex(int index) {
+			if ( (uint)index >= (uint)Count ) {
+				throw new IndexOutOfRangeException();
+			}
+			return _properties[index * 2 + 1];
 		}
 
 		public bool Has(string property_name) {
@@ -175,5 +194,23 @@ namespace IsoTools.Tiled {
 			value = string.Empty;
 			return false;
 		}
+
+		// -----------------------------
+		// For editor
+		// -----------------------------
+
+	#if UNITY_EDITOR
+		bool _showProperties = true;
+		public void OnInspectorGUI(string label) {
+			if ( Count > 0 ) {
+				_showProperties = EditorGUILayout.Foldout(_showProperties, label);
+				if ( _showProperties ) {
+					for ( int i = 0, e = Count; i < e; ++i ) {
+						EditorGUILayout.LabelField(GetKeyByIndex(i), GetValueByIndex(i));
+					}
+				}
+			}
+		}
+	#endif
 	}
 }

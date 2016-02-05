@@ -27,8 +27,7 @@ namespace IsoTools.Tiled.Internal {
 		public override void OnInspectorGUI() {
 			DrawDefaultInspector();
 			if ( _tile && _tile.Properties != null ) {
-				GUILayout.Label(string.Format(
-					"Property count: {0}", _tile.Properties.Count));
+				_tile.Properties.OnInspectorGUI("Tileset properties");
 			}
 		}
 	}

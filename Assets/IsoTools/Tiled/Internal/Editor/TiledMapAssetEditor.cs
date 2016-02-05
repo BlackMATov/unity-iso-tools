@@ -18,12 +18,10 @@ namespace IsoTools.Tiled.Internal {
 		// ------------------------------------------------------------------------
 
 		void CreateTiledMap(GameObject map_go) {
-			var iso_object          = map_go.AddComponent<IsoObject>();
-			iso_object.mode         = IsoObject.Mode.Mode3d;
-			iso_object.position     = Vector3.zero;
-			iso_object.size         = IsoUtils.Vec3FromXY(_asset.Data.Height, _asset.Data.Width);
-			iso_object.isAlignment  = true;
-			iso_object.isShowBounds = true;
+			var iso_object      = map_go.AddComponent<IsoObject>();
+			iso_object.mode     = IsoObject.Mode.Mode3d;
+			iso_object.position = Vector3.zero;
+			iso_object.size     = IsoUtils.Vec3FromXY(_asset.Data.Height, _asset.Data.Width);
 
 			var tiled_map  = map_go.AddComponent<TiledMap>();
 			tiled_map.Asset      = _asset;

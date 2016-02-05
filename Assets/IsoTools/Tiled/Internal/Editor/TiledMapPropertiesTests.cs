@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 
 namespace IsoTools.Tiled.Internal {
@@ -52,6 +53,31 @@ namespace IsoTools.Tiled.Internal {
 		[Test]
 		public void Test03() {
 			var props = new TiledMapProperties(null);
+			Assert.Throws<IndexOutOfRangeException>(() => {
+				props.GetKeyByIndex(0); });
+			Assert.Throws<IndexOutOfRangeException>(() => {
+				props.GetValueByIndex(0); });
+			var prop_list = new List<string>{
+				"prop1", "val1",
+				"prop2", "val2",
+				"prop3", "val3",
+				"prop4", "",
+				"fakep"
+			};
+			props = new TiledMapProperties(prop_list);
+			Assert.AreEqual(props.GetKeyByIndex  (0), "prop1");
+			Assert.AreEqual(props.GetKeyByIndex  (1), "prop2");
+			Assert.AreEqual(props.GetValueByIndex(0), "val1");
+			Assert.AreEqual(props.GetValueByIndex(1), "val2");
+			Assert.Throws<IndexOutOfRangeException>(() => {
+				props.GetKeyByIndex(-1); });
+			Assert.Throws<IndexOutOfRangeException>(() => {
+				props.GetValueByIndex(4); });
+		}
+
+		[Test]
+		public void Test04() {
+			var props = new TiledMapProperties(null);
 			bool   v0;
 			short  v1;
 			int    v2;
@@ -69,7 +95,7 @@ namespace IsoTools.Tiled.Internal {
 		}
 
 		[Test]
-		public void Test04() {
+		public void Test05() {
 			var prop_list = new List<string>{
 				"bool"   , "true",
 				"short"  , "64",

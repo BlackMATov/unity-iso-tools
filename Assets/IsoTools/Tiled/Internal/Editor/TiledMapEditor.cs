@@ -27,8 +27,7 @@ namespace IsoTools.Tiled.Internal {
 		public override void OnInspectorGUI() {
 			DrawDefaultInspector();
 			if ( _map && _map.Properties != null ) {
-				GUILayout.Label(string.Format(
-					"Property count: {0}", _map.Properties.Count));
+				_map.Properties.OnInspectorGUI("Map properties");
 			}
 		}
 	}

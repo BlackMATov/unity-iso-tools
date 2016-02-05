@@ -16,6 +16,21 @@ namespace IsoTools.Tiled {
 
 		// ---------------------------------------------------------------------
 		//
+		// For editor
+		//
+		// ---------------------------------------------------------------------
+
+		#if UNITY_EDITOR
+		[SerializeField] bool _isShowGrid = false;
+
+		public bool isShowGrid {
+			get { return _isShowGrid; }
+			set { _isShowGrid = value; }
+		}
+		#endif
+
+		// ---------------------------------------------------------------------
+		//
 		// Functions
 		//
 		// ---------------------------------------------------------------------
@@ -36,7 +51,7 @@ namespace IsoTools.Tiled {
 		void OnDisable() {
 		}
 
-		#if UNITY_EDITOR
+	#if UNITY_EDITOR
 		void Reset() {
 		}
 
@@ -45,7 +60,7 @@ namespace IsoTools.Tiled {
 
 		void OnDrawGizmos() {
 			var iso_object = GetComponent<IsoObject>();
-			if ( iso_object.isShowBounds && iso_object.isoWorld ) {
+			if ( isShowGrid && iso_object && iso_object.isoWorld ) {
 				IsoUtils.DrawGrid(
 					iso_object.isoWorld,
 					iso_object.position, iso_object.size,
@@ -55,6 +70,6 @@ namespace IsoTools.Tiled {
 
 		void Update() {
 		}
-		#endif
+	#endif
 	}
 }
