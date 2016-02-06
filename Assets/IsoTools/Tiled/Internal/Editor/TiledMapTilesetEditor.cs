@@ -4,9 +4,9 @@ using IsoTools.Tiled;
 using IsoTools.Internal;
 
 namespace IsoTools.Tiled.Internal {
-	[CustomEditor(typeof(TiledMapTile)), CanEditMultipleObjects]
+	[CustomEditor(typeof(TiledMapTileset)), CanEditMultipleObjects]
 	class TiledMapTileEditor : Editor {
-		TiledMapTile _tile = null;
+		TiledMapTileset _tileset = null;
 
 		// ------------------------------------------------------------------------
 		//
@@ -21,13 +21,13 @@ namespace IsoTools.Tiled.Internal {
 		// ------------------------------------------------------------------------
 
 		void OnEnable() {
-			_tile = target as TiledMapTile;
+			_tileset = target as TiledMapTileset;
 		}
 
 		public override void OnInspectorGUI() {
 			DrawDefaultInspector();
-			if ( _tile && _tile.Properties != null ) {
-				_tile.Properties.OnInspectorGUI("Tileset properties");
+			if ( _tileset && _tileset.Properties != null ) {
+				_tileset.Properties.OnInspectorGUI("Tileset properties");
 			}
 		}
 	}

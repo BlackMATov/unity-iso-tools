@@ -52,7 +52,7 @@
      <Compile Include="Assets\IsoTools\Tiled\Internal\Editor\TiledMapLayerEditor.cs" />
      <Compile Include="Assets\IsoTools\Tiled\Internal\Editor\TiledMapPostprocessor.cs" />
      <Compile Include="Assets\IsoTools\Tiled\Internal\Editor\TiledMapPropertiesTests.cs" />
-     <Compile Include="Assets\IsoTools\Tiled\Internal\Editor\TiledMapTileEditor.cs" />
+     <Compile Include="Assets\IsoTools\Tiled\Internal\Editor\TiledMapTilesetEditor.cs" />
  <Reference Include="UnityEditor.Advertisements">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Advertisements/Editor/UnityEditor.Advertisements.dll</HintPath>
  </Reference>

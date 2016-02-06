@@ -8,7 +8,7 @@ using UnityEditor;
 
 namespace IsoTools.Tiled {
 	[ExecuteInEditMode, DisallowMultipleComponent]
-	public class TiledMapTile : MonoBehaviour {
+	public class TiledMapTileset : MonoBehaviour {
 
 		public TiledMapAsset      Asset      = null;
 		public TiledMapProperties Properties = null;

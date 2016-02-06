@@ -5,6 +5,7 @@ using IsoTools.Internal;
 using System;
 using System.IO;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace IsoTools.Tiled.Internal {
 	[CustomEditor(typeof(TiledMapAsset))]
@@ -17,21 +18,34 @@ namespace IsoTools.Tiled.Internal {
 		//
 		// ------------------------------------------------------------------------
 
-		void CreateTiledMap(GameObject map_go) {
-			var iso_object      = map_go.AddComponent<IsoObject>();
-			iso_object.mode     = IsoObject.Mode.Mode3d;
-			iso_object.position = Vector3.zero;
-			iso_object.size     = IsoUtils.Vec3FromXY(_asset.Data.Height, _asset.Data.Width);
+		void CreateTiledMapOnScene() {
+			var map_go = new GameObject(_asset.Name);
+			try {
+				CreateTiledMap(map_go);
+			} catch ( Exception e ) {
+				Debug.LogErrorFormat("Create tiled map error: {0}", e.Message);
+				DestroyImmediate(map_go, true);
+			}
+			Undo.RegisterCreatedObjectUndo(map_go, "Create Tiled Map");
+		}
 
-			var tiled_map  = map_go.AddComponent<TiledMap>();
+		void CreateTiledMap(GameObject map_go) {
+			var map_data = _asset.Data;
+
+			var iso_object       = map_go.AddComponent<IsoObject>();
+			iso_object.mode      = IsoObject.Mode.Mode3d;
+			iso_object.position  = Vector3.zero;
+			iso_object.size      = IsoUtils.Vec3FromXY(map_data.Height, map_data.Width);
+
+			var tiled_map        = map_go.AddComponent<TiledMap>();
 			tiled_map.Asset      = _asset;
-			tiled_map.Properties = new TiledMapProperties(_asset.Data.Properties);
-			for ( int i = 0, e = _asset.Data.Layers.Count; i < e; ++i ) {
-				CreateTiledMapLayer(tiled_map, i);
+			tiled_map.Properties = new TiledMapProperties(map_data.Properties);
+			for ( int i = map_data.Layers.Count - 1; i >= 0; --i ) {
+				CreateTiledLayer(tiled_map, i);
 			}
 		}
 
-		void CreateTiledMapLayer(TiledMap map, int layer_index) {
+		void CreateTiledLayer(TiledMap map, int layer_index) {
 			var layer_data = _asset.Data.Layers[layer_index];
 
 			var layer_go = new GameObject(layer_data.Name);
@@ -41,114 +55,157 @@ namespace IsoTools.Tiled.Internal {
 				-layer_data.OffsetY / _asset.PixelsPerUnit);
 			layer_go.SetActive(layer_data.Visible);
 
-			var tiled_layer = layer_go.AddComponent<TiledMapLayer>();
+			var tiled_layer        = layer_go.AddComponent<TiledMapLayer>();
 			tiled_layer.Asset      = _asset;
 			tiled_layer.Properties = new TiledMapProperties(layer_data.Properties);
+			for ( int i = 0, e = _asset.Data.Tilesets.Count; i < e; ++i ) {
+				CreateTiledTileset(tiled_layer, layer_index, i);
+			}
+		}
+
+		void CreateTiledTileset(TiledMapLayer layer, int layer_index, int tileset_index) {
+			var tileset_data = _asset.Data.Tilesets[tileset_index];
+
+			var tileset_go = new GameObject(tileset_data.Name);
+			tileset_go.transform.SetParent(layer.transform, false);
+
+			var tiled_tileset        = tileset_go.AddComponent<TiledMapTileset>();
+			tiled_tileset.Asset      = _asset;
+			tiled_tileset.Properties = new TiledMapProperties(tileset_data.Properties);
+			CreateTiledTilesetMesh(tiled_tileset, tileset_index, layer_index);
+		}
+
+		void CreateTiledTilesetMesh(TiledMapTileset tileset, int tileset_index, int layer_index) {
+			var mesh_filter = tileset.gameObject.AddComponent<MeshFilter>();
+			mesh_filter.mesh = GetTilesetMesh(tileset_index, layer_index);
+			var mesh_renderer = tileset.gameObject.AddComponent<MeshRenderer>();
+			mesh_renderer.sharedMaterial = GetTilesetMaterial(tileset_index);
+		}
+
+		Mesh GetTilesetMesh(int tileset_index, int layer_index) {
+			var vertices  = new List<Vector3>();
+			var triangles = new List<int>();
+			var uvs       = new List<Vector2>();
 			for ( var tile_y = 0; tile_y < _asset.Data.Height; ++tile_y ) {
 				for ( var tile_x = 0; tile_x < _asset.Data.Width; ++tile_x ) {
-					CreateTileMapTile(tiled_layer, layer_index, tile_x, tile_y);
+					var tile_gid = _asset.Data
+						.Layers[layer_index]
+						.Tiles[tile_y * _asset.Data.Width + tile_x];
+					if ( tile_gid > 0 && CheckTileGidByTileset(tile_gid, tileset_index) ) {
+						var tile_iso_pos = new Vector3(
+							-tile_y + _asset.Data.Height - 1,
+							-tile_x + _asset.Data.Width  - 1);
+						
+						var iso_world        = GetIsoWorld();
+						var tile_screen_pos  = iso_world.IsoToScreen(tile_iso_pos);
+						var tile_sprite      = GetTileSprite(tile_gid, tileset_index);
+						var tile_width       = tile_sprite.rect.width  / _asset.PixelsPerUnit;
+						var tile_height      = tile_sprite.rect.height / _asset.PixelsPerUnit;
+						var tileset_data     = _asset.Data.Tilesets[tileset_index];
+						var tileset_offset_x = tileset_data.TileOffsetX / _asset.PixelsPerUnit;
+						var tileset_offset_y = tileset_data.TileOffsetY / _asset.PixelsPerUnit;
+
+						var vertex_pos =
+							IsoUtils.Vec3FromVec2(tile_screen_pos) -
+							IsoUtils.Vec3FromXY(tile_width, tile_height) * 0.5f +
+							IsoUtils.Vec3FromXY(tileset_offset_x, tileset_offset_y);
+
+						vertices.Add(vertex_pos);
+						vertices.Add(vertex_pos + IsoUtils.Vec3FromX (tile_width));
+						vertices.Add(vertex_pos + IsoUtils.Vec3FromXY(tile_width, tile_height));
+						vertices.Add(vertex_pos + IsoUtils.Vec3FromY (tile_height));
+
+						triangles.Add(vertices.Count - 4 + 2);
+						triangles.Add(vertices.Count - 4 + 1);
+						triangles.Add(vertices.Count - 4 + 0);
+						triangles.Add(vertices.Count - 4 + 0);
+						triangles.Add(vertices.Count - 4 + 3);
+						triangles.Add(vertices.Count - 4 + 2);
+
+						var tex_size = new Vector2(tile_sprite.texture.width, tile_sprite.texture.height);
+						uvs.Add(new Vector2(tile_sprite.rect.xMin / tex_size.x, tile_sprite.rect.yMin / tex_size.y));
+						uvs.Add(new Vector2(tile_sprite.rect.xMax / tex_size.x, tile_sprite.rect.yMin / tex_size.y));
+						uvs.Add(new Vector2(tile_sprite.rect.xMax / tex_size.x, tile_sprite.rect.yMax / tex_size.y));
+						uvs.Add(new Vector2(tile_sprite.rect.xMin / tex_size.x, tile_sprite.rect.yMax / tex_size.y));
+					}
 				}
 			}
+			var mesh       = new Mesh();
+			mesh.vertices  = vertices.ToArray();
+			mesh.triangles = triangles.ToArray();
+			mesh.uv        = uvs.ToArray();
+			mesh.RecalculateNormals();
+			return mesh;
 		}
 
-		void CreateTileMapTile(TiledMapLayer layer, int layer_index, int tile_x, int tile_y) {
-			var layer_data = _asset.Data.Layers[layer_index];
-
-			var tile_gid = layer_data.Tiles[tile_y * _asset.Data.Width + tile_x];
-			if ( tile_gid > 0 ) {
-				var asset_path = AssetDatabase.GetAssetPath(_asset);
-				if ( string.IsNullOrEmpty(asset_path) ) {
-					throw new UnityException(string.Format(
-						"not found tiled map asset ({0}) path",
-						_asset.name));
-				}
-
-				var iso_world = GameObject.FindObjectOfType<IsoWorld>();
-				if ( !iso_world ) {
-					throw new UnityException("not found IsoWorld");
-				}
-
-				var tileset = FindTilesetByTileGid(tile_gid);
-				if ( tileset == null ) {
-					throw new UnityException(string.Format(
-						"tileset for tile ({0}) on layer ({1}) not found",
-						tile_gid, layer_data.Name));
-				}
-
-				var tile_tileset_sprite_name = string.Format(
-					"{0}_{1}",
-					Path.GetFileNameWithoutExtension(tileset.ImageSource),
-					tile_gid);
-				var tileset_assets = AssetDatabase.LoadAllAssetsAtPath(
-					Path.Combine(Path.GetDirectoryName(asset_path), tileset.ImageSource));
-				var tile_sprite = tileset_assets
-					.Where(p => p is Sprite && p.name == tile_tileset_sprite_name)
-					.Select(p => p as Sprite)
-					.FirstOrDefault();
-				if ( !tile_sprite ) {
-					throw new UnityException(string.Format(
-						"sprite ({0}) for tile ({1}) on layer ({2}) not found",
-						tile_tileset_sprite_name, tile_gid, layer_data.Name));
-				}
-
-				var iso_x = -tile_y + _asset.Data.Height - 1;
-				var iso_y = -tile_x + _asset.Data.Width  - 1;
-
-				var tile_go = new GameObject(string.Format(
-					"Tile_{0}_{1}", iso_x, iso_y));
-				tile_go.transform.SetParent(layer.transform, false);
-
-				tile_go.transform.localPosition =
-					iso_world.IsoToScreen(IsoUtils.Vec3FromXY(iso_x, iso_y));
-				
-				tile_go.transform.localPosition += new Vector3(
-					tileset.TileOffsetX / _asset.PixelsPerUnit,
-					tileset.TileOffsetY / _asset.PixelsPerUnit,
-					(iso_x + iso_y + layer_index) * iso_world.stepDepth);
-
-				var tiled_tile = tile_go.AddComponent<TiledMapTile>();
-				tiled_tile.Asset      = _asset;
-				tiled_tile.Properties = new TiledMapProperties(tileset.Properties);
-
-				var tile_spr = tile_go.AddComponent<SpriteRenderer>();
-				tile_spr.sprite = tile_sprite;
+		IsoWorld GetIsoWorld() {
+			var iso_world = GameObject.FindObjectOfType<IsoWorld>();
+			if ( !iso_world ) {
+				throw new UnityException("not found IsoWorld");
 			}
+			return iso_world;
 		}
 
-		TiledMapTilesetData FindTilesetByTileGid(int tile_gid) {
-			return _asset.Data.Tilesets.Find(p => {
-				return tile_gid >= p.FirstGid && tile_gid < p.FirstGid + p.TileCount;
-			});
-		}
-
-		// ------------------------------------------------------------------------
-		//
-		// Functions
-		//
-		// ------------------------------------------------------------------------
-
-		void CreateTiledMapPrefab() {
-			var tiled_map = CreateTiledMapOnScene();
-			if ( tiled_map ) {
-				var asset_path  = AssetDatabase.GetAssetPath(_asset);
-				var prefab_path = Path.Combine(Path.GetDirectoryName(asset_path), _asset.Name + ".prefab");
-				PrefabUtility.CreatePrefab(prefab_path, tiled_map);
-				DestroyImmediate(tiled_map, true);
-				/// \TODO undo support
+		string GetTiledMapAssetPath() {
+			var asset_path = AssetDatabase.GetAssetPath(_asset);
+			if ( string.IsNullOrEmpty(asset_path) ) {
+				throw new UnityException(string.Format(
+					"not found tiled map asset ({0}) path",
+					_asset.name));
 			}
+			return asset_path;
 		}
 
-		GameObject CreateTiledMapOnScene() {
-			var map_go = new GameObject(_asset.Name);
-			try {
-				CreateTiledMap(map_go);
-			} catch ( Exception e ) {
-				Debug.LogErrorFormat("Create tiled map error: {0}", e.Message);
-				DestroyImmediate(map_go, true);
-				map_go = null;
+		bool CheckTileGidByTileset(int tile_gid, int tileset_index) {
+			var tileset_data = _asset.Data.Tilesets[tileset_index];
+			return
+				tile_gid >= tileset_data.FirstGid &&
+				tile_gid <  tileset_data.FirstGid + tileset_data.TileCount;
+		}
+
+		Sprite GetTileSprite(int tile_gid, int tileset_index) {
+			var tileset_data = _asset.Data.Tilesets[tileset_index];
+			var tile_sprite_name = string.Format(
+				"{0}_{1}",
+				Path.GetFileNameWithoutExtension(tileset_data.ImageSource),
+				tile_gid);
+			var tileset_assets = AssetDatabase.LoadAllAssetsAtPath(Path.Combine(
+				Path.GetDirectoryName(GetTiledMapAssetPath()),
+				tileset_data.ImageSource));
+			var tile_sprite = tileset_assets
+				.Where(p => p is Sprite && p.name == tile_sprite_name)
+				.Select(p => p as Sprite)
+				.FirstOrDefault();
+			if ( !tile_sprite ) {
+				throw new UnityException(string.Format(
+					"sprite ({0}) for tile ({1}) not found",
+					tile_sprite_name, tile_gid));
 			}
-			Undo.RegisterCreatedObjectUndo(map_go, "Create TiledMap");
-			return map_go;
+			return tile_sprite;
+		}
+
+		Material GetTilesetMaterial(int tileset_index) {
+			var shader = Shader.Find("Sprites/Default");
+			if ( !shader ) {
+				throw new UnityException("'Sprites/Default' shader not found");
+			}
+			var material = new Material(shader);
+			material.SetTexture("_MainTex", GetTilesetTexture(tileset_index));
+			return material;
+		}
+
+		Texture2D GetTilesetTexture(int tileset_index) {
+			var tileset_data = _asset.Data.Tilesets[tileset_index];
+			var texture_path = Path.Combine(
+				Path.GetDirectoryName(GetTiledMapAssetPath()),
+				tileset_data.ImageSource);
+			var texture = AssetDatabase.LoadAssetAtPath<Texture2D>(texture_path);
+			if ( !texture ) {
+				throw new UnityException(string.Format(
+					"texture ({0}) for tileset ({1}) not found",
+					texture_path, tileset_data.Name));
+			}
+			return texture;
 		}
 
 		// ------------------------------------------------------------------------
@@ -163,14 +220,9 @@ namespace IsoTools.Tiled.Internal {
 
 		public override void OnInspectorGUI() {
 			DrawDefaultInspector();
-			EditorGUILayout.BeginHorizontal();
-			if ( GUILayout.Button("Create map prefab") ) {
-				CreateTiledMapPrefab();
-			}
-			if ( GUILayout.Button("Create map on scene") ) {
+			if ( GUILayout.Button("Create tiled map on scene") ) {
 				CreateTiledMapOnScene();
 			}
-			EditorGUILayout.EndHorizontal();
 		}
 	}
 }
