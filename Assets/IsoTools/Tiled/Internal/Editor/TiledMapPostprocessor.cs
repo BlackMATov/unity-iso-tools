@@ -32,6 +32,7 @@ namespace IsoTools.Tiled.Internal {
 					AssetDatabase.CreateAsset(new_asset, new_asset_path);
 				}
 				new_asset.Data = tile_map_data;
+				new_asset.Name = Path.GetFileNameWithoutExtension(new_asset_path);
 				EditorUtility.SetDirty(new_asset);
 				AssetDatabase.SaveAssets();
 			}

@@ -123,6 +123,36 @@ namespace IsoTools.Tiled.Internal {
 
 		// ------------------------------------------------------------------------
 		//
+		// Functions
+		//
+		// ------------------------------------------------------------------------
+
+		void CreateTiledMapPrefab() {
+			var tiled_map = CreateTiledMapOnScene();
+			if ( tiled_map ) {
+				var asset_path  = AssetDatabase.GetAssetPath(_asset);
+				var prefab_path = Path.Combine(Path.GetDirectoryName(asset_path), _asset.Name + ".prefab");
+				PrefabUtility.CreatePrefab(prefab_path, tiled_map);
+				DestroyImmediate(tiled_map, true);
+				/// \TODO undo support
+			}
+		}
+
+		GameObject CreateTiledMapOnScene() {
+			var map_go = new GameObject(_asset.Name);
+			try {
+				CreateTiledMap(map_go);
+			} catch ( Exception e ) {
+				Debug.LogErrorFormat("Create tiled map error: {0}", e.Message);
+				DestroyImmediate(map_go, true);
+				map_go = null;
+			}
+			Undo.RegisterCreatedObjectUndo(map_go, "Create TiledMap");
+			return map_go;
+		}
+
+		// ------------------------------------------------------------------------
+		//
 		// Messages
 		//
 		// ------------------------------------------------------------------------
@@ -132,22 +162,15 @@ namespace IsoTools.Tiled.Internal {
 		}
 
 		public override void OnInspectorGUI() {
-			var ppu_prop = serializedObject.FindProperty("PixelsPerUnit");
-			if ( ppu_prop != null ) {
-				serializedObject.UpdateIfDirtyOrScript();
-				EditorGUILayout.Slider(ppu_prop, Mathf.Epsilon, 1000);
-				serializedObject.ApplyModifiedProperties();
+			DrawDefaultInspector();
+			EditorGUILayout.BeginHorizontal();
+			if ( GUILayout.Button("Create map prefab") ) {
+				CreateTiledMapPrefab();
 			}
-			if ( GUILayout.Button("Create tiled map on scene") ) {
-				var map_go = new GameObject("TiledMap");
-				try {
-					CreateTiledMap(map_go);
-				} catch ( Exception e ) {
-					Debug.LogErrorFormat("Create tiled map error: {0}", e.Message);
-					DestroyImmediate(map_go, true);
-				}
-				Undo.RegisterCreatedObjectUndo(map_go, "Create TiledMap");
+			if ( GUILayout.Button("Create map on scene") ) {
+				CreateTiledMapOnScene();
 			}
+			EditorGUILayout.EndHorizontal();
 		}
 	}
 }
