@@ -26,29 +26,35 @@ namespace IsoTools.Tiled.Internal {
 			var tiled_map  = map_go.AddComponent<TiledMap>();
 			tiled_map.Asset      = _asset;
 			tiled_map.Properties = new TiledMapProperties(_asset.Data.Properties);
-			foreach ( var layer in _asset.Data.Layers ) {
-				CreateTiledMapLayer(tiled_map, layer);
+			for ( int i = 0, e = _asset.Data.Layers.Count; i < e; ++i ) {
+				CreateTiledMapLayer(tiled_map, i);
 			}
 		}
 
-		void CreateTiledMapLayer(TiledMap map, TiledMapLayerData layer_data) {
+		void CreateTiledMapLayer(TiledMap map, int layer_index) {
+			var layer_data = _asset.Data.Layers[layer_index];
+
 			var layer_go = new GameObject(layer_data.Name);
 			layer_go.transform.SetParent(map.transform, false);
-			layer_go.transform.localPosition = IsoUtils.Vec3FromXY(layer_data.OffsetX, -layer_data.OffsetY);
+			layer_go.transform.localPosition = IsoUtils.Vec3FromXY(
+				 layer_data.OffsetX / _asset.PixelsPerUnit,
+				-layer_data.OffsetY / _asset.PixelsPerUnit);
 			layer_go.SetActive(layer_data.Visible);
 
 			var tiled_layer = layer_go.AddComponent<TiledMapLayer>();
 			tiled_layer.Asset      = _asset;
 			tiled_layer.Properties = new TiledMapProperties(layer_data.Properties);
-			for ( var i = 0; i < _asset.Data.Height; ++i ) {
-				for ( var j = 0; j < _asset.Data.Width; ++j ) {
-					CreateTileMapTile(tiled_layer, layer_data, j, i);
+			for ( var tile_y = 0; tile_y < _asset.Data.Height; ++tile_y ) {
+				for ( var tile_x = 0; tile_x < _asset.Data.Width; ++tile_x ) {
+					CreateTileMapTile(tiled_layer, layer_index, tile_x, tile_y);
 				}
 			}
 		}
 
-		void CreateTileMapTile(TiledMapLayer layer, TiledMapLayerData layer_data, int j, int i) {
-			var tile_gid = layer_data.Tiles[i*_asset.Data.Width + j];
+		void CreateTileMapTile(TiledMapLayer layer, int layer_index, int tile_x, int tile_y) {
+			var layer_data = _asset.Data.Layers[layer_index];
+
+			var tile_gid = layer_data.Tiles[tile_y * _asset.Data.Width + tile_x];
 			if ( tile_gid > 0 ) {
 				var asset_path = AssetDatabase.GetAssetPath(_asset);
 				if ( string.IsNullOrEmpty(asset_path) ) {
@@ -85,18 +91,20 @@ namespace IsoTools.Tiled.Internal {
 						tile_tileset_sprite_name, tile_gid, layer_data.Name));
 				}
 
-				var tile_go = new GameObject(string.Format("Tile_{0}_{1}", j, i));
+				var iso_x = -tile_y + _asset.Data.Height - 1;
+				var iso_y = -tile_x + _asset.Data.Width  - 1;
+
+				var tile_go = new GameObject(string.Format(
+					"Tile_{0}_{1}", iso_x, iso_y));
 				tile_go.transform.SetParent(layer.transform, false);
 
 				tile_go.transform.localPosition =
-					iso_world.IsoToScreen(IsoUtils.Vec3FromXY(
-						-i + _asset.Data.Height - 1,
-						-j + _asset.Data.Width  - 1));
+					iso_world.IsoToScreen(IsoUtils.Vec3FromXY(iso_x, iso_y));
 				
 				tile_go.transform.localPosition += new Vector3(
-					tileset.TileOffsetX / tile_sprite.pixelsPerUnit,
-					tileset.TileOffsetY / tile_sprite.pixelsPerUnit,
-					-(i + j) * iso_world.stepDepth);
+					tileset.TileOffsetX / _asset.PixelsPerUnit,
+					tileset.TileOffsetY / _asset.PixelsPerUnit,
+					(iso_x + iso_y + layer_index) * iso_world.stepDepth);
 
 				var tiled_tile = tile_go.AddComponent<TiledMapTile>();
 				tiled_tile.Asset      = _asset;
@@ -124,7 +132,12 @@ namespace IsoTools.Tiled.Internal {
 		}
 
 		public override void OnInspectorGUI() {
-			DrawDefaultInspector();
+			var ppu_prop = serializedObject.FindProperty("PixelsPerUnit");
+			if ( ppu_prop != null ) {
+				serializedObject.UpdateIfDirtyOrScript();
+				EditorGUILayout.Slider(ppu_prop, Mathf.Epsilon, 1000);
+				serializedObject.ApplyModifiedProperties();
+			}
 			if ( GUILayout.Button("Create tiled map on scene") ) {
 				var map_go = new GameObject("TiledMap");
 				try {

@@ -44,6 +44,7 @@ namespace IsoTools.Tiled {
 	}
 
 	public class TiledMapAsset : ScriptableObject {
-		public TiledMapData Data = new TiledMapData();
+		public TiledMapData Data          = new TiledMapData();
+		public float        PixelsPerUnit = 100.0f;
 	}
 }
