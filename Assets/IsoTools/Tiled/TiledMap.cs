@@ -31,33 +31,11 @@ namespace IsoTools.Tiled {
 
 		// ---------------------------------------------------------------------
 		//
-		// Functions
-		//
-		// ---------------------------------------------------------------------
-
-
-		// ---------------------------------------------------------------------
-		//
 		// Messages
 		//
 		// ---------------------------------------------------------------------
 
-		void Awake() {
-		}
-
-		void OnEnable() {
-		}
-
-		void OnDisable() {
-		}
-
 	#if UNITY_EDITOR
-		void Reset() {
-		}
-
-		void OnValidate() {
-		}
-
 		void OnDrawGizmos() {
 			var iso_object = GetComponent<IsoObject>();
 			if ( isShowGrid && iso_object && iso_object.isoWorld ) {
@@ -66,9 +44,6 @@ namespace IsoTools.Tiled {
 					iso_object.position, iso_object.size,
 					IsoUtils.ColorChangeA(Color.green, 0.5f));
 			}
-		}
-
-		void Update() {
 		}
 	#endif
 	}
