@@ -357,31 +357,29 @@ namespace IsoTools {
 
 		IsoUtils.MinMax IsoObjectMinMax3D(IsoObject iso_object) {
 			iso_object.GetComponentsInChildren<Renderer>(_tmpRenderers);
-			if  ( _tmpRenderers.Count < 1 ) {
-				return IsoUtils.MinMax.zero;
-			}
-			// high performance tricks
-			var bounds     = _tmpRenderers[0].bounds;
-			var center     = bounds.center.z;
-			var extent     = bounds.extents.z;
-			var minbounds  = center - extent;
-			var maxbounds  = center + extent;
-			var result_min = minbounds;
-			var result_max = maxbounds;
-			for ( int i = _tmpRenderers.Count - 1; i > 0; --i ) {
-				bounds    = _tmpRenderers[i].bounds;
-				center    = bounds.center.z;
-				extent    = bounds.extents.z;
-				minbounds = center - extent;
-				maxbounds = center + extent;
-				if ( minbounds < result_min ) {
-					result_min = minbounds;
-				}
-				if ( maxbounds > result_max ) {
-					result_max = maxbounds;
+			bool inited = false;
+			var  result = IsoUtils.MinMax.zero;
+			for ( int i = 0, e = _tmpRenderers.Count; i < e; ++i ) {
+				var bounds = _tmpRenderers[i].bounds;
+				var extents = bounds.extents;
+				if ( extents.x > 0.0f || extents.y > 0.0f || extents.z > 0.0f ) {
+					var center    = bounds.center.z;
+					var minbounds = center - extents.z;
+					var maxbounds = center + extents.z;
+					if ( inited ) {
+						if ( minbounds < result.min ) {
+							result.min = minbounds;
+						}
+						if ( maxbounds > result.max ) {
+							result.max = maxbounds;
+						}
+					} else {
+						inited = true;
+						result = new IsoUtils.MinMax(minbounds, maxbounds);
+					}
 				}
 			}
-			return new IsoUtils.MinMax(result_min, result_max);
+			return inited ? result : IsoUtils.MinMax.zero;
 		}
 
 		bool IsIsoObjectVisible(IsoObject iso_object) {
