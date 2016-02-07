@@ -52,9 +52,11 @@
      <Compile Include="Assets\IsoTools\Examples\Scripts\CubeAutoMovement.cs" />
      <Compile Include="Assets\IsoTools\Examples\Scripts\IsoEchoListener.cs" />
      <Compile Include="Assets\IsoTools\Examples\Scripts\PlayerController.cs" />
+     <Compile Include="Assets\IsoTools\Scripts\Internal\IsoAssocList.cs" />
      <Compile Include="Assets\IsoTools\Scripts\Internal\IsoFakeCollider.cs" />
      <Compile Include="Assets\IsoTools\Scripts\Internal\IsoFakeObject.cs" />
      <Compile Include="Assets\IsoTools\Scripts\Internal\IsoFakeRigidbody.cs" />
+     <Compile Include="Assets\IsoTools\Scripts\Internal\IsoList.cs" />
      <Compile Include="Assets\IsoTools\Scripts\Internal\IsoPhysicHelper.cs" />
      <Compile Include="Assets\IsoTools\Scripts\Internal\IsoUtils.cs" />
      <Compile Include="Assets\IsoTools\Scripts\IsoBoxCollider.cs" />
@@ -66,6 +68,11 @@
      <Compile Include="Assets\IsoTools\Scripts\IsoRigidbody.cs" />
      <Compile Include="Assets\IsoTools\Scripts\IsoSphereCollider.cs" />
      <Compile Include="Assets\IsoTools\Scripts\IsoWorld.cs" />
+     <Compile Include="Assets\IsoTools\Tiled\TiledMap.cs" />
+     <Compile Include="Assets\IsoTools\Tiled\TiledMapAsset.cs" />
+     <Compile Include="Assets\IsoTools\Tiled\TiledMapLayer.cs" />
+     <Compile Include="Assets\IsoTools\Tiled\TiledMapProperties.cs" />
+     <Compile Include="Assets\IsoTools\Tiled\TiledMapTileset.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity_5.1.4/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

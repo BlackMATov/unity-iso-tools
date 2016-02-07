@@ -46,7 +46,12 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\IsoTools\Editor\IsoObjectEditor.cs" />
+     <Compile Include="Assets\IsoTools\Scripts\Internal\Editor\IsoObjectEditor.cs" />
+     <Compile Include="Assets\IsoTools\Tiled\Internal\Editor\TiledMapAssetEditor.cs" />
+     <Compile Include="Assets\IsoTools\Tiled\Internal\Editor\TiledMapEditor.cs" />
+     <Compile Include="Assets\IsoTools\Tiled\Internal\Editor\TiledMapLayerEditor.cs" />
+     <Compile Include="Assets\IsoTools\Tiled\Internal\Editor\TiledMapPostprocessor.cs" />
+     <Compile Include="Assets\IsoTools\Tiled\Internal\Editor\TiledMapTilesetEditor.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity_5.1.4/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
