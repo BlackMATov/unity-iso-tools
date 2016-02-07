@@ -20,14 +20,14 @@ namespace IsoTools.Tiled {
 		//
 		// ---------------------------------------------------------------------
 
-		#if UNITY_EDITOR
+	#if UNITY_EDITOR
 		[SerializeField] bool _isShowGrid = false;
 
 		public bool isShowGrid {
 			get { return _isShowGrid; }
 			set { _isShowGrid = value; }
 		}
-		#endif
+	#endif
 
 		// ---------------------------------------------------------------------
 		//

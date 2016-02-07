@@ -81,6 +81,7 @@ namespace IsoTools.Tiled.Internal {
 			mesh_filter.mesh                   = GetTilesetMesh(tileset_index, layer_index);
 			var mesh_renderer                  = tileset.gameObject.AddComponent<MeshRenderer>();
 			mesh_renderer.sharedMaterial       = GetTilesetMaterial(tileset_index);
+			mesh_renderer.useLightProbes       = false;
 			mesh_renderer.receiveShadows       = false;
 			mesh_renderer.shadowCastingMode    = ShadowCastingMode.Off;
 			mesh_renderer.reflectionProbeUsage = ReflectionProbeUsage.Off;

@@ -184,7 +184,7 @@ namespace IsoTools {
 		//
 		// ---------------------------------------------------------------------
 
-		#if UNITY_EDITOR
+	#if UNITY_EDITOR
 		Vector3 _lastSize     = Vector3.zero;
 		Vector3 _lastPosition = Vector3.zero;
 		Vector2 _lastTransPos = Vector2.zero;
@@ -201,7 +201,7 @@ namespace IsoTools {
 			get { return _isShowBounds; }
 			set { _isShowBounds = value; }
 		}
-		#endif
+	#endif
 
 		// ---------------------------------------------------------------------
 		//
