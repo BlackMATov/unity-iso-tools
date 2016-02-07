@@ -1,10 +1,9 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/IsoTools/Scripts/Internal/Editor/IsoObjectEditor.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/IsoTools/Tiled/TiledMapAsset.cs">
     <Files>
-      <File FileName="Assets/IsoTools/Scripts/IsoObject.cs" Line="328" Column="1" />
-      <File FileName="Assets/IsoTools/Tiled/Internal/Editor/TiledMapAssetEditor.cs" Line="233" Column="1" />
-      <File FileName="Assets/IsoTools/Scripts/Internal/Editor/IsoObjectEditor.cs" Line="36" Column="21" />
+      <File FileName="Assets/IsoTools/Tiled/Internal/Editor/TiledMapPostprocessor.cs" Line="166" Column="60" />
+      <File FileName="Assets/IsoTools/Tiled/TiledMapAsset.cs" Line="24" Column="39" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
