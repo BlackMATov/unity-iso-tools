@@ -168,8 +168,8 @@ namespace IsoTools {
 			public bool                    Dirty        = false;
 			public bool                    Placed       = false;
 			public Rect                    ScreenRect   = new Rect();
-			public float                   Offset3d     = 0.0f;
 			public IsoUtils.MinMax         MinMax3d     = IsoUtils.MinMax.zero;
+			public float                   Offset3d     = 0.0f;
 			public Vector2                 MinSector    = Vector2.zero;
 			public Vector2                 MaxSector    = Vector2.zero;
 			public IsoAssocList<IsoObject> SelfDepends  = new IsoAssocList<IsoObject>(47);

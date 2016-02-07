@@ -39,29 +39,29 @@ namespace IsoTools {
 		//
 		// ---------------------------------------------------------------------
 
-		public static readonly float DefTileSize   = 32.0f;
-		public static readonly float MinTileSize   = Mathf.Epsilon;
-		public static readonly float MaxTileSize   = float.MaxValue;
+		static readonly float DefTileSize   = 32.0f;
+		static readonly float MinTileSize   = Mathf.Epsilon;
+		static readonly float MaxTileSize   = float.MaxValue;
 
-		public static readonly float DefTileRatio  = 0.5f;
-		public static readonly float MinTileRatio  = 0.25f;
-		public static readonly float MaxTileRatio  = 1.0f;
+		static readonly float DefTileRatio  = 0.5f;
+		static readonly float MinTileRatio  = 0.25f;
+		static readonly float MaxTileRatio  = 1.0f;
 
-		public static readonly float DefTileAngle  = 45.0f;
-		public static readonly float MinTileAngle  = 0.0f;
-		public static readonly float MaxTileAngle  = 90.0f;
+		static readonly float DefTileAngle  = 45.0f;
+		static readonly float MinTileAngle  = 0.0f;
+		static readonly float MaxTileAngle  = 90.0f;
 
-		public static readonly float DefTileHeight = DefTileSize;
-		public static readonly float MinTileHeight = MinTileSize;
-		public static readonly float MaxTileHeight = MaxTileSize;
+		static readonly float DefTileHeight = DefTileSize;
+		static readonly float MinTileHeight = MinTileSize;
+		static readonly float MaxTileHeight = MaxTileSize;
 
-		public static readonly float DefStepDepth  = 0.1f;
-		public static readonly float MinStepDepth  = Mathf.Epsilon;
-		public static readonly float MaxStepDepth  = float.MaxValue;
+		static readonly float DefStepDepth  = 0.1f;
+		static readonly float MinStepDepth  = Mathf.Epsilon;
+		static readonly float MaxStepDepth  = float.MaxValue;
 
-		public static readonly float DefStartDepth = 1.0f;
-		public static readonly float MinStartDepth = float.MinValue;
-		public static readonly float MaxStartDepth = float.MaxValue;
+		static readonly float DefStartDepth = 1.0f;
+		static readonly float MinStartDepth = float.MinValue;
+		static readonly float MaxStartDepth = float.MaxValue;
 
 		// ---------------------------------------------------------------------
 		//
@@ -172,8 +172,7 @@ namespace IsoTools {
 
 		public Vector3 TouchIsoPosition(int finger_id, float iso_z) {
 			if ( !Camera.main ) {
-				Debug.LogError("Main camera not found!", this);
-				return Vector3.zero;
+				throw new UnityException("Main camera not found!");
 			}
 			return TouchIsoPosition(finger_id, Camera.main, iso_z);
 		}
@@ -184,8 +183,7 @@ namespace IsoTools {
 
 		public Vector3 TouchIsoPosition(int finger_id, Camera camera, float iso_z) {
 			if ( !camera ) {
-				Debug.LogError("Camera argument is incorrect!", this);
-				return Vector3.zero;
+				throw new UnityException("Camera argument is incorrect!");
 			}
 			for ( var i = 0; i < Input.touchCount; ++i ) {
 				var touch = Input.GetTouch(i);
@@ -195,8 +193,7 @@ namespace IsoTools {
 						iso_z);
 				}
 			}
-			Debug.LogError("Touch finger id argument is incorrect!", this);
-			return Vector3.zero;
+			throw new UnityException("Touch finger id argument is incorrect!");
 		}
 
 		// ---------------------------------------------------------------------
@@ -233,8 +230,7 @@ namespace IsoTools {
 
 		public Vector3 MouseIsoPosition(float iso_z) {
 			if ( !Camera.main ) {
-				Debug.LogError("Main camera not found!", this);
-				return Vector3.zero;
+				throw new UnityException("Main camera not found!");
 			}
 			return MouseIsoPosition(Camera.main, iso_z);
 		}
@@ -245,8 +241,7 @@ namespace IsoTools {
 
 		public Vector3 MouseIsoPosition(Camera camera, float iso_z) {
 			if ( !camera ) {
-				Debug.LogError("Camera argument is incorrect!", this);
-				return Vector3.zero;
+				throw new UnityException("Camera argument is incorrect!");
 			}
 			return ScreenToIso(
 				camera.ScreenToWorldPoint(Input.mousePosition),
@@ -344,11 +339,11 @@ namespace IsoTools {
 			if ( iso_object.mode == IsoObject.Mode.Mode3d ) {
 				var minmax3d = IsoObjectMinMax3D(iso_object);
 				var offset3d = iso_object.transform.position.z - minmax3d.center;
-				if ( !Mathf.Approximately(iso_object.Internal.Offset3d, offset3d) ||
-					iso_object.Internal.MinMax3d.Approximately(minmax3d) )
+				if ( iso_object.Internal.MinMax3d.Approximately(minmax3d) ||
+					!Mathf.Approximately(iso_object.Internal.Offset3d, offset3d) )
 				{
-					iso_object.Internal.Offset3d = offset3d;
 					iso_object.Internal.MinMax3d = minmax3d;
+					iso_object.Internal.Offset3d = offset3d;
 					return true;
 				}
 			}
