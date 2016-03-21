@@ -457,36 +457,43 @@ namespace IsoTools {
 				_sectorsSize += IsoUtils.Vec2MaxF(iso_internal.ScreenRect.size);
 			}
 			var min_sector_size = IsoToScreen(IsoUtils.vec3OneX).x - IsoToScreen(Vector3.zero).x;
-			_sectorsSize = Mathf.Round(Mathf.Max(min_sector_size, _sectorsSize / _visibles.Count));
+			_sectorsSize = _visibles.Count > 0
+				? Mathf.Round(Mathf.Max(min_sector_size, _sectorsSize / _visibles.Count))
+				: min_sector_size;
 		}
 
 		void SetupObjectsSectors() {
-			_sectorsMinNumPos = new Vector2(float.MaxValue, float.MaxValue);
-			_sectorsMaxNumPos = new Vector2(float.MinValue, float.MinValue);
-			for ( int i = 0, e = _visibles.Count; i < e; ++i ) {
-				var iso_internal = _visibles[i].Internal;
+			if ( _visibles.Count > 0 ) {
+				_sectorsMinNumPos = new Vector2(float.MaxValue, float.MaxValue);
+				_sectorsMaxNumPos = new Vector2(float.MinValue, float.MinValue);
+				for ( int i = 0, e = _visibles.Count; i < e; ++i ) {
+					var iso_internal = _visibles[i].Internal;
 
-				// high performance tricks
-				var min_x = iso_internal.ScreenRect.xMin / _sectorsSize;
-				var min_y = iso_internal.ScreenRect.yMin / _sectorsSize;
-				var max_x = iso_internal.ScreenRect.xMax / _sectorsSize;
-				var max_y = iso_internal.ScreenRect.yMax / _sectorsSize;
-				iso_internal.MinSector.x = (int)(min_x >= 0.0F ? min_x : min_x - 1.0F);
-				iso_internal.MinSector.y = (int)(min_y >= 0.0F ? min_y : min_y - 1.0F);
-				iso_internal.MaxSector.x = (int)(max_x >= 0.0F ? max_x + 1.0F : max_x);
-				iso_internal.MaxSector.y = (int)(max_y >= 0.0F ? max_y + 1.0F : max_y);
-				if ( _sectorsMinNumPos.x > iso_internal.MinSector.x ) {
-					_sectorsMinNumPos.x = iso_internal.MinSector.x;
+					// high performance tricks
+					var min_x = iso_internal.ScreenRect.xMin / _sectorsSize;
+					var min_y = iso_internal.ScreenRect.yMin / _sectorsSize;
+					var max_x = iso_internal.ScreenRect.xMax / _sectorsSize;
+					var max_y = iso_internal.ScreenRect.yMax / _sectorsSize;
+					iso_internal.MinSector.x = (int)(min_x >= 0.0F ? min_x : min_x - 1.0F);
+					iso_internal.MinSector.y = (int)(min_y >= 0.0F ? min_y : min_y - 1.0F);
+					iso_internal.MaxSector.x = (int)(max_x >= 0.0F ? max_x + 1.0F : max_x);
+					iso_internal.MaxSector.y = (int)(max_y >= 0.0F ? max_y + 1.0F : max_y);
+					if ( _sectorsMinNumPos.x > iso_internal.MinSector.x ) {
+						_sectorsMinNumPos.x = iso_internal.MinSector.x;
+					}
+					if ( _sectorsMinNumPos.y > iso_internal.MinSector.y ) {
+						_sectorsMinNumPos.y = iso_internal.MinSector.y;
+					}
+					if ( _sectorsMaxNumPos.x < iso_internal.MaxSector.x ) {
+						_sectorsMaxNumPos.x = iso_internal.MaxSector.x;
+					}
+					if ( _sectorsMaxNumPos.y < iso_internal.MaxSector.y ) {
+						_sectorsMaxNumPos.y = iso_internal.MaxSector.y;
+					}
 				}
-				if ( _sectorsMinNumPos.y > iso_internal.MinSector.y ) {
-					_sectorsMinNumPos.y = iso_internal.MinSector.y;
-				}
-				if ( _sectorsMaxNumPos.x < iso_internal.MaxSector.x ) {
-					_sectorsMaxNumPos.x = iso_internal.MaxSector.x;
-				}
-				if ( _sectorsMaxNumPos.y < iso_internal.MaxSector.y ) {
-					_sectorsMaxNumPos.y = iso_internal.MaxSector.y;
-				}
+			} else {
+				_sectorsMinNumPos = Vector2.zero;
+				_sectorsMaxNumPos = new Vector2(_sectorsSize, _sectorsSize);
 			}
 			_sectorsNumPosCount = _sectorsMaxNumPos - _sectorsMinNumPos;
 		}
