@@ -16,7 +16,19 @@ namespace IsoTools.Internal {
 			get { return _isoObject; }
 		}
 
+		void FixLayers() {
+			var iso_object_layer = isoObject.gameObject.layer;
+			if ( gameObject.layer != iso_object_layer ) {
+				gameObject.layer = iso_object_layer;
+				for ( int i = 0, e = transform.childCount; i < e; ++i ) {
+					var child = transform.GetChild(i);
+					child.gameObject.layer = iso_object_layer;
+				}
+			}
+		}
+
 		void FixedUpdate() {
+			FixLayers();
 			if ( !IsoUtils.Vec3Approximately(_lastPosition, isoObject.position) ) {
 				_lastPosition = transform.position = isoObject.position;
 			} else if ( !IsoUtils.Vec3Approximately(_lastPosition, transform.position) ) {
