@@ -238,13 +238,11 @@ namespace IsoTools {
 		//
 		// ---------------------------------------------------------------------
 
-		IsoWorld _isoWorld = null;
 		public IsoWorld isoWorld {
 			get {
-				if ( !_isoWorld && gameObject.activeInHierarchy ) {
-					_isoWorld = GameObject.FindObjectOfType<IsoWorld>();
-				}
-				return _isoWorld;
+				return gameObject.activeInHierarchy
+					? IsoWorld.Instance
+					: null;
 			}
 		}
 

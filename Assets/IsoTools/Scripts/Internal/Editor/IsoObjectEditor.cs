@@ -13,7 +13,7 @@ namespace IsoTools.Internal {
 		Vector3                         _viewCenter     = Vector3.zero;
 
 		void GrabPositions() {
-			var iso_world = GameObject.FindObjectOfType<IsoWorld>();
+			var iso_world = IsoWorld.Instance;
 			if ( iso_world ) {
 				_positions = targets
 					.Where(p => p is IsoObject)
@@ -97,7 +97,7 @@ namespace IsoTools.Internal {
 		}
 
 		void ZMoveSlider() {
-			var iso_world = GameObject.FindObjectOfType<IsoWorld>();
+			var iso_world = IsoWorld.Instance;
 			if ( iso_world ) {
 				Handles.color = Handles.zAxisColor;
 				var delta = Handles.Slider(_viewCenter, IsoUtils.vec3OneY) - _viewCenter;
@@ -109,7 +109,7 @@ namespace IsoTools.Internal {
 		}
 
 		void XYMoveSlider(Color color, Vector3 dir) {
-			var iso_world = GameObject.FindObjectOfType<IsoWorld>();
+			var iso_world = IsoWorld.Instance;
 			if ( iso_world ) {
 				Handles.color = color;
 				var delta = Handles.Slider(_viewCenter, iso_world.IsoToScreen(dir)) - _viewCenter;

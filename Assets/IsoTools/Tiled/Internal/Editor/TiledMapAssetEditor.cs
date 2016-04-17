@@ -144,7 +144,7 @@ namespace IsoTools.Tiled.Internal {
 		}
 
 		IsoWorld GetIsoWorld() {
-			var iso_world = GameObject.FindObjectOfType<IsoWorld>();
+			var iso_world = IsoWorld.Instance;
 			if ( !iso_world ) {
 				throw new UnityException("not found IsoWorld");
 			}

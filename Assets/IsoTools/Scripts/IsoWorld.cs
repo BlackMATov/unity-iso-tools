@@ -10,6 +10,8 @@ namespace IsoTools {
 	[ExecuteInEditMode, DisallowMultipleComponent]
 	public class IsoWorld : MonoBehaviour {
 
+		static IsoWorld         _instance     = null;
+
 		bool                    _dirty        = false;
 		IsoAssocList<IsoObject> _objects      = new IsoAssocList<IsoObject>();
 		IsoAssocList<IsoObject> _visibles     = new IsoAssocList<IsoObject>();
@@ -126,6 +128,21 @@ namespace IsoTools {
 			set {
 				_startDepth = Mathf.Clamp(value, MinStartDepth, MaxStartDepth);
 				ChangeSortingProperty();
+			}
+		}
+
+		// ---------------------------------------------------------------------
+		//
+		// Instance
+		//
+		// ---------------------------------------------------------------------
+
+		public static IsoWorld Instance {
+			get {
+				if ( !_instance ) {
+					_instance = GameObject.FindObjectOfType<IsoWorld>();
+				}
+				return _instance;
 			}
 		}
 
