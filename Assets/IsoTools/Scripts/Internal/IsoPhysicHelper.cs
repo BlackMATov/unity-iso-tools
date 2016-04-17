@@ -10,6 +10,16 @@ namespace IsoTools.Internal {
 			get { return _isoFakeObject; }
 		}
 
+		int _refCounter = 0;
+		public void AddRefCounter() {
+			++_refCounter;
+		}
+		public void DropRefCounter() {
+			if ( --_refCounter <= 0 ) {
+				Destroy(this);
+			}
+		}
+
 		void Awake() {
 			hideFlags = HideFlags.HideInInspector;
 			var iso_object = GetComponent<IsoObject>();

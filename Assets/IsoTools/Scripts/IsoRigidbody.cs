@@ -11,15 +11,16 @@ namespace IsoTools {
 	public class IsoRigidbody : MonoBehaviour {
 
 		Rigidbody _realRigidbody = null;
-		protected Rigidbody realRigidbody {
+		Rigidbody realRigidbody {
 			get { return _realRigidbody; }
 		}
 
-		protected GameObject fakeObject {
-			get {
-				var helper = IsoUtils.GetOrCreateComponent<IsoPhysicHelper>(gameObject);
-				return helper ? helper.isoFakeObject : null;
-			}
+		GameObject fakeObject {
+			get { return physicHelper.isoFakeObject; }
+		}
+
+		IsoPhysicHelper physicHelper {
+			get { return IsoUtils.GetOrCreateComponent<IsoPhysicHelper>(gameObject); }
 		}
 
 		[SerializeField]
@@ -326,6 +327,7 @@ namespace IsoTools {
 			_realRigidbody.isKinematic            = isKinematic;
 			_realRigidbody.interpolation          = interpolation;
 			_realRigidbody.collisionDetectionMode = collisionDetectionMode;
+			physicHelper.AddRefCounter();
 		}
 
 		void OnEnable() {
@@ -346,6 +348,7 @@ namespace IsoTools {
 				Destroy(_realRigidbody);
 				_realRigidbody = null;
 			}
+			physicHelper.DropRefCounter();
 		}
 
 	#if UNITY_EDITOR

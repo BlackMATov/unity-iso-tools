@@ -16,10 +16,11 @@ namespace IsoTools {
 		}
 
 		protected GameObject fakeObject {
-			get {
-				var helper = IsoUtils.GetOrCreateComponent<IsoPhysicHelper>(gameObject);
-				return helper ? helper.isoFakeObject : null;
-			}
+			get { return physicHelper.isoFakeObject; }
+		}
+
+		protected IsoPhysicHelper physicHelper {
+			get { return IsoUtils.GetOrCreateComponent<IsoPhysicHelper>(gameObject); }
 		}
 
 		[SerializeField]
@@ -96,6 +97,7 @@ namespace IsoTools {
 			_realCollider           = CreateRealCollider(fake_collider_go);
 			_realCollider.material  = material;
 			_realCollider.isTrigger = isTrigger;
+			physicHelper.AddRefCounter();
 		}
 
 		void OnEnable() {
@@ -115,6 +117,7 @@ namespace IsoTools {
 				Destroy(_realCollider.gameObject);
 				_realCollider = null;
 			}
+			physicHelper.DropRefCounter();
 		}
 
 	#if UNITY_EDITOR
