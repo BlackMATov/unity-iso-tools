@@ -294,9 +294,15 @@ namespace IsoTools {
 
 		public void AddIsoObject(IsoObject iso_object) {
 			_objects.Add(iso_object);
+			if ( iso_object.cacheRenderers ) {
+				iso_object.UpdateCachedRenderers();
+			}
 		}
 
 		public void RemoveIsoObject(IsoObject iso_object) {
+			if ( iso_object.cacheRenderers ) {
+				iso_object.ClearCachedRenderers();
+			}
 			ClearIsoObjectDepends(iso_object);
 			_objects.Remove(iso_object);
 			_visibles.Remove(iso_object);
@@ -350,12 +356,21 @@ namespace IsoTools {
 			return false;
 		}
 
+		List<Renderer> GetIsoObjectRenderers(IsoObject iso_object) {
+			if ( iso_object.cacheRenderers ) {
+				return iso_object.Internal.Renderers;
+			} else {
+				iso_object.GetComponentsInChildren<Renderer>(_tmpRenderers);
+				return _tmpRenderers;
+			}
+		}
+
 		IsoUtils.MinMax IsoObjectMinMax3D(IsoObject iso_object) {
-			iso_object.GetComponentsInChildren<Renderer>(_tmpRenderers);
-			bool inited = false;
-			var  result = IsoUtils.MinMax.zero;
-			for ( int i = 0, e = _tmpRenderers.Count; i < e; ++i ) {
-				var bounds = _tmpRenderers[i].bounds;
+			bool inited    = false;
+			var  result    = IsoUtils.MinMax.zero;
+			var  renderers = GetIsoObjectRenderers(iso_object);
+			for ( int i = 0, e = renderers.Count; i < e; ++i ) {
+				var bounds = renderers[i].bounds;
 				var extents = bounds.extents;
 				if ( extents.x > 0.0f || extents.y > 0.0f || extents.z > 0.0f ) {
 					var center    = bounds.center.z;
@@ -378,9 +393,9 @@ namespace IsoTools {
 		}
 
 		bool IsIsoObjectVisible(IsoObject iso_object) {
-			iso_object.GetComponentsInChildren<Renderer>(_tmpRenderers);
-			for ( int i = 0, e = _tmpRenderers.Count; i < e; ++i ) {
-				if ( _tmpRenderers[i].isVisible ) {
+			var  renderers = GetIsoObjectRenderers(iso_object);
+			for ( int i = 0, e = renderers.Count; i < e; ++i ) {
+				if ( renderers[i].isVisible ) {
 					return true;
 				}
 			}
@@ -544,6 +559,11 @@ namespace IsoTools {
 				Profiler.EndSample();
 				_dirty = false;
 			}
+			PostStepSortActions();
+		}
+
+		void PostStepSortActions() {
+			_tmpRenderers.Clear();
 		}
 
 		void UpdateVisibles() {

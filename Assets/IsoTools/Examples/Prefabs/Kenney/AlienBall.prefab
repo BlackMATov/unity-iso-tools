@@ -55,7 +55,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 166188}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: .307000011, z: 0}
+  m_LocalPosition: {x: 0, y: 0.307, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 448796}
@@ -71,9 +71,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a9c584f9a39449438abc7ba59a68778, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mode: 0
-  _size: {x: .5, y: .5, z: .5}
+  _size: {x: 0.5, y: 0.5, z: 0.5}
   _position: {x: 0, y: 0, z: 0}
+  _mode: 0
+  _cacheRenderers: 0
   _isAlignment: 0
   _isShowBounds: 0
 --- !u!114 &11439950
@@ -114,8 +115,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _material: {fileID: 0}
   _isTrigger: 0
-  _size: {x: .519999981, y: .519999981, z: .519999981}
-  _offset: {x: .25, y: .25, z: .25}
+  _size: {x: 0.52, y: 0.52, z: 0.52}
+  _offset: {x: 0.25, y: 0.25, z: 0.25}
 --- !u!212 &21288996
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -134,14 +135,18 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_AutoUVMaxDistance: .5
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: d355cfa60ec5444bd9f32c9a106015d6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

@@ -7,30 +7,9 @@ using UnityEditor;
 #endif
 
 namespace IsoTools {
+	[SelectionBase]
 	[ExecuteInEditMode, DisallowMultipleComponent]
 	public class IsoObject : MonoBehaviour {
-
-		// ---------------------------------------------------------------------
-		//
-		// Mode
-		//
-		// ---------------------------------------------------------------------
-
-		public enum Mode {
-			Mode2d,
-			Mode3d
-		}
-
-		[SerializeField]
-		Mode _mode = Mode.Mode2d;
-
-		public Mode mode {
-			get { return _mode; }
-			set {
-				_mode = value;
-				FixTransform();
-			}
-		}
 
 		// ---------------------------------------------------------------------
 		//
@@ -160,20 +139,67 @@ namespace IsoTools {
 
 		// ---------------------------------------------------------------------
 		//
+		// Mode
+		//
+		// ---------------------------------------------------------------------
+
+
+		public enum Mode {
+			Mode2d,
+			Mode3d
+		}
+
+		[Space(10)]
+		[SerializeField]
+		Mode _mode = Mode.Mode2d;
+
+		public Mode mode {
+			get { return _mode; }
+			set {
+				_mode = value;
+				FixTransform();
+			}
+		}
+
+		// ---------------------------------------------------------------------
+		//
+		// Cache renderers
+		//
+		// ---------------------------------------------------------------------
+
+		[SerializeField]
+		bool _cacheRenderers = false;
+
+		public bool cacheRenderers {
+			get { return _cacheRenderers; }
+			set {
+				_cacheRenderers = value;
+				if ( value ) {
+					UpdateCachedRenderers();
+				} else {
+					ClearCachedRenderers();
+				}
+				FixTransform();
+			}
+		}
+
+		// ---------------------------------------------------------------------
+		//
 		// Internal
 		//
 		// ---------------------------------------------------------------------
 
 		public class InternalState {
-			public bool                    Dirty        = false;
-			public bool                    Placed       = false;
-			public Rect                    ScreenRect   = new Rect();
-			public IsoUtils.MinMax         MinMax3d     = IsoUtils.MinMax.zero;
-			public float                   Offset3d     = 0.0f;
-			public Vector2                 MinSector    = Vector2.zero;
-			public Vector2                 MaxSector    = Vector2.zero;
-			public IsoAssocList<IsoObject> SelfDepends  = new IsoAssocList<IsoObject>(47);
-			public IsoAssocList<IsoObject> TheirDepends = new IsoAssocList<IsoObject>(47);
+			public bool                    Dirty          = false;
+			public bool                    Placed         = false;
+			public Rect                    ScreenRect     = new Rect();
+			public IsoUtils.MinMax         MinMax3d       = IsoUtils.MinMax.zero;
+			public float                   Offset3d       = 0.0f;
+			public Vector2                 MinSector      = Vector2.zero;
+			public Vector2                 MaxSector      = Vector2.zero;
+			public List<Renderer>          Renderers      = new List<Renderer>();
+			public IsoAssocList<IsoObject> SelfDepends    = new IsoAssocList<IsoObject>(47);
+			public IsoAssocList<IsoObject> TheirDepends   = new IsoAssocList<IsoObject>(47);
 		}
 
 		public InternalState Internal = new InternalState();
@@ -185,10 +211,13 @@ namespace IsoTools {
 		// ---------------------------------------------------------------------
 
 	#if UNITY_EDITOR
-		Vector3 _lastSize     = Vector3.zero;
-		Vector3 _lastPosition = Vector3.zero;
-		Vector2 _lastTransPos = Vector2.zero;
+		Vector3 _lastSize           = Vector3.zero;
+		Vector3 _lastPosition       = Vector3.zero;
+		Vector2 _lastTransPos       = Vector2.zero;
+		Mode    _lastMode           = Mode.Mode2d;
+		bool    _lastCacheRenderers = false;
 
+		[Space(10)]
 		[SerializeField] bool _isAlignment  = true;
 		[SerializeField] bool _isShowBounds = false;
 
@@ -243,6 +272,14 @@ namespace IsoTools {
 			}
 		}
 
+		public void UpdateCachedRenderers() {
+			GetComponentsInChildren<Renderer>(Internal.Renderers);
+		}
+
+		public void ClearCachedRenderers() {
+			Internal.Renderers.Clear();
+		}
+
 		void FixScreenRect() {
 			if ( isoWorld ) {
 				var l = isoWorld.IsoToScreen(position + IsoUtils.Vec3FromY(size.y)).x;
@@ -255,9 +292,11 @@ namespace IsoTools {
 
 		void FixLastProperties() {
 		#if UNITY_EDITOR
-			_lastSize     = size;
-			_lastPosition = position;
-			_lastTransPos = transform.position;
+			_lastSize           = size;
+			_lastPosition       = position;
+			_lastTransPos       = transform.position;
+			_lastMode           = mode;
+			_lastCacheRenderers = cacheRenderers;
 		#endif
 		}
 
@@ -296,13 +335,17 @@ namespace IsoTools {
 
 	#if UNITY_EDITOR
 		void Reset() {
-			size     = Vector3.one;
-			position = Vector3.zero;
+			size           = Vector3.one;
+			position       = Vector3.zero;
+			mode           = Mode.Mode2d;
+			cacheRenderers = false;
 		}
 
 		void OnValidate() {
-			size     = _size;
-			position = _position;
+			size           = _size;
+			position       = _position;
+			mode           = _mode;
+			cacheRenderers = _cacheRenderers;
 		}
 
 		void OnDrawGizmos() {
@@ -320,6 +363,12 @@ namespace IsoTools {
 			}
 			if ( !IsoUtils.Vec2Approximately(_lastTransPos, transform.position) ) {
 				FixIsoPosition();
+			}
+			if ( _lastCacheRenderers != _cacheRenderers ) {
+				cacheRenderers = _cacheRenderers;
+			}
+			if ( _lastMode != _mode ) {
+				mode = _mode;
 			}
 		}
 	#endif
