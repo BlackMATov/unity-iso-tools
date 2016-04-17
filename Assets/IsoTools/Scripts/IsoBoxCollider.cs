@@ -44,7 +44,7 @@ namespace IsoTools {
 			get { return realCollider as BoxCollider; }
 		}
 
-		#if UNITY_EDITOR
+	#if UNITY_EDITOR
 		protected override void Reset() {
 			base.Reset();
 			var iso_object = GetComponent<IsoObject>();
@@ -71,6 +71,6 @@ namespace IsoTools {
 					Color.green);
 			}
 		}
-		#endif
+	#endif
 	}
 }

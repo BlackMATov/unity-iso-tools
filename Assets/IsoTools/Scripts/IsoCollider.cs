@@ -62,6 +62,18 @@ namespace IsoTools {
 			}
 		}
 
+		public float contactOffset {
+			get {
+				return realCollider
+					? realCollider.contactOffset
+					: 0.0f;
+			} set {
+				if ( realCollider ) {
+					realCollider.contactOffset = value;
+				}
+			}
+		}
+
 		public Vector3 ClosestPointOnBounds(Vector3 position) {
 			return realCollider
 				? realCollider.ClosestPointOnBounds(position)
@@ -105,7 +117,7 @@ namespace IsoTools {
 			}
 		}
 
-		#if UNITY_EDITOR
+	#if UNITY_EDITOR
 		protected virtual void Reset() {
 			material  = null;
 			isTrigger = false;
@@ -116,6 +128,6 @@ namespace IsoTools {
 			material  = _material;
 			isTrigger = _isTrigger;
 		}
-		#endif
+	#endif
 	}
 }

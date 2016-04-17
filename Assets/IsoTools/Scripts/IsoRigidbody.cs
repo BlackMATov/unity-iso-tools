@@ -348,7 +348,7 @@ namespace IsoTools {
 			}
 		}
 
-		#if UNITY_EDITOR
+	#if UNITY_EDITOR
 		void Reset() {
 			mass                   = 1.0f;
 			drag                   = 0.0f;
@@ -369,6 +369,6 @@ namespace IsoTools {
 				realRigidbody.collisionDetectionMode = collisionDetectionMode;
 			}
 		}
-		#endif
+	#endif
 	}
 }

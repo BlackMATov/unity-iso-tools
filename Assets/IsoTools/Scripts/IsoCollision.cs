@@ -7,6 +7,7 @@ namespace IsoTools {
 		public IsoCollider       collider         { get; private set; }
 		public IsoContactPoint[] contacts         { get; private set; }
 		public GameObject        gameObject       { get; private set; }
+		public Vector3           impulse          { get; private set; }
 		public Vector3           relativeVelocity { get; private set; }
 		public IsoRigidbody      rigidbody        { get; private set; }
 
@@ -14,6 +15,7 @@ namespace IsoTools {
 			collider         = IsoUtils.IsoConvertCollider(collision.collider);
 			contacts         = IsoUtils.IsoConvertContactPoints(collision.contacts);
 			gameObject       = IsoUtils.IsoConvertGameObject(collision.gameObject);
+			impulse          = collision.impulse;
 			relativeVelocity = collision.relativeVelocity;
 			rigidbody        = IsoUtils.IsoConvertRigidbody(collision.rigidbody);
 		}
