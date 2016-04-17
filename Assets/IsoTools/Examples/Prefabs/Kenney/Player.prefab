@@ -89,6 +89,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4febe544112bb4678bdd59fa963c802d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mass: 1
+  _drag: 0
+  _useGravity: 1
   _isKinematic: 0
   _interpolation: 0
   _collisionDetectionMode: 0

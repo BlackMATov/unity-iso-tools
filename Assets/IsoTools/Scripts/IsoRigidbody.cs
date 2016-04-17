@@ -23,6 +23,42 @@ namespace IsoTools {
 		}
 
 		[SerializeField]
+		public float _mass = 1.0f;
+		public float mass {
+			get { return _mass; }
+			set {
+				_mass = value;
+				if ( realRigidbody ) {
+					realRigidbody.mass = value;
+				}
+			}
+		}
+
+		[SerializeField]
+		public float _drag = 0.0f;
+		public float drag {
+			get { return _drag; }
+			set {
+				_drag = value;
+				if ( realRigidbody ) {
+					realRigidbody.drag = value;
+				}
+			}
+		}
+
+		[SerializeField]
+		public bool _useGravity = true;
+		public bool useGravity {
+			get { return _useGravity; }
+			set {
+				_useGravity = value;
+				if ( realRigidbody ) {
+					realRigidbody.useGravity = value;
+				}
+			}
+		}
+
+		[SerializeField]
 		public bool _isKinematic = false;
 		public bool isKinematic {
 			get { return _isKinematic; }
@@ -67,29 +103,11 @@ namespace IsoTools {
 			}
 		}
 
-		public float drag {
-			get { return realRigidbody ? realRigidbody.drag : 0.0f; }
-			set {
-				if ( realRigidbody ) {
-					realRigidbody.drag = value;
-				}
-			}
-		}
-
 		public Vector3 inertiaTensor {
 			get { return realRigidbody ? realRigidbody.inertiaTensor : Vector3.zero; }
 			set {
 				if ( realRigidbody ) {
 					realRigidbody.inertiaTensor = value;
-				}
-			}
-		}
-
-		public float mass {
-			get { return realRigidbody ? realRigidbody.mass : 0.0f; }
-			set {
-				if ( realRigidbody ) {
-					realRigidbody.mass = value;
 				}
 			}
 		}
@@ -117,15 +135,6 @@ namespace IsoTools {
 			set {
 				if ( realRigidbody ) {
 					realRigidbody.solverIterationCount = value;
-				}
-			}
-		}
-		
-		public bool useGravity {
-			get { return realRigidbody ? realRigidbody.useGravity : false; }
-			set {
-				if ( realRigidbody ) {
-					realRigidbody.useGravity = value;
 				}
 			}
 		}
@@ -258,6 +267,9 @@ namespace IsoTools {
 			IsoUtils.GetOrCreateComponent<IsoFakeRigidbody>(fakeObject).Init(this);
 			_realRigidbody                        = IsoUtils.GetOrCreateComponent<Rigidbody>(fakeObject);
 			_realRigidbody.freezeRotation         = true;
+			_realRigidbody.mass                   = mass;
+			_realRigidbody.drag                   = drag;
+			_realRigidbody.useGravity             = useGravity;
 			_realRigidbody.isKinematic            = isKinematic;
 			_realRigidbody.interpolation          = interpolation;
 			_realRigidbody.collisionDetectionMode = collisionDetectionMode;
@@ -285,6 +297,9 @@ namespace IsoTools {
 
 		#if UNITY_EDITOR
 		void Reset() {
+			mass                   = 1.0f;
+			drag                   = 0.0f;
+			useGravity             = true;
 			isKinematic            = false;
 			interpolation          = RigidbodyInterpolation.None;
 			collisionDetectionMode = CollisionDetectionMode.Discrete;
@@ -293,6 +308,9 @@ namespace IsoTools {
 		
 		void OnValidate() {
 			if ( realRigidbody ) {
+				realRigidbody.mass                   = mass;
+				realRigidbody.drag                   = drag;
+				realRigidbody.useGravity             = useGravity;
 				realRigidbody.isKinematic            = isKinematic;
 				realRigidbody.interpolation          = interpolation;
 				realRigidbody.collisionDetectionMode = collisionDetectionMode;
