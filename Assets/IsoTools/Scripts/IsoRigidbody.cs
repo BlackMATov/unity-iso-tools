@@ -138,6 +138,15 @@ namespace IsoTools {
 				}
 			}
 		}
+
+		public bool useConeFriction {
+			get { return realRigidbody ? realRigidbody.useConeFriction : false; }
+			set {
+				if ( realRigidbody ) {
+					realRigidbody.useConeFriction = value;
+				}
+			}
+		}
 		
 		public Vector3 velocity {
 			get { return realRigidbody ? realRigidbody.velocity : Vector3.zero; }
@@ -190,16 +199,6 @@ namespace IsoTools {
 			}
 		}
 
-		public void AddRelativeForce(Vector3 force) {
-			AddRelativeForce(force, ForceMode.Force);
-		}
-		
-		public void AddRelativeForce(Vector3 force, ForceMode mode) {
-			if ( realRigidbody ) {
-				realRigidbody.AddRelativeForce(force, mode);
-			}
-		}
-
 		public void AddForceAtPosition(Vector3 force, Vector3 position) {
 			AddForceAtPosition(force, position, ForceMode.Force);
 		}
@@ -210,9 +209,31 @@ namespace IsoTools {
 			}
 		}
 
+		public void AddRelativeForce(Vector3 force) {
+			AddRelativeForce(force, ForceMode.Force);
+		}
+		
+		public void AddRelativeForce(Vector3 force, ForceMode mode) {
+			if ( realRigidbody ) {
+				realRigidbody.AddRelativeForce(force, mode);
+			}
+		}
+
 		public Vector3 ClosestPointOnBounds(Vector3 position) {
 			return realRigidbody
 				? realRigidbody.ClosestPointOnBounds(position)
+				: Vector3.zero;
+		}
+
+		public Vector3 GetPointVelocity(Vector3 world_point) {
+			return realRigidbody
+				? realRigidbody.GetPointVelocity(world_point)
+				: Vector3.zero;
+		}
+
+		public Vector3 GetRelativePointVelocity(Vector3 relative_point) {
+			return realRigidbody
+				? realRigidbody.GetRelativePointVelocity(relative_point)
 				: Vector3.zero;
 		}
 
@@ -220,6 +241,24 @@ namespace IsoTools {
 			return realRigidbody
 				? realRigidbody.IsSleeping()
 				: false;
+		}
+
+		public void MovePosition(Vector3 position) {
+			if ( realRigidbody ) {
+				realRigidbody.MovePosition(position);
+			}
+		}
+
+		public void ResetCenterOfMass() {
+			if ( realRigidbody ) {
+				realRigidbody.ResetCenterOfMass();
+			}
+		}
+
+		public void ResetInertiaTensor() {
+			if ( realRigidbody ) {
+				realRigidbody.ResetInertiaTensor();
+			}
 		}
 
 		public void SetDensity(float density) {
@@ -234,33 +273,47 @@ namespace IsoTools {
 			}
 		}
 
-		public void WakeUp() {
-			if ( realRigidbody ) {
-				realRigidbody.WakeUp();
-			}
-		}
-
 		public bool SweepTest(Vector3 direction, out IsoRaycastHit iso_hit_info) {
-			return SweepTest(direction, out iso_hit_info, Mathf.Infinity);
+			return SweepTest(direction, out iso_hit_info, Mathf.Infinity, QueryTriggerInteraction.UseGlobal);
 		}
 
 		public bool SweepTest(Vector3 direction, out IsoRaycastHit iso_hit_info, float max_distance) {
+			return SweepTest(direction, out iso_hit_info, max_distance, QueryTriggerInteraction.UseGlobal);
+		}
+
+		public bool SweepTest(
+			Vector3 direction, out IsoRaycastHit iso_hit_info,
+			float max_distance, QueryTriggerInteraction query_trigger_interaction)
+		{
 			var hit_info = new RaycastHit();
 			var result = realRigidbody
-				? realRigidbody.SweepTest(direction, out hit_info, max_distance)
+				? realRigidbody.SweepTest(direction, out hit_info, max_distance, query_trigger_interaction)
 				: false;
 			iso_hit_info = result ? new IsoRaycastHit(hit_info) : new IsoRaycastHit();
 			return result;
 		}
 
 		public IsoRaycastHit[] SweepTestAll(Vector3 direction) {
-			return SweepTestAll(direction, Mathf.Infinity);
+			return SweepTestAll(direction, Mathf.Infinity, QueryTriggerInteraction.UseGlobal);
 		}
 
 		public IsoRaycastHit[] SweepTestAll(Vector3 direction, float max_distance) {
+			return SweepTestAll(direction, max_distance, QueryTriggerInteraction.UseGlobal);
+		}
+
+		public IsoRaycastHit[] SweepTestAll(
+			Vector3 direction,
+			float max_distance, QueryTriggerInteraction query_trigger_interaction)
+		{
 			return realRigidbody
-				? IsoUtils.IsoConvertRaycastHits(realRigidbody.SweepTestAll(direction, max_distance))
+				? IsoUtils.IsoConvertRaycastHits(realRigidbody.SweepTestAll(direction, max_distance, query_trigger_interaction))
 				: new IsoRaycastHit[0];
+		}
+
+		public void WakeUp() {
+			if ( realRigidbody ) {
+				realRigidbody.WakeUp();
+			}
 		}
 		
 		void Awake() {
