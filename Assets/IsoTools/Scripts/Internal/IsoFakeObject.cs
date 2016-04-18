@@ -16,7 +16,7 @@ namespace IsoTools.Internal {
 			get { return _isoObject; }
 		}
 
-		void FixLayers() {
+		void CheckLayers() {
 			var iso_object_layer = isoObject.gameObject.layer;
 			if ( gameObject.layer != iso_object_layer ) {
 				gameObject.layer = iso_object_layer;
@@ -28,7 +28,7 @@ namespace IsoTools.Internal {
 		}
 
 		void FixedUpdate() {
-			FixLayers();
+			CheckLayers();
 			if ( !IsoUtils.Vec3Approximately(_lastPosition, isoObject.position) ) {
 				_lastPosition = transform.position = isoObject.position;
 			} else if ( !IsoUtils.Vec3Approximately(_lastPosition, transform.position) ) {
