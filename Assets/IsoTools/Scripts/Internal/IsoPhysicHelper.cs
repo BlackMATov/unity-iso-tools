@@ -48,6 +48,7 @@ namespace IsoTools.Internal {
 				_isoFakeObject = new GameObject("_Fake" + gameObject.name);
 				_isoFakeObject.AddComponent<IsoFakeObject>().Init(iso_object);
 				_isoFakeObject.hideFlags = HideFlags.HideInHierarchy | HideFlags.NotEditable;
+				GameObject.DontDestroyOnLoad(_isoFakeObject);
 			}
 		}
 
