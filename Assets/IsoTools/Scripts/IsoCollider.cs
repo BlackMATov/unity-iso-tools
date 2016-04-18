@@ -97,7 +97,6 @@ namespace IsoTools {
 			_realCollider           = CreateRealCollider(fake_collider_go);
 			_realCollider.material  = material;
 			_realCollider.isTrigger = isTrigger;
-			physicHelper.AddRefCounter();
 		}
 
 		void OnEnable() {
@@ -117,7 +116,7 @@ namespace IsoTools {
 				Destroy(_realCollider.gameObject);
 				_realCollider = null;
 			}
-			physicHelper.DropRefCounter();
+			physicHelper.DestroyIfUnnecessary(this);
 		}
 
 	#if UNITY_EDITOR

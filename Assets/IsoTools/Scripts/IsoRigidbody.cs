@@ -327,7 +327,6 @@ namespace IsoTools {
 			_realRigidbody.isKinematic            = isKinematic;
 			_realRigidbody.interpolation          = interpolation;
 			_realRigidbody.collisionDetectionMode = collisionDetectionMode;
-			physicHelper.AddRefCounter();
 		}
 
 		void OnEnable() {
@@ -348,7 +347,7 @@ namespace IsoTools {
 				Destroy(_realRigidbody);
 				_realRigidbody = null;
 			}
-			physicHelper.DropRefCounter();
+			physicHelper.DestroyIfUnnecessary(this);
 		}
 
 	#if UNITY_EDITOR

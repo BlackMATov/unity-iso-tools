@@ -1,21 +1,42 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 namespace IsoTools.Internal {
 	[DisallowMultipleComponent]
 	[RequireComponent(typeof(IsoObject))]
 	public class IsoPhysicHelper : MonoBehaviour {
 
+		static List<IsoCollider > _tmpColliders   = new List<IsoCollider >(7);
+		static List<IsoRigidbody> _tmpRigidbodies = new List<IsoRigidbody>(7);
+
 		GameObject _isoFakeObject = null;
 		public GameObject isoFakeObject {
 			get { return _isoFakeObject; }
 		}
 
-		int _refCounter = 0;
-		public void AddRefCounter() {
-			++_refCounter;
-		}
-		public void DropRefCounter() {
-			if ( --_refCounter <= 0 ) {
+		public void DestroyIfUnnecessary(Component except) {
+			var unnecessary = true;
+			GetComponents<IsoCollider >(_tmpColliders);
+			GetComponents<IsoRigidbody>(_tmpRigidbodies);
+			if ( unnecessary ) {
+				for ( int i = 0, e = _tmpColliders.Count; i < e; ++i ) {
+					if ( _tmpColliders[i] != except ) {
+						unnecessary = false;
+						break;
+					}
+				}
+			}
+			if ( unnecessary ) {
+				for ( int i = 0, e = _tmpRigidbodies.Count; i < e; ++i ) {
+					if ( _tmpRigidbodies[i] != except ) {
+						unnecessary = false;
+						break;
+					}
+				}
+			}
+			_tmpColliders.Clear();
+			_tmpRigidbodies.Clear();
+			if ( unnecessary ) {
 				Destroy(this);
 			}
 		}

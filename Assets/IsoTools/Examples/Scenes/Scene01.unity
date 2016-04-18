@@ -181,6 +181,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4febe544112bb4678bdd59fa963c802d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mass: 1
+  _drag: 0
   _useGravity: 1
   _isKinematic: 1
   _interpolation: 0
@@ -367,6 +369,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4febe544112bb4678bdd59fa963c802d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mass: 1
+  _drag: 0
   _useGravity: 1
   _isKinematic: 1
   _interpolation: 0
@@ -541,6 +545,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4febe544112bb4678bdd59fa963c802d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mass: 1
+  _drag: 0
   _useGravity: 1
   _isKinematic: 1
   _interpolation: 0
@@ -723,6 +729,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4febe544112bb4678bdd59fa963c802d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mass: 1
+  _drag: 0
   _useGravity: 1
   _isKinematic: 1
   _interpolation: 0
@@ -1087,6 +1095,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4febe544112bb4678bdd59fa963c802d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mass: 1
+  _drag: 0
   _useGravity: 1
   _isKinematic: 1
   _interpolation: 0
@@ -1187,6 +1197,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4febe544112bb4678bdd59fa963c802d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mass: 1
+  _drag: 0
   _useGravity: 1
   _isKinematic: 1
   _interpolation: 0
@@ -1208,7 +1220,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 482272, guid: c1da36e1b472b4195a4780c9d03c52de, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 23
+      value: 24.5
       objectReference: {fileID: 0}
     - target: {fileID: 482272, guid: c1da36e1b472b4195a4780c9d03c52de, type: 2}
       propertyPath: m_LocalRotation.x
@@ -1287,6 +1299,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4febe544112bb4678bdd59fa963c802d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mass: 1
+  _drag: 0
   _useGravity: 1
   _isKinematic: 1
   _interpolation: 0
@@ -1542,6 +1556,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4febe544112bb4678bdd59fa963c802d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mass: 1
+  _drag: 0
   _useGravity: 1
   _isKinematic: 1
   _interpolation: 0
@@ -1638,6 +1654,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4febe544112bb4678bdd59fa963c802d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mass: 1
+  _drag: 0
   _useGravity: 1
   _isKinematic: 1
   _interpolation: 0
@@ -1816,6 +1834,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4febe544112bb4678bdd59fa963c802d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mass: 1
+  _drag: 0
   _useGravity: 1
   _isKinematic: 1
   _interpolation: 0
@@ -1837,7 +1857,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 24
+      value: 23.5
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalRotation.x
@@ -2072,6 +2092,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4febe544112bb4678bdd59fa963c802d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mass: 1
+  _drag: 0
   _useGravity: 1
   _isKinematic: 1
   _interpolation: 0
@@ -2473,6 +2495,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4febe544112bb4678bdd59fa963c802d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mass: 1
+  _drag: 0
   _useGravity: 1
   _isKinematic: 1
   _interpolation: 0
@@ -2494,7 +2518,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 24.5
+      value: 24
       objectReference: {fileID: 0}
     - target: {fileID: 436736, guid: 30a269be2fc864c9ea00c7a65636d543, type: 2}
       propertyPath: m_LocalRotation.x
@@ -2611,7 +2635,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 482272, guid: c1da36e1b472b4195a4780c9d03c52de, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 23.5
+      value: 23
       objectReference: {fileID: 0}
     - target: {fileID: 482272, guid: c1da36e1b472b4195a4780c9d03c52de, type: 2}
       propertyPath: m_LocalRotation.x
@@ -2690,6 +2714,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4febe544112bb4678bdd59fa963c802d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mass: 1
+  _drag: 0
   _useGravity: 1
   _isKinematic: 1
   _interpolation: 0
@@ -2790,6 +2816,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4febe544112bb4678bdd59fa963c802d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mass: 1
+  _drag: 0
   _useGravity: 1
   _isKinematic: 1
   _interpolation: 0
@@ -2972,6 +3000,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4febe544112bb4678bdd59fa963c802d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mass: 1
+  _drag: 0
   _useGravity: 1
   _isKinematic: 1
   _interpolation: 0
@@ -3154,6 +3184,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4febe544112bb4678bdd59fa963c802d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mass: 1
+  _drag: 0
   _useGravity: 1
   _isKinematic: 1
   _interpolation: 0
@@ -3488,6 +3520,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4febe544112bb4678bdd59fa963c802d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mass: 1
+  _drag: 0
   _useGravity: 1
   _isKinematic: 1
   _interpolation: 0
@@ -3934,6 +3968,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4febe544112bb4678bdd59fa963c802d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mass: 1
+  _drag: 0
   _useGravity: 1
   _isKinematic: 1
   _interpolation: 0
@@ -4359,6 +4395,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4febe544112bb4678bdd59fa963c802d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mass: 1
+  _drag: 0
   _useGravity: 1
   _isKinematic: 1
   _interpolation: 0
@@ -4459,6 +4497,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4febe544112bb4678bdd59fa963c802d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mass: 1
+  _drag: 0
   _useGravity: 1
   _isKinematic: 1
   _interpolation: 0
@@ -4622,6 +4662,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4febe544112bb4678bdd59fa963c802d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mass: 1
+  _drag: 0
   _useGravity: 1
   _isKinematic: 1
   _interpolation: 0
@@ -4726,6 +4768,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4febe544112bb4678bdd59fa963c802d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mass: 1
+  _drag: 0
   _useGravity: 1
   _isKinematic: 1
   _interpolation: 0
@@ -4995,6 +5039,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4febe544112bb4678bdd59fa963c802d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mass: 1
+  _drag: 0
   _useGravity: 1
   _isKinematic: 1
   _interpolation: 0
@@ -5099,6 +5145,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4febe544112bb4678bdd59fa963c802d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mass: 1
+  _drag: 0
   _useGravity: 1
   _isKinematic: 1
   _interpolation: 0
@@ -5199,6 +5247,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4febe544112bb4678bdd59fa963c802d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mass: 1
+  _drag: 0
   _useGravity: 1
   _isKinematic: 1
   _interpolation: 0
@@ -5303,6 +5353,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4febe544112bb4678bdd59fa963c802d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mass: 1
+  _drag: 0
   _useGravity: 1
   _isKinematic: 1
   _interpolation: 0
@@ -5461,6 +5513,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4febe544112bb4678bdd59fa963c802d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mass: 1
+  _drag: 0
   _useGravity: 1
   _isKinematic: 1
   _interpolation: 0
@@ -5686,6 +5740,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4febe544112bb4678bdd59fa963c802d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mass: 1
+  _drag: 0
   _useGravity: 1
   _isKinematic: 1
   _interpolation: 0
