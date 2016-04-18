@@ -10,6 +10,8 @@ namespace IsoTools {
 	[RequireComponent(typeof(IsoObject))]
 	public class IsoRigidbody : MonoBehaviour {
 
+		IsoFakeRigidbody _fakeRigidbody;
+
 		Rigidbody _realRigidbody = null;
 		Rigidbody realRigidbody {
 			get { return _realRigidbody; }
@@ -318,8 +320,8 @@ namespace IsoTools {
 		}
 		
 		void Awake() {
-			IsoUtils.GetOrCreateComponent<IsoFakeRigidbody>(fakeObject).Init(this);
-			_realRigidbody                        = IsoUtils.GetOrCreateComponent<Rigidbody>(fakeObject);
+			_fakeRigidbody                        = fakeObject.AddComponent<IsoFakeRigidbody>().Init(this);
+			_realRigidbody                        = fakeObject.AddComponent<Rigidbody>();
 			_realRigidbody.freezeRotation         = true;
 			_realRigidbody.mass                   = mass;
 			_realRigidbody.drag                   = drag;
@@ -343,9 +345,10 @@ namespace IsoTools {
 		
 		void OnDestroy() {
 			if ( _realRigidbody ) {
-				Destroy(fakeObject.GetComponent<IsoFakeRigidbody>());
 				Destroy(_realRigidbody);
-				_realRigidbody = null;
+			}
+			if ( _fakeRigidbody ) {
+				Destroy(_fakeRigidbody);
 			}
 			physicHelper.DestroyIfUnnecessary(this);
 		}

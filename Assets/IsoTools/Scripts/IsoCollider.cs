@@ -10,6 +10,8 @@ namespace IsoTools {
 	public abstract class IsoCollider : MonoBehaviour {
 		protected abstract Collider CreateRealCollider(GameObject target);
 
+		IsoFakeCollider _fakeCollider;
+
 		Collider _realCollider = null;
 		protected Collider realCollider {
 			get { return _realCollider; }
@@ -91,10 +93,8 @@ namespace IsoTools {
 		}
 
 		void Awake() {
-			var fake_collider_go = new GameObject();
-			fake_collider_go.transform.SetParent(fakeObject.transform, false);
-			fake_collider_go.AddComponent<IsoFakeCollider>().Init(this);
-			_realCollider           = CreateRealCollider(fake_collider_go);
+			_fakeCollider           = fakeObject.AddComponent<IsoFakeCollider>().Init(this);
+			_realCollider           = CreateRealCollider(fakeObject);
 			_realCollider.material  = material;
 			_realCollider.isTrigger = isTrigger;
 		}
@@ -113,8 +113,10 @@ namespace IsoTools {
 
 		void OnDestroy() {
 			if ( _realCollider ) {
-				Destroy(_realCollider.gameObject);
-				_realCollider = null;
+				Destroy(_realCollider);
+			}
+			if ( _fakeCollider ) {
+				Destroy(_fakeCollider);
 			}
 			physicHelper.DestroyIfUnnecessary(this);
 		}
