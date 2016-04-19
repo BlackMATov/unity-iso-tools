@@ -1,10 +1,8 @@
 ﻿using UnityEngine;
 using UnityEditor;
-using IsoTools.Tiled;
 using System;
 using System.IO;
 using System.Linq;
-using System.Xml;
 using System.Xml.Linq;
 using System.Reflection;
 using System.Collections.Generic;
@@ -33,6 +31,7 @@ namespace IsoTools.Tiled.Internal {
 				}
 				new_asset.Data = tile_map_data;
 				new_asset.Name = Path.GetFileNameWithoutExtension(new_asset_path);
+				RemoveAllSubAsset(new_asset_path);
 				EditorUtility.SetDirty(new_asset);
 				AssetDatabase.SaveAssets();
 			}
@@ -141,16 +140,10 @@ namespace IsoTools.Tiled.Internal {
 							tileset.Name, image_path));
 					}
 
-					var method_args = new object[2]{0,0};
-					typeof(TextureImporter)
-						.GetMethod("GetWidthAndHeight", BindingFlags.NonPublic | BindingFlags.Instance)
-						.Invoke(importer, method_args);
-					var image_width  = (int)method_args[0];
-					var image_height = (int)method_args[1];
-
-					var meta_data = new List<SpriteMetaData>();
-					for ( var i = image_height - tileset.TileHeight - tileset.Margin; i >= tileset.Margin; i -= tileset.TileHeight + tileset.Spacing ) {
-						for ( var j = tileset.Margin; j <= image_width - tileset.Margin - tileset.TileWidth; j += tileset.TileWidth + tileset.Spacing ) {
+					var meta_data  = new List<SpriteMetaData>();
+					var image_size = GetSizeFromTextureImporter(importer);
+					for ( var i = image_size.y - tileset.TileHeight - tileset.Margin; i >= tileset.Margin; i -= tileset.TileHeight + tileset.Spacing ) {
+						for ( var j = tileset.Margin; j <= image_size.x - tileset.Margin - tileset.TileWidth; j += tileset.TileWidth + tileset.Spacing ) {
 							var meta_elem  = new SpriteMetaData();
 							meta_elem.name = string.Format(
 								"{0}_{1}",
@@ -208,6 +201,23 @@ namespace IsoTools.Tiled.Internal {
 					}
 				}
 			}
+		}
+
+		static void RemoveAllSubAsset(string main_asset_path) {
+			var subassets = AssetDatabase.LoadAllAssetsAtPath(main_asset_path);
+			foreach ( var asset in subassets ) {
+				if ( !AssetDatabase.IsMainAsset(asset) ) {
+					GameObject.DestroyImmediate(asset, true);
+				}
+			}
+		}
+
+		static Vector2 GetSizeFromTextureImporter(TextureImporter importer) {
+			var method_args = new object[2]{0,0};
+			typeof(TextureImporter)
+				.GetMethod("GetWidthAndHeight", BindingFlags.NonPublic | BindingFlags.Instance)
+				.Invoke(importer, method_args);
+			return new Vector2((int)method_args[0], (int)method_args[1]);
 		}
 	}
 }

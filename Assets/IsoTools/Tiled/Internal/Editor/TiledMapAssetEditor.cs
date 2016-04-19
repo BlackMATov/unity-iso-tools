@@ -1,12 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEditor;
-using IsoTools.Tiled;
 using IsoTools.Internal;
 using System;
-using System.IO;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace IsoTools.Tiled.Internal {
 	[CustomEditor(typeof(TiledMapAsset))]
@@ -88,129 +84,29 @@ namespace IsoTools.Tiled.Internal {
 		}
 
 		Mesh GetTilesetMesh(int tileset_index, int layer_index) {
-			var vertices  = new List<Vector3>();
-			var triangles = new List<int>();
-			var uvs       = new List<Vector2>();
-			for ( var tile_y = 0; tile_y < _asset.Data.Height; ++tile_y ) {
-				for ( var tile_x = 0; tile_x < _asset.Data.Width; ++tile_x ) {
-					var tile_gid = _asset.Data
-						.Layers[layer_index]
-						.Tiles[tile_y * _asset.Data.Width + tile_x];
-					if ( tile_gid > 0 && CheckTileGidByTileset(tile_gid, tileset_index) ) {
-						var tile_iso_pos = new Vector3(
-							-tile_y + _asset.Data.Height - 1,
-							-tile_x + _asset.Data.Width  - 1);
-						
-						var iso_world        = GetIsoWorld();
-						var tile_screen_pos  = iso_world.IsoToScreen(tile_iso_pos);
-						var tile_sprite      = GetTileSprite(tile_gid, tileset_index);
-						var tile_width       = tile_sprite.rect.width  / _asset.PixelsPerUnit;
-						var tile_height      = tile_sprite.rect.height / _asset.PixelsPerUnit;
-						var tileset_data     = _asset.Data.Tilesets[tileset_index];
-						var tileset_offset_x = tileset_data.TileOffsetX / _asset.PixelsPerUnit;
-						var tileset_offset_y = tileset_data.TileOffsetY / _asset.PixelsPerUnit;
-
-						var vertex_pos =
-							IsoUtils.Vec3FromVec2(tile_screen_pos) -
-							IsoUtils.Vec3FromXY(tile_width, tile_height) * 0.5f +
-							IsoUtils.Vec3FromXY(tileset_offset_x, tileset_offset_y);
-
-						vertices.Add(vertex_pos);
-						vertices.Add(vertex_pos + IsoUtils.Vec3FromX (tile_width));
-						vertices.Add(vertex_pos + IsoUtils.Vec3FromXY(tile_width, tile_height));
-						vertices.Add(vertex_pos + IsoUtils.Vec3FromY (tile_height));
-
-						triangles.Add(vertices.Count - 4 + 2);
-						triangles.Add(vertices.Count - 4 + 1);
-						triangles.Add(vertices.Count - 4 + 0);
-						triangles.Add(vertices.Count - 4 + 0);
-						triangles.Add(vertices.Count - 4 + 3);
-						triangles.Add(vertices.Count - 4 + 2);
-
-						var tex_size = new Vector2(tile_sprite.texture.width, tile_sprite.texture.height);
-						uvs.Add(new Vector2(tile_sprite.rect.xMin / tex_size.x, tile_sprite.rect.yMin / tex_size.y));
-						uvs.Add(new Vector2(tile_sprite.rect.xMax / tex_size.x, tile_sprite.rect.yMin / tex_size.y));
-						uvs.Add(new Vector2(tile_sprite.rect.xMax / tex_size.x, tile_sprite.rect.yMax / tex_size.y));
-						uvs.Add(new Vector2(tile_sprite.rect.xMin / tex_size.x, tile_sprite.rect.yMax / tex_size.y));
-					}
+			var mesh_name = string.Format("mesh_{0}_{1}", tileset_index, layer_index);
+			var subassets = AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(_asset));
+			foreach ( var subasset in subassets ) {
+				if ( subasset.name == mesh_name && subasset is Mesh ) {
+					return subasset as Mesh;
 				}
 			}
-			var mesh       = new Mesh();
-			mesh.vertices  = vertices.ToArray();
-			mesh.triangles = triangles.ToArray();
-			mesh.uv        = uvs.ToArray();
-			mesh.RecalculateNormals();
-			return mesh;
-		}
-
-		IsoWorld GetIsoWorld() {
-			var iso_world = IsoWorld.Instance;
-			if ( !iso_world ) {
-				throw new UnityException("not found IsoWorld");
-			}
-			return iso_world;
-		}
-
-		string GetTiledMapAssetPath() {
-			var asset_path = AssetDatabase.GetAssetPath(_asset);
-			if ( string.IsNullOrEmpty(asset_path) ) {
-				throw new UnityException(string.Format(
-					"not found tiled map asset ({0}) path",
-					_asset.name));
-			}
-			return asset_path;
-		}
-
-		bool CheckTileGidByTileset(int tile_gid, int tileset_index) {
-			var tileset_data = _asset.Data.Tilesets[tileset_index];
-			return
-				tile_gid >= tileset_data.FirstGid &&
-				tile_gid <  tileset_data.FirstGid + tileset_data.TileCount;
-		}
-
-		Sprite GetTileSprite(int tile_gid, int tileset_index) {
-			var tileset_data = _asset.Data.Tilesets[tileset_index];
-			var tile_sprite_name = string.Format(
-				"{0}_{1}",
-				Path.GetFileNameWithoutExtension(tileset_data.ImageSource),
-				tile_gid);
-			var tileset_assets = AssetDatabase.LoadAllAssetsAtPath(Path.Combine(
-				Path.GetDirectoryName(GetTiledMapAssetPath()),
-				tileset_data.ImageSource));
-			var tile_sprite = tileset_assets
-				.Where(p => p is Sprite && p.name == tile_sprite_name)
-				.Select(p => p as Sprite)
-				.FirstOrDefault();
-			if ( !tile_sprite ) {
-				throw new UnityException(string.Format(
-					"sprite ({0}) for tile ({1}) not found",
-					tile_sprite_name, tile_gid));
-			}
-			return tile_sprite;
+			throw new UnityException(string.Format(
+				"not found tileset mesh ({0})",
+				mesh_name));
 		}
 
 		Material GetTilesetMaterial(int tileset_index) {
-			var shader = Shader.Find("Sprites/Default");
-			if ( !shader ) {
-				throw new UnityException("'Sprites/Default' shader not found");
+			var material_name = string.Format("material_{0}", tileset_index);
+			var subassets = AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(_asset));
+			foreach ( var subasset in subassets ) {
+				if ( subasset.name == material_name && subasset is Material ) {
+					return subasset as Material;
+				}
 			}
-			var material = new Material(shader);
-			material.SetTexture("_MainTex", GetTilesetTexture(tileset_index));
-			return material;
-		}
-
-		Texture2D GetTilesetTexture(int tileset_index) {
-			var tileset_data = _asset.Data.Tilesets[tileset_index];
-			var texture_path = Path.Combine(
-				Path.GetDirectoryName(GetTiledMapAssetPath()),
-				tileset_data.ImageSource);
-			var texture = AssetDatabase.LoadAssetAtPath<Texture2D>(texture_path);
-			if ( !texture ) {
-				throw new UnityException(string.Format(
-					"texture ({0}) for tileset ({1}) not found",
-					texture_path, tileset_data.Name));
-			}
-			return texture;
+			throw new UnityException(string.Format(
+				"not found tileset material ({0})",
+				material_name));
 		}
 
 		// ------------------------------------------------------------------------

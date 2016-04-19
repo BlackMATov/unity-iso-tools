@@ -1,33 +1,33 @@
 fileFormatVersion: 2
-guid: 221bc03dca62748f284639c0b399875b
+guid: 2ffc72ff3b52a488e9418c5a8c4f1649
 timeCreated: 1461092903
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: isometric_grass_and_water_1
-    21300002: isometric_grass_and_water_2
-    21300004: isometric_grass_and_water_3
-    21300006: isometric_grass_and_water_4
-    21300008: isometric_grass_and_water_5
-    21300010: isometric_grass_and_water_6
-    21300012: isometric_grass_and_water_7
-    21300014: isometric_grass_and_water_8
-    21300016: isometric_grass_and_water_9
-    21300018: isometric_grass_and_water_10
-    21300020: isometric_grass_and_water_11
-    21300022: isometric_grass_and_water_12
-    21300024: isometric_grass_and_water_13
-    21300026: isometric_grass_and_water_14
-    21300028: isometric_grass_and_water_15
-    21300030: isometric_grass_and_water_16
-    21300032: isometric_grass_and_water_17
-    21300034: isometric_grass_and_water_18
-    21300036: isometric_grass_and_water_19
-    21300038: isometric_grass_and_water_20
-    21300040: isometric_grass_and_water_21
-    21300042: isometric_grass_and_water_22
-    21300044: isometric_grass_and_water_23
-    21300046: isometric_grass_and_water_24
+    21300000: isometric_grass_and_water_2_25
+    21300002: isometric_grass_and_water_2_26
+    21300004: isometric_grass_and_water_2_27
+    21300006: isometric_grass_and_water_2_28
+    21300008: isometric_grass_and_water_2_29
+    21300010: isometric_grass_and_water_2_30
+    21300012: isometric_grass_and_water_2_31
+    21300014: isometric_grass_and_water_2_32
+    21300016: isometric_grass_and_water_2_33
+    21300018: isometric_grass_and_water_2_34
+    21300020: isometric_grass_and_water_2_35
+    21300022: isometric_grass_and_water_2_36
+    21300024: isometric_grass_and_water_2_37
+    21300026: isometric_grass_and_water_2_38
+    21300028: isometric_grass_and_water_2_39
+    21300030: isometric_grass_and_water_2_40
+    21300032: isometric_grass_and_water_2_41
+    21300034: isometric_grass_and_water_2_42
+    21300036: isometric_grass_and_water_2_43
+    21300038: isometric_grass_and_water_2_44
+    21300040: isometric_grass_and_water_2_45
+    21300042: isometric_grass_and_water_2_46
+    21300044: isometric_grass_and_water_2_47
+    21300046: isometric_grass_and_water_2_48
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -74,7 +74,7 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: isometric_grass_and_water_1
+    - name: isometric_grass_and_water_2_25
       rect:
         serializedVersion: 2
         x: 0
@@ -93,7 +93,7 @@ TextureImporter:
         - {x: 32, y: -4}
         - {x: 32, y: 21}
         - {x: 12, y: 30}
-    - name: isometric_grass_and_water_2
+    - name: isometric_grass_and_water_2_26
       rect:
         serializedVersion: 2
         x: 64
@@ -113,7 +113,7 @@ TextureImporter:
         - {x: 32, y: -3}
         - {x: 32, y: 17}
         - {x: 19, y: 25}
-    - name: isometric_grass_and_water_3
+    - name: isometric_grass_and_water_2_27
       rect:
         serializedVersion: 2
         x: 128
@@ -133,7 +133,7 @@ TextureImporter:
         - {x: 32, y: -3}
         - {x: 32, y: 15}
         - {x: 30, y: 17}
-    - name: isometric_grass_and_water_4
+    - name: isometric_grass_and_water_2_28
       rect:
         serializedVersion: 2
         x: 192
@@ -153,7 +153,7 @@ TextureImporter:
         - {x: 32, y: -4}
         - {x: 32, y: 16}
         - {x: 12, y: 30}
-    - name: isometric_grass_and_water_5
+    - name: isometric_grass_and_water_2_29
       rect:
         serializedVersion: 2
         x: 0
@@ -173,7 +173,7 @@ TextureImporter:
         - {x: 32, y: -7}
         - {x: 32, y: 20}
         - {x: 17, y: 29}
-    - name: isometric_grass_and_water_6
+    - name: isometric_grass_and_water_2_30
       rect:
         serializedVersion: 2
         x: 64
@@ -190,7 +190,7 @@ TextureImporter:
         - {x: 32, y: -7}
         - {x: 32, y: 31}
         - {x: -32, y: 31}
-    - name: isometric_grass_and_water_7
+    - name: isometric_grass_and_water_2_31
       rect:
         serializedVersion: 2
         x: 128
@@ -210,7 +210,7 @@ TextureImporter:
         - {x: 32, y: -3}
         - {x: 32, y: 17}
         - {x: 18, y: 30}
-    - name: isometric_grass_and_water_8
+    - name: isometric_grass_and_water_2_32
       rect:
         serializedVersion: 2
         x: 192
@@ -229,7 +229,7 @@ TextureImporter:
         - {x: 32, y: -10}
         - {x: 32, y: 1}
         - {x: 20, y: 27}
-    - name: isometric_grass_and_water_9
+    - name: isometric_grass_and_water_2_33
       rect:
         serializedVersion: 2
         x: 0
@@ -255,7 +255,7 @@ TextureImporter:
         - {x: 32, y: -11}
         - {x: 32, y: 2}
         - {x: 13, y: 29}
-    - name: isometric_grass_and_water_10
+    - name: isometric_grass_and_water_2_34
       rect:
         serializedVersion: 2
         x: 64
@@ -274,7 +274,7 @@ TextureImporter:
         - {x: 32, y: -7}
         - {x: 32, y: 13}
         - {x: 28, y: 23}
-    - name: isometric_grass_and_water_11
+    - name: isometric_grass_and_water_2_35
       rect:
         serializedVersion: 2
         x: 128
@@ -296,7 +296,7 @@ TextureImporter:
         - {x: 32, y: -10}
         - {x: 32, y: 0}
         - {x: 4, y: 19}
-    - name: isometric_grass_and_water_12
+    - name: isometric_grass_and_water_2_36
       rect:
         serializedVersion: 2
         x: 192
@@ -315,7 +315,7 @@ TextureImporter:
         - {x: 32, y: -10}
         - {x: 32, y: 4}
         - {x: 5, y: 27}
-    - name: isometric_grass_and_water_13
+    - name: isometric_grass_and_water_2_37
       rect:
         serializedVersion: 2
         x: 0
@@ -336,7 +336,7 @@ TextureImporter:
         - {x: 32, y: -7}
         - {x: 32, y: 13}
         - {x: 19, y: 28}
-    - name: isometric_grass_and_water_14
+    - name: isometric_grass_and_water_2_38
       rect:
         serializedVersion: 2
         x: 64
@@ -354,7 +354,7 @@ TextureImporter:
         - {x: 2, y: -19}
         - {x: 32, y: -9}
         - {x: 32, y: 25}
-    - name: isometric_grass_and_water_15
+    - name: isometric_grass_and_water_2_39
       rect:
         serializedVersion: 2
         x: 128
@@ -374,7 +374,7 @@ TextureImporter:
         - {x: 6, y: 29}
         - {x: -21, y: 29}
         - {x: -32, y: 16}
-    - name: isometric_grass_and_water_16
+    - name: isometric_grass_and_water_2_40
       rect:
         serializedVersion: 2
         x: 192
@@ -393,7 +393,7 @@ TextureImporter:
         - {x: 32, y: -9}
         - {x: 32, y: 0}
         - {x: 12, y: 32}
-    - name: isometric_grass_and_water_17
+    - name: isometric_grass_and_water_2_41
       rect:
         serializedVersion: 2
         x: 0
@@ -414,7 +414,7 @@ TextureImporter:
         - {x: 32, y: -8}
         - {x: 32, y: 17}
         - {x: 9, y: 30}
-    - name: isometric_grass_and_water_18
+    - name: isometric_grass_and_water_2_42
       rect:
         serializedVersion: 2
         x: 64
@@ -433,7 +433,7 @@ TextureImporter:
         - {x: 32, y: -4}
         - {x: 32, y: 17}
         - {x: 19, y: 23}
-    - name: isometric_grass_and_water_19
+    - name: isometric_grass_and_water_2_43
       rect:
         serializedVersion: 2
         x: 128
@@ -452,7 +452,7 @@ TextureImporter:
         - {x: 32, y: -12}
         - {x: 32, y: 8}
         - {x: 6, y: 26}
-    - name: isometric_grass_and_water_20
+    - name: isometric_grass_and_water_2_44
       rect:
         serializedVersion: 2
         x: 192
@@ -471,7 +471,7 @@ TextureImporter:
         - {x: 32, y: -9}
         - {x: 32, y: 0}
         - {x: 7, y: 32}
-    - name: isometric_grass_and_water_21
+    - name: isometric_grass_and_water_2_45
       rect:
         serializedVersion: 2
         x: 0
@@ -496,7 +496,7 @@ TextureImporter:
         - {x: 32, y: 0}
         - {x: 21, y: 23}
         - {x: 14, y: 29}
-    - name: isometric_grass_and_water_22
+    - name: isometric_grass_and_water_2_46
       rect:
         serializedVersion: 2
         x: 64
@@ -517,7 +517,7 @@ TextureImporter:
         - {x: 32, y: -5}
         - {x: 32, y: 18}
         - {x: 21, y: 27}
-    - name: isometric_grass_and_water_23
+    - name: isometric_grass_and_water_2_47
       rect:
         serializedVersion: 2
         x: 128
@@ -536,7 +536,7 @@ TextureImporter:
         - {x: 32, y: -10}
         - {x: 32, y: 0}
         - {x: 4, y: 14}
-    - name: isometric_grass_and_water_24
+    - name: isometric_grass_and_water_2_48
       rect:
         serializedVersion: 2
         x: 192

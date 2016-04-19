@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
 using UnityEditor;
-using IsoTools.Tiled;
-using IsoTools.Internal;
 
 namespace IsoTools.Tiled.Internal {
 	[CustomEditor(typeof(TiledMapTileset)), CanEditMultipleObjects]

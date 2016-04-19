@@ -47,6 +47,7 @@
   <ItemGroup>
      <Compile Include="Assets\IsoTools\Scripts\Internal\Editor\IsoObjectEditor.cs" />
      <Compile Include="Assets\IsoTools\Tiled\Internal\Editor\TiledMapAssetEditor.cs" />
+     <Compile Include="Assets\IsoTools\Tiled\Internal\Editor\TiledMapAssetPostprocessor.cs" />
      <Compile Include="Assets\IsoTools\Tiled\Internal\Editor\TiledMapEditor.cs" />
      <Compile Include="Assets\IsoTools\Tiled\Internal\Editor\TiledMapLayerEditor.cs" />
      <Compile Include="Assets\IsoTools\Tiled\Internal\Editor\TiledMapPostprocessor.cs" />
