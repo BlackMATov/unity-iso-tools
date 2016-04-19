@@ -31,33 +31,5 @@ namespace IsoTools.Internal {
 				_lastPosition = isoObject.position = transform.position;
 			}
 		}
-
-		void OnTriggerEnter(Collider collider) {
-			isoObject.gameObject.SendMessage(
-				"OnIsoTriggerEnter",
-				IsoUtils.IsoConvertCollider(collider),
-				SendMessageOptions.DontRequireReceiver);
-		}
-
-		void OnTriggerExit(Collider collider) {
-			isoObject.gameObject.SendMessage(
-				"OnIsoTriggerExit",
-				IsoUtils.IsoConvertCollider(collider),
-				SendMessageOptions.DontRequireReceiver);
-		}
-
-		void OnCollisionEnter(Collision collision) {
-			isoObject.gameObject.SendMessage(
-				"OnIsoCollisionEnter",
-				new IsoCollision(collision),
-				SendMessageOptions.DontRequireReceiver);
-		}
-		
-		void OnCollisionExit(Collision collision) {
-			isoObject.gameObject.SendMessage(
-				"OnIsoCollisionExit",
-				new IsoCollision(collision),
-				SendMessageOptions.DontRequireReceiver);
-		}
 	}
 }

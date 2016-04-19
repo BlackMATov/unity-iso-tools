@@ -2,6 +2,7 @@
 using System.Collections;
 
 namespace IsoTools.Examples {
+	[RequireComponent(typeof(IsoTriggerListener), typeof(IsoCollisionListener))]
 	public class IsoEchoListener : MonoBehaviour {
 		void OnIsoTriggerEnter(IsoCollider iso_collider) {
 			Debug.LogFormat(
