@@ -7,7 +7,7 @@ using UnityEditor;
 
 namespace IsoTools {
 	[RequireComponent(typeof(IsoObject))]
-	public abstract class IsoCollider : MonoBehaviour {
+	public abstract class IsoCollider : IsoPhysicHelperHolder {
 		protected abstract Collider CreateRealCollider(GameObject target);
 
 		IsoFakeCollider _fakeCollider;
@@ -15,14 +15,6 @@ namespace IsoTools {
 		Collider _realCollider = null;
 		protected Collider realCollider {
 			get { return _realCollider; }
-		}
-
-		protected GameObject fakeObject {
-			get { return physicHelper.isoFakeObject; }
-		}
-
-		protected IsoPhysicHelper physicHelper {
-			get { return IsoUtils.GetOrCreateComponent<IsoPhysicHelper>(gameObject); }
 		}
 
 		[SerializeField]
@@ -118,7 +110,7 @@ namespace IsoTools {
 			if ( _fakeCollider ) {
 				Destroy(_fakeCollider);
 			}
-			physicHelper.DestroyIfUnnecessary(this);
+			DestroyUnnecessaryCheck();
 		}
 
 	#if UNITY_EDITOR

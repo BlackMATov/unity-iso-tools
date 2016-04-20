@@ -8,21 +8,13 @@ using UnityEditor;
 namespace IsoTools {
 	[DisallowMultipleComponent]
 	[RequireComponent(typeof(IsoObject))]
-	public class IsoRigidbody : MonoBehaviour {
+	public class IsoRigidbody : IsoPhysicHelperHolder {
 
 		IsoFakeRigidbody _fakeRigidbody;
 
 		Rigidbody _realRigidbody = null;
 		Rigidbody realRigidbody {
 			get { return _realRigidbody; }
-		}
-
-		GameObject fakeObject {
-			get { return physicHelper.isoFakeObject; }
-		}
-
-		IsoPhysicHelper physicHelper {
-			get { return IsoUtils.GetOrCreateComponent<IsoPhysicHelper>(gameObject); }
 		}
 
 		[SerializeField]
@@ -350,7 +342,7 @@ namespace IsoTools {
 			if ( _fakeRigidbody ) {
 				Destroy(_fakeRigidbody);
 			}
-			physicHelper.DestroyIfUnnecessary(this);
+			DestroyUnnecessaryCheck();
 		}
 
 	#if UNITY_EDITOR

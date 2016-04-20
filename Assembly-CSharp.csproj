@@ -60,6 +60,7 @@
      <Compile Include="Assets\IsoTools\Scripts\Internal\IsoFakeTriggerListener.cs" />
      <Compile Include="Assets\IsoTools\Scripts\Internal\IsoList.cs" />
      <Compile Include="Assets\IsoTools\Scripts\Internal\IsoPhysicHelper.cs" />
+     <Compile Include="Assets\IsoTools\Scripts\Internal\IsoPhysicHelperHolder.cs" />
      <Compile Include="Assets\IsoTools\Scripts\Internal\IsoUtils.cs" />
      <Compile Include="Assets\IsoTools\Scripts\IsoBoxCollider.cs" />
      <Compile Include="Assets\IsoTools\Scripts\IsoCollider.cs" />
