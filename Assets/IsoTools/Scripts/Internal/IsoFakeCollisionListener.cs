@@ -2,26 +2,22 @@
 
 namespace IsoTools.Internal {
 	public class IsoFakeCollisionListener : MonoBehaviour {
-		IsoCollisionListener _isoListener = null;
+		GameObject _realGameObject = null;
 
 		public IsoFakeCollisionListener Init(IsoCollisionListener iso_listener) {
-			_isoListener = iso_listener;
+			_realGameObject = iso_listener.gameObject;
 			return this;
 		}
 
-		IsoCollisionListener isoListener {
-			get { return _isoListener; }
-		}
-
 		void OnCollisionEnter(Collision collision) {
-			isoListener.gameObject.SendMessage(
+			_realGameObject.SendMessage(
 				"OnIsoCollisionEnter",
 				new IsoCollision(collision),
 				SendMessageOptions.DontRequireReceiver);
 		}
 
 		void OnCollisionExit(Collision collision) {
-			isoListener.gameObject.SendMessage(
+			_realGameObject.SendMessage(
 				"OnIsoCollisionExit",
 				new IsoCollision(collision),
 				SendMessageOptions.DontRequireReceiver);

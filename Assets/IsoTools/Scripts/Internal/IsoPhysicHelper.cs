@@ -12,12 +12,12 @@ namespace IsoTools.Internal {
 		}
 
 		void Awake() {
-			//hideFlags = HideFlags.HideInInspector;
+			hideFlags = HideFlags.HideInInspector;
 			var iso_object = GetComponent<IsoObject>();
 			if ( iso_object ) {
 				_isoFakeObject = new GameObject("_Fake" + gameObject.name);
 				_isoFakeObject.AddComponent<IsoFakeObject>().Init(iso_object);
-				//_isoFakeObject.hideFlags = HideFlags.HideInHierarchy | HideFlags.NotEditable;
+				_isoFakeObject.hideFlags = HideFlags.HideInHierarchy | HideFlags.NotEditable;
 				GameObject.DontDestroyOnLoad(_isoFakeObject);
 			}
 		}
