@@ -15,15 +15,8 @@ namespace IsoTools.Internal {
 		}
 
 		protected void DestroyUnnecessaryCheck() {
-			var unnecessary = true;
 			GetComponents<IsoPhysicHelperHolder>(_tmpHolders);
-			for ( int i = 0, e = _tmpHolders.Count; i < e; ++i ) {
-				if ( _tmpHolders[i] != this ) {
-					unnecessary = false;
-					break;
-				}
-			}
-			if ( unnecessary ) {
+			if ( _tmpHolders.Count == 1 && _tmpHolders[0] == this ) {
 				Destroy(physicHelper);
 			}
 			_tmpHolders.Clear();
