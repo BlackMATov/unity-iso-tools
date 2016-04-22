@@ -410,7 +410,7 @@ namespace IsoTools {
 		}
 
 		bool IsIsoObjectVisible(IsoObject iso_object) {
-			var  renderers = GetIsoObjectRenderers(iso_object);
+			var renderers = GetIsoObjectRenderers(iso_object);
 			for ( int i = 0, e = renderers.Count; i < e; ++i ) {
 				if ( renderers[i].isVisible ) {
 					return true;

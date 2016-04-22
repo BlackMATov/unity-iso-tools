@@ -47,9 +47,10 @@ namespace IsoTools {
 	#if UNITY_EDITOR
 		protected override void Reset() {
 			base.Reset();
-			var iso_object = GetComponent<IsoObject>();
-			size   = iso_object ? iso_object.size : Vector3.zero;
-			offset = iso_object ? iso_object.size * 0.5f : Vector3.zero;
+			var iso_object      = GetComponent<IsoObject>();
+			var iso_object_size = iso_object ? iso_object.size : Vector3.zero;
+			size                = iso_object_size;
+			offset              = iso_object_size * 0.5f;
 			EditorUtility.SetDirty(this);
 		}
 
