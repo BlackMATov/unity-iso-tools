@@ -71,7 +71,7 @@ MonoBehaviour:
   _size: {x: 0.07, y: 1, z: 0.43}
   _position: {x: 0, y: 0, z: 0}
   _mode: 0
-  _cacheRenderers: 0
+  _cacheRenderers: 1
   _isAlignment: 0
   _isShowBounds: 0
 --- !u!212 &21245702
