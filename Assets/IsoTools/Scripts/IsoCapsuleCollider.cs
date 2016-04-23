@@ -58,7 +58,7 @@ namespace IsoTools {
 			get { return realCollider as CapsuleCollider; }
 		}
 
-		#if UNITY_EDITOR
+	#if UNITY_EDITOR
 		protected override void Reset() {
 			base.Reset();
 			var iso_object      = GetComponent<IsoObject>();
@@ -106,6 +106,6 @@ namespace IsoTools {
 				}
 			}
 		}
-		#endif
+	#endif
 	}
 }

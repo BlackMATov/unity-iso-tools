@@ -10,7 +10,7 @@ GameObject:
   - 4: {fileID: 434702}
   - 114: {fileID: 11429270}
   - 114: {fileID: 11445356}
-  - 114: {fileID: 11484474}
+  - 114: {fileID: 11473226}
   - 114: {fileID: 11484120}
   - 114: {fileID: 11402146}
   - 114: {fileID: 11463578}
@@ -45,7 +45,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 121016}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.595533, y: 1.549416, z: 9}
+  m_LocalPosition: {x: -1.595533, y: 1.549416, z: 4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 442418}
@@ -130,6 +130,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9634e461d1e942de8174ee80528a2d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &11473226
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 121016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b256250c588ee4e4590a3e58eaa69b1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _material: {fileID: 0}
+  _isTrigger: 0
+  _size: {x: 0.35, y: 0.35, z: 0.6}
+  _offset: {x: 0.15, y: 0.15, z: 0.3}
 --- !u!114 &11484120
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -142,22 +157,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2
---- !u!114 &11484474
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 121016}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4d35c70ee62a44288b95ff88ca8e87c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _material: {fileID: 0}
-  _isTrigger: 0
-  _height: 0.6
-  _radius: 0.17
-  _offset: {x: 0.15, y: 0.15, z: 0.3}
 --- !u!212 &21204754
 SpriteRenderer:
   m_ObjectHideFlags: 1
