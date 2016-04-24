@@ -112,15 +112,28 @@ namespace IsoTools.Internal {
 								? SnappingProcess(ref result_p_z, iso_object.sizeZ, other.positionZ, other.sizeZ)
 								: false;
 							if ( new_snapping_z ) {
-								if ( new_snapping_z ) {
-									delta      = result_p_z - iso_orig_z;
-									snapping_z = true;
-								}
+								delta      = result_p_z - iso_orig_z;
+								snapping_z = true;
 							}
 						}
 					}
 					if ( snapping_z ) {
 						break;
+					}
+				}
+				if ( !snapping_z ) {
+					foreach ( var pair in _isoZPositions ) {
+						var iso_object = pair.Key;
+						var iso_orig_z = pair.Value;
+						var result_p_z = iso_orig_z + delta;
+						var new_snapping_z = SnappingProcess(ref result_p_z, iso_object.sizeZ, iso_object.tilePositionZ, 1.0f);
+						if ( new_snapping_z ) {
+							delta      = result_p_z - iso_orig_z;
+							snapping_z = true;
+						}
+						if ( snapping_z ) {
+							break;
+						}
 					}
 				}
 			}
@@ -172,6 +185,32 @@ namespace IsoTools.Internal {
 					}
 					if ( snapping_x && snapping_y ) {
 						break;
+					}
+				}
+				if ( !snapping_x && !snapping_y ) {
+					foreach ( var pair in _positions ) {
+						var iso_object     = pair.Key;
+						var iso_orig_p     = pair.Value;
+						var result_pos     = iso_orig_p + delta;
+						var result_pos_iso = IsoWorld.Instance.ScreenToIso(result_pos, iso_object.positionZ);
+						var new_snapping_x = SnappingProcess(ref result_pos_iso.x, iso_object.sizeX, iso_object.tilePositionX, 1.0f);
+						var new_snapping_y = SnappingProcess(ref result_pos_iso.y, iso_object.sizeY, iso_object.tilePositionY, 1.0f);
+						if ( new_snapping_x || new_snapping_y ) {
+							result_pos = IsoWorld.Instance.IsoToScreen(result_pos_iso);
+							if ( new_snapping_x ) {
+								delta.x    = result_pos.x - iso_orig_p.x;
+								delta.y    = result_pos.y - iso_orig_p.y;
+								snapping_x = true;
+							}
+							if ( new_snapping_y ) {
+								delta.x    = result_pos.x - iso_orig_p.x;
+								delta.y    = result_pos.y - iso_orig_p.y;
+								snapping_y = true;
+							}
+						}
+						if ( snapping_x && snapping_y ) {
+							break;
+						}
 					}
 				}
 			}

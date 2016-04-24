@@ -89,7 +89,6 @@ MonoBehaviour:
   _position: {x: 0.62638426, y: 3.0810504, z: 0.53}
   _mode: 0
   _cacheRenderers: 1
-  _isAlignment: 0
   _isShowBounds: 0
 --- !u!114 &11434786
 MonoBehaviour:
