@@ -89,14 +89,17 @@ namespace IsoTools {
 
 		public Vector2 positionXY {
 			get { return new Vector2(positionX, positionY); }
+			set { position = IsoUtils.Vec3ChangeXY(position, value.x, value.y); }
 		}
 
 		public Vector2 positionYZ {
 			get { return new Vector2(positionY, positionZ); }
+			set { position = IsoUtils.Vec3ChangeYZ(position, value.x, value.y); }
 		}
 
 		public Vector2 positionXZ {
 			get { return new Vector2(positionX, positionZ); }
+			set { position = IsoUtils.Vec3ChangeXZ(position, value.x, value.y); }
 		}
 
 		// ---------------------------------------------------------------------

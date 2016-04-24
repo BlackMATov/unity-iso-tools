@@ -7,13 +7,14 @@ namespace IsoTools.Internal {
 	[CustomEditor(typeof(IsoObject)), CanEditMultipleObjects]
 	class IsoObjectEditor : Editor {
 
-		IDictionary<IsoObject, Vector3> _positions       = new Dictionary<IsoObject, Vector3>();
-		IDictionary<IsoObject, float>   _isoZPositions   = new Dictionary<IsoObject, float>();
-		IList<IsoObject>                _otherObjects    = new List<IsoObject>();
-		Vector3                         _center          = Vector3.zero;
-		Vector3                         _viewCenter      = Vector3.zero;
+		IDictionary<IsoObject, Vector3> _positions     = new Dictionary<IsoObject, Vector3>();
+		IDictionary<IsoObject, float>   _isoZPositions = new Dictionary<IsoObject, float>();
+		IList<IsoObject>                _otherObjects  = new List<IsoObject>();
+		Vector3                         _center        = Vector3.zero;
+		Vector3                         _viewCenter    = Vector3.zero;
 
-		static public readonly float    SnappingDistance = 0.2f;
+		static public readonly float SnappingDistance       = 0.2f;
+		static public readonly float FloatBeautifierEpsilon = 1e-5f;
 
 		static bool IsSnappingEnabled() {
 			return !Event.current.control;
@@ -55,6 +56,17 @@ namespace IsoTools.Internal {
 					serializedObject.ApplyModifiedProperties();
 				}
 			}
+		}
+
+		float FloatBeautifier(float v) {
+			var rv = Mathf.Round(v);
+			return Mathf.Abs(rv - v) < FloatBeautifierEpsilon ? rv : v;
+		}
+
+		Vector2 Vector2Beautifier(Vector2 v) {
+			v.x = FloatBeautifier(v.x);
+			v.y = FloatBeautifier(v.y);
+			return v;
 		}
 
 		bool SnappingProcess(ref float min_a, float size_a, float min_b, float size_b) {
@@ -137,8 +149,7 @@ namespace IsoTools.Internal {
 				var iso_object = pair.Key;
 				var iso_orig_z = pair.Value;
 				var result_p_z = iso_orig_z + delta;
-				iso_object.positionZ = result_p_z;
-				iso_object.FixTransform();
+				iso_object.positionZ = FloatBeautifier(result_p_z);
 				var z_delta = iso_object.position.z - iso_orig_z;
 				return Mathf.Abs(z_delta) > Mathf.Abs(AccIn) ? z_delta : AccIn;
 			});
@@ -212,6 +223,7 @@ namespace IsoTools.Internal {
 				var result_pos = iso_orig_p + delta;
 				iso_object.transform.position = result_pos;
 				iso_object.FixIsoPosition();
+				iso_object.positionXY = Vector2Beautifier(iso_object.positionXY);
 				var pos_delta = iso_object.transform.position - iso_orig_p;
 				return pos_delta.magnitude > AccIn.magnitude ? pos_delta : AccIn;
 			});
