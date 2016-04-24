@@ -217,13 +217,7 @@ namespace IsoTools {
 		bool    _lastCacheRenderers = false;
 
 		[Space(10)]
-		[SerializeField] bool _isAlignment  = true;
 		[SerializeField] bool _isShowBounds = false;
-
-		public bool isAlignment {
-			get { return _isAlignment; }
-			set { _isAlignment = value; }
-		}
 
 		public bool isShowBounds {
 			get { return _isShowBounds; }
@@ -248,11 +242,6 @@ namespace IsoTools {
 		}
 
 		public void FixTransform() {
-		#if UNITY_EDITOR
-			if ( !Application.isPlaying && isAlignment ) {
-				_position = tilePosition;
-			}
-		#endif
 			if ( isoWorld ) {
 				transform.position = IsoUtils.Vec3ChangeZ(
 					isoWorld.IsoToScreen(position),
