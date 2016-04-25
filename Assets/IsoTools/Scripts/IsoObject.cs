@@ -199,6 +199,8 @@ namespace IsoTools {
 			public float                   Offset3d       = 0.0f;
 			public Vector2                 MinSector      = Vector2.zero;
 			public Vector2                 MaxSector      = Vector2.zero;
+			public Transform               Transform      = null;
+			public Vector2                 LastTrans      = Vector2.zero;
 			public List<Renderer>          Renderers      = new List<Renderer>();
 			public IsoAssocList<IsoObject> SelfDepends    = new IsoAssocList<IsoObject>(47);
 			public IsoAssocList<IsoObject> TheirDepends   = new IsoAssocList<IsoObject>(47);
@@ -213,12 +215,6 @@ namespace IsoTools {
 		// ---------------------------------------------------------------------
 
 	#if UNITY_EDITOR
-		Vector3 _lastSize           = Vector3.zero;
-		Vector3 _lastPosition       = Vector3.zero;
-		Vector2 _lastTransPos       = Vector2.zero;
-		Mode    _lastMode           = Mode.Mode2d;
-		bool    _lastCacheRenderers = false;
-
 		[Space(10)]
 		[SerializeField] bool _isShowBounds = false;
 
@@ -246,9 +242,10 @@ namespace IsoTools {
 
 		public void FixTransform() {
 			if ( isoWorld ) {
-				transform.position = IsoUtils.Vec3ChangeZ(
+				FixInternalTransform();
+				Internal.Transform.position = IsoUtils.Vec3ChangeZ(
 					isoWorld.IsoToScreen(position),
-					transform.position.z);
+					Internal.Transform.position.z);
 				FixScreenRect();
 			}
 			FixLastProperties();
@@ -257,8 +254,9 @@ namespace IsoTools {
 
 		public void FixIsoPosition() {
 			if ( isoWorld ) {
+				FixInternalTransform();
 				position = isoWorld.ScreenToIso(
-					transform.position,
+					Internal.Transform.position,
 					positionZ);
 			}
 		}
@@ -282,13 +280,14 @@ namespace IsoTools {
 		}
 
 		void FixLastProperties() {
-		#if UNITY_EDITOR
-			_lastSize           = size;
-			_lastPosition       = position;
-			_lastTransPos       = transform.position;
-			_lastMode           = mode;
-			_lastCacheRenderers = cacheRenderers;
-		#endif
+			FixInternalTransform();
+			Internal.LastTrans = Internal.Transform.position;
+		}
+
+		void FixInternalTransform() {
+			if ( !Internal.Transform ) {
+				Internal.Transform = transform;
+			}
 		}
 
 		void MartDirtyIsoWorld() {
@@ -342,24 +341,6 @@ namespace IsoTools {
 		void OnDrawGizmos() {
 			if ( isShowBounds && isoWorld ) {
 				IsoUtils.DrawCube(isoWorld, position + size * 0.5f, size, Color.red);
-			}
-		}
-
-		void Update() {
-			if ( !IsoUtils.Vec3Approximately(_lastSize, _size) ) {
-				size = _size;
-			}
-			if ( !IsoUtils.Vec3Approximately(_lastPosition, _position) ) {
-				position = _position;
-			}
-			if ( !IsoUtils.Vec2Approximately(_lastTransPos, transform.position) ) {
-				FixIsoPosition();
-			}
-			if ( _lastCacheRenderers != _cacheRenderers ) {
-				cacheRenderers = _cacheRenderers;
-			}
-			if ( _lastMode != _mode ) {
-				mode = _mode;
 			}
 		}
 	#endif

@@ -361,7 +361,7 @@ namespace IsoTools {
 		bool UpdateIsoObjectBounds3d(IsoObject iso_object) {
 			if ( iso_object.mode == IsoObject.Mode.Mode3d ) {
 				var minmax3d = IsoObjectMinMax3D(iso_object);
-				var offset3d = iso_object.transform.position.z - minmax3d.center;
+				var offset3d = iso_object.Internal.Transform.position.z - minmax3d.center;
 				if ( iso_object.Internal.MinMax3d.Approximately(minmax3d) ||
 					!Mathf.Approximately(iso_object.Internal.Offset3d, offset3d) )
 				{
@@ -603,6 +603,12 @@ namespace IsoTools {
 			_oldVisibles.Clear();
 			for ( int i = 0, e = _objects.Count; i < e; ++i ) {
 				var iso_object = _objects[i];
+				if ( !IsoUtils.Vec2Approximately(
+					iso_object.Internal.LastTrans,
+					iso_object.Internal.Transform.position) )
+				{
+					iso_object.FixIsoPosition();
+				}
 				if ( IsIsoObjectVisible(iso_object) ) {
 					iso_object.Internal.Placed = false;
 					_oldVisibles.Add(iso_object);
@@ -686,7 +692,7 @@ namespace IsoTools {
 		}
 
 		void PlaceIsoObject(IsoObject iso_object, float depth) {
-			var trans = iso_object.transform;
+			var trans = iso_object.Internal.Transform;
 			trans.position = IsoUtils.Vec3ChangeZ(trans.position, depth);
 		}
 

@@ -13,8 +13,8 @@ namespace IsoTools.Internal {
 		Vector3                         _center        = Vector3.zero;
 		Vector3                         _viewCenter    = Vector3.zero;
 
-		static public readonly float SnappingDistance       = 0.2f;
-		static public readonly float FloatBeautifierEpsilon = 1e-5f;
+		static public readonly float SnappingDistance      = 0.2f;
+		static public readonly int   FloatBeautifierDigits = 4;
 
 		static bool IsSnappingEnabled() {
 			return !Event.current.control;
@@ -59,8 +59,7 @@ namespace IsoTools.Internal {
 		}
 
 		float FloatBeautifier(float v) {
-			var rv = Mathf.Round(v);
-			return Mathf.Abs(rv - v) < FloatBeautifierEpsilon ? rv : v;
+			return (float)System.Math.Round(v, FloatBeautifierDigits);
 		}
 
 		Vector2 Vector2Beautifier(Vector2 v) {
