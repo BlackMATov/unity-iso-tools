@@ -179,6 +179,138 @@ namespace IsoTools {
 
 		// ---------------------------------------------------------------------
 		//
+		// Raycast
+		//
+		// ---------------------------------------------------------------------
+
+		//
+		// RayFromIsoCameraToIsoPoint
+		//
+
+		public Ray RayFromIsoCameraToIsoPoint(Vector3 iso_pnt) {
+			var max_dist        = tileSize * _objects.Count;
+			var screen_pnt      = IsoToScreen(iso_pnt);
+			var screen_down_pnt = new Vector2(screen_pnt.x, screen_pnt.y - max_dist);
+			var iso_down_pnt    = ScreenToIso(screen_down_pnt);
+			iso_down_pnt.z      = max_dist / tileHeight;
+			return new Ray(iso_down_pnt, iso_pnt - iso_down_pnt);
+		}
+
+		//
+		// Raycast
+		//
+
+		public bool Raycast(Ray ray, out IsoRaycastHit iso_hit_info) {
+			return Raycast(ray, out iso_hit_info,
+				Mathf.Infinity, Physics.DefaultRaycastLayers,
+				QueryTriggerInteraction.UseGlobal);
+		}
+
+		public bool Raycast(Ray ray, out IsoRaycastHit iso_hit_info,
+			float max_distance)
+		{
+			return Raycast(ray, out iso_hit_info,
+				max_distance, Physics.DefaultRaycastLayers,
+				QueryTriggerInteraction.UseGlobal);
+		}
+
+		public bool Raycast(Ray ray, out IsoRaycastHit iso_hit_info,
+			float max_distance, int layer_mask)
+		{
+			return Raycast(ray, out iso_hit_info,
+				max_distance, layer_mask,
+				QueryTriggerInteraction.UseGlobal);
+		}
+
+		public bool Raycast(Ray ray, out IsoRaycastHit iso_hit_info,
+			float max_distance, int layer_mask,
+			QueryTriggerInteraction query_trigger_interaction)
+		{
+			var hit_info = new RaycastHit();
+			var result = Physics.Raycast(ray, out hit_info,
+				max_distance, layer_mask, query_trigger_interaction);
+			iso_hit_info = result ? new IsoRaycastHit(hit_info) : new IsoRaycastHit();
+			return result;
+		}
+
+		//
+		// RaycastAll
+		//
+
+		public IsoRaycastHit[] RaycastAll(Ray ray) {
+			return RaycastAll(ray,
+				Mathf.Infinity, Physics.DefaultRaycastLayers,
+				QueryTriggerInteraction.UseGlobal);
+		}
+
+		public IsoRaycastHit[] RaycastAll(Ray ray,
+			float max_distance)
+		{
+			return RaycastAll(ray,
+				max_distance, Physics.DefaultRaycastLayers,
+				QueryTriggerInteraction.UseGlobal);
+		}
+
+		public IsoRaycastHit[] RaycastAll(Ray ray,
+			float max_distance, int layer_mask)
+		{
+			return RaycastAll(ray,
+				max_distance, layer_mask,
+				QueryTriggerInteraction.UseGlobal);
+		}
+
+		public IsoRaycastHit[] RaycastAll(Ray ray,
+			float max_distance, int layer_mask,
+			QueryTriggerInteraction query_trigger_interaction)
+		{
+			var hits_info = Physics.RaycastAll(ray,
+				max_distance, layer_mask, query_trigger_interaction);
+			return IsoUtils.IsoConvertRaycastHits(hits_info);
+		}
+
+		//
+		// RaycastNonAlloc
+		//
+
+		public int RaycastNonAlloc(Ray ray, IsoRaycastHit[] results) {
+			return RaycastNonAlloc(ray, results,
+				Mathf.Infinity, Physics.DefaultRaycastLayers,
+				QueryTriggerInteraction.UseGlobal);
+		}
+
+		public int RaycastNonAlloc(Ray ray, IsoRaycastHit[] results,
+			float max_distance)
+		{
+			return RaycastNonAlloc(ray, results,
+				max_distance, Physics.DefaultRaycastLayers,
+				QueryTriggerInteraction.UseGlobal);
+		}
+
+		public int RaycastNonAlloc(Ray ray, IsoRaycastHit[] results,
+			float max_distance, int layer_mask)
+		{
+			return RaycastNonAlloc(ray, results,
+				max_distance, layer_mask,
+				QueryTriggerInteraction.UseGlobal);
+		}
+
+		static RaycastHit[] _raycastNonAllocBuffer = new RaycastHit[128];
+		public int RaycastNonAlloc(Ray ray, IsoRaycastHit[] results,
+			float max_distance, int layer_mask,
+			QueryTriggerInteraction query_trigger_interaction)
+		{
+			var hit_count = Physics.RaycastNonAlloc(ray, _raycastNonAllocBuffer,
+				max_distance, layer_mask, query_trigger_interaction);
+			var min_hit_count = Mathf.Min(hit_count, results.Length);
+			for ( var i = 0; i < min_hit_count; ++i ) {
+				results[i] = new IsoRaycastHit(_raycastNonAllocBuffer[i]);
+			}
+			ArrayUtility.Clear(ref _raycastNonAllocBuffer);
+			return min_hit_count;
+		}
+
+		// ---------------------------------------------------------------------
+		//
 		// TouchIsoPosition
 		//
 		// ---------------------------------------------------------------------
