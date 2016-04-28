@@ -79,6 +79,8 @@
      <Compile Include="Assets\IsoTools\Tiled\TiledMapLayer.cs" />
      <Compile Include="Assets\IsoTools\Tiled\TiledMapProperties.cs" />
      <Compile Include="Assets\IsoTools\Tiled\TiledMapTileset.cs" />
+     <None Include="Assets\IsoTools\README.txt" />
+     <None Include="Assets\IsoTools\CHANGELOG.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
