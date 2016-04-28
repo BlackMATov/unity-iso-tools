@@ -13,6 +13,7 @@ namespace IsoTools {
 		static IsoWorld         _instance     = null;
 
 		bool                    _dirty        = false;
+		Vector2                 _minXY        = Vector2.zero;
 		IsoAssocList<IsoObject> _objects      = new IsoAssocList<IsoObject>();
 		IsoAssocList<IsoObject> _visibles     = new IsoAssocList<IsoObject>();
 		IsoAssocList<IsoObject> _oldVisibles  = new IsoAssocList<IsoObject>();
@@ -188,11 +189,14 @@ namespace IsoTools {
 		//
 
 		public Ray RayFromIsoCameraToIsoPoint(Vector3 iso_pnt) {
-			var max_dist        = tileSize * _objects.Count;
 			var screen_pnt      = IsoToScreen(iso_pnt);
-			var screen_down_pnt = new Vector2(screen_pnt.x, screen_pnt.y - max_dist);
-			var iso_down_pnt    = ScreenToIso(screen_down_pnt);
-			iso_down_pnt.z      = max_dist / tileHeight;
+
+			var min_screen_pnt  = IsoToScreen(_minXY - Vector2.one);
+			var max_screen_dist = screen_pnt.y - min_screen_pnt.y;
+
+			var screen_down_pnt = new Vector2(screen_pnt.x, screen_pnt.y - max_screen_dist);
+			var iso_down_pnt    = ScreenToIso(screen_down_pnt, iso_pnt.z);
+			iso_down_pnt.z     += max_screen_dist / tileHeight;
 			return new Ray(iso_down_pnt, iso_pnt - iso_down_pnt);
 		}
 
@@ -620,7 +624,8 @@ namespace IsoTools {
 				var iso_internal = _visibles[i].Internal;
 				_sectorsSize += IsoUtils.Vec2MaxF(iso_internal.ScreenRect.size);
 			}
-			var min_sector_size = IsoToScreen(IsoUtils.vec3OneX).x - IsoToScreen(Vector3.zero).x;
+			var min_sector_size_xy = IsoToScreen(IsoUtils.vec3OneXY) - IsoToScreen(Vector3.zero);
+			var min_sector_size    = Mathf.Max(min_sector_size_xy.x, min_sector_size_xy.y);
 			_sectorsSize = _visibles.Count > 0
 				? Mathf.Round(Mathf.Max(min_sector_size, _sectorsSize / _visibles.Count))
 				: min_sector_size;
@@ -638,10 +643,10 @@ namespace IsoTools {
 					var min_y = iso_internal.ScreenRect.yMin / _sectorsSize;
 					var max_x = iso_internal.ScreenRect.xMax / _sectorsSize;
 					var max_y = iso_internal.ScreenRect.yMax / _sectorsSize;
-					iso_internal.MinSector.x = (int)(min_x >= 0.0F ? min_x : min_x - 1.0F);
-					iso_internal.MinSector.y = (int)(min_y >= 0.0F ? min_y : min_y - 1.0F);
-					iso_internal.MaxSector.x = (int)(max_x >= 0.0F ? max_x + 1.0F : max_x);
-					iso_internal.MaxSector.y = (int)(max_y >= 0.0F ? max_y + 1.0F : max_y);
+					iso_internal.MinSector.x = (int)(min_x >= 0.0f ? min_x : min_x - 1.0f);
+					iso_internal.MinSector.y = (int)(min_y >= 0.0f ? min_y : min_y - 1.0f);
+					iso_internal.MaxSector.x = (int)(max_x >= 0.0f ? max_x + 1.0f : max_x);
+					iso_internal.MaxSector.y = (int)(max_y >= 0.0f ? max_y + 1.0f : max_y);
 					if ( _sectorsMinNumPos.x > iso_internal.MinSector.x ) {
 						_sectorsMinNumPos.x = iso_internal.MinSector.x;
 					}
@@ -733,18 +738,24 @@ namespace IsoTools {
 
 		void CalculateNewVisibles() {
 			_oldVisibles.Clear();
-			for ( int i = 0, e = _objects.Count; i < e; ++i ) {
-				var iso_object = _objects[i];
-				if ( !IsoUtils.Vec2Approximately(
-					iso_object.Internal.LastTrans,
-					iso_object.Internal.Transform.position) )
-				{
-					iso_object.FixIsoPosition();
+			if ( _objects.Count > 0 ) {
+				_minXY = new Vector2(float.MaxValue, float.MaxValue);
+				for ( int i = 0, e = _objects.Count; i < e; ++i ) {
+					var iso_object = _objects[i];
+					_minXY = IsoUtils.Vec2Min(_minXY, iso_object.position);
+					if ( !IsoUtils.Vec2Approximately(
+						iso_object.Internal.LastTrans,
+						iso_object.Internal.Transform.position) )
+					{
+						iso_object.FixIsoPosition();
+					}
+					if ( IsIsoObjectVisible(iso_object) ) {
+						iso_object.Internal.Placed = false;
+						_oldVisibles.Add(iso_object);
+					}
 				}
-				if ( IsIsoObjectVisible(iso_object) ) {
-					iso_object.Internal.Placed = false;
-					_oldVisibles.Add(iso_object);
-				}
+			} else {
+				_minXY = Vector2.zero;
 			}
 			var old_visibles = _visibles;
 			_visibles = _oldVisibles;
