@@ -309,7 +309,7 @@ namespace IsoTools {
 			for ( var i = 0; i < min_hit_count; ++i ) {
 				results[i] = new IsoRaycastHit(_raycastNonAllocBuffer[i]);
 			}
-			ArrayUtility.Clear(ref _raycastNonAllocBuffer);
+			System.Array.Clear(_raycastNonAllocBuffer, 0, _raycastNonAllocBuffer.Length);
 			return min_hit_count;
 		}
 

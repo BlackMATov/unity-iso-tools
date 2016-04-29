@@ -1,9 +1,10 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/IsoTools/Scripts/IsoWorld.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/IsoTools/CHANGELOG.txt">
     <Files>
-      <File FileName="Assets/IsoTools/Scripts/IsoWorld.cs" Line="200" Column="57" />
-      <File FileName="Assets/IsoTools/Scripts/IsoObject.cs" Line="26" Column="26" NotebookId="1" />
+      <File FileName="Assets/IsoTools/CHANGELOG.txt" Line="11" Column="1" />
+      <File FileName="Assets/IsoTools/README.txt" Line="32" Column="102" />
+      <File FileName="Assets/IsoTools/Scripts/IsoWorld.cs" Line="312" Column="81" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
