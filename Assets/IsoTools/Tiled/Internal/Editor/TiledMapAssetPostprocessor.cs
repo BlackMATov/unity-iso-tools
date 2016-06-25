@@ -88,7 +88,7 @@ namespace IsoTools.Tiled.Internal {
 						var tile_height      = tile_sprite.rect.height / asset.PixelsPerUnit;
 						var tileset_data     = asset.Data.Tilesets[tileset_index];
 						var tileset_offset_x = tileset_data.TileOffsetX / asset.PixelsPerUnit;
-						var tileset_offset_y = tileset_data.TileOffsetY / asset.PixelsPerUnit;
+						var tileset_offset_y = (tileset_data.TileHeight * 0.5f - tileset_data.TileOffsetY) / asset.PixelsPerUnit;
 
 						var vertex_pos =
 							IsoUtils.Vec3FromVec2(tile_screen_pos) -
