@@ -24,6 +24,8 @@ namespace IsoTools.Internal {
 		public static Vector3 vec3OneYZ { get { return new Vector3(0.0f, 1.0f, 1.0f); } }
 		public static Vector3 vec3OneXZ { get { return new Vector3(1.0f, 0.0f, 1.0f); } }
 
+		static public readonly int FloatBeautifierDigits = 4;
+
 		// ---------------------------------------------------------------------
 		//
 		// MinMax
@@ -434,6 +436,29 @@ namespace IsoTools.Internal {
 
 		public static bool Vec3Approximately(Vector3 a, Vector3 b) {
 			return a == b;
+		}
+
+		// ---------------------------------------------------------------------
+		//
+		// Beautifiers
+		//
+		// ---------------------------------------------------------------------
+
+		public static float FloatBeautifier(float v) {
+			return (float)System.Math.Round(v, FloatBeautifierDigits);
+		}
+
+		public static Vector2 VectorBeautifier(Vector2 v) {
+			return new Vector2{
+				x = FloatBeautifier(v.x),
+				y = FloatBeautifier(v.y)};
+		}
+
+		public static Vector3 VectorBeautifier(Vector3 v) {
+			return new Vector3{
+				x = FloatBeautifier(v.x),
+				y = FloatBeautifier(v.y),
+				z = FloatBeautifier(v.z)};
 		}
 
 		// ---------------------------------------------------------------------

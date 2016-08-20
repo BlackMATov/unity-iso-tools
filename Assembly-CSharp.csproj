@@ -72,6 +72,7 @@
      <Compile Include="Assets\IsoTools\Scripts\IsoObject.cs" />
      <Compile Include="Assets\IsoTools\Scripts\IsoRaycastHit.cs" />
      <Compile Include="Assets\IsoTools\Scripts\IsoRigidbody.cs" />
+     <Compile Include="Assets\IsoTools\Scripts\IsoSnappingParent.cs" />
      <Compile Include="Assets\IsoTools\Scripts\IsoSphereCollider.cs" />
      <Compile Include="Assets\IsoTools\Scripts\IsoTriggerListener.cs" />
      <Compile Include="Assets\IsoTools\Scripts\IsoWorld.cs" />

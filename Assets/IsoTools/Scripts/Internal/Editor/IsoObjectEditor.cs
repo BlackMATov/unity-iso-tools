@@ -13,8 +13,7 @@ namespace IsoTools.Internal {
 		Vector3                         _center        = Vector3.zero;
 		Vector3                         _viewCenter    = Vector3.zero;
 
-		static public readonly float SnappingDistance      = 0.2f;
-		static public readonly int   FloatBeautifierDigits = 4;
+		static public readonly float SnappingDistance = 0.2f;
 
 		static bool IsSnappingEnabled() {
 			return !Event.current.control;
@@ -34,12 +33,12 @@ namespace IsoTools.Internal {
 				_center = _viewCenter = _positions.Aggregate(Vector3.zero, (AccIn, p) => {
 					return AccIn + IsoUtils.Vec3FromVec2(iso_world.IsoToScreen(p.Key.position + p.Key.size * 0.5f));
 				}) / _positions.Count;
+			} else {
+				_positions.Clear();
+				_isoZPositions.Clear();
 			}
-		}
-
-		void GrabOtherIsoObjects() {
 			_otherObjects = FindObjectsOfType<IsoObject>()
-				.Where(p => p.gameObject.activeInHierarchy && !targets.Contains(p))
+				.Where(p => p.gameObject.activeInHierarchy && !_positions.ContainsKey(p))
 				.ToList();
 		}
 
@@ -58,17 +57,7 @@ namespace IsoTools.Internal {
 			}
 		}
 
-		float FloatBeautifier(float v) {
-			return (float)System.Math.Round(v, FloatBeautifierDigits);
-		}
-
-		Vector2 Vector2Beautifier(Vector2 v) {
-			v.x = FloatBeautifier(v.x);
-			v.y = FloatBeautifier(v.y);
-			return v;
-		}
-
-		bool SnappingProcess(ref float min_a, float size_a, float min_b, float size_b) {
+		static bool SnappingProcess(ref float min_a, float size_a, float min_b, float size_b) {
 			var max_a  = min_a + size_a;
 			var max_b  = min_b + size_b;
 			var result = false;
@@ -99,23 +88,30 @@ namespace IsoTools.Internal {
 			return result;
 		}
 
-		bool IsSnappingIntersect(float min_a, float size_a, float min_b, float size_b) {
+		static bool IsSnappingIntersect(float min_a, float size_a, float min_b, float size_b) {
 			return
 				min_a + size_a + SnappingDistance >= min_b &&
 				min_a - SnappingDistance <= min_b + size_b;
 		}
 
-		float ZMoveIsoObjects(float delta) {
-			Undo.RecordObjects(
-				_isoZPositions.Keys.ToArray(),
-				_isoZPositions.Count > 1 ? "Move IsoObjects" : "Move IsoObject");
+		public static float ZMoveIsoObjects(
+			bool                          move,
+			float                         delta,
+			IDictionary<IsoObject, float> iso_z_positions,
+			IList<IsoObject>              other_objects)
+		{
+			if ( move ) {
+				Undo.RecordObjects(
+					iso_z_positions.Keys.ToArray(),
+					iso_z_positions.Count > 1 ? "Move IsoObjects" : "Move IsoObject");
+			}
 			if ( IsSnappingEnabled() ) {
 				var snapping_z = false;
-				foreach ( var pair in _isoZPositions ) {
+				foreach ( var pair in iso_z_positions ) {
 					var iso_object = pair.Key;
 					var iso_orig_z = pair.Value;
 					var result_p_z = iso_orig_z + delta;
-					foreach ( var other in _otherObjects ) {
+					foreach ( var other in other_objects ) {
 						if ( IsSnappingIntersect(iso_object.positionX, iso_object.sizeX, other.positionX, other.sizeX) &&
 							 IsSnappingIntersect(iso_object.positionY, iso_object.sizeY, other.positionY, other.sizeY) )
 						{
@@ -133,7 +129,7 @@ namespace IsoTools.Internal {
 					}
 				}
 				if ( !snapping_z ) {
-					var pair       = _isoZPositions.First();
+					var pair       = iso_z_positions.First();
 					var iso_object = pair.Key;
 					var iso_orig_z = pair.Value;
 					var result_p_z = iso_orig_z + delta;
@@ -144,29 +140,38 @@ namespace IsoTools.Internal {
 					}
 				}
 			}
-			return _isoZPositions.Aggregate(0.0f, (AccIn, pair) => {
+			return iso_z_positions.Aggregate(0.0f, (AccIn, pair) => {
 				var iso_object = pair.Key;
 				var iso_orig_z = pair.Value;
 				var result_p_z = iso_orig_z + delta;
-				iso_object.positionZ = FloatBeautifier(result_p_z);
-				var z_delta = iso_object.position.z - iso_orig_z;
+				if ( move ) {
+					iso_object.positionZ = IsoUtils.FloatBeautifier(result_p_z);
+				}
+				var z_delta = result_p_z - iso_orig_z;
 				return Mathf.Abs(z_delta) > Mathf.Abs(AccIn) ? z_delta : AccIn;
 			});
 		}
 
-		Vector3 XYMoveIsoObjects(Vector3 delta) {
-			Undo.RecordObjects(
-				_positions.Keys.ToArray(),
-				_positions.Count > 1 ? "Move IsoObjects" : "Move IsoObject");
+		public static Vector3 XYMoveIsoObjects(
+			bool                            move,
+			Vector3                         delta,
+			IDictionary<IsoObject, Vector3> positions,
+			IList<IsoObject>                other_objects)
+		{
+			if ( move ) {
+				Undo.RecordObjects(
+					positions.Keys.ToArray(),
+					positions.Count > 1 ? "Move IsoObjects" : "Move IsoObject");
+			}
 			if ( IsSnappingEnabled() ) {
 				var snapping_x = false;
 				var snapping_y = false;
-				foreach ( var pair in _positions ) {
+				foreach ( var pair in positions ) {
 					var iso_object     = pair.Key;
 					var iso_orig_p     = pair.Value;
 					var result_pos     = iso_orig_p + delta;
 					var result_pos_iso = IsoWorld.Instance.ScreenToIso(result_pos, iso_object.positionZ);
-					foreach ( var other in _otherObjects ) {
+					foreach ( var other in other_objects ) {
 						if ( IsSnappingIntersect(iso_object.positionZ, iso_object.sizeZ, other.positionZ, other.sizeZ) ) {
 							var new_snapping_x = !snapping_x && IsSnappingIntersect(result_pos_iso.y, iso_object.sizeY, other.positionY, other.sizeY)
 								? SnappingProcess(ref result_pos_iso.x, iso_object.sizeX, other.positionX, other.sizeX)
@@ -194,7 +199,7 @@ namespace IsoTools.Internal {
 					}
 				}
 				if ( !snapping_x && !snapping_y ) {
-					var pair           = _positions.First();
+					var pair           = positions.First();
 					var iso_object     = pair.Key;
 					var iso_orig_p     = pair.Value;
 					var result_pos     = iso_orig_p + delta;
@@ -216,14 +221,17 @@ namespace IsoTools.Internal {
 					}
 				}
 			}
-			return _positions.Aggregate(Vector3.zero, (AccIn, pair) => {
+			return positions.Aggregate(Vector3.zero, (AccIn, pair) => {
 				var iso_object = pair.Key;
 				var iso_orig_p = pair.Value;
 				var result_pos = iso_orig_p + delta;
-				iso_object.transform.position = result_pos;
-				iso_object.FixIsoPosition();
-				iso_object.positionXY = Vector2Beautifier(iso_object.positionXY);
-				var pos_delta = iso_object.transform.position - iso_orig_p;
+				if ( move ) {
+					var new_iso_pos = IsoWorld.Instance.ScreenToIso(
+						result_pos,
+						iso_object.positionZ);
+					iso_object.position = IsoUtils.VectorBeautifier(new_iso_pos);
+				}
+				var pos_delta = result_pos - iso_orig_p;
 				return pos_delta.magnitude > AccIn.magnitude ? pos_delta : AccIn;
 			});
 		}
@@ -234,7 +242,11 @@ namespace IsoTools.Internal {
 				Handles.color = Handles.zAxisColor;
 				var delta = Handles.Slider(_viewCenter, IsoUtils.vec3OneY) - _viewCenter;
 				if ( Mathf.Abs(delta.y) > Mathf.Epsilon ) {
-					float tmp_y = ZMoveIsoObjects((_viewCenter.y - _center.y + delta.y) / iso_world.tileHeight);
+					float tmp_y = ZMoveIsoObjects(
+						true,
+						(_viewCenter.y - _center.y + delta.y) / iso_world.tileHeight,
+						_isoZPositions,
+						_otherObjects);
 					_viewCenter = _center + IsoUtils.Vec3FromY(tmp_y * iso_world.tileHeight);
 				}
 			}
@@ -246,7 +258,11 @@ namespace IsoTools.Internal {
 				Handles.color = color;
 				var delta = Handles.Slider(_viewCenter, iso_world.IsoToScreen(dir)) - _viewCenter;
 				if ( delta.magnitude > Mathf.Epsilon ) {
-					_viewCenter = _center + XYMoveIsoObjects(_viewCenter - _center + delta);
+					_viewCenter = _center + XYMoveIsoObjects(
+						true,
+						_viewCenter - _center + delta,
+						_positions,
+						_otherObjects);
 				}
 			}
 		}
@@ -276,13 +292,20 @@ namespace IsoTools.Internal {
 				Vector3.zero,
 				Handles.RectangleCap) - _viewCenter;
 			if ( delta.magnitude > Mathf.Epsilon ) {
-				_viewCenter = _center + XYMoveIsoObjects(_viewCenter - _center + delta);
+				_viewCenter = _center + XYMoveIsoObjects(
+					true,
+					_viewCenter - _center + delta,
+					_positions,
+					_otherObjects);
 			}
 		}
 
+		//
+		//
+		//
+
 		void OnEnable() {
 			GrabPositions();
-			GrabOtherIsoObjects();
 		}
 
 		void OnDisable() {
@@ -307,7 +330,6 @@ namespace IsoTools.Internal {
 		public override void OnInspectorGUI() {
 			DrawDefaultInspector();
 			GrabPositions();
-			GrabOtherIsoObjects();
 			DirtyTargetPosition();
 		}
 	}
