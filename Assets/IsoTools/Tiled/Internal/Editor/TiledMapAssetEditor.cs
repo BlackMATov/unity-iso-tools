@@ -50,6 +50,8 @@ namespace IsoTools.Tiled.Internal {
 			layer_go.transform.localPosition = IsoUtils.Vec3FromXY(
 				 layer_data.OffsetX / _asset.PixelsPerUnit,
 				-layer_data.OffsetY / _asset.PixelsPerUnit);
+			layer_go.transform.localPosition = IsoUtils.Vec3ChangeZ(
+				layer_go.transform.localPosition, - layer_index * _asset.LayersDepthStep);
 			layer_go.SetActive(layer_data.Visible);
 
 			var tiled_layer        = layer_go.AddComponent<TiledMapLayer>();
