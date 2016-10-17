@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="spritesheet.png">
+	<!-- Created with Adobe Animate version 15.2.0.66 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="AttentionIcon0000" x="195" y="773" width="15" height="37" pivotX="7.25" pivotY="18.35"/>
+	<SubTexture name="Char10000" x="164" y="2" width="53" height="67" pivotX="26.75" pivotY="33.35"/>
+	<SubTexture name="Char20000" x="219" y="2" width="61" height="59" pivotX="30.9" pivotY="29.95"/>
+	<SubTexture name="Char30000" x="282" y="2" width="57" height="67" pivotX="28.9" pivotY="33.1"/>
+	<SubTexture name="Char40000" x="341" y="2" width="43" height="61" pivotX="21.4" pivotY="30.4"/>
+	<SubTexture name="Char50000" x="386" y="2" width="51" height="59" pivotX="25.6" pivotY="29.25"/>
+	<SubTexture name="Ogre0000" x="439" y="2" width="105" height="117" pivotX="52.75" pivotY="58.75"/>
+	<SubTexture name="b10000" x="546" y="2" width="73" height="72" pivotX="36.4" pivotY="60.1"/>
+	<SubTexture name="b20000" x="621" y="2" width="60" height="64" pivotX="27.65" pivotY="53.8"/>
+	<SubTexture name="c10000" x="683" y="2" width="179" height="97" pivotX="89.6" pivotY="48.15"/>
+	<SubTexture name="c20000" x="864" y="2" width="143" height="73" pivotX="71.25" pivotY="36.75"/>
+	<SubTexture name="d10000" x="2" y="164" width="37" height="50" pivotX="18.05" pivotY="50.75"/>
+	<SubTexture name="d20000" x="41" y="164" width="35" height="47" pivotX="17.45" pivotY="23.35"/>
+	<SubTexture name="e10000" x="78" y="164" width="98" height="31" pivotX="49" pivotY="15.75"/>
+	<SubTexture name="e20000" x="178" y="164" width="16" height="17" pivotX="8" pivotY="8.75"/>
+	<SubTexture name="e30000" x="196" y="164" width="11" height="21" pivotX="5.65" pivotY="10.25"/>
+	<SubTexture name="e40000" x="209" y="164" width="34" height="23" pivotX="17" pivotY="20.2"/>
+	<SubTexture name="e50000" x="245" y="164" width="25" height="11" pivotX="12.5" pivotY="5.95"/>
+	<SubTexture name="e60000" x="272" y="164" width="33" height="7" pivotX="16.25" pivotY="3.2"/>
+	<SubTexture name="e70000" x="307" y="164" width="19" height="21" pivotX="9.25" pivotY="10.65"/>
+	<SubTexture name="e80000" x="328" y="164" width="23" height="13" pivotX="11.75" pivotY="6.55"/>
+	<SubTexture name="e90000" x="353" y="164" width="93" height="187" pivotX="46.2" pivotY="163"/>
+	<SubTexture name="h10000" x="448" y="164" width="159" height="189" pivotX="79.55" pivotY="165.65"/>
+	<SubTexture name="h20000" x="609" y="164" width="87" height="125" pivotX="43.4" pivotY="113.55"/>
+	<SubTexture name="h30000" x="698" y="164" width="157" height="209" pivotX="78.85" pivotY="187.45"/>
+	<SubTexture name="h40000" x="857" y="164" width="157" height="177" pivotX="78.85" pivotY="161.1"/>
+	<SubTexture name="halo0000" x="2" y="2" width="160" height="160" pivotX="80" pivotY="80"/>
+	<SubTexture name="r10000" x="2" y="375" width="157" height="67" pivotX="78.6" pivotY="33.2"/>
+	<SubTexture name="r20000" x="161" y="375" width="29" height="40" pivotX="14.35" pivotY="40.8"/>
+	<SubTexture name="t10000" x="192" y="375" width="105" height="117" pivotX="52.7" pivotY="58.1"/>
+	<SubTexture name="t20000" x="299" y="375" width="100" height="111" pivotX="50" pivotY="55.1"/>
+	<SubTexture name="t30000" x="401" y="375" width="101" height="151" pivotX="50.5" pivotY="75.05"/>
+	<SubTexture name="t40000" x="504" y="375" width="101" height="151" pivotX="50.5" pivotY="75.4"/>
+	<SubTexture name="t50000" x="607" y="375" width="100" height="111" pivotX="50" pivotY="55.25"/>
+	<SubTexture name="t60000" x="709" y="375" width="100" height="111" pivotX="50" pivotY="55.25"/>
+	<SubTexture name="t70000" x="811" y="375" width="100" height="111" pivotX="50" pivotY="39.2"/>
+	<SubTexture name="t80000" x="2" y="528" width="199" height="189" pivotX="98" pivotY="75.85"/>
+	<SubTexture name="tr10000" x="203" y="528" width="171" height="181" pivotX="85.95" pivotY="90.9"/>
+	<SubTexture name="tr20000" x="376" y="528" width="227" height="243" pivotX="113.45" pivotY="121.85"/>
+	<SubTexture name="tr30000" x="605" y="528" width="55" height="55" pivotX="27.75" pivotY="48"/>
+	<SubTexture name="tr40000" x="662" y="528" width="41" height="51" pivotX="20.4" pivotY="45.05"/>
+	<SubTexture name="tr50000" x="705" y="528" width="54" height="37" pivotX="27" pivotY="35.7"/>
+	<SubTexture name="tr60000" x="761" y="528" width="85" height="162" pivotX="42.6" pivotY="132"/>
+	<SubTexture name="tr70000" x="848" y="528" width="87" height="147" pivotX="43.65" pivotY="118.35"/>
+	<SubTexture name="w10000" x="937" y="528" width="19" height="47" pivotX="9.35" pivotY="40.2"/>
+	<SubTexture name="w20000" x="958" y="528" width="19" height="47" pivotX="9.35" pivotY="41.2"/>
+	<SubTexture name="w30000" x="2" y="773" width="99" height="25" pivotX="49.35" pivotY="12.35"/>
+	<SubTexture name="w40000" x="103" y="773" width="21" height="59" pivotX="10.95" pivotY="29.3"/>
+	<SubTexture name="w50000" x="126" y="773" width="21" height="61" pivotX="10.85" pivotY="30.3"/>
+	<SubTexture name="w60000" x="149" y="773" width="21" height="61" pivotX="10.85" pivotY="30.3"/>
+	<SubTexture name="w70000" x="172" y="773" width="21" height="43" pivotX="11.55" pivotY="38.65"/>
+</TextureAtlas>
