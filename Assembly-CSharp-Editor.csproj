@@ -45,17 +45,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\IsoTools\Addons\Tiled\Internal\Editor\TiledMapAssetEditor.cs" />
+     <Compile Include="Assets\IsoTools\Addons\Tiled\Internal\Editor\TiledMapAssetPostprocessor.cs" />
+     <Compile Include="Assets\IsoTools\Addons\Tiled\Internal\Editor\TiledMapEditor.cs" />
+     <Compile Include="Assets\IsoTools\Addons\Tiled\Internal\Editor\TiledMapLayerEditor.cs" />
+     <Compile Include="Assets\IsoTools\Addons\Tiled\Internal\Editor\TiledMapPostprocessor.cs" />
+     <Compile Include="Assets\IsoTools\Addons\Tiled\Internal\Editor\TiledMapTilesetEditor.cs" />
      <Compile Include="Assets\IsoTools\Scripts\Internal\Editor\IsoObjectEditor.cs" />
      <Compile Include="Assets\IsoTools\Scripts\Internal\Editor\IsoSnappingParentEditor.cs" />
-     <Compile Include="Assets\IsoTools\Tiled\Internal\Editor\TiledMapAssetEditor.cs" />
-     <Compile Include="Assets\IsoTools\Tiled\Internal\Editor\TiledMapAssetPostprocessor.cs" />
-     <Compile Include="Assets\IsoTools\Tiled\Internal\Editor\TiledMapEditor.cs" />
-     <Compile Include="Assets\IsoTools\Tiled\Internal\Editor\TiledMapLayerEditor.cs" />
-     <Compile Include="Assets\IsoTools\Tiled\Internal\Editor\TiledMapPostprocessor.cs" />
-     <Compile Include="Assets\IsoTools\Tiled\Internal\Editor\TiledMapTilesetEditor.cs" />
      <None Include="Assets\IsoTools\Examples\Images\Dragosha\adventure-tileset\spritesheet.xml" />
-     <None Include="Assets\IsoTools\README.txt" />
-     <None Include="Assets\IsoTools\CHANGELOG.txt" />
+     <None Include="Assets\IsoTools\Docs\CHANGELOG.txt" />
+     <None Include="Assets\IsoTools\Docs\README.txt" />
  <Reference Include="UnityEditor.Advertisements">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Advertisements/Editor/UnityEditor.Advertisements.dll</HintPath>
  </Reference>
