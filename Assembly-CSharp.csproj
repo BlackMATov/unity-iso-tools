@@ -87,6 +87,8 @@
      <Compile Include="Assets\IsoTools\Addons\Tiled\TiledMapLayer.cs" />
      <Compile Include="Assets\IsoTools\Addons\Tiled\TiledMapProperties.cs" />
      <Compile Include="Assets\IsoTools\Addons\Tiled\TiledMapTileset.cs" />
+     <Compile Include="Assets\IsoTools\Examples\Scripts\Dragosha\CloudController.cs" />
+     <Compile Include="Assets\IsoTools\Examples\Scripts\Dragosha\PlayerController.cs" />
      <Compile Include="Assets\IsoTools\Examples\Scripts\Kenney\AlienBallController.cs" />
      <Compile Include="Assets\IsoTools\Examples\Scripts\Kenney\AlienBallSpawner.cs" />
      <Compile Include="Assets\IsoTools\Examples\Scripts\Kenney\AlienDestroyer.cs" />
