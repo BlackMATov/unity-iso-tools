@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace IsoTools.Examples {
+namespace IsoTools.Examples.Kenney {
 	[RequireComponent(typeof(IsoRigidbody))]
 	public class AlienBallController : MonoBehaviour {
 
@@ -17,7 +17,7 @@ namespace IsoTools.Examples {
 			if ( !_isoRigidbody ) {
 				throw new UnityException("AlienBallController. IsoRigidbody component not found!");
 			}
-			StartCoroutine("AddRndForce");
+			StartCoroutine(AddRndForce());
 		}
 
 		void Update() {
@@ -35,4 +35,4 @@ namespace IsoTools.Examples {
 			}
 		}
 	}
-} // namespace IsoTools.Examples
+}

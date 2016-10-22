@@ -1,14 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace IsoTools.Examples {
+namespace IsoTools.Examples.Kenney {
 	public class AlienBallSpawner : MonoBehaviour {
 
 		public int        maxAlienCount   = 10;
 		public GameObject alienBallPrefab = null;
 		
 		void Start() {
-			StartCoroutine("SpawnAlienBall");
+			if ( !alienBallPrefab ) {
+				throw new UnityException("AlienBallSpawner. Alien ball prefab not found!");
+			}
+			StartCoroutine(SpawnAlienBall());
 		}
 		
 		IEnumerator SpawnAlienBall() {
@@ -25,4 +28,4 @@ namespace IsoTools.Examples {
 			}
 		}
 	}
-} // namespace IsoTools.Examples
+}

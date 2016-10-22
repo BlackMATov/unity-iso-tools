@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace IsoTools.Examples {
+namespace IsoTools.Examples.Kenney {
 	[RequireComponent(typeof(IsoRigidbody))]
 	public class PlayerController : MonoBehaviour {
 
@@ -47,4 +47,4 @@ namespace IsoTools.Examples {
 			}
 		}
 	}
-} // namespace IsoTools.Examples
+}

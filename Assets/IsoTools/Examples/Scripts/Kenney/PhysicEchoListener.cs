@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace IsoTools.Examples {
+namespace IsoTools.Examples.Kenney {
 	[RequireComponent(typeof(IsoTriggerListener), typeof(IsoCollisionListener))]
-	public class IsoEchoListener : MonoBehaviour {
+	public class PhysicEchoListener : MonoBehaviour {
 		void OnIsoTriggerEnter(IsoCollider iso_collider) {
 			Debug.LogFormat(
 				"OnIsoTriggerEnter. self:{0} other:{1}",
@@ -28,4 +28,4 @@ namespace IsoTools.Examples {
 				gameObject.name, iso_collision.gameObject.name);
 		}
 	}
-} // namespace IsoTools.Examples
+}

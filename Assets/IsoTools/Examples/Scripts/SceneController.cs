@@ -1,9 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-
-#if UNITY_5_3_OR_NEWER
 using UnityEngine.SceneManagement;
-#endif
 
 namespace IsoTools.Examples {
 	public class SceneController : MonoBehaviour {
@@ -29,19 +26,15 @@ namespace IsoTools.Examples {
 		}
 
 		public void NextScene() {
-		#if UNITY_5_3_OR_NEWER
-			SceneManager.LoadScene(NextSceneName);
-		#else
-			Application.LoadLevel(NextSceneName);
-		#endif
+			if ( !string.IsNullOrEmpty(NextSceneName) ) {
+				SceneManager.LoadScene(NextSceneName);
+			}
 		}
 
 		public void PrevScene() {
-		#if UNITY_5_3_OR_NEWER
-			SceneManager.LoadScene(PrevSceneName);
-		#else
-			Application.LoadLevel(PrevSceneName);
-		#endif
+			if ( !string.IsNullOrEmpty(PrevSceneName) ) {
+				SceneManager.LoadScene(PrevSceneName);
+			}
 		}
 	}
 }
