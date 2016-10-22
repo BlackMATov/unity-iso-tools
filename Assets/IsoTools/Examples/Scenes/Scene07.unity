@@ -376,7 +376,6 @@ GameObject:
   - 124: {fileID: 600542280}
   - 81: {fileID: 600542279}
   - 114: {fileID: 600542278}
-  - 108: {fileID: 600542284}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -469,39 +468,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!108 &600542284
-Light:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 600542277}
-  m_Enabled: 1
-  serializedVersion: 6
-  m_Type: 1
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
-  m_Range: 46.14
-  m_SpotAngle: 30
-  m_CookieSize: 10
-  m_Shadows:
-    m_Type: 0
-    m_Resolution: -1
-    m_Strength: 1
-    m_Bias: 0.05
-    m_NormalBias: 0.4
-    m_NearPlane: 0.2
-  m_Cookie: {fileID: 0}
-  m_DrawHalo: 0
-  m_Flare: {fileID: 0}
-  m_RenderMode: 0
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_Lightmapping: 4
-  m_BounceIntensity: 1
-  m_ShadowRadius: 0
-  m_ShadowAngle: 0
-  m_AreaSize: {x: 1, y: 1}
 --- !u!4 &614896037 stripped
 Transform:
   m_PrefabParentObject: {fileID: 439388, guid: d564723f17e5b453ab3cf2ba1886790d, type: 2}
@@ -1283,7 +1249,7 @@ Prefab:
       objectReference: {fileID: 600542282}
     - target: {fileID: 11477906, guid: f34dc3b1e71a94249ad50db729f01df0, type: 2}
       propertyPath: NextSceneName
-      value: 
+      value: Scene08
       objectReference: {fileID: 0}
     - target: {fileID: 11477906, guid: f34dc3b1e71a94249ad50db729f01df0, type: 2}
       propertyPath: PrevSceneName
