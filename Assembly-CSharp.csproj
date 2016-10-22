@@ -121,8 +121,10 @@
      <Compile Include="Assets\IsoTools\Scripts\IsoTriggerListener.cs" />
      <Compile Include="Assets\IsoTools\Scripts\IsoWorld.cs" />
      <None Include="Assets\IsoTools\Examples\Images\Dragosha\adventure-tileset\spritesheet.xml" />
+     <None Include="Assets\IsoTools\Examples\Images\Dragosha\licence.txt" />
      <None Include="Assets\IsoTools\Docs\CHANGELOG.txt" />
      <None Include="Assets\IsoTools\Docs\README.txt" />
+     <None Include="Assets\IsoTools\Examples\Images\Kenney\licence.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
