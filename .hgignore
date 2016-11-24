@@ -3,3 +3,6 @@ glob:Temp/*
 glob:Library/*
 
 glob:.DS_Store
+glob:unityiso.sln
+glob:Assembly-CSharp.csproj
+glob:Assembly-CSharp-Editor.csproj
