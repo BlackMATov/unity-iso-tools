@@ -1,3 +1,5 @@
 glob:obj/*
 glob:Temp/*
 glob:Library/*
+
+glob:.DS_Store
