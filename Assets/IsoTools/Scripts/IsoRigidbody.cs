@@ -125,6 +125,25 @@ namespace IsoTools {
 			}
 		}
 
+	#if UNITY_5_4_OR_NEWER
+		public int solverIterations {
+			get { return realRigidbody ? realRigidbody.solverIterations : 0; }
+			set {
+				if ( realRigidbody ) {
+					realRigidbody.solverIterations = value;
+				}
+			}
+		}
+
+		public int solverVelocityIterations {
+			get { return realRigidbody ? realRigidbody.solverVelocityIterations : 0; }
+			set {
+				if ( realRigidbody ) {
+					realRigidbody.solverVelocityIterations = value;
+				}
+			}
+		}
+	#else
 		public int solverIterationCount {
 			get { return realRigidbody ? realRigidbody.solverIterationCount : 0; }
 			set {
@@ -133,6 +152,16 @@ namespace IsoTools {
 				}
 			}
 		}
+
+		public int solverVelocityIterationCount {
+			get { return realRigidbody ? realRigidbody.solverVelocityIterationCount : 0; }
+			set {
+				if ( realRigidbody ) {
+					realRigidbody.solverVelocityIterationCount = value;
+				}
+			}
+		}
+	#endif
 
 		public bool useConeFriction {
 			get { return realRigidbody ? realRigidbody.useConeFriction : false; }
