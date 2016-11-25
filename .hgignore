@@ -4,5 +4,6 @@ glob:Library/*
 
 glob:.DS_Store
 glob:unityiso.sln
+glob:unityiso.userprefs
 glob:Assembly-CSharp.csproj
 glob:Assembly-CSharp-Editor.csproj
