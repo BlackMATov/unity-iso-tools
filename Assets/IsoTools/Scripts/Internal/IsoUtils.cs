@@ -13,18 +13,52 @@ namespace IsoTools.Internal {
 		//
 		// ---------------------------------------------------------------------
 
-		public static Vector2 vec2OneX  { get { return new Vector2(1.0f, 0.0f); } }
-		public static Vector2 vec2OneY  { get { return new Vector2(0.0f, 1.0f); } }
-		public static Vector2 vec2OneXY { get { return new Vector2(1.0f, 1.0f); } }
-
-		public static Vector3 vec3OneX  { get { return new Vector3(1.0f, 0.0f, 0.0f); } }
-		public static Vector3 vec3OneY  { get { return new Vector3(0.0f, 1.0f, 0.0f); } }
-		public static Vector3 vec3OneZ  { get { return new Vector3(0.0f, 0.0f, 1.0f); } }
-		public static Vector3 vec3OneXY { get { return new Vector3(1.0f, 1.0f, 0.0f); } }
-		public static Vector3 vec3OneYZ { get { return new Vector3(0.0f, 1.0f, 1.0f); } }
-		public static Vector3 vec3OneXZ { get { return new Vector3(1.0f, 0.0f, 1.0f); } }
+		public static readonly Vector2 vec2OneX  = new Vector2(1.0f, 0.0f);
+		public static readonly Vector2 vec2OneY  = new Vector2(0.0f, 1.0f);
+		public static readonly Vector3 vec3OneX  = new Vector3(1.0f, 0.0f, 0.0f);
+		public static readonly Vector3 vec3OneY  = new Vector3(0.0f, 1.0f, 0.0f);
+		public static readonly Vector3 vec3OneZ  = new Vector3(0.0f, 0.0f, 1.0f);
+		public static readonly Vector3 vec3OneXY = new Vector3(1.0f, 1.0f, 0.0f);
+		public static readonly Vector3 vec3OneYZ = new Vector3(0.0f, 1.0f, 1.0f);
+		public static readonly Vector3 vec3OneXZ = new Vector3(1.0f, 0.0f, 1.0f);
 
 		static public readonly int FloatBeautifierDigits = 4;
+
+		// ---------------------------------------------------------------------
+		//
+		// Rect
+		//
+		// ---------------------------------------------------------------------
+
+		public struct Rect {
+			public float xMin;
+			public float yMin;
+			public float xMax;
+			public float yMax;
+
+			public Rect(float xmin, float ymin, float width, float height) {
+				this.xMin = xmin;
+				this.yMin = ymin;
+				this.xMax = xmin + width;
+				this.yMax = ymin + height;
+			}
+
+			public Vector2 size {
+				get {
+					return new Vector2(xMax - xMin, yMax - yMin);
+				}
+			}
+
+			public bool Overlaps(Rect other) {
+				return
+					xMax > other.xMin && xMin < other.xMax &&
+					yMax > other.yMin && yMin < other.yMax;
+			}
+
+			static public Rect zero {
+				get { return new Rect(); }
+			}
+		}
 
 		// ---------------------------------------------------------------------
 		//
@@ -40,7 +74,7 @@ namespace IsoTools.Internal {
 				this.min = min;
 				this.max = max;
 			}
-				
+
 			public float size {
 				get { return max - min; }
 			}

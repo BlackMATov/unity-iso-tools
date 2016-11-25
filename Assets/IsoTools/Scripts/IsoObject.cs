@@ -194,7 +194,7 @@ namespace IsoTools {
 		public class InternalState {
 			public bool                    Dirty          = false;
 			public bool                    Placed         = false;
-			public Rect                    ScreenRect     = new Rect();
+			public IsoUtils.Rect           ScreenRect     = IsoUtils.Rect.zero;
 			public IsoUtils.MinMax         MinMax3d       = IsoUtils.MinMax.zero;
 			public float                   Offset3d       = 0.0f;
 			public Vector2                 MinSector      = Vector2.zero;
@@ -275,7 +275,7 @@ namespace IsoTools {
 				var r = isoWorld.IsoToScreen(position + IsoUtils.Vec3FromX(size.x)).x;
 				var b = isoWorld.IsoToScreen(position).y;
 				var t = isoWorld.IsoToScreen(position + size).y;
-				Internal.ScreenRect = new Rect(l, b, r - l, t - b);
+				Internal.ScreenRect = new IsoUtils.Rect(l, b, r - l, t - b);
 			}
 		}
 
