@@ -91,7 +91,7 @@ namespace IsoTools.Internal {
 			get { return _data.Length; }
 			set {
 				if ( value < _size ) {
-					throw new ArgumentOutOfRangeException("capacity");
+					throw new ArgumentOutOfRangeException("value");
 				}
 				if ( value != _data.Length ) {
 					if ( value > 0 ) {
