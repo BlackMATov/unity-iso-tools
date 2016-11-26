@@ -241,10 +241,11 @@ namespace IsoTools {
 		}
 
 		public void FixTransform() {
-			if ( isoWorld ) {
+			var iso_world = isoWorld;
+			if ( iso_world ) {
 				FixInternalTransform();
 				Internal.Transform.position = IsoUtils.Vec3ChangeZ(
-					isoWorld.IsoToScreen(position),
+					iso_world.IsoToScreen(position),
 					Internal.Transform.position.z);
 				FixScreenRect();
 			}
@@ -253,9 +254,10 @@ namespace IsoTools {
 		}
 
 		public void FixIsoPosition() {
-			if ( isoWorld ) {
+			var iso_world = isoWorld;
+			if ( iso_world ) {
 				FixInternalTransform();
-				position = isoWorld.ScreenToIso(
+				position = iso_world.ScreenToIso(
 					Internal.Transform.position,
 					positionZ);
 			}
@@ -270,11 +272,12 @@ namespace IsoTools {
 		}
 
 		void FixScreenRect() {
-			if ( isoWorld ) {
-				var l = isoWorld.IsoToScreen(position + IsoUtils.Vec3FromY(size.y)).x;
-				var r = isoWorld.IsoToScreen(position + IsoUtils.Vec3FromX(size.x)).x;
-				var b = isoWorld.IsoToScreen(position).y;
-				var t = isoWorld.IsoToScreen(position + size).y;
+			var iso_world = isoWorld;
+			if ( iso_world ) {
+				var l = iso_world.IsoToScreen(position + IsoUtils.Vec3FromY(size.y)).x;
+				var r = iso_world.IsoToScreen(position + IsoUtils.Vec3FromX(size.x)).x;
+				var b = iso_world.IsoToScreen(position).y;
+				var t = iso_world.IsoToScreen(position + size).y;
 				Internal.ScreenRect = new IsoUtils.Rect(l, b, r - l, t - b);
 			}
 		}
@@ -291,8 +294,9 @@ namespace IsoTools {
 		}
 
 		void MartDirtyIsoWorld() {
-			if ( isoWorld ) {
-				isoWorld.MarkDirty(this);
+			var iso_world = isoWorld;
+			if ( iso_world ) {
+				iso_world.MarkDirty(this);
 			}
 		#if UNITY_EDITOR
 			EditorUtility.SetDirty(this);
@@ -311,15 +315,17 @@ namespace IsoTools {
 		}
 
 		void OnEnable() {
-			if ( isoWorld ) {
-				isoWorld.AddIsoObject(this);
+			var iso_world = isoWorld;
+			if ( iso_world ) {
+				iso_world.AddIsoObject(this);
 			}
 			MartDirtyIsoWorld();
 		}
 
 		void OnDisable() {
-			if ( isoWorld ) {
-				isoWorld.RemoveIsoObject(this);
+			var iso_world = isoWorld;
+			if ( iso_world ) {
+				iso_world.RemoveIsoObject(this);
 			}
 		}
 
