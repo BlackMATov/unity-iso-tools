@@ -3,6 +3,7 @@
 -------------------
 
 Fix 5.4 warning
+IsoPhysics to Addons/Physics
 
 -------------------
 -- Version 2.4.2 --
