@@ -42,29 +42,29 @@ namespace IsoTools {
 		//
 		// ---------------------------------------------------------------------
 
-		static public readonly float DefTileSize   = 32.0f;
-		static public readonly float MinTileSize   = Mathf.Epsilon;
-		static public readonly float MaxTileSize   = float.MaxValue;
+		public static readonly float DefTileSize   = 32.0f;
+		public static readonly float MinTileSize   = Mathf.Epsilon;
+		public static readonly float MaxTileSize   = float.MaxValue;
 
-		static public readonly float DefTileRatio  = 0.5f;
-		static public readonly float MinTileRatio  = 0.25f;
-		static public readonly float MaxTileRatio  = 1.0f;
+		public static readonly float DefTileRatio  = 0.5f;
+		public static readonly float MinTileRatio  = 0.25f;
+		public static readonly float MaxTileRatio  = 1.0f;
 
-		static public readonly float DefTileAngle  = 45.0f;
-		static public readonly float MinTileAngle  = 0.0f;
-		static public readonly float MaxTileAngle  = 90.0f;
+		public static readonly float DefTileAngle  = 45.0f;
+		public static readonly float MinTileAngle  = 0.0f;
+		public static readonly float MaxTileAngle  = 90.0f;
 
-		static public readonly float DefTileHeight = DefTileSize;
-		static public readonly float MinTileHeight = MinTileSize;
-		static public readonly float MaxTileHeight = MaxTileSize;
+		public static readonly float DefTileHeight = DefTileSize;
+		public static readonly float MinTileHeight = MinTileSize;
+		public static readonly float MaxTileHeight = MaxTileSize;
 
-		static public readonly float DefStepDepth  = 0.1f;
-		static public readonly float MinStepDepth  = Mathf.Epsilon;
-		static public readonly float MaxStepDepth  = float.MaxValue;
+		public static readonly float DefStepDepth  = 0.1f;
+		public static readonly float MinStepDepth  = Mathf.Epsilon;
+		public static readonly float MaxStepDepth  = float.MaxValue;
 
-		static public readonly float DefStartDepth = 1.0f;
-		static public readonly float MinStartDepth = float.MinValue;
-		static public readonly float MaxStartDepth = float.MaxValue;
+		public static readonly float DefStartDepth = 1.0f;
+		public static readonly float MinStartDepth = float.MinValue;
+		public static readonly float MaxStartDepth = float.MaxValue;
 
 		// ---------------------------------------------------------------------
 		//

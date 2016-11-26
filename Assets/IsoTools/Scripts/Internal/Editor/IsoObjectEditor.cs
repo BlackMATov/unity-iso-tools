@@ -13,7 +13,7 @@ namespace IsoTools.Internal {
 		Vector3                         _center        = Vector3.zero;
 		Vector3                         _viewCenter    = Vector3.zero;
 
-		static public readonly float SnappingDistance = 0.2f;
+		public static readonly float SnappingDistance = 0.2f;
 
 		static bool IsSnappingEnabled() {
 			return !Event.current.control;

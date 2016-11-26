@@ -192,18 +192,18 @@ namespace IsoTools {
 		// ---------------------------------------------------------------------
 
 		public class InternalState {
-			public bool                    Dirty          = false;
-			public bool                    Placed         = false;
-			public IsoUtils.Rect           ScreenRect     = IsoUtils.Rect.zero;
-			public IsoUtils.MinMax         MinMax3d       = IsoUtils.MinMax.zero;
-			public float                   Offset3d       = 0.0f;
-			public Vector2                 MinSector      = Vector2.zero;
-			public Vector2                 MaxSector      = Vector2.zero;
-			public Transform               Transform      = null;
-			public Vector2                 LastTrans      = Vector2.zero;
-			public List<Renderer>          Renderers      = new List<Renderer>();
-			public IsoAssocList<IsoObject> SelfDepends    = new IsoAssocList<IsoObject>(47);
-			public IsoAssocList<IsoObject> TheirDepends   = new IsoAssocList<IsoObject>(47);
+			public bool                    Dirty        = false;
+			public bool                    Placed       = false;
+			public IsoUtils.Rect           ScreenRect   = IsoUtils.Rect.zero;
+			public IsoUtils.MinMax         MinMax3d     = IsoUtils.MinMax.zero;
+			public float                   Offset3d     = 0.0f;
+			public Vector2                 MinSector    = Vector2.zero;
+			public Vector2                 MaxSector    = Vector2.zero;
+			public Transform               Transform    = null;
+			public Vector2                 LastTrans    = Vector2.zero;
+			public List<Renderer>          Renderers    = new List<Renderer>();
+			public IsoAssocList<IsoObject> SelfDepends  = new IsoAssocList<IsoObject>(47);
+			public IsoAssocList<IsoObject> TheirDepends = new IsoAssocList<IsoObject>(47);
 		}
 
 		public InternalState Internal = new InternalState();

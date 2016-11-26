@@ -22,7 +22,7 @@ namespace IsoTools.Internal {
 		public static readonly Vector3 vec3OneYZ = new Vector3(0.0f, 1.0f, 1.0f);
 		public static readonly Vector3 vec3OneXZ = new Vector3(1.0f, 0.0f, 1.0f);
 
-		static public readonly int FloatBeautifierDigits = 4;
+		public static readonly int FloatBeautifierDigits = 4;
 
 		// ---------------------------------------------------------------------
 		//
@@ -55,7 +55,7 @@ namespace IsoTools.Internal {
 					yMax > other.yMin && yMin < other.yMax;
 			}
 
-			static public Rect zero {
+			public static Rect zero {
 				get { return new Rect(); }
 			}
 		}
@@ -89,7 +89,7 @@ namespace IsoTools.Internal {
 					Mathf.Approximately(max, minmax.max);
 			}
 
-			static public MinMax zero {
+			public static MinMax zero {
 				get { return new MinMax(); }
 			}
 		}
