@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace IsoTools.Internal {
+namespace IsoTools.Physics.Internal {
 	public class IsoFakeTriggerListener : MonoBehaviour {
 		GameObject _realGameObject = null;
 
@@ -12,14 +12,14 @@ namespace IsoTools.Internal {
 		void OnTriggerEnter(Collider collider) {
 			_realGameObject.SendMessage(
 				"OnIsoTriggerEnter",
-				IsoUtils.IsoConvertCollider(collider),
+				IsoPhysicsUtils.IsoConvertCollider(collider),
 				SendMessageOptions.DontRequireReceiver);
 		}
 
 		void OnTriggerExit(Collider collider) {
 			_realGameObject.SendMessage(
 				"OnIsoTriggerExit",
-				IsoUtils.IsoConvertCollider(collider),
+				IsoPhysicsUtils.IsoConvertCollider(collider),
 				SendMessageOptions.DontRequireReceiver);
 		}
 	}

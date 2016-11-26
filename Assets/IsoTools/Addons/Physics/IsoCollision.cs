@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using IsoTools.Internal;
+using IsoTools.Physics.Internal;
 
-namespace IsoTools {
+namespace IsoTools.Physics {
 	public class IsoCollision {
 
 		public IsoCollider       collider         { get; private set; }
@@ -12,12 +12,12 @@ namespace IsoTools {
 		public IsoRigidbody      rigidbody        { get; private set; }
 
 		public IsoCollision(Collision collision) {
-			collider         = IsoUtils.IsoConvertCollider(collision.collider);
-			contacts         = IsoUtils.IsoConvertContactPoints(collision.contacts);
-			gameObject       = IsoUtils.IsoConvertGameObject(collision.gameObject);
+			collider         = IsoPhysicsUtils.IsoConvertCollider(collision.collider);
+			contacts         = IsoPhysicsUtils.IsoConvertContactPoints(collision.contacts);
+			gameObject       = IsoPhysicsUtils.IsoConvertGameObject(collision.gameObject);
 			impulse          = collision.impulse;
 			relativeVelocity = collision.relativeVelocity;
-			rigidbody        = IsoUtils.IsoConvertRigidbody(collision.rigidbody);
+			rigidbody        = IsoPhysicsUtils.IsoConvertRigidbody(collision.rigidbody);
 		}
 	}
 }

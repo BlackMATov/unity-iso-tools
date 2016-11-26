@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
-using IsoTools.Internal;
+using IsoTools.Physics.Internal;
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-namespace IsoTools {
+namespace IsoTools.Physics {
 	[DisallowMultipleComponent]
 	[RequireComponent(typeof(IsoObject))]
-	public class IsoRigidbody : IsoPhysicHelperHolder {
+	public class IsoRigidbody : IsoPhysicsHelperHolder {
 
 		IsoFakeRigidbody _fakeRigidbody;
 
@@ -330,7 +330,8 @@ namespace IsoTools {
 			float max_distance, QueryTriggerInteraction query_trigger_interaction)
 		{
 			return realRigidbody
-				? IsoUtils.IsoConvertRaycastHits(realRigidbody.SweepTestAll(direction, max_distance, query_trigger_interaction))
+				? IsoPhysicsUtils.IsoConvertRaycastHits(
+					realRigidbody.SweepTestAll(direction, max_distance, query_trigger_interaction))
 				: new IsoRaycastHit[0];
 		}
 

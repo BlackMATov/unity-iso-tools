@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace IsoTools.Internal {
+namespace IsoTools.Physics.Internal {
 	public class IsoFakeObject : MonoBehaviour {
 
 		IsoObject _isoObject    = null;
@@ -25,9 +25,9 @@ namespace IsoTools.Internal {
 
 		void FixedUpdate() {
 			CheckLayers();
-			if ( !IsoUtils.Vec3Approximately(_lastPosition, isoObject.position) ) {
+			if ( _lastPosition != isoObject.position ) {
 				_lastPosition = transform.position = isoObject.position;
-			} else if ( !IsoUtils.Vec3Approximately(_lastPosition, transform.position) ) {
+			} else if ( _lastPosition != transform.position ) {
 				_lastPosition = isoObject.position = transform.position;
 			}
 		}

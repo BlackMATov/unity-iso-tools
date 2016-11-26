@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
-namespace IsoTools.Internal {
+namespace IsoTools.Physics.Internal {
 	[DisallowMultipleComponent]
 	[RequireComponent(typeof(IsoObject))]
-	public class IsoPhysicHelper : MonoBehaviour {
+	public class IsoPhysicsHelper : MonoBehaviour {
 
 		GameObject _isoFakeObject = null;
 		public GameObject isoFakeObject {

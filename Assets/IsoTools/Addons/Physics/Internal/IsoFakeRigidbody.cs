@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace IsoTools.Internal {
+namespace IsoTools.Physics.Internal {
 	public class IsoFakeRigidbody : MonoBehaviour {
 		IsoRigidbody _isoRigidbody = null;
 		

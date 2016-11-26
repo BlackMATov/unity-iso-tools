@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using IsoTools.Internal;
+using IsoTools.Physics.Internal;
 
-namespace IsoTools {
+namespace IsoTools.Physics {
 	public struct IsoContactPoint {
 
 		public Vector3     normal        { get; private set; }
@@ -12,10 +12,10 @@ namespace IsoTools {
 
 		public IsoContactPoint(ContactPoint contact_point) : this() {
 			normal        = contact_point.normal;
-			otherCollider = IsoUtils.IsoConvertCollider(contact_point.otherCollider);
+			otherCollider = IsoPhysicsUtils.IsoConvertCollider(contact_point.otherCollider);
 			point         = contact_point.point;
 			separation    = contact_point.separation;
-			thisCollider  = IsoUtils.IsoConvertCollider(contact_point.thisCollider);
+			thisCollider  = IsoPhysicsUtils.IsoConvertCollider(contact_point.thisCollider);
 		}
 	}
 }

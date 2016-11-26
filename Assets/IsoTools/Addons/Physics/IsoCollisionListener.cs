@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
-using IsoTools.Internal;
+using IsoTools.Physics.Internal;
 
-namespace IsoTools {
+namespace IsoTools.Physics {
 	[DisallowMultipleComponent]
 	[RequireComponent(typeof(IsoObject))]
-	public class IsoCollisionListener : IsoPhysicHelperHolder {
+	public class IsoCollisionListener : IsoPhysicsHelperHolder {
 
 		IsoFakeCollisionListener _fakeListener;
 

@@ -5,7 +5,7 @@ using IsoTools.Internal;
 using UnityEditor;
 #endif
 
-namespace IsoTools {
+namespace IsoTools.Physics {
 	[RequireComponent(typeof(IsoObject))]
 	public class IsoSphereCollider : IsoCollider {
 

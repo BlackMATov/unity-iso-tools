@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using IsoTools.Physics;
 
 namespace IsoTools.Examples.Dragosha {
 	[RequireComponent(typeof(IsoRigidbody))]

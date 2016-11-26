@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using IsoTools.Physics;
 
 namespace IsoTools.Examples.Kenney {
 	[RequireComponent(typeof(IsoRigidbody))]

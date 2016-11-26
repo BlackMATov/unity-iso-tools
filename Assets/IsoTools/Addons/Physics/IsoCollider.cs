@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
-using IsoTools.Internal;
+using IsoTools.Physics.Internal;
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-namespace IsoTools {
+namespace IsoTools.Physics {
 	[RequireComponent(typeof(IsoObject))]
-	public abstract class IsoCollider : IsoPhysicHelperHolder {
+	public abstract class IsoCollider : IsoPhysicsHelperHolder {
 		protected abstract Collider CreateRealCollider(GameObject target);
 
 		IsoFakeCollider _fakeCollider;
@@ -44,7 +44,7 @@ namespace IsoTools {
 		public IsoRigidbody attachedRigidbody {
 			get {
 				return realCollider
-					? IsoUtils.IsoConvertRigidbody(realCollider.attachedRigidbody)
+					? IsoPhysicsUtils.IsoConvertRigidbody(realCollider.attachedRigidbody)
 					: null;
 			}
 		}

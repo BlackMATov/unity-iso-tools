@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using IsoTools.Internal;
+using IsoTools.Physics.Internal;
 
-namespace IsoTools {
+namespace IsoTools.Physics {
 	public struct IsoRaycastHit {
 
 		public IsoCollider  collider  { get; private set; }
@@ -11,11 +11,11 @@ namespace IsoTools {
 		public IsoRigidbody rigidbody { get; private set; }
 
 		public IsoRaycastHit(RaycastHit hit_info) : this() {
-			collider  = IsoUtils.IsoConvertCollider(hit_info.collider);
+			collider  = IsoPhysicsUtils.IsoConvertCollider(hit_info.collider);
 			distance  = hit_info.distance;
 			normal    = hit_info.normal;
 			point     = hit_info.point;
-			rigidbody = IsoUtils.IsoConvertRigidbody(hit_info.rigidbody);
+			rigidbody = IsoPhysicsUtils.IsoConvertRigidbody(hit_info.rigidbody);
 		}
 	}
 }
