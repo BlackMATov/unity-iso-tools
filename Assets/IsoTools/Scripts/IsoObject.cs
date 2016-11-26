@@ -278,7 +278,7 @@ namespace IsoTools {
 				var r = iso_world.IsoToScreen(position + IsoUtils.Vec3FromX(size.x)).x;
 				var b = iso_world.IsoToScreen(position).y;
 				var t = iso_world.IsoToScreen(position + size).y;
-				Internal.ScreenRect = new IsoUtils.Rect(l, b, r - l, t - b);
+				Internal.ScreenRect = new IsoUtils.Rect(l, b, r, t);
 			}
 		}
 

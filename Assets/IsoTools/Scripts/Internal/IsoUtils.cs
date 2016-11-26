@@ -15,9 +15,11 @@ namespace IsoTools.Internal {
 
 		public static readonly Vector2 vec2OneX  = new Vector2(1.0f, 0.0f);
 		public static readonly Vector2 vec2OneY  = new Vector2(0.0f, 1.0f);
+
 		public static readonly Vector3 vec3OneX  = new Vector3(1.0f, 0.0f, 0.0f);
 		public static readonly Vector3 vec3OneY  = new Vector3(0.0f, 1.0f, 0.0f);
 		public static readonly Vector3 vec3OneZ  = new Vector3(0.0f, 0.0f, 1.0f);
+
 		public static readonly Vector3 vec3OneXY = new Vector3(1.0f, 1.0f, 0.0f);
 		public static readonly Vector3 vec3OneYZ = new Vector3(0.0f, 1.0f, 1.0f);
 		public static readonly Vector3 vec3OneXZ = new Vector3(1.0f, 0.0f, 1.0f);
@@ -31,28 +33,37 @@ namespace IsoTools.Internal {
 		// ---------------------------------------------------------------------
 
 		public struct Rect {
-			public float xMin;
-			public float yMin;
-			public float xMax;
-			public float yMax;
+			public MinMax x;
+			public MinMax y;
 
-			public Rect(float xmin, float ymin, float width, float height) {
-				this.xMin = xmin;
-				this.yMin = ymin;
-				this.xMax = xmin + width;
-				this.yMax = ymin + height;
+			public Rect(float x_min, float y_min, float x_max, float y_max) : this() {
+				x = new MinMax(x_min, x_max);
+				y = new MinMax(y_min, y_max);
 			}
 
 			public Vector2 size {
-				get {
-					return new Vector2(xMax - xMin, yMax - yMin);
-				}
+				get { return new Vector2(x.size, y.size); }
+			}
+
+			public Vector2 center {
+				get { return new Vector2(x.center, y.center); }
+			}
+
+			public void Set(float x_min, float y_min, float x_max, float y_max) {
+				x.Set(x_min, x_max);
+				y.Set(y_min, y_max);
 			}
 
 			public bool Overlaps(Rect other) {
 				return
-					xMax > other.xMin && xMin < other.xMax &&
-					yMax > other.yMin && yMin < other.yMax;
+					x.Overlaps(other.x) &&
+					y.Overlaps(other.y);
+			}
+
+			public bool Approximately(Rect other) {
+				return
+					x.Approximately(other.x) &&
+					y.Approximately(other.y);
 			}
 
 			public static Rect zero {
@@ -70,7 +81,7 @@ namespace IsoTools.Internal {
 			public float min;
 			public float max;
 
-			public MinMax(float min, float max) {
+			public MinMax(float min, float max) : this() {
 				this.min = min;
 				this.max = max;
 			}
@@ -83,10 +94,21 @@ namespace IsoTools.Internal {
 				get { return min / 2.0f + max / 2.0f; }
 			}
 
-			public bool Approximately(MinMax minmax) {
+			public void Set(float min, float max) {
+				this.min = min;
+				this.max = max;
+			}
+
+			public bool Overlaps(MinMax other) {
 				return
-					Mathf.Approximately(min, minmax.min) &&
-					Mathf.Approximately(max, minmax.max);
+					max > other.min &&
+					min < other.max;
+			}
+
+			public bool Approximately(MinMax other) {
+				return
+					Mathf.Approximately(min, other.min) &&
+					Mathf.Approximately(max, other.max);
 			}
 
 			public static MinMax zero {
@@ -141,46 +163,46 @@ namespace IsoTools.Internal {
 		}
 
 		public static Vector2 Vec2Min(Vector2 a, float b) {
-			if ( b < a.x ) {
+			if ( a.x > b ) {
 				a.x = b;
 			}
-			if ( b < a.y ) {
+			if ( a.y > b ) {
 				a.y = b;
 			}
 			return a;
 		}
 		
 		public static Vector2 Vec2Min(Vector2 a, Vector2 b) {
-			if ( b.x < a.x ) {
+			if ( a.x > b.x ) {
 				a.x = b.x;
 			}
-			if ( b.y < a.y ) {
+			if ( a.y > b.y ) {
 				a.y = b.y;
 			}
 			return a;
 		}
 
 		public static Vector3 Vec3Min(Vector3 a, float b) {
-			if ( b < a.x ) {
+			if ( a.x > b ) {
 				a.x = b;
 			}
-			if ( b < a.y ) {
+			if ( a.y > b ) {
 				a.y = b;
 			}
-			if ( b < a.z ) {
+			if ( a.z > b ) {
 				a.z = b;
 			}
 			return a;
 		}
 
 		public static Vector3 Vec3Min(Vector3 a, Vector3 b) {
-			if ( b.x < a.x ) {
+			if ( a.x > b.x ) {
 				a.x = b.x;
 			}
-			if ( b.y < a.y ) {
+			if ( a.y > b.y ) {
 				a.y = b.y;
 			}
-			if ( b.z < a.z ) {
+			if ( a.z > b.z ) {
 				a.z = b.z;
 			}
 			return a;
@@ -200,46 +222,46 @@ namespace IsoTools.Internal {
 		}
 
 		public static Vector2 Vec2Max(Vector2 a, float b) {
-			if ( b > a.x ) {
+			if ( a.x < b ) {
 				a.x = b;
 			}
-			if ( b > a.y ) {
+			if ( a.y < b ) {
 				a.y = b;
 			}
 			return a;
 		}
 
 		public static Vector2 Vec2Max(Vector2 a, Vector2 b) {
-			if ( b.x > a.x ) {
+			if ( a.x < b.x ) {
 				a.x = b.x;
 			}
-			if ( b.y > a.y ) {
+			if ( a.y < b.y ) {
 				a.y = b.y;
 			}
 			return a;
 		}
 
 		public static Vector3 Vec3Max(Vector3 a, float b) {
-			if ( b > a.x ) {
+			if ( a.x < b ) {
 				a.x = b;
 			}
-			if ( b > a.y ) {
+			if ( a.y < b ) {
 				a.y = b;
 			}
-			if ( b > a.z ) {
+			if ( a.z < b ) {
 				a.z = b;
 			}
 			return a;
 		}
 
 		public static Vector3 Vec3Max(Vector3 a, Vector3 b) {
-			if ( b.x > a.x ) {
+			if ( a.x < b.x ) {
 				a.x = b.x;
 			}
-			if ( b.y > a.y ) {
+			if ( a.y < b.y ) {
 				a.y = b.y;
 			}
-			if ( b.z > a.z ) {
+			if ( a.z < b.z ) {
 				a.z = b.z;
 			}
 			return a;
@@ -256,16 +278,16 @@ namespace IsoTools.Internal {
 		// -----------------------------
 
 		public static Vector2 Vec2Ceil(Vector2 v) {
-			return new Vector2(
-				Mathf.Ceil(v.x),
-				Mathf.Ceil(v.y));
+			v.x = Mathf.Ceil(v.x);
+			v.y = Mathf.Ceil(v.y);
+			return v;
 		}
 
 		public static Vector3 Vec3Ceil(Vector3 v) {
-			return new Vector3(
-				Mathf.Ceil(v.x),
-				Mathf.Ceil(v.y),
-				Mathf.Ceil(v.z));
+			v.x = Mathf.Ceil(v.x);
+			v.y = Mathf.Ceil(v.y);
+			v.z = Mathf.Ceil(v.z);
+			return v;
 		}
 
 		// -----------------------------
@@ -273,16 +295,16 @@ namespace IsoTools.Internal {
 		// -----------------------------
 
 		public static Vector2 Vec2Floor(Vector2 v) {
-			return new Vector2(
-				Mathf.Floor(v.x),
-				Mathf.Floor(v.y));
+			v.x = Mathf.Floor(v.x);
+			v.y = Mathf.Floor(v.y);
+			return v;
 		}
 
 		public static Vector3 Vec3Floor(Vector3 v) {
-			return new Vector3(
-				Mathf.Floor(v.x),
-				Mathf.Floor(v.y),
-				Mathf.Floor(v.z));
+			v.x = Mathf.Floor(v.x);
+			v.y = Mathf.Floor(v.y);
+			v.z = Mathf.Floor(v.z);
+			return v;
 		}
 
 		// -----------------------------
@@ -290,16 +312,16 @@ namespace IsoTools.Internal {
 		// -----------------------------
 
 		public static Vector2 Vec2Round(Vector2 v) {
-			return new Vector2(
-				Mathf.Round(v.x),
-				Mathf.Round(v.y));
+			v.x = Mathf.Round(v.x);
+			v.y = Mathf.Round(v.y);
+			return v;
 		}
 
 		public static Vector3 Vec3Round(Vector3 v) {
-			return new Vector3(
-				Mathf.Round(v.x),
-				Mathf.Round(v.y),
-				Mathf.Round(v.z));
+			v.x = Mathf.Round(v.x);
+			v.y = Mathf.Round(v.y);
+			v.z = Mathf.Round(v.z);
+			return v;
 		}
 
 		// ---------------------------------------------------------------------
@@ -383,17 +405,18 @@ namespace IsoTools.Internal {
 		// -----------------------------
 
 		public static Vector2 Vec2ChangeX(Vector2 v, float x) {
-			return new Vector2(x, v.y);
+			v.x = x;
+			return v;
 		}
 		
 		public static Vector2 Vec2ChangeY(Vector2 v, float y) {
-			return new Vector2(v.x, y);
+			v.y = y;
+			return v;
 		}
 
 		public static Vector2 Vec2ChangeI(Vector2 v, int index, float n) {
-			var c = v;
-			c[index] = n;
-			return c;
+			v[index] = n;
+			return v;
 		}
 
 		// -----------------------------
@@ -401,59 +424,63 @@ namespace IsoTools.Internal {
 		// -----------------------------
 		
 		public static Vector3 Vec3ChangeX(Vector3 v, float x) {
-			return new Vector3(x, v.y, v.z);
+			v.x = x;
+			return v;
 		}
 		
 		public static Vector3 Vec3ChangeY(Vector3 v, float y) {
-			return new Vector3(v.x, y, v.z);
+			v.y = y;
+			return v;
 		}
 		
 		public static Vector3 Vec3ChangeZ(Vector3 v, float z) {
-			return new Vector3(v.x, v.y, z);
+			v.z = z;
+			return v;
 		}
 		
 		public static Vector3 Vec3ChangeXY(Vector3 v, float x, float y) {
-			return new Vector3(x, y, v.z);
+			v.x = x;
+			v.y = y;
+			return v;
 		}
 		
 		public static Vector3 Vec3ChangeYZ(Vector3 v, float y, float z) {
-			return new Vector3(v.x, y, z);
+			v.y = y;
+			v.z = z;
+			return v;
 		}
 		
 		public static Vector3 Vec3ChangeXZ(Vector3 v, float x, float z) {
-			return new Vector3(x, v.y, z);
+			v.x = x;
+			v.z = z;
+			return v;
 		}
 
 		public static Vector3 Vec3ChangeI(Vector3 v, int index, float n) {
-			var c = v;
-			c[index] = n;
-			return c;
+			v[index] = n;
+			return v;
 		}
 
 		// -----------------------------
 		// ColorChange
 		// -----------------------------
 
-		public static Color ColorChangeA(Color color, float a) {
-			var c = color;
+		public static Color ColorChangeA(Color c, float a) {
 			c.a = a;
 			return c;
 		}
 
-		public static Color ColorChangeR(Color color, float r) {
-			var c = color;
+		public static Color ColorChangeR(Color c, float r) {
 			c.r = r;
 			return c;
 		}
 
-		public static Color ColorChangeG(Color color, float g) {
-			var c = color;
+		public static Color ColorChangeG(Color c, float g) {
 			c.g = g;
 			return c;
 		}
 
-		public static Color ColorChangeB(Color color, float b) {
-			var c = color;
+		public static Color ColorChangeB(Color c, float b) {
 			c.b = b;
 			return c;
 		}
@@ -483,16 +510,16 @@ namespace IsoTools.Internal {
 		}
 
 		public static Vector2 VectorBeautifier(Vector2 v) {
-			return new Vector2{
-				x = FloatBeautifier(v.x),
-				y = FloatBeautifier(v.y)};
+			v.x = FloatBeautifier(v.x);
+			v.y = FloatBeautifier(v.y);
+			return v;
 		}
 
 		public static Vector3 VectorBeautifier(Vector3 v) {
-			return new Vector3{
-				x = FloatBeautifier(v.x),
-				y = FloatBeautifier(v.y),
-				z = FloatBeautifier(v.z)};
+			v.x = FloatBeautifier(v.x);
+			v.y = FloatBeautifier(v.y);
+			v.z = FloatBeautifier(v.z);
+			return v;
 		}
 
 		// ---------------------------------------------------------------------
@@ -508,52 +535,20 @@ namespace IsoTools.Internal {
 				: obj.AddComponent<T>();
 		}
 
-		public static IsoCollider IsoConvertCollider(Collider collider) {
-			var fake_collider = collider ? collider.GetComponent<IsoFakeCollider>() : null;
-			return fake_collider ? fake_collider.isoCollider : null;
-		}
-		
-		public static IsoRigidbody IsoConvertRigidbody(Rigidbody rigidbody) {
-			var fake_rigidbody = rigidbody ? rigidbody.GetComponent<IsoFakeRigidbody>() : null;
-			return fake_rigidbody ? fake_rigidbody.isoRigidbody : null;
-		}
-		
-		public static GameObject IsoConvertGameObject(GameObject game_object) {
-			var fake_object = game_object ? game_object.GetComponent<IsoFakeObject>() : null;
-			var iso_object = fake_object ? fake_object.isoObject : null;
-			return iso_object ? iso_object.gameObject : null;
-		}
-		
-		public static IsoContactPoint[] IsoConvertContactPoints(ContactPoint[] points) {
-			var iso_points = new IsoContactPoint[points.Length];
-			for ( int i = 0, e = points.Length; i < e; ++i ) {
-				iso_points[i] = new IsoContactPoint(points[i]);
-			}
-			return iso_points;
-		}
-
-		public static IsoRaycastHit[] IsoConvertRaycastHits(RaycastHit[] hits) {
-			var iso_hits = new IsoRaycastHit[hits.Length];
-			for ( int i = 0, e = hits.Length; i < e; ++i ) {
-				iso_hits[i] = new IsoRaycastHit(hits[i]);
-			}
-			return iso_hits;
-		}
-
 		// ---------------------------------------------------------------------
 		//
 		// Debug draw
 		//
 		// ---------------------------------------------------------------------
 
-		#if UNITY_EDITOR
+	#if UNITY_EDITOR
 		static void DrawTop(IsoWorld iso_world, Vector3 pos, Vector3 size) {
 			if ( iso_world ) {
 				var points = new Vector3[]{
 					iso_world.IsoToScreen(pos),
-					iso_world.IsoToScreen(pos + IsoUtils.Vec3FromX(size.x)),
+					iso_world.IsoToScreen(pos + IsoUtils.Vec3FromX (size.x)),
 					iso_world.IsoToScreen(pos + IsoUtils.Vec3FromXY(size.x, size.y)),
-					iso_world.IsoToScreen(pos + IsoUtils.Vec3FromY(size.y)),
+					iso_world.IsoToScreen(pos + IsoUtils.Vec3FromY (size.y)),
 					iso_world.IsoToScreen(pos)
 				};
 				Handles.DrawLine(points[0], points[1]);
@@ -576,10 +571,10 @@ namespace IsoTools.Internal {
 				Handles.color = color;
 				var pos = center - size * 0.5f;
 				DrawTop (iso_world, pos, size);
-				DrawTop (iso_world, pos + IsoUtils.Vec3FromZ(size.z), size);
+				DrawTop (iso_world, pos + IsoUtils.Vec3FromZ (size.z), size);
 				DrawVert(iso_world, pos, size);
-				DrawVert(iso_world, pos + IsoUtils.Vec3FromX(size.x), size);
-				DrawVert(iso_world, pos + IsoUtils.Vec3FromY(size.y), size);
+				DrawVert(iso_world, pos + IsoUtils.Vec3FromX (size.x), size);
+				DrawVert(iso_world, pos + IsoUtils.Vec3FromY (size.y), size);
 				DrawVert(iso_world, pos + IsoUtils.Vec3FromXY(size.x, size.y), size);
 			}
 		}
@@ -611,6 +606,6 @@ namespace IsoTools.Internal {
 				}
 			}
 		}
-		#endif
+	#endif
 	}
 }

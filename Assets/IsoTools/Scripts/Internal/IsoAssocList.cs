@@ -37,8 +37,8 @@ namespace IsoTools.Internal {
 			}
 		}
 
-		public bool Contains(T value) {
-			return _dict.ContainsKey(value);
+		public bool Contains(T item) {
+			return _dict.ContainsKey(item);
 		}
 
 		public void Add(T item) {

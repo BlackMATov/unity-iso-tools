@@ -92,8 +92,7 @@ namespace IsoTools.Internal {
 			set {
 				if ( value < _size ) {
 					throw new ArgumentOutOfRangeException("value");
-				}
-				if ( value != _data.Length ) {
+				} else if ( value != _data.Length ) {
 					if ( value > 0 ) {
 						var new_data = new T[value];
 						if ( _size > 0 ) {

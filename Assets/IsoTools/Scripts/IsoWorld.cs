@@ -180,13 +180,9 @@ namespace IsoTools {
 
 		// ---------------------------------------------------------------------
 		//
-		// Raycast
-		//
-		// ---------------------------------------------------------------------
-
-		//
 		// RayFromIsoCameraToIsoPoint
 		//
+		// ---------------------------------------------------------------------
 
 		public Ray RayFromIsoCameraToIsoPoint(Vector3 iso_pnt) {
 			var screen_pnt      = IsoToScreen(iso_pnt);
@@ -198,119 +194,6 @@ namespace IsoTools {
 			var iso_down_pnt    = ScreenToIso(screen_down_pnt, iso_pnt.z);
 			iso_down_pnt.z     += max_screen_dist / tileHeight;
 			return new Ray(iso_down_pnt, iso_pnt - iso_down_pnt);
-		}
-
-		//
-		// Raycast
-		//
-
-		public bool Raycast(Ray ray, out IsoRaycastHit iso_hit_info) {
-			return Raycast(ray, out iso_hit_info,
-				Mathf.Infinity, Physics.DefaultRaycastLayers,
-				QueryTriggerInteraction.UseGlobal);
-		}
-
-		public bool Raycast(Ray ray, out IsoRaycastHit iso_hit_info,
-			float max_distance)
-		{
-			return Raycast(ray, out iso_hit_info,
-				max_distance, Physics.DefaultRaycastLayers,
-				QueryTriggerInteraction.UseGlobal);
-		}
-
-		public bool Raycast(Ray ray, out IsoRaycastHit iso_hit_info,
-			float max_distance, int layer_mask)
-		{
-			return Raycast(ray, out iso_hit_info,
-				max_distance, layer_mask,
-				QueryTriggerInteraction.UseGlobal);
-		}
-
-		public bool Raycast(Ray ray, out IsoRaycastHit iso_hit_info,
-			float max_distance, int layer_mask,
-			QueryTriggerInteraction query_trigger_interaction)
-		{
-			var hit_info = new RaycastHit();
-			var result = Physics.Raycast(ray, out hit_info,
-				max_distance, layer_mask, query_trigger_interaction);
-			iso_hit_info = result ? new IsoRaycastHit(hit_info) : new IsoRaycastHit();
-			return result;
-		}
-
-		//
-		// RaycastAll
-		//
-
-		public IsoRaycastHit[] RaycastAll(Ray ray) {
-			return RaycastAll(ray,
-				Mathf.Infinity, Physics.DefaultRaycastLayers,
-				QueryTriggerInteraction.UseGlobal);
-		}
-
-		public IsoRaycastHit[] RaycastAll(Ray ray,
-			float max_distance)
-		{
-			return RaycastAll(ray,
-				max_distance, Physics.DefaultRaycastLayers,
-				QueryTriggerInteraction.UseGlobal);
-		}
-
-		public IsoRaycastHit[] RaycastAll(Ray ray,
-			float max_distance, int layer_mask)
-		{
-			return RaycastAll(ray,
-				max_distance, layer_mask,
-				QueryTriggerInteraction.UseGlobal);
-		}
-
-		public IsoRaycastHit[] RaycastAll(Ray ray,
-			float max_distance, int layer_mask,
-			QueryTriggerInteraction query_trigger_interaction)
-		{
-			var hits_info = Physics.RaycastAll(ray,
-				max_distance, layer_mask, query_trigger_interaction);
-			return IsoUtils.IsoConvertRaycastHits(hits_info);
-		}
-
-		//
-		// RaycastNonAlloc
-		//
-
-		public int RaycastNonAlloc(Ray ray, IsoRaycastHit[] results) {
-			return RaycastNonAlloc(ray, results,
-				Mathf.Infinity, Physics.DefaultRaycastLayers,
-				QueryTriggerInteraction.UseGlobal);
-		}
-
-		public int RaycastNonAlloc(Ray ray, IsoRaycastHit[] results,
-			float max_distance)
-		{
-			return RaycastNonAlloc(ray, results,
-				max_distance, Physics.DefaultRaycastLayers,
-				QueryTriggerInteraction.UseGlobal);
-		}
-
-		public int RaycastNonAlloc(Ray ray, IsoRaycastHit[] results,
-			float max_distance, int layer_mask)
-		{
-			return RaycastNonAlloc(ray, results,
-				max_distance, layer_mask,
-				QueryTriggerInteraction.UseGlobal);
-		}
-
-		static RaycastHit[] _raycastNonAllocBuffer = new RaycastHit[128];
-		public int RaycastNonAlloc(Ray ray, IsoRaycastHit[] results,
-			float max_distance, int layer_mask,
-			QueryTriggerInteraction query_trigger_interaction)
-		{
-			var hit_count = Physics.RaycastNonAlloc(ray, _raycastNonAllocBuffer,
-				max_distance, layer_mask, query_trigger_interaction);
-			var min_hit_count = Mathf.Min(hit_count, results.Length);
-			for ( var i = 0; i < min_hit_count; ++i ) {
-				results[i] = new IsoRaycastHit(_raycastNonAllocBuffer[i]);
-			}
-			System.Array.Clear(_raycastNonAllocBuffer, 0, _raycastNonAllocBuffer.Length);
-			return min_hit_count;
 		}
 
 		// ---------------------------------------------------------------------
@@ -641,10 +524,10 @@ namespace IsoTools {
 					var iso_internal = _visibles[i].Internal;
 
 					// high performance tricks
-					var min_x = iso_internal.ScreenRect.xMin / _sectorsSize;
-					var min_y = iso_internal.ScreenRect.yMin / _sectorsSize;
-					var max_x = iso_internal.ScreenRect.xMax / _sectorsSize;
-					var max_y = iso_internal.ScreenRect.yMax / _sectorsSize;
+					var min_x = iso_internal.ScreenRect.x.min / _sectorsSize;
+					var min_y = iso_internal.ScreenRect.y.min / _sectorsSize;
+					var max_x = iso_internal.ScreenRect.x.max / _sectorsSize;
+					var max_y = iso_internal.ScreenRect.y.max / _sectorsSize;
 					iso_internal.MinSector.x = (int)(min_x >= 0.0f ? min_x : min_x - 1.0f);
 					iso_internal.MinSector.y = (int)(min_y >= 0.0f ? min_y : min_y - 1.0f);
 					iso_internal.MaxSector.x = (int)(max_x >= 0.0f ? max_x + 1.0f : max_x);
