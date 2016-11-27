@@ -13,7 +13,7 @@ namespace IsoTools.Physics {
 		IsoFakeCollider _fakeCollider;
 
 		Collider _realCollider = null;
-		protected Collider realCollider {
+		public Collider realCollider {
 			get { return _realCollider; }
 		}
 
