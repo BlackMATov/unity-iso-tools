@@ -186,25 +186,9 @@ namespace IsoTools.Physics {
 		}
 
 		public void AddExplosionForce(
-			float explosion_force, Vector3 explosion_position, float explosion_radius)
-		{
-			AddExplosionForce(
-				explosion_force, explosion_position, explosion_radius,
-				0.0f, ForceMode.Force);
-		}
-
-		public void AddExplosionForce(
 			float explosion_force, Vector3 explosion_position, float explosion_radius,
-			float upwards_modifier)
-		{
-			AddExplosionForce(
-				explosion_force, explosion_position, explosion_radius,
-				upwards_modifier, ForceMode.Force);
-		}
-
-		public void AddExplosionForce(
-			float explosion_force, Vector3 explosion_position, float explosion_radius,
-			float upwards_modifier, ForceMode mode)
+			float     upwards_modifier = 0.0f,
+			ForceMode mode             = ForceMode.Force)
 		{
 			if ( realRigidbody ) {
 				realRigidbody.AddExplosionForce(
@@ -213,31 +197,25 @@ namespace IsoTools.Physics {
 			}
 		}
 
-		public void AddForce(Vector3 force) {
-			AddForce(force, ForceMode.Force);
-		}
-
-		public void AddForce(Vector3 force, ForceMode mode) {
+		public void AddForce(Vector3 force,
+			ForceMode mode = ForceMode.Force)
+		{
 			if ( realRigidbody ) {
 				realRigidbody.AddForce(force, mode);
 			}
 		}
 
-		public void AddForceAtPosition(Vector3 force, Vector3 position) {
-			AddForceAtPosition(force, position, ForceMode.Force);
-		}
-
-		public void AddForceAtPosition(Vector3 force, Vector3 position, ForceMode mode) {
+		public void AddForceAtPosition(Vector3 force, Vector3 position,
+			ForceMode mode = ForceMode.Force)
+		{
 			if ( realRigidbody ) {
 				realRigidbody.AddForceAtPosition(force, position, mode);
 			}
 		}
-
-		public void AddRelativeForce(Vector3 force) {
-			AddRelativeForce(force, ForceMode.Force);
-		}
 		
-		public void AddRelativeForce(Vector3 force, ForceMode mode) {
+		public void AddRelativeForce(Vector3 force,
+			ForceMode mode = ForceMode.Force)
+		{
 			if ( realRigidbody ) {
 				realRigidbody.AddRelativeForce(force, mode);
 			}
@@ -297,17 +275,9 @@ namespace IsoTools.Physics {
 			}
 		}
 
-		public bool SweepTest(Vector3 direction, out IsoRaycastHit iso_hit_info) {
-			return SweepTest(direction, out iso_hit_info, Mathf.Infinity, QueryTriggerInteraction.UseGlobal);
-		}
-
-		public bool SweepTest(Vector3 direction, out IsoRaycastHit iso_hit_info, float max_distance) {
-			return SweepTest(direction, out iso_hit_info, max_distance, QueryTriggerInteraction.UseGlobal);
-		}
-
-		public bool SweepTest(
-			Vector3 direction, out IsoRaycastHit iso_hit_info,
-			float max_distance, QueryTriggerInteraction query_trigger_interaction)
+		public bool SweepTest(Vector3 direction, out IsoRaycastHit iso_hit_info,
+			float                   max_distance              = Mathf.Infinity,
+			QueryTriggerInteraction query_trigger_interaction = QueryTriggerInteraction.UseGlobal)
 		{
 			var hit_info = new RaycastHit();
 			var result = realRigidbody
@@ -317,17 +287,9 @@ namespace IsoTools.Physics {
 			return result;
 		}
 
-		public IsoRaycastHit[] SweepTestAll(Vector3 direction) {
-			return SweepTestAll(direction, Mathf.Infinity, QueryTriggerInteraction.UseGlobal);
-		}
-
-		public IsoRaycastHit[] SweepTestAll(Vector3 direction, float max_distance) {
-			return SweepTestAll(direction, max_distance, QueryTriggerInteraction.UseGlobal);
-		}
-
-		public IsoRaycastHit[] SweepTestAll(
-			Vector3 direction,
-			float max_distance, QueryTriggerInteraction query_trigger_interaction)
+		public IsoRaycastHit[] SweepTestAll(Vector3 direction,
+			float                   max_distance              = Mathf.Infinity,
+			QueryTriggerInteraction query_trigger_interaction = QueryTriggerInteraction.UseGlobal)
 		{
 			return realRigidbody
 				? IsoPhysicsUtils.IsoConvertRaycastHits(
