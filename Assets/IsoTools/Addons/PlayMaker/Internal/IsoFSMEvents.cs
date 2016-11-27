@@ -1,5 +1,6 @@
 ﻿#if PLAYMAKER
 using UnityEngine;
+using IsoTools.Physics;
 using HutongGames.PlayMaker;
 
 namespace IsoTools.PlayMaker.Internal {

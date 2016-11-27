@@ -77,5 +77,5 @@ namespace IsoTools.PlayMaker.Actions {
 			}
 		}
 	}
-} // IsoTools.PlayMaker.Actions
+}
 #endif
