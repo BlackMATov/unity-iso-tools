@@ -23,3 +23,5 @@ EditorBuildSettings:
     path: Assets/IsoTools/Examples/Scenes/Scene07.unity
   - enabled: 1
     path: Assets/IsoTools/Examples/Scenes/Scene08.unity
+  - enabled: 1
+    path: Assets/IsoTools/Examples/Scenes/Scene09.unity
