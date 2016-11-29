@@ -243,7 +243,6 @@ namespace IsoTools {
 		public void FixTransform() {
 			var iso_world = isoWorld;
 			if ( iso_world ) {
-				FixInternalTransform();
 				Internal.Transform.position = IsoUtils.Vec3ChangeZ(
 					iso_world.IsoToScreen(position),
 					Internal.Transform.position.z);
@@ -256,7 +255,6 @@ namespace IsoTools {
 		public void FixIsoPosition() {
 			var iso_world = isoWorld;
 			if ( iso_world ) {
-				FixInternalTransform();
 				position = iso_world.ScreenToIso(
 					Internal.Transform.position,
 					positionZ);
@@ -282,15 +280,12 @@ namespace IsoTools {
 			}
 		}
 
-		void FixLastProperties() {
-			FixInternalTransform();
-			Internal.LastTrans = Internal.Transform.position;
+		void FixCachedProperties() {
+			Internal.Transform = transform;
 		}
 
-		void FixInternalTransform() {
-			if ( !Internal.Transform ) {
-				Internal.Transform = transform;
-			}
+		void FixLastProperties() {
+			Internal.LastTrans = Internal.Transform.position;
 		}
 
 		void MartDirtyIsoWorld() {
@@ -310,6 +305,7 @@ namespace IsoTools {
 		// ---------------------------------------------------------------------
 
 		void Awake() {
+			FixCachedProperties();
 			FixLastProperties();
 			FixIsoPosition();
 		}
@@ -331,6 +327,7 @@ namespace IsoTools {
 
 	#if UNITY_EDITOR
 		void Reset() {
+			FixCachedProperties();
 			size           = Vector3.one;
 			position       = Vector3.zero;
 			mode           = Mode.Mode2d;
@@ -338,6 +335,7 @@ namespace IsoTools {
 		}
 
 		void OnValidate() {
+			FixCachedProperties();
 			size           = _size;
 			position       = _position;
 			mode           = _mode;
