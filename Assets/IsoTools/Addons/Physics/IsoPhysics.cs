@@ -52,11 +52,17 @@ namespace IsoTools.Physics {
 			int                     layer_mask                = UnityEngine.Physics.DefaultRaycastLayers,
 			QueryTriggerInteraction query_trigger_interaction = QueryTriggerInteraction.UseGlobal)
 		{
-			var hit_count = UnityEngine.Physics.RaycastNonAlloc(ray, _raycastNonAllocBuffer,
-				max_distance,
-				layer_mask,
-				query_trigger_interaction);
-			return RaycastBufferToIsoRaycastHits(hit_count, results);
+			do {
+				var hit_count = UnityEngine.Physics.RaycastNonAlloc(ray, _raycastNonAllocBuffer,
+					max_distance,
+					layer_mask,
+					query_trigger_interaction);
+				if ( hit_count >= results.Length || hit_count < _raycastNonAllocBuffer.Length ) {
+					return RaycastBufferToIsoRaycastHits(hit_count, results);
+				} else {
+					_raycastNonAllocBuffer = new RaycastHit[_raycastNonAllocBuffer.Length * 2];
+				}
+			} while ( true );
 		}
 
 		//
@@ -247,12 +253,18 @@ namespace IsoTools.Physics {
 			int                     layer_mask                = UnityEngine.Physics.AllLayers,
 			QueryTriggerInteraction query_trigger_interaction = QueryTriggerInteraction.UseGlobal)
 		{
-			var collider_count = UnityEngine.Physics.OverlapBoxNonAlloc(
-				center, half_extents, _overlapNonAllocBuffer,
-				Quaternion.identity,
-				layer_mask,
-				query_trigger_interaction);
-			return OverlapBufferToIsoColliders(collider_count, results);
+			do {
+				var collider_count = UnityEngine.Physics.OverlapBoxNonAlloc(
+					center, half_extents, _overlapNonAllocBuffer,
+					Quaternion.identity,
+					layer_mask,
+					query_trigger_interaction);
+				if ( collider_count >= results.Length || collider_count < _overlapNonAllocBuffer.Length ) {
+					return OverlapBufferToIsoColliders(collider_count, results);
+				} else {
+					_overlapNonAllocBuffer = new Collider[_overlapNonAllocBuffer.Length * 2];
+				}
+			} while ( true );
 		}
 
 		//
