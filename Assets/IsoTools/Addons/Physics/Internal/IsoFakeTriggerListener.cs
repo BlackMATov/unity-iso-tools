@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 
 namespace IsoTools.Physics.Internal {
+	[AddComponentMenu("")]
 	public class IsoFakeTriggerListener : MonoBehaviour {
+
 		GameObject _realGameObject = null;
 
 		public IsoFakeTriggerListener Init(IsoTriggerListener iso_listener) {

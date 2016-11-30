@@ -3,6 +3,7 @@ using IsoTools.Internal;
 using System.Collections.Generic;
 
 namespace IsoTools.Physics.Internal {
+	[AddComponentMenu("")]
 	public class IsoPhysicsHelperHolder : MonoBehaviour {
 
 		static List<IsoPhysicsHelperHolder> _tmpHolders = new List<IsoPhysicsHelperHolder>(7);

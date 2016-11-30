@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
 namespace IsoTools.Physics.Internal {
+	[AddComponentMenu("")]
 	[DisallowMultipleComponent]
 	[RequireComponent(typeof(IsoObject))]
 	public class IsoPhysicsHelper : MonoBehaviour {

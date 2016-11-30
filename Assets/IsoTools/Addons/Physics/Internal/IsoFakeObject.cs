@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
 namespace IsoTools.Physics.Internal {
+	[AddComponentMenu("")]
 	public class IsoFakeObject : MonoBehaviour {
 
 		IsoObject _isoObject    = null;

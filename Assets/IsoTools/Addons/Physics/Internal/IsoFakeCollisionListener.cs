@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 
 namespace IsoTools.Physics.Internal {
+	[AddComponentMenu("")]
 	public class IsoFakeCollisionListener : MonoBehaviour {
+
 		GameObject _realGameObject = null;
 
 		public IsoFakeCollisionListener Init(IsoCollisionListener iso_listener) {
