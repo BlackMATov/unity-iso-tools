@@ -163,15 +163,6 @@ namespace IsoTools.Physics {
 		}
 	#endif
 
-		public bool useConeFriction {
-			get { return realRigidbody ? realRigidbody.useConeFriction : false; }
-			set {
-				if ( realRigidbody ) {
-					realRigidbody.useConeFriction = value;
-				}
-			}
-		}
-		
 		public Vector3 velocity {
 			get { return realRigidbody ? realRigidbody.velocity : Vector3.zero; }
 			set {
