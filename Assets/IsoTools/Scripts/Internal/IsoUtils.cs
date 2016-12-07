@@ -28,96 +28,6 @@ namespace IsoTools.Internal {
 
 		// ---------------------------------------------------------------------
 		//
-		// Rect
-		//
-		// ---------------------------------------------------------------------
-
-		public struct Rect {
-			public MinMax x;
-			public MinMax y;
-
-			public Rect(float x_min, float y_min, float x_max, float y_max) : this() {
-				x = new MinMax(x_min, x_max);
-				y = new MinMax(y_min, y_max);
-			}
-
-			public Vector2 size {
-				get { return new Vector2(x.size, y.size); }
-			}
-
-			public Vector2 center {
-				get { return new Vector2(x.center, y.center); }
-			}
-
-			public void Set(float x_min, float y_min, float x_max, float y_max) {
-				x.Set(x_min, x_max);
-				y.Set(y_min, y_max);
-			}
-
-			public bool Overlaps(Rect other) {
-				return
-					x.Overlaps(other.x) &&
-					y.Overlaps(other.y);
-			}
-
-			public bool Approximately(Rect other) {
-				return
-					x.Approximately(other.x) &&
-					y.Approximately(other.y);
-			}
-
-			public static Rect zero {
-				get { return new Rect(); }
-			}
-		}
-
-		// ---------------------------------------------------------------------
-		//
-		// MinMax
-		//
-		// ---------------------------------------------------------------------
-
-		public struct MinMax {
-			public float min;
-			public float max;
-
-			public MinMax(float min, float max) : this() {
-				this.min = min;
-				this.max = max;
-			}
-
-			public float size {
-				get { return max - min; }
-			}
-
-			public float center {
-				get { return min / 2.0f + max / 2.0f; }
-			}
-
-			public void Set(float min, float max) {
-				this.min = min;
-				this.max = max;
-			}
-
-			public bool Overlaps(MinMax other) {
-				return
-					max > other.min &&
-					min < other.max;
-			}
-
-			public bool Approximately(MinMax other) {
-				return
-					Mathf.Approximately(min, other.min) &&
-					Mathf.Approximately(max, other.max);
-			}
-
-			public static MinMax zero {
-				get { return new MinMax(); }
-			}
-		}
-
-		// ---------------------------------------------------------------------
-		//
 		// Abs/Min/Max
 		//
 		// ---------------------------------------------------------------------
@@ -542,44 +452,45 @@ namespace IsoTools.Internal {
 		// ---------------------------------------------------------------------
 
 	#if UNITY_EDITOR
-		static void DrawTop(IsoWorld iso_world, Vector3 pos, Vector3 size) {
+		static void DrawIsoCubeTop(IsoWorld iso_world, Vector3 pos, Vector3 size) {
 			if ( iso_world ) {
-				var points = new Vector3[]{
-					iso_world.IsoToScreen(pos),
-					iso_world.IsoToScreen(pos + IsoUtils.Vec3FromX (size.x)),
-					iso_world.IsoToScreen(pos + IsoUtils.Vec3FromXY(size.x, size.y)),
-					iso_world.IsoToScreen(pos + IsoUtils.Vec3FromY (size.y)),
-					iso_world.IsoToScreen(pos)
-				};
-				Handles.DrawLine(points[0], points[1]);
-				Handles.DrawLine(points[1], points[2]);
-				Handles.DrawLine(points[2], points[3]);
-				Handles.DrawLine(points[3], points[0]);
+				var point0 = iso_world.IsoToScreen(pos);
+				var point1 = iso_world.IsoToScreen(pos + IsoUtils.Vec3FromX (size.x));
+				var point2 = iso_world.IsoToScreen(pos + IsoUtils.Vec3FromXY(size.x, size.y));
+				var point3 = iso_world.IsoToScreen(pos + IsoUtils.Vec3FromY (size.y));
+				Handles.DrawLine(point0, point1);
+				Handles.DrawLine(point1, point2);
+				Handles.DrawLine(point2, point3);
+				Handles.DrawLine(point3, point0);
 			}
 		}
 
-		static void DrawVert(IsoWorld iso_world, Vector3 pos, Vector3 size) {
+		static void DrawIsoCubeVert(IsoWorld iso_world, Vector3 pos, Vector3 size) {
 			if ( iso_world ) {
-				Handles.DrawLine(
-					iso_world.IsoToScreen(pos),
-					iso_world.IsoToScreen(pos + IsoUtils.Vec3FromZ(size.z)));
+				var point0 = iso_world.IsoToScreen(pos);
+				var point1 = iso_world.IsoToScreen(pos + IsoUtils.Vec3FromZ(size.z));
+				Handles.DrawLine(point0, point1);
 			}
 		}
 		
-		public static void DrawCube(IsoWorld iso_world, Vector3 center, Vector3 size, Color color) {
+		public static void DrawIsoCube(
+			IsoWorld iso_world, Vector3 center, Vector3 size, Color color)
+		{
 			if ( iso_world ) {
 				Handles.color = color;
 				var pos = center - size * 0.5f;
-				DrawTop (iso_world, pos, size);
-				DrawTop (iso_world, pos + IsoUtils.Vec3FromZ (size.z), size);
-				DrawVert(iso_world, pos, size);
-				DrawVert(iso_world, pos + IsoUtils.Vec3FromX (size.x), size);
-				DrawVert(iso_world, pos + IsoUtils.Vec3FromY (size.y), size);
-				DrawVert(iso_world, pos + IsoUtils.Vec3FromXY(size.x, size.y), size);
+				DrawIsoCubeTop (iso_world, pos, size);
+				DrawIsoCubeTop (iso_world, pos + IsoUtils.Vec3FromZ (size.z), size);
+				DrawIsoCubeVert(iso_world, pos, size);
+				DrawIsoCubeVert(iso_world, pos + IsoUtils.Vec3FromX (size.x), size);
+				DrawIsoCubeVert(iso_world, pos + IsoUtils.Vec3FromY (size.y), size);
+				DrawIsoCubeVert(iso_world, pos + IsoUtils.Vec3FromXY(size.x, size.y), size);
 			}
 		}
 
-		public static void DrawSphere(IsoWorld iso_world, Vector3 pos, float radius, Color color) {
+		public static void DrawIsoSphere(
+			IsoWorld iso_world, Vector3 pos, float radius, Color color)
+		{
 			if ( iso_world ) {
 				Handles.color = color;
 				Handles.RadiusHandle(
@@ -589,7 +500,9 @@ namespace IsoTools.Internal {
 			}
 		}
 
-		public static void DrawGrid(IsoWorld iso_world, Vector3 pos, Vector3 size, Color color) {
+		public static void DrawIsoGrid(
+			IsoWorld iso_world, Vector3 pos, Vector3 size, Color color)
+		{
 			if ( iso_world ) {
 				Handles.color = color;
 				var size_x = Mathf.RoundToInt(size.x);
@@ -605,6 +518,18 @@ namespace IsoTools.Internal {
 						iso_world.IsoToScreen(new Vector3(pos.x + size_x, pos.y + i, pos.z)));
 				}
 			}
+		}
+
+		public static void DrawRect(IsoRect rect, Color color) {
+			Handles.color = color;
+			var point0 = new Vector2(rect.x.min, rect.y.min);
+			var point1 = new Vector2(rect.x.max, rect.y.min);
+			var point2 = new Vector2(rect.x.max, rect.y.max);
+			var point3 = new Vector2(rect.x.min, rect.y.max);
+			Handles.DrawLine(point0, point1);
+			Handles.DrawLine(point1, point2);
+			Handles.DrawLine(point2, point3);
+			Handles.DrawLine(point3, point0);
 		}
 	#endif
 	}

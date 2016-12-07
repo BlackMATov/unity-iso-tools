@@ -65,7 +65,7 @@ namespace IsoTools.Physics {
 		void OnDrawGizmosSelected() {
 			var iso_object = GetComponent<IsoObject>();
 			if ( iso_object && iso_object.isoWorld ) {
-				IsoUtils.DrawCube(
+				IsoUtils.DrawIsoCube(
 					iso_object.isoWorld,
 					iso_object.position + offset,
 					size,

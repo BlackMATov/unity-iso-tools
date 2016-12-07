@@ -39,7 +39,7 @@ namespace IsoTools.Tiled {
 		void OnDrawGizmos() {
 			var iso_object = GetComponent<IsoObject>();
 			if ( isShowGrid && iso_object && iso_object.isoWorld ) {
-				IsoUtils.DrawGrid(
+				IsoUtils.DrawIsoGrid(
 					iso_object.isoWorld,
 					iso_object.position, iso_object.size,
 					IsoUtils.ColorChangeA(Color.green, 0.5f));

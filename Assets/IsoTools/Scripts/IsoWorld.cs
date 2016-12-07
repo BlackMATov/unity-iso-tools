@@ -6,6 +6,10 @@ using System.Collections.Generic;
 using UnityEditor;
 #endif
 
+#if UNITY_5_5_OR_NEWER
+using UnityEngine.Profiling;
+#endif
+
 namespace IsoTools {
 	[ExecuteInEditMode, DisallowMultipleComponent]
 	public class IsoWorld : MonoBehaviour {
@@ -401,9 +405,9 @@ namespace IsoTools {
 			}
 		}
 
-		IsoUtils.MinMax IsoObjectMinMax3D(IsoObject iso_object) {
+		IsoMinMax IsoObjectMinMax3D(IsoObject iso_object) {
 			bool inited    = false;
-			var  result    = IsoUtils.MinMax.zero;
+			var  result    = IsoMinMax.zero;
 			var  renderers = GetIsoObjectRenderers(iso_object);
 			for ( int i = 0, e = renderers.Count; i < e; ++i ) {
 				var bounds = renderers[i].bounds;
@@ -421,11 +425,11 @@ namespace IsoTools {
 						}
 					} else {
 						inited = true;
-						result = new IsoUtils.MinMax(minbounds, maxbounds);
+						result = new IsoMinMax(minbounds, maxbounds);
 					}
 				}
 			}
-			return inited ? result : IsoUtils.MinMax.zero;
+			return inited ? result : IsoMinMax.zero;
 		}
 
 		bool IsIsoObjectVisible(IsoObject iso_object) {

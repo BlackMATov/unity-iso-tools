@@ -82,23 +82,23 @@ namespace IsoTools.Physics {
 			var iso_object = GetComponent<IsoObject>();
 			if ( iso_object && iso_object.isoWorld ) {
 				if ( radius * 2 < height ) {
-					IsoUtils.DrawCube(
+					IsoUtils.DrawIsoCube(
 						iso_object.isoWorld,
 						iso_object.position + offset,
 						new Vector3(radius * 2.0f, radius * 2.0f, height - radius),
 						Color.green);
-					IsoUtils.DrawSphere(
+					IsoUtils.DrawIsoSphere(
 						iso_object.isoWorld,
 						iso_object.position + offset - IsoUtils.Vec3FromZ(height * 0.5f - radius),
 						radius,
 						Color.green);
-					IsoUtils.DrawSphere(
+					IsoUtils.DrawIsoSphere(
 						iso_object.isoWorld,
 						iso_object.position + offset + IsoUtils.Vec3FromZ(height * 0.5f - radius),
 						radius,
 						Color.green);
 				} else {
-					IsoUtils.DrawSphere(
+					IsoUtils.DrawIsoSphere(
 						iso_object.isoWorld,
 						iso_object.position + offset,
 						radius,

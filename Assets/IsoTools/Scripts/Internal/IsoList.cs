@@ -58,14 +58,12 @@ namespace IsoTools.Internal {
 			_size = 0;
 		}
 
-		public T UnorderedRemoveAt(int index) {
+		public void UnorderedRemoveAt(int index) {
 			if ( (uint)index >= (uint)_size ) {
 				throw new IndexOutOfRangeException();
 			}
-			var last = _data[_size - 1];
-			_data[index] = last;
-			_data[--_size] = default(T);
-			return last;
+			_data[index] = _data[--_size];
+			_data[_size] = default(T);
 		}
 
 		public T this[int index] {
