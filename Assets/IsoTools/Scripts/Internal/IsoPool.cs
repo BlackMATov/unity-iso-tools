@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace IsoTools.Internal {
+﻿namespace IsoTools.Internal {
 	public interface IsoIPool<T> {
 		T Take();
 		void Release(T item);
@@ -12,7 +10,7 @@ namespace IsoTools.Internal {
 		public IsoPool(int capacity) {
 			_items = new IsoList<T>(capacity);
 			for ( var i = 0; i < capacity; ++i ) {
-				_items.Push(CreateItem());
+				_items.Add(CreateItem());
 			}
 		}
 
@@ -23,11 +21,8 @@ namespace IsoTools.Internal {
 		}
 
 		public void Release(T item) {
-			if ( item == null ) {
-				throw new ArgumentNullException("item");
-			}
 			CleanUpItem(item);
-			_items.Push(item);
+			_items.Add(item);
 		}
 
 		public abstract T CreateItem();

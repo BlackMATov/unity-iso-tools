@@ -42,7 +42,7 @@ namespace IsoTools.Internal {
 				return false;
 			}
 			_dict.Add(item, _list.Count);
-			_list.Push(item);
+			_list.Add(item);
 			return true;
 		}
 
@@ -58,6 +58,12 @@ namespace IsoTools.Internal {
 				return true;
 			}
 			return false;
+		}
+
+		public T Pop() {
+			var item = _list.Pop();
+			_dict.Remove(item);
+			return item;
 		}
 
 		public void Clear() {

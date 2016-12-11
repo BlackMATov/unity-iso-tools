@@ -562,7 +562,7 @@ namespace IsoTools {
 					_sectors.Capacity = count;
 				}
 				while ( _sectors.Count < _sectors.Capacity ) {
-					_sectors.Push(new Sector());
+					_sectors.Add(new Sector());
 				}
 			}
 			for ( int i = 0, e = _sectors.Count; i < e; ++i ) {
@@ -581,7 +581,7 @@ namespace IsoTools {
 				for ( var x = min.x; x < max.x; ++x ) {
 					var sector = FindSector(x, y);
 					if ( sector != null ) {
-						sector.objects.Push(iso_object);
+						sector.objects.Add(iso_object);
 					}
 				}}
 			}

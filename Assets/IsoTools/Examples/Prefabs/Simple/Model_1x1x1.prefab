@@ -5,9 +5,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 445136}
+  - component: {fileID: 445136}
   m_Layer: 0
   m_Name: CATLFingers1
   m_TagString: Untagged
@@ -20,9 +20,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 467712}
+  - component: {fileID: 467712}
   m_Layer: 0
   m_Name: RShoulders_slot
   m_TagString: Untagged
@@ -35,9 +35,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 440778}
+  - component: {fileID: 440778}
   m_Layer: 0
   m_Name: WeaponSlot
   m_TagString: Untagged
@@ -50,9 +50,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 408000}
+  - component: {fileID: 408000}
   m_Layer: 0
   m_Name: CATLThumb1
   m_TagString: Untagged
@@ -65,11 +65,11 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 406600}
-  - 33: {fileID: 3394250}
-  - 23: {fileID: 2326052}
+  - component: {fileID: 406600}
+  - component: {fileID: 3394250}
+  - component: {fileID: 2326052}
   m_Layer: 0
   m_Name: NPC_Tools_Axe_004
   m_TagString: Untagged
@@ -82,9 +82,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 429184}
+  - component: {fileID: 429184}
   m_Layer: 0
   m_Name: CATRToe1
   m_TagString: Untagged
@@ -97,9 +97,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 439486}
+  - component: {fileID: 439486}
   m_Layer: 0
   m_Name: CATRHand
   m_TagString: Untagged
@@ -112,9 +112,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 431752}
+  - component: {fileID: 431752}
   m_Layer: 0
   m_Name: CATNeck
   m_TagString: Untagged
@@ -127,9 +127,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 499706}
+  - component: {fileID: 499706}
   m_Layer: 0
   m_Name: WeaponSlotPelvis
   m_TagString: Untagged
@@ -142,9 +142,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 474422}
+  - component: {fileID: 474422}
   m_Layer: 0
   m_Name: CATLForearm
   m_TagString: Untagged
@@ -157,9 +157,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 496856}
+  - component: {fileID: 496856}
   m_Layer: 0
   m_Name: CATRThigh
   m_TagString: Untagged
@@ -172,9 +172,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 482292}
+  - component: {fileID: 482292}
   m_Layer: 0
   m_Name: CATLHand
   m_TagString: Untagged
@@ -187,9 +187,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 496192}
+  - component: {fileID: 496192}
   m_Layer: 0
   m_Name: LShoulders_slot
   m_TagString: Untagged
@@ -202,9 +202,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 495680}
+  - component: {fileID: 495680}
   m_Layer: 0
   m_Name: CATRForearm
   m_TagString: Untagged
@@ -217,9 +217,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 464470}
+  - component: {fileID: 464470}
   m_Layer: 0
   m_Name: Backet_Bone
   m_TagString: Untagged
@@ -232,9 +232,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 400078}
+  - component: {fileID: 400078}
   m_Layer: 0
   m_Name: CATRFingers1
   m_TagString: Untagged
@@ -247,9 +247,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 472916}
+  - component: {fileID: 472916}
   m_Layer: 0
   m_Name: CATHead
   m_TagString: Untagged
@@ -262,9 +262,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 450248}
+  - component: {fileID: 450248}
   m_Layer: 0
   m_Name: CATRArm
   m_TagString: Untagged
@@ -277,9 +277,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 402518}
+  - component: {fileID: 402518}
   m_Layer: 0
   m_Name: Character001
   m_TagString: Untagged
@@ -292,9 +292,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 410220}
+  - component: {fileID: 410220}
   m_Layer: 0
   m_Name: Head_slot
   m_TagString: Untagged
@@ -307,9 +307,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 479078}
+  - component: {fileID: 479078}
   m_Layer: 0
   m_Name: LBracers_slot
   m_TagString: Untagged
@@ -322,9 +322,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 428938}
+  - component: {fileID: 428938}
   m_Layer: 0
   m_Name: CATRFoot
   m_TagString: Untagged
@@ -337,9 +337,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 494702}
+  - component: {fileID: 494702}
   m_Layer: 0
   m_Name: RBracers_slot
   m_TagString: Untagged
@@ -352,9 +352,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 454342}
+  - component: {fileID: 454342}
   m_Layer: 0
   m_Name: CATSpine2
   m_TagString: Untagged
@@ -367,10 +367,10 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 408014}
-  - 137: {fileID: 13705018}
+  - component: {fileID: 408014}
+  - component: {fileID: 13705018}
   m_Layer: 0
   m_Name: NPC_Man_Normal001
   m_TagString: Untagged
@@ -383,9 +383,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 400280}
+  - component: {fileID: 400280}
   m_Layer: 0
   m_Name: ShieldBow_Slot
   m_TagString: Untagged
@@ -398,9 +398,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 456330}
+  - component: {fileID: 456330}
   m_Layer: 0
   m_Name: CATPelvis
   m_TagString: Untagged
@@ -413,9 +413,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 465166}
+  - component: {fileID: 465166}
   m_Layer: 0
   m_Name: CATRToe2
   m_TagString: Untagged
@@ -428,9 +428,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 441976}
+  - component: {fileID: 441976}
   m_Layer: 0
   m_Name: CATRLegPlatform
   m_TagString: Untagged
@@ -443,9 +443,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 409180}
+  - component: {fileID: 409180}
   m_Layer: 0
   m_Name: CATRCalf
   m_TagString: Untagged
@@ -458,11 +458,11 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 498674}
-  - 33: {fileID: 3375158}
-  - 23: {fileID: 2337538}
+  - component: {fileID: 498674}
+  - component: {fileID: 3375158}
+  - component: {fileID: 2337538}
   m_Layer: 0
   m_Name: NPC_Beard_008
   m_TagString: Untagged
@@ -475,9 +475,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 452610}
+  - component: {fileID: 452610}
   m_Layer: 0
   m_Name: CATLArm
   m_TagString: Untagged
@@ -490,9 +490,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 468766}
+  - component: {fileID: 468766}
   m_Layer: 0
   m_Name: CATRFingers2
   m_TagString: Untagged
@@ -505,9 +505,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 449928}
+  - component: {fileID: 449928}
   m_Layer: 0
   m_Name: CATLClavicle
   m_TagString: Untagged
@@ -520,9 +520,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 404156}
+  - component: {fileID: 404156}
   m_Layer: 0
   m_Name: CATRigLLegDigit11
   m_TagString: Untagged
@@ -535,10 +535,10 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 478240}
-  - 114: {fileID: 11463918}
+  - component: {fileID: 478240}
+  - component: {fileID: 11463918}
   m_Layer: 0
   m_Name: Model_1x1x1
   m_TagString: Untagged
@@ -551,9 +551,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 469500}
+  - component: {fileID: 469500}
   m_Layer: 0
   m_Name: CATLFingers2
   m_TagString: Untagged
@@ -566,11 +566,11 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 459662}
-  - 33: {fileID: 3331792}
-  - 23: {fileID: 2391080}
+  - component: {fileID: 459662}
+  - component: {fileID: 3331792}
+  - component: {fileID: 2391080}
   m_Layer: 0
   m_Name: NPC_Hair_009
   m_TagString: Untagged
@@ -583,9 +583,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 454910}
+  - component: {fileID: 454910}
   m_Layer: 0
   m_Name: CATSpine1
   m_TagString: Untagged
@@ -598,9 +598,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 411672}
+  - component: {fileID: 411672}
   m_Layer: 0
   m_Name: CATLThumb2
   m_TagString: Untagged
@@ -613,9 +613,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 448368}
+  - component: {fileID: 448368}
   m_Layer: 0
   m_Name: CATRClavicle
   m_TagString: Untagged
@@ -628,9 +628,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 496706}
+  - component: {fileID: 496706}
   m_Layer: 0
   m_Name: CATLCalf
   m_TagString: Untagged
@@ -643,9 +643,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 435810}
+  - component: {fileID: 435810}
   m_Layer: 0
   m_Name: CATRigRArmIKTarget
   m_TagString: Untagged
@@ -658,9 +658,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 454468}
+  - component: {fileID: 454468}
   m_Layer: 0
   m_Name: CATRigLArmIKTarget
   m_TagString: Untagged
@@ -673,9 +673,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 453240}
+  - component: {fileID: 453240}
   m_Layer: 0
   m_Name: CATRThumb1
   m_TagString: Untagged
@@ -688,9 +688,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 457200}
+  - component: {fileID: 457200}
   m_Layer: 0
   m_Name: CATLLegPlatform
   m_TagString: Untagged
@@ -703,9 +703,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 404078}
+  - component: {fileID: 404078}
   m_Layer: 0
   m_Name: CATRigLLegDigit12
   m_TagString: Untagged
@@ -718,9 +718,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 474778}
+  - component: {fileID: 474778}
   m_Layer: 0
   m_Name: CATLThigh
   m_TagString: Untagged
@@ -733,9 +733,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 406972}
+  - component: {fileID: 406972}
   m_Layer: 0
   m_Name: CATLFoot
   m_TagString: Untagged
@@ -748,9 +748,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 434332}
+  - component: {fileID: 434332}
   m_Layer: 0
   m_Name: CATSpine3
   m_TagString: Untagged
@@ -763,9 +763,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 493646}
+  - component: {fileID: 493646}
   m_Layer: 0
   m_Name: CATRThumb2
   m_TagString: Untagged
@@ -778,10 +778,10 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 481802}
-  - 137: {fileID: 13784090}
+  - component: {fileID: 481802}
+  - component: {fileID: 13784090}
   m_Layer: 0
   m_Name: NPC_Bag_006
   m_TagString: Untagged
@@ -794,10 +794,10 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 402000}
-  - 95: {fileID: 9501918}
+  - component: {fileID: 402000}
+  - component: {fileID: 9501918}
   m_Layer: 0
   m_Name: Lumberjack1
   m_TagString: Untagged
@@ -810,9 +810,9 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 484648}
+  - component: {fileID: 484648}
   m_Layer: 0
   m_Name: Particle View 001
   m_TagString: Untagged
@@ -834,6 +834,7 @@ Transform:
   - {fileID: 468766}
   m_Father: {fileID: 439486}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &400280
 Transform:
   m_ObjectHideFlags: 1
@@ -847,6 +848,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 482292}
   m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &402000
 Transform:
   m_ObjectHideFlags: 1
@@ -868,6 +870,7 @@ Transform:
   - {fileID: 484648}
   m_Father: {fileID: 478240}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &402518
 Transform:
   m_ObjectHideFlags: 1
@@ -880,6 +883,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 402000}
   m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &404078
 Transform:
   m_ObjectHideFlags: 1
@@ -892,6 +896,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 404156}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &404156
 Transform:
   m_ObjectHideFlags: 1
@@ -905,6 +910,7 @@ Transform:
   - {fileID: 404078}
   m_Father: {fileID: 406972}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &406600
 Transform:
   m_ObjectHideFlags: 1
@@ -918,6 +924,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 440778}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &406972
 Transform:
   m_ObjectHideFlags: 1
@@ -931,6 +938,7 @@ Transform:
   - {fileID: 404156}
   m_Father: {fileID: 496706}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &408000
 Transform:
   m_ObjectHideFlags: 1
@@ -944,6 +952,7 @@ Transform:
   - {fileID: 411672}
   m_Father: {fileID: 482292}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &408014
 Transform:
   m_ObjectHideFlags: 1
@@ -956,6 +965,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 402000}
   m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &409180
 Transform:
   m_ObjectHideFlags: 1
@@ -969,6 +979,7 @@ Transform:
   - {fileID: 428938}
   m_Father: {fileID: 496856}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &410220
 Transform:
   m_ObjectHideFlags: 1
@@ -983,6 +994,7 @@ Transform:
   - {fileID: 459662}
   m_Father: {fileID: 472916}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &411672
 Transform:
   m_ObjectHideFlags: 1
@@ -995,6 +1007,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 408000}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &428938
 Transform:
   m_ObjectHideFlags: 1
@@ -1008,6 +1021,7 @@ Transform:
   - {fileID: 429184}
   m_Father: {fileID: 409180}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &429184
 Transform:
   m_ObjectHideFlags: 1
@@ -1021,6 +1035,7 @@ Transform:
   - {fileID: 465166}
   m_Father: {fileID: 428938}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &431752
 Transform:
   m_ObjectHideFlags: 1
@@ -1034,6 +1049,7 @@ Transform:
   - {fileID: 472916}
   m_Father: {fileID: 434332}
   m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &434332
 Transform:
   m_ObjectHideFlags: 1
@@ -1050,6 +1066,7 @@ Transform:
   - {fileID: 448368}
   m_Father: {fileID: 454342}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &435810
 Transform:
   m_ObjectHideFlags: 1
@@ -1062,6 +1079,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 402000}
   m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &439486
 Transform:
   m_ObjectHideFlags: 1
@@ -1077,6 +1095,7 @@ Transform:
   - {fileID: 440778}
   m_Father: {fileID: 495680}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &440778
 Transform:
   m_ObjectHideFlags: 1
@@ -1090,6 +1109,7 @@ Transform:
   - {fileID: 406600}
   m_Father: {fileID: 439486}
   m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &441976
 Transform:
   m_ObjectHideFlags: 1
@@ -1102,6 +1122,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 402000}
   m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &445136
 Transform:
   m_ObjectHideFlags: 1
@@ -1116,6 +1137,7 @@ Transform:
   - {fileID: 469500}
   m_Father: {fileID: 482292}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &448368
 Transform:
   m_ObjectHideFlags: 1
@@ -1129,6 +1151,7 @@ Transform:
   - {fileID: 450248}
   m_Father: {fileID: 434332}
   m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &449928
 Transform:
   m_ObjectHideFlags: 1
@@ -1142,6 +1165,7 @@ Transform:
   - {fileID: 452610}
   m_Father: {fileID: 434332}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &450248
 Transform:
   m_ObjectHideFlags: 1
@@ -1156,6 +1180,7 @@ Transform:
   - {fileID: 467712}
   m_Father: {fileID: 448368}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &452610
 Transform:
   m_ObjectHideFlags: 1
@@ -1170,6 +1195,7 @@ Transform:
   - {fileID: 496192}
   m_Father: {fileID: 449928}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &453240
 Transform:
   m_ObjectHideFlags: 1
@@ -1183,6 +1209,7 @@ Transform:
   - {fileID: 493646}
   m_Father: {fileID: 439486}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &454342
 Transform:
   m_ObjectHideFlags: 1
@@ -1196,6 +1223,7 @@ Transform:
   - {fileID: 434332}
   m_Father: {fileID: 454910}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &454468
 Transform:
   m_ObjectHideFlags: 1
@@ -1208,6 +1236,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 402000}
   m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &454910
 Transform:
   m_ObjectHideFlags: 1
@@ -1221,6 +1250,7 @@ Transform:
   - {fileID: 454342}
   m_Father: {fileID: 456330}
   m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &456330
 Transform:
   m_ObjectHideFlags: 1
@@ -1237,6 +1267,7 @@ Transform:
   - {fileID: 499706}
   m_Father: {fileID: 402000}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &457200
 Transform:
   m_ObjectHideFlags: 1
@@ -1249,6 +1280,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 402000}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &459662
 Transform:
   m_ObjectHideFlags: 1
@@ -1261,6 +1293,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 410220}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &464470
 Transform:
   m_ObjectHideFlags: 1
@@ -1273,6 +1306,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 434332}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &465166
 Transform:
   m_ObjectHideFlags: 1
@@ -1285,6 +1319,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 429184}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &467712
 Transform:
   m_ObjectHideFlags: 1
@@ -1298,6 +1333,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 450248}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &468766
 Transform:
   m_ObjectHideFlags: 1
@@ -1311,6 +1347,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 400078}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &469500
 Transform:
   m_ObjectHideFlags: 1
@@ -1324,6 +1361,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 445136}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &472916
 Transform:
   m_ObjectHideFlags: 1
@@ -1337,6 +1375,7 @@ Transform:
   - {fileID: 410220}
   m_Father: {fileID: 431752}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &474422
 Transform:
   m_ObjectHideFlags: 1
@@ -1351,6 +1390,7 @@ Transform:
   - {fileID: 479078}
   m_Father: {fileID: 452610}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &474778
 Transform:
   m_ObjectHideFlags: 1
@@ -1364,6 +1404,7 @@ Transform:
   - {fileID: 496706}
   m_Father: {fileID: 456330}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &478240
 Transform:
   m_ObjectHideFlags: 1
@@ -1377,6 +1418,7 @@ Transform:
   - {fileID: 402000}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &479078
 Transform:
   m_ObjectHideFlags: 1
@@ -1390,6 +1432,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 474422}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &481802
 Transform:
   m_ObjectHideFlags: 1
@@ -1402,6 +1445,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 402000}
   m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &482292
 Transform:
   m_ObjectHideFlags: 1
@@ -1417,6 +1461,7 @@ Transform:
   - {fileID: 400280}
   m_Father: {fileID: 474422}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &484648
 Transform:
   m_ObjectHideFlags: 1
@@ -1429,6 +1474,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 402000}
   m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &493646
 Transform:
   m_ObjectHideFlags: 1
@@ -1441,6 +1487,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 453240}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &494702
 Transform:
   m_ObjectHideFlags: 1
@@ -1454,6 +1501,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 495680}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &495680
 Transform:
   m_ObjectHideFlags: 1
@@ -1468,6 +1516,7 @@ Transform:
   - {fileID: 494702}
   m_Father: {fileID: 450248}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &496192
 Transform:
   m_ObjectHideFlags: 1
@@ -1480,6 +1529,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 452610}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &496706
 Transform:
   m_ObjectHideFlags: 1
@@ -1493,6 +1543,7 @@ Transform:
   - {fileID: 406972}
   m_Father: {fileID: 474778}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &496856
 Transform:
   m_ObjectHideFlags: 1
@@ -1506,6 +1557,7 @@ Transform:
   - {fileID: 409180}
   m_Father: {fileID: 456330}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &498674
 Transform:
   m_ObjectHideFlags: 1
@@ -1519,6 +1571,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 410220}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &499706
 Transform:
   m_ObjectHideFlags: 1
@@ -1531,6 +1584,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 456330}
   m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &2326052
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -1540,17 +1594,22 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: ac4dd9c2105f87e4699d893de025fa80, type: 2}
-  m_SubsetIndices: 
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
   m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 0
-  m_ReflectionProbeUsage: 1
   m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -1566,17 +1625,22 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: 1a34c8866473e084683a10fd69f98527, type: 2}
-  m_SubsetIndices: 
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
   m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 0
-  m_ReflectionProbeUsage: 1
   m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -1592,17 +1656,22 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: cc7344c491726244d8684f42ea8658bd, type: 2}
-  m_SubsetIndices: 
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
   m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 0
-  m_ReflectionProbeUsage: 1
   m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -1672,17 +1741,22 @@ SkinnedMeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: 1cbc94e1e3ae9ef49aabde64feb5b073, type: 2}
-  m_SubsetIndices: 
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
   m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 0
-  m_ReflectionProbeUsage: 1
   m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -1692,6 +1766,7 @@ SkinnedMeshRenderer:
   serializedVersion: 2
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
+  m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: 4300006, guid: 1b7945602ded3ec43804b120aa9ed037, type: 3}
   m_Bones:
   - {fileID: 482292}
@@ -1739,17 +1814,22 @@ SkinnedMeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: 22a364e606e45354bb981ef2bf74a19c, type: 2}
-  m_SubsetIndices: 
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
   m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 0
-  m_ReflectionProbeUsage: 1
   m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -1759,6 +1839,7 @@ SkinnedMeshRenderer:
   serializedVersion: 2
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
+  m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: 4300008, guid: 1b7945602ded3ec43804b120aa9ed037, type: 3}
   m_Bones:
   - {fileID: 464470}

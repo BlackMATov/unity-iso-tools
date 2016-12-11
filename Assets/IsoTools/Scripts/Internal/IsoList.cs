@@ -26,7 +26,7 @@ namespace IsoTools.Internal {
 			}
 		}
 
-		public void Push(T value) {
+		public void Add(T value) {
 			if ( _size == _data.Length ) {
 				var new_capacity = _size == 0
 					? _defaultCapacity : _size * 2;
