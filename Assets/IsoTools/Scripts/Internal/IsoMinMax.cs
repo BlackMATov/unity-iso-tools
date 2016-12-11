@@ -33,6 +33,10 @@ namespace IsoTools.Internal {
 			max = other.max;
 		}
 
+		public void Resize(float size) {
+			max = min + size;
+		}
+
 		public void Translate(float delta) {
 			min += delta;
 			max += delta;

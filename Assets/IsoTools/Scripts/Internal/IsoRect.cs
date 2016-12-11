@@ -53,6 +53,16 @@ namespace IsoTools.Internal {
 			y.Set(other.y);
 		}
 
+		public void Resize(float size_x, float size_y) {
+			x.Resize(size_x);
+			y.Resize(size_y);
+		}
+
+		public void Resize(Vector2 size) {
+			x.Resize(size.x);
+			y.Resize(size.y);
+		}
+
 		public void Translate(float delta_x, float delta_y) {
 			x.Translate(delta_x);
 			y.Translate(delta_y);

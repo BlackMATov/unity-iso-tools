@@ -795,6 +795,17 @@ namespace IsoTools {
 				StepSort();
 			}
 		}
+
+		/* QuadTree WIP
+		void OnDrawGizmos() {
+			var qt = new IsoQuadTree<IsoObject>(_objects.Count);
+			for ( int i = 0, e = _objects.Count; i < e; ++i ) {
+				qt.Insert(_objects[i].Internal.ScreenRect, _objects[i]);
+			}
+			qt.VisitAllBounds(rect => {
+				IsoUtils.DrawRect(rect, Color.green);
+			});
+		}*/
 	#endif
 	}
 }
