@@ -312,6 +312,31 @@ namespace IsoTools {
 
 		// ---------------------------------------------------------------------
 		//
+		// For editor
+		//
+		// ---------------------------------------------------------------------
+
+	#if UNITY_EDITOR
+		[Header("Editor Only")]
+		[SerializeField] bool _showIsoBounds = false;
+		public bool isShowIsoBounds {
+			get { return _showIsoBounds; }
+			set { _showIsoBounds = value; }
+		}
+		[SerializeField] bool _showScreenBounds = false;
+		public bool isShowScreenBounds {
+			get { return _showScreenBounds; }
+			set { _showScreenBounds = value; }
+		}
+		[SerializeField] bool _showDepends = false;
+		public bool isShowDepends {
+			get { return _showDepends; }
+			set { _showDepends = value; }
+		}
+	#endif
+
+		// ---------------------------------------------------------------------
+		//
 		// Internal
 		//
 		// ---------------------------------------------------------------------

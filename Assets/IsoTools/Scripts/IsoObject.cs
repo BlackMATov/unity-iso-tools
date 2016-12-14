@@ -210,36 +210,6 @@ namespace IsoTools {
 
 		// ---------------------------------------------------------------------
 		//
-		// For editor
-		//
-		// ---------------------------------------------------------------------
-
-	#if UNITY_EDITOR
-		[Header("Editor Only")]
-		[SerializeField] bool _showIsoBounds = false;
-		public bool isShowIsoBounds {
-			get { return _showIsoBounds; }
-			set { _showIsoBounds = value; }
-		}
-		[SerializeField] bool _showScreenBounds = false;
-		public bool isShowScreenBounds {
-			get { return _showScreenBounds; }
-			set { _showScreenBounds = value; }
-		}
-		[SerializeField] bool _showSelfDepends = false;
-		public bool isShowSelfDepends {
-			get { return _showSelfDepends; }
-			set { _showSelfDepends = value; }
-		}
-		[SerializeField] bool _showTheirDepends = false;
-		public bool isShowTheirDepends {
-			get { return _showTheirDepends; }
-			set { _showTheirDepends = value; }
-		}
-	#endif
-
-		// ---------------------------------------------------------------------
-		//
 		// Functions
 		//
 		// ---------------------------------------------------------------------
@@ -357,35 +327,36 @@ namespace IsoTools {
 		}
 
 		void OnDrawGizmos() {
-			if ( isShowIsoBounds && isoWorld ) {
+			if ( isoWorld && isoWorld.isShowIsoBounds ) {
 				IsoUtils.DrawIsoCube(
 					isoWorld,
 					position + size * 0.5f,
 					size,
 					Color.red);
 			}
-			if ( isShowScreenBounds ) {
+			if ( isoWorld && isoWorld.isShowScreenBounds ) {
 				IsoUtils.DrawRect(
 					Internal.ScreenBounds,
 					Color.green);
 			}
-			if ( isShowSelfDepends ) {
+		}
+
+		void OnDrawGizmosSelected() {
+			if ( isoWorld && isoWorld.isShowDepends ) {
 				for ( int i = 0, e = Internal.SelfDepends.Count; i < e; ++i ) {
 					IsoUtils.DrawLine(
 						Internal.ScreenBounds.center,
 						Internal.SelfDepends[i].Internal.ScreenBounds.center,
-						Color.blue,
-						Color.red,
-						0.75f);
+						Color.yellow,
+						Color.cyan,
+						0.25f);
 				}
-			}
-			if ( isShowTheirDepends ) {
 				for ( int i = 0, e = Internal.TheirDepends.Count; i < e; ++i ) {
 					IsoUtils.DrawLine(
 						Internal.ScreenBounds.center,
 						Internal.TheirDepends[i].Internal.ScreenBounds.center,
+						Color.yellow,
 						Color.cyan,
-						Color.red,
 						0.75f);
 				}
 			}

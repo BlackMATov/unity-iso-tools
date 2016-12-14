@@ -57,6 +57,19 @@ namespace IsoTools.Internal {
 			}
 		}
 
+		void DrawWorldEditorProperties() {
+			var iso_world = IsoWorld.Instance;
+			if ( iso_world ) {
+				var so = new SerializedObject(iso_world);
+				EditorGUILayout.PropertyField(so.FindProperty("_showIsoBounds"));
+				EditorGUILayout.PropertyField(so.FindProperty("_showScreenBounds"));
+				EditorGUILayout.PropertyField(so.FindProperty("_showDepends"));
+				if ( GUI.changed ) {
+					so.ApplyModifiedProperties();
+				}
+			}
+		}
+
 		static bool SnappingProcess(ref float min_a, float size_a, float min_b, float size_b) {
 			var max_a  = min_a + size_a;
 			var max_b  = min_b + size_b;
@@ -331,6 +344,7 @@ namespace IsoTools.Internal {
 			DrawDefaultInspector();
 			GrabPositions();
 			DirtyTargetPosition();
+			DrawWorldEditorProperties();
 		}
 	}
 }
