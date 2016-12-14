@@ -520,6 +520,17 @@ namespace IsoTools.Internal {
 			}
 		}
 
+		public static void DrawLine(Vector2 begin, Vector2 end, Color color) {
+			Handles.color = color;
+			Handles.DrawLine(begin, end);
+		}
+
+		public static void DrawLine(Vector2 begin, Vector2 end, Color begin_color, Color end_color, float color_ratio) {
+			var ratio_point = begin + (end - begin) * color_ratio;
+			DrawLine(begin, ratio_point, begin_color);
+			DrawLine(ratio_point, end, end_color);
+		}
+
 		public static void DrawRect(IsoRect rect, Color color) {
 			Handles.color = color;
 			var point0 = new Vector2(rect.x.min, rect.y.min);

@@ -466,7 +466,7 @@ namespace IsoTools {
 
 		bool IsIsoObjectDepends(IsoObject a, IsoObject b) {
 			return
-				a.Internal.ScreenRect.Overlaps(b.Internal.ScreenRect) &&
+				a.Internal.ScreenBounds.Overlaps(b.Internal.ScreenBounds) &&
 				IsIsoObjectDepends(a.position, a.size, b.position, b.size);
 		}
 		
@@ -511,7 +511,7 @@ namespace IsoTools {
 			_sectorsSize = 0.0f;
 			for ( int i = 0, e = _visibles.Count; i < e; ++i ) {
 				var iso_internal = _visibles[i].Internal;
-				_sectorsSize += IsoUtils.Vec2MaxF(iso_internal.ScreenRect.size);
+				_sectorsSize += IsoUtils.Vec2MaxF(iso_internal.ScreenBounds.size);
 			}
 			var min_sector_size_xy = IsoToScreen(IsoUtils.vec3OneXY) - IsoToScreen(Vector3.zero);
 			var min_sector_size    = Mathf.Max(min_sector_size_xy.x, min_sector_size_xy.y);
@@ -528,10 +528,10 @@ namespace IsoTools {
 					var iso_internal = _visibles[i].Internal;
 
 					// high performance tricks
-					var min_x = iso_internal.ScreenRect.x.min / _sectorsSize;
-					var min_y = iso_internal.ScreenRect.y.min / _sectorsSize;
-					var max_x = iso_internal.ScreenRect.x.max / _sectorsSize;
-					var max_y = iso_internal.ScreenRect.y.max / _sectorsSize;
+					var min_x = iso_internal.ScreenBounds.x.min / _sectorsSize;
+					var min_y = iso_internal.ScreenBounds.y.min / _sectorsSize;
+					var max_x = iso_internal.ScreenBounds.x.max / _sectorsSize;
+					var max_y = iso_internal.ScreenBounds.y.max / _sectorsSize;
 					iso_internal.MinSector.x = (int)(min_x >= 0.0f ? min_x : min_x - 1.0f);
 					iso_internal.MinSector.y = (int)(min_y >= 0.0f ? min_y : min_y - 1.0f);
 					iso_internal.MaxSector.x = (int)(max_x >= 0.0f ? max_x + 1.0f : max_x);

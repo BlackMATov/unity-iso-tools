@@ -194,7 +194,7 @@ namespace IsoTools {
 		public class InternalState {
 			public bool                    Dirty        = false;
 			public bool                    Placed       = false;
-			public IsoRect                 ScreenRect   = IsoRect.zero;
+			public IsoRect                 ScreenBounds = IsoRect.zero;
 			public IsoMinMax               MinMax3d     = IsoMinMax.zero;
 			public float                   Offset3d     = 0.0f;
 			public Vector2                 MinSector    = Vector2.zero;
@@ -215,12 +215,26 @@ namespace IsoTools {
 		// ---------------------------------------------------------------------
 
 	#if UNITY_EDITOR
-		[Space(10)]
-		[SerializeField] bool _isShowBounds = false;
-
-		public bool isShowBounds {
-			get { return _isShowBounds; }
-			set { _isShowBounds = value; }
+		[Header("Editor Only")]
+		[SerializeField] bool _showIsoBounds = false;
+		public bool isShowIsoBounds {
+			get { return _showIsoBounds; }
+			set { _showIsoBounds = value; }
+		}
+		[SerializeField] bool _showScreenBounds = false;
+		public bool isShowScreenBounds {
+			get { return _showScreenBounds; }
+			set { _showScreenBounds = value; }
+		}
+		[SerializeField] bool _showSelfDepends = false;
+		public bool isShowSelfDepends {
+			get { return _showSelfDepends; }
+			set { _showSelfDepends = value; }
+		}
+		[SerializeField] bool _showTheirDepends = false;
+		public bool isShowTheirDepends {
+			get { return _showTheirDepends; }
+			set { _showTheirDepends = value; }
 		}
 	#endif
 
@@ -246,7 +260,7 @@ namespace IsoTools {
 				Internal.Transform.position = IsoUtils.Vec3ChangeZ(
 					iso_world.IsoToScreen(position),
 					Internal.Transform.position.z);
-				FixScreenRect();
+				FixScreenBounds();
 			}
 			FixLastProperties();
 			MartDirtyIsoWorld();
@@ -269,14 +283,14 @@ namespace IsoTools {
 			Internal.Renderers.Clear();
 		}
 
-		void FixScreenRect() {
+		void FixScreenBounds() {
 			var iso_world = isoWorld;
 			if ( iso_world ) {
 				var l = iso_world.IsoToScreen(position + IsoUtils.Vec3FromY(size.y)).x;
 				var r = iso_world.IsoToScreen(position + IsoUtils.Vec3FromX(size.x)).x;
 				var b = iso_world.IsoToScreen(position).y;
 				var t = iso_world.IsoToScreen(position + size).y;
-				Internal.ScreenRect = new IsoRect(l, b, r, t);
+				Internal.ScreenBounds = new IsoRect(l, b, r, t);
 			}
 		}
 
@@ -343,8 +357,37 @@ namespace IsoTools {
 		}
 
 		void OnDrawGizmos() {
-			if ( isShowBounds && isoWorld ) {
-				IsoUtils.DrawIsoCube(isoWorld, position + size * 0.5f, size, Color.red);
+			if ( isShowIsoBounds && isoWorld ) {
+				IsoUtils.DrawIsoCube(
+					isoWorld,
+					position + size * 0.5f,
+					size,
+					Color.red);
+			}
+			if ( isShowScreenBounds ) {
+				IsoUtils.DrawRect(
+					Internal.ScreenBounds,
+					Color.green);
+			}
+			if ( isShowSelfDepends ) {
+				for ( int i = 0, e = Internal.SelfDepends.Count; i < e; ++i ) {
+					IsoUtils.DrawLine(
+						Internal.ScreenBounds.center,
+						Internal.SelfDepends[i].Internal.ScreenBounds.center,
+						Color.blue,
+						Color.red,
+						0.75f);
+				}
+			}
+			if ( isShowTheirDepends ) {
+				for ( int i = 0, e = Internal.TheirDepends.Count; i < e; ++i ) {
+					IsoUtils.DrawLine(
+						Internal.ScreenBounds.center,
+						Internal.TheirDepends[i].Internal.ScreenBounds.center,
+						Color.cyan,
+						Color.red,
+						0.75f);
+				}
 			}
 		}
 	#endif
