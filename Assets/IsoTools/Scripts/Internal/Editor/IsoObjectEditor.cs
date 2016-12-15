@@ -16,7 +16,8 @@ namespace IsoTools.Internal {
 		public static readonly float SnappingDistance = 0.2f;
 
 		static bool IsSnappingEnabled() {
-			return !Event.current.control;
+			var iso_world = IsoWorld.Instance;
+			return iso_world && (iso_world.isSnappingEnabled != Event.current.control);
 		}
 
 		void GrabPositions() {
@@ -64,6 +65,7 @@ namespace IsoTools.Internal {
 				EditorGUILayout.PropertyField(so.FindProperty("_showIsoBounds"));
 				EditorGUILayout.PropertyField(so.FindProperty("_showScreenBounds"));
 				EditorGUILayout.PropertyField(so.FindProperty("_showDepends"));
+				EditorGUILayout.PropertyField(so.FindProperty("_snappingEnabled"));
 				if ( GUI.changed ) {
 					so.ApplyModifiedProperties();
 				}
@@ -281,35 +283,38 @@ namespace IsoTools.Internal {
 		}
 
 		void XYMoveRectangle() {
-			Handles.color = new Color(
-				Handles.zAxisColor.r,
-				Handles.zAxisColor.g,
-				Handles.zAxisColor.b,
-				0.3f);
-			Handles.DotCap(
-				0,
-				_viewCenter,
-				Quaternion.identity,
-				HandleUtility.GetHandleSize(_viewCenter) * 0.15f);
-			Handles.color = Handles.zAxisColor;
-			Handles.ArrowCap(
-				0,
-				_viewCenter,
-				Quaternion.identity,
-				HandleUtility.GetHandleSize(_viewCenter));
-			Handles.color = Handles.zAxisColor;
-			var delta = Handles.FreeMoveHandle(
-				_viewCenter,
-				Quaternion.identity,
-				HandleUtility.GetHandleSize(_viewCenter) * 0.15f,
-				Vector3.zero,
-				Handles.RectangleCap) - _viewCenter;
-			if ( delta.magnitude > Mathf.Epsilon ) {
-				_viewCenter = _center + XYMoveIsoObjects(
-					true,
-					_viewCenter - _center + delta,
-					_positions,
-					_otherObjects);
+			var iso_world = IsoWorld.Instance;
+			if ( iso_world ) {
+				Handles.color = new Color(
+					Handles.zAxisColor.r,
+					Handles.zAxisColor.g,
+					Handles.zAxisColor.b,
+					0.3f);
+				Handles.DotCap(
+					0,
+					_viewCenter,
+					Quaternion.identity,
+					HandleUtility.GetHandleSize(_viewCenter) * 0.15f);
+				Handles.color = Handles.zAxisColor;
+				Handles.ArrowCap(
+					0,
+					_viewCenter,
+					Quaternion.identity,
+					HandleUtility.GetHandleSize(_viewCenter));
+				Handles.color = Handles.zAxisColor;
+				var delta = Handles.FreeMoveHandle(
+					_viewCenter,
+					Quaternion.identity,
+					HandleUtility.GetHandleSize(_viewCenter) * 0.15f,
+					Vector3.zero,
+					Handles.RectangleCap) - _viewCenter;
+				if ( delta.magnitude > Mathf.Epsilon ) {
+					_viewCenter = _center + XYMoveIsoObjects(
+						true,
+						_viewCenter - _center + delta,
+						_positions,
+						_otherObjects);
+				}
 			}
 		}
 

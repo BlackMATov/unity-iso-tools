@@ -333,6 +333,11 @@ namespace IsoTools {
 			get { return _showDepends; }
 			set { _showDepends = value; }
 		}
+		[SerializeField] bool _snappingEnabled = true;
+		public bool isSnappingEnabled {
+			get { return _snappingEnabled; }
+			set { _snappingEnabled = value; }
+		}
 	#endif
 
 		// ---------------------------------------------------------------------

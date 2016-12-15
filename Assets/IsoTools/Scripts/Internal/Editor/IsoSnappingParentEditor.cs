@@ -38,6 +38,20 @@ namespace IsoTools.Internal {
 				.ToList();
 		}
 
+		void DrawWorldEditorProperties() {
+			var iso_world = IsoWorld.Instance;
+			if ( iso_world ) {
+				var so = new SerializedObject(iso_world);
+				EditorGUILayout.PropertyField(so.FindProperty("_showIsoBounds"));
+				EditorGUILayout.PropertyField(so.FindProperty("_showScreenBounds"));
+				EditorGUILayout.PropertyField(so.FindProperty("_showDepends"));
+				EditorGUILayout.PropertyField(so.FindProperty("_snappingEnabled"));
+				if ( GUI.changed ) {
+					so.ApplyModifiedProperties();
+				}
+			}
+		}
+
 		void XYMoveSlider(Color color, Vector3 dir) {
 			var iso_world = IsoWorld.Instance;
 			if ( iso_world ) {
@@ -64,44 +78,47 @@ namespace IsoTools.Internal {
 		}
 
 		void XYMoveRectangle() {
-			Handles.color = new Color(
-				Handles.zAxisColor.r,
-				Handles.zAxisColor.g,
-				Handles.zAxisColor.b,
-				0.3f);
-			Handles.DotCap(
-				0,
-				_viewCenter,
-				Quaternion.identity,
-				HandleUtility.GetHandleSize(_viewCenter) * 0.15f);
-			Handles.color = Handles.zAxisColor;
-			Handles.ArrowCap(
-				0,
-				_viewCenter,
-				Quaternion.identity,
-				HandleUtility.GetHandleSize(_viewCenter));
-			Handles.color = Handles.zAxisColor;
-			var delta = Handles.FreeMoveHandle(
-				_viewCenter,
-				Quaternion.identity,
-				HandleUtility.GetHandleSize(_viewCenter) * 0.15f,
-				Vector3.zero,
-				Handles.RectangleCap) - _viewCenter;
-			if ( delta.magnitude > Mathf.Epsilon ) {
-				Undo.RecordObjects(
-					_parents.Select(p => p.Key.transform).ToArray(),
-					_parents.Count > 1 ? "Move IsoSnappingParents" : "Move IsoSnappingParent");
-				_viewCenter = _center + IsoObjectEditor.XYMoveIsoObjects(
-					false,
-					_viewCenter - _center + delta,
-					_positions,
-					_otherObjects);
-				foreach ( var parent in _parents ) {
-					parent.Key.transform.position = parent.Value + (_viewCenter - _center);
-				}
-				foreach ( var pos in _positions ) {
-					pos.Key.FixIsoPosition();
-					pos.Key.positionXY = IsoUtils.VectorBeautifier(pos.Key.positionXY);
+			var iso_world = IsoWorld.Instance;
+			if ( iso_world ) {
+				Handles.color = new Color(
+					Handles.zAxisColor.r,
+					Handles.zAxisColor.g,
+					Handles.zAxisColor.b,
+					0.3f);
+				Handles.DotCap(
+					0,
+					_viewCenter,
+					Quaternion.identity,
+					HandleUtility.GetHandleSize(_viewCenter) * 0.15f);
+				Handles.color = Handles.zAxisColor;
+				Handles.ArrowCap(
+					0,
+					_viewCenter,
+					Quaternion.identity,
+					HandleUtility.GetHandleSize(_viewCenter));
+				Handles.color = Handles.zAxisColor;
+				var delta = Handles.FreeMoveHandle(
+					_viewCenter,
+					Quaternion.identity,
+					HandleUtility.GetHandleSize(_viewCenter) * 0.15f,
+					Vector3.zero,
+					Handles.RectangleCap) - _viewCenter;
+				if ( delta.magnitude > Mathf.Epsilon ) {
+					Undo.RecordObjects(
+						_parents.Select(p => p.Key.transform).ToArray(),
+						_parents.Count > 1 ? "Move IsoSnappingParents" : "Move IsoSnappingParent");
+					_viewCenter = _center + IsoObjectEditor.XYMoveIsoObjects(
+						false,
+						_viewCenter - _center + delta,
+						_positions,
+						_otherObjects);
+					foreach ( var parent in _parents ) {
+						parent.Key.transform.position = parent.Value + (_viewCenter - _center);
+					}
+					foreach ( var pos in _positions ) {
+						pos.Key.FixIsoPosition();
+						pos.Key.positionXY = IsoUtils.VectorBeautifier(pos.Key.positionXY);
+					}
 				}
 			}
 		}
@@ -135,6 +152,7 @@ namespace IsoTools.Internal {
 		public override void OnInspectorGUI() {
 			DrawDefaultInspector();
 			GrabPositions();
+			DrawWorldEditorProperties();
 		}
 	}
 }
