@@ -66,6 +66,10 @@ namespace IsoTools.Internal {
 			return item;
 		}
 
+		public T Peek() {
+			return _list.Peek();
+		}
+
 		public void Clear() {
 			_list.Clear();
 			_dict.Clear();

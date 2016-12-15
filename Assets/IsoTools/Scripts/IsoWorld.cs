@@ -374,6 +374,22 @@ namespace IsoTools {
 			_oldVisibles.Remove(iso_object);
 		}
 
+		void GrabEnabledIsoObjects() {
+			var iso_objects = FindObjectsOfType<IsoObject>();
+			for ( int i = 0, e = iso_objects.Length; i < e; ++i ) {
+				var iso_object = iso_objects[i];
+				if ( iso_object.enabled ) {
+					AddIsoObject(iso_object);
+				}
+			}
+		}
+
+		void DropIsoObjects() {
+			while ( _objects.Count > 0 ) {
+				RemoveIsoObject(_objects.Peek());
+			}
+		}
+
 		// ---------------------------------------------------------------------
 		//
 		// Private
@@ -775,14 +791,7 @@ namespace IsoTools {
 		}
 
 		void OnEnable() {
-			var all_iso_objects = FindObjectsOfType<IsoObject>();
-			_objects = new IsoAssocList<IsoObject>(all_iso_objects.Length);
-			for ( int i = 0, e = all_iso_objects.Length; i < e; ++i ) {
-				var iso_object = all_iso_objects[i];
-				if ( iso_object.enabled ) {
-					_objects.Add(iso_object);
-				}
-			}
+			GrabEnabledIsoObjects();
 			_visibles.Clear();
 			_oldVisibles.Clear();
 			_sectors.Clear();
@@ -790,7 +799,7 @@ namespace IsoTools {
 		}
 
 		void OnDisable() {
-			_objects.Clear();
+			DropIsoObjects();
 			_visibles.Clear();
 			_oldVisibles.Clear();
 			_sectors.Clear();
