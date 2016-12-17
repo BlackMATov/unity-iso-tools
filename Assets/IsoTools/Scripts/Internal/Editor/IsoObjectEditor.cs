@@ -24,12 +24,10 @@ namespace IsoTools.Internal {
 			var iso_world = IsoWorld.Instance;
 			if ( iso_world ) {
 				_positions = targets
-					.Where(p => p is IsoObject)
-					.Select(p => p as IsoObject)
+					.OfType<IsoObject>()
 					.ToDictionary(p => p, p => p.transform.position);
 				_isoZPositions = targets
-					.Where(p => p is IsoObject)
-					.Select(p => p as IsoObject)
+					.OfType<IsoObject>()
 					.ToDictionary(p => p, p => p.position.z);
 				_center = _viewCenter = _positions.Aggregate(Vector3.zero, (AccIn, p) => {
 					return AccIn + IsoUtils.Vec3FromVec2(iso_world.IsoToScreen(p.Key.position + p.Key.size * 0.5f));
@@ -69,6 +67,18 @@ namespace IsoTools.Internal {
 				if ( GUI.changed ) {
 					so.ApplyModifiedProperties();
 				}
+			}
+		}
+
+		void DrawSelfInfoProperties() {
+			var iso_objects = targets.OfType<IsoObject>();
+			if ( iso_objects.Count() > 0 ) {
+				var mixed_world = iso_objects.GroupBy(p => p.isoWorld).Count() > 1;
+				IsoEditorUtils.DoWithEnabledGUI(false, () => {
+					IsoEditorUtils.DoWithMixedValue(mixed_world, () => {
+						EditorGUILayout.ObjectField("Current Object World", iso_objects.First().isoWorld, typeof(IsoWorld), true);
+					});
+				});
 			}
 		}
 
@@ -350,6 +360,7 @@ namespace IsoTools.Internal {
 			GrabPositions();
 			DirtyTargetPosition();
 			DrawWorldEditorProperties();
+			DrawSelfInfoProperties();
 		}
 	}
 }

@@ -12,13 +12,12 @@ using UnityEngine.Profiling;
 
 namespace IsoTools {
 	[ExecuteInEditMode, DisallowMultipleComponent]
-	public class IsoWorld : MonoBehaviour {
+	public sealed class IsoWorld : IsoHolder<IsoWorld, IsoObject> {
 
 		static IsoWorld         _instance     = null;
 
 		bool                    _dirty        = false;
 		Vector2                 _minXY        = Vector2.zero;
-		IsoAssocList<IsoObject> _objects      = new IsoAssocList<IsoObject>();
 		IsoAssocList<IsoObject> _visibles     = new IsoAssocList<IsoObject>();
 		IsoAssocList<IsoObject> _oldVisibles  = new IsoAssocList<IsoObject>();
 
@@ -362,39 +361,6 @@ namespace IsoTools {
 			}
 		}
 
-		public void AddIsoObject(IsoObject iso_object) {
-			_objects.Add(iso_object);
-			if ( iso_object.cacheRenderers ) {
-				iso_object.UpdateCachedRenderers();
-			}
-		}
-
-		public void RemoveIsoObject(IsoObject iso_object) {
-			if ( iso_object.cacheRenderers ) {
-				iso_object.ClearCachedRenderers();
-			}
-			ClearIsoObjectDepends(iso_object);
-			_objects.Remove(iso_object);
-			_visibles.Remove(iso_object);
-			_oldVisibles.Remove(iso_object);
-		}
-
-		void GrabEnabledIsoObjects() {
-			var iso_objects = FindObjectsOfType<IsoObject>();
-			for ( int i = 0, e = iso_objects.Length; i < e; ++i ) {
-				var iso_object = iso_objects[i];
-				if ( iso_object.enabled ) {
-					AddIsoObject(iso_object);
-				}
-			}
-		}
-
-		void DropIsoObjects() {
-			while ( _objects.Count > 0 ) {
-				RemoveIsoObject(_objects.Peek());
-			}
-		}
-
 		// ---------------------------------------------------------------------
 		//
 		// Private
@@ -416,8 +382,9 @@ namespace IsoTools {
 		}
 
 		void FixAllTransforms() {
-			for ( int i = 0, e = _objects.Count; i < e; ++i ) {
-				_objects[i].FixTransform();
+			var instances = GetInstances();
+			for ( int i = 0, e = instances.Count; i < e; ++i ) {
+				instances[i].FixTransform();
 			}
 		}
 
@@ -440,15 +407,6 @@ namespace IsoTools {
 				}
 			}
 			return false;
-		}
-
-		List<Renderer> GetIsoObjectRenderers(IsoObject iso_object) {
-			if ( iso_object.cacheRenderers ) {
-				return iso_object.Internal.Renderers;
-			} else {
-				iso_object.GetComponentsInChildren<Renderer>(_tmpRenderers);
-				return _tmpRenderers;
-			}
 		}
 
 		IsoMinMax IsoObjectMinMax3D(IsoObject iso_object) {
@@ -478,6 +436,15 @@ namespace IsoTools {
 			return inited ? result : IsoMinMax.zero;
 		}
 
+		List<Renderer> GetIsoObjectRenderers(IsoObject iso_object) {
+			if ( iso_object.cacheRenderers ) {
+				return iso_object.Internal.Renderers;
+			} else {
+				iso_object.GetComponentsInChildren<Renderer>(_tmpRenderers);
+				return _tmpRenderers;
+			}
+		}
+
 		bool IsIsoObjectVisible(IsoObject iso_object) {
 			var renderers = GetIsoObjectRenderers(iso_object);
 			for ( int i = 0, e = renderers.Count; i < e; ++i ) {
@@ -495,15 +462,29 @@ namespace IsoTools {
 			if ( a_yesno ) {
 				var b_yesno = b_max.x > a_min.x && b_max.y > a_min.y && a_max.z > b_min.z;
 				if ( b_yesno ) {
-					var da_p = new Vector3(a_max.x - b_min.x, a_max.y - b_min.y, b_max.z - a_min.z);
-					var db_p = new Vector3(b_max.x - a_min.x, b_max.y - a_min.y, a_max.z - b_min.z);
-					var dp_p = a_size + b_size - IsoUtils.Vec3Abs(da_p - db_p);
-					if ( dp_p.x <= dp_p.y && dp_p.x <= dp_p.z ) {
-						return da_p.x > db_p.x;
-					} else if ( dp_p.y <= dp_p.x && dp_p.y <= dp_p.z ) {
-						return da_p.y > db_p.y;
+
+					//var da_p = new Vector3(a_max.x - b_min.x, a_max.y - b_min.y, b_max.z - a_min.z);
+					//var db_p = new Vector3(b_max.x - a_min.x, b_max.y - a_min.y, a_max.z - b_min.z);
+					//var dp_p = a_size + b_size - IsoUtils.Vec3Abs(da_p - db_p);
+
+					var dA_x = a_max.x - b_min.x;
+					var dA_y = a_max.y - b_min.y;
+					var dA_z = b_max.z - a_min.z;
+
+					var dB_x = b_max.x - a_min.x;
+					var dB_y = b_max.y - a_min.y;
+					var dB_z = a_max.z - b_min.z;
+
+					var dP_x = a_size.x + b_size.x - Mathf.Abs(dA_x - dB_x);
+					var dP_y = a_size.y + b_size.y - Mathf.Abs(dA_y - dB_y);
+					var dP_z = a_size.z + b_size.z - Mathf.Abs(dA_z - dB_z);
+
+					if ( dP_x <= dP_y && dP_x <= dP_z ) {
+						return dA_x > dB_x;
+					} else if ( dP_y <= dP_x && dP_y <= dP_z ) {
+						return dA_y > dB_y;
 					} else {
-						return da_p.z > db_p.z;
+						return dA_z > dB_z;
 					}
 				}
 			}
@@ -673,10 +654,11 @@ namespace IsoTools {
 
 		void CalculateNewVisibles() {
 			_oldVisibles.Clear();
-			if ( _objects.Count > 0 ) {
+			var instances = GetInstances();
+			if ( instances.Count > 0 ) {
 				_minXY.Set(float.MaxValue, float.MaxValue);
-				for ( int i = 0, e = _objects.Count; i < e; ++i ) {
-					var iso_object     = _objects[i];
+				for ( int i = 0, e = instances.Count; i < e; ++i ) {
+					var iso_object     = instances[i];
 					var iso_object_pos = iso_object.position;
 					if ( _minXY.x > iso_object_pos.x ) {
 						_minXY.x = iso_object_pos.x;
@@ -795,19 +777,36 @@ namespace IsoTools {
 			StepSort();
 		}
 
-		void OnEnable() {
-			GrabEnabledIsoObjects();
+		protected override void OnEnable() {
+			base.OnEnable();
 			_visibles.Clear();
 			_oldVisibles.Clear();
 			_sectors.Clear();
 			MarkDirty();
 		}
 
-		void OnDisable() {
-			DropIsoObjects();
+		protected override void OnDisable() {
+			base.OnDisable();
 			_visibles.Clear();
 			_oldVisibles.Clear();
 			_sectors.Clear();
+		}
+
+		protected override void OnAddInstanceToHolder(IsoObject instance) {
+			base.OnAddInstanceToHolder(instance);
+			if ( instance.cacheRenderers ) {
+				instance.UpdateCachedRenderers();
+			}
+		}
+
+		protected override void OnRemoveInstanceFromHolder(IsoObject instance) {
+			base.OnRemoveInstanceFromHolder(instance);
+			if ( instance.cacheRenderers ) {
+				instance.ClearCachedRenderers();
+			}
+			ClearIsoObjectDepends(instance);
+			_visibles.Remove(instance);
+			_oldVisibles.Remove(instance);
 		}
 
 	#if UNITY_EDITOR

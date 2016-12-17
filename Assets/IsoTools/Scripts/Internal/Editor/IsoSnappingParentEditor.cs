@@ -17,8 +17,7 @@ namespace IsoTools.Internal {
 			var iso_world = IsoWorld.Instance;
 			if ( iso_world ) {
 				_parents = targets
-					.Where(p => p is IsoSnappingParent)
-					.Select(p => p as IsoSnappingParent)
+					.OfType<IsoSnappingParent>()
 					.ToDictionary(p => p, p => p.transform.position);
 				foreach ( var parent in _parents ) {
 					var iso_objects = parent.Key.GetComponentsInChildren<IsoObject>(true);
