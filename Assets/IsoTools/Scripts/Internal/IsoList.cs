@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace IsoTools.Internal {
 	public class IsoList<T> {
@@ -101,6 +102,33 @@ namespace IsoTools.Internal {
 						_data = _emptyData;
 					}
 				}
+			}
+		}
+
+		public void AssignTo(List<T> list) {
+			list.Clear();
+			if ( list.Capacity < Count ) {
+				list.Capacity = Count * 2;
+			}
+			for ( int i = 0, e = Count; i < e; ++i ) {
+				list.Add(this[i]);
+			}
+		}
+
+		public void AssignTo(IsoList<T> list) {
+			if ( list._data.Length < _size ) {
+				var new_data = new T[_size * 2];
+				Array.Copy(_data, new_data, _size);
+				list._data = new_data;
+				list._size = _size;
+			} else {
+				if ( _size < list._size ) {
+					Array.Clear(list._data, _size, list._size - _size);
+				}
+				if ( _size > 0 ) {
+					Array.Copy(_data, list._data, _size);
+				}
+				list._size = _size;
 			}
 		}
 	}

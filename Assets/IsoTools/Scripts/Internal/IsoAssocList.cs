@@ -21,12 +21,6 @@ namespace IsoTools.Internal {
 			}
 		}
 
-		public int this[T item] {
-			get {
-				return _dict[item];
-			}
-		}
-
 		public int Count {
 			get {
 				return _list.Count;
@@ -54,7 +48,6 @@ namespace IsoTools.Internal {
 				if ( index != _list.Count ) {
 					_dict[_list[index]] = index;
 				}
-
 				return true;
 			}
 			return false;
@@ -73,6 +66,14 @@ namespace IsoTools.Internal {
 		public void Clear() {
 			_list.Clear();
 			_dict.Clear();
+		}
+
+		public void AssignTo(List<T> list) {
+			_list.AssignTo(list);
+		}
+
+		public void AssignTo(IsoList<T> list) {
+			_list.AssignTo(list);
 		}
 	}
 }
