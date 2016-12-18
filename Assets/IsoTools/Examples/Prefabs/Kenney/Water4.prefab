@@ -105,7 +105,6 @@ MonoBehaviour:
   _position: {x: 0, y: 0, z: 0}
   _mode: 0
   _cacheRenderers: 1
-  _isShowBounds: 0
 --- !u!198 &19803878
 ParticleSystem:
   m_ObjectHideFlags: 1

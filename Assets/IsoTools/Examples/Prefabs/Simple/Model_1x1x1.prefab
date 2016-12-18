@@ -1731,7 +1731,6 @@ MonoBehaviour:
   _position: {x: -3, y: 1, z: 0}
   _mode: 1
   _cacheRenderers: 1
-  _isShowBounds: 0
 --- !u!137 &13705018
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

@@ -5,13 +5,13 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 448796}
-  - 114: {fileID: 11404092}
-  - 114: {fileID: 11489084}
-  - 114: {fileID: 11439950}
-  - 114: {fileID: 11455174}
+  - component: {fileID: 448796}
+  - component: {fileID: 11404092}
+  - component: {fileID: 11489084}
+  - component: {fileID: 11439950}
+  - component: {fileID: 11455174}
   m_Layer: 0
   m_Name: AlienBall
   m_TagString: Untagged
@@ -24,10 +24,10 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 491986}
-  - 212: {fileID: 21288996}
+  - component: {fileID: 491986}
+  - component: {fileID: 21288996}
   m_Layer: 0
   m_Name: New Sprite
   m_TagString: Untagged
@@ -44,11 +44,11 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 491986}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &491986
 Transform:
   m_ObjectHideFlags: 1
@@ -58,10 +58,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.307, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 448796}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &11404092
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -77,7 +77,6 @@ MonoBehaviour:
   _position: {x: 0, y: 0, z: 0}
   _mode: 0
   _cacheRenderers: 1
-  _isShowBounds: 0
 --- !u!114 &11439950
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -135,7 +134,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_SubsetIndices: 
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
@@ -143,7 +144,7 @@ SpriteRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedWireframeHidden: 1
+  m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
