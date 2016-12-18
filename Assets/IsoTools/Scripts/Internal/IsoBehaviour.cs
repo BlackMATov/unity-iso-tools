@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 namespace IsoTools.Internal {
 	public abstract class IsoBehaviour<T> : MonoBehaviour
 		where T : IsoBehaviour<T>
 	{
 		static IsoAssocList<T> _behaviours = new IsoAssocList<T>();
+		static List<IsoWorld>  _tempWorlds = new List<IsoWorld>();
 
 		// ---------------------------------------------------------------------
 		//
@@ -14,6 +16,20 @@ namespace IsoTools.Internal {
 
 		public bool IsActive() {
 			return isActiveAndEnabled && gameObject.activeInHierarchy;
+		}
+
+		protected IsoWorld FindFirstActiveParentWorld() {
+			IsoWorld ret_value = null;
+			GetComponentsInParent<IsoWorld>(false, _tempWorlds);
+			for ( int i = 0, e = _tempWorlds.Count; i < e; ++i ) {
+				var iso_world = _tempWorlds[i];
+				if ( iso_world.IsActive() ) {
+					ret_value = iso_world;
+					break;
+				}
+			}
+			_tempWorlds.Clear();
+			return ret_value;
 		}
 
 		protected static int AllBehaviourCount {

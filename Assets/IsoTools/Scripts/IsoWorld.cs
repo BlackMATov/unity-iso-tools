@@ -14,8 +14,6 @@ namespace IsoTools {
 	[ExecuteInEditMode, DisallowMultipleComponent]
 	public sealed class IsoWorld : IsoHolder<IsoWorld, IsoObject> {
 
-		static IsoWorld         _instance     = null;
-
 		bool                    _dirty        = false;
 		Vector2                 _minXY        = Vector2.zero;
 		IsoAssocList<IsoObject> _visibles     = new IsoAssocList<IsoObject>();
@@ -75,6 +73,7 @@ namespace IsoTools {
 		//
 		// ---------------------------------------------------------------------
 
+		[Header("World Settings")]
 		[SerializeField]
 		public float _tileSize = DefTileSize;
 		public float tileSize {
@@ -137,17 +136,16 @@ namespace IsoTools {
 
 		// ---------------------------------------------------------------------
 		//
-		// Instance
+		// Instances
 		//
 		// ---------------------------------------------------------------------
 
-		public static IsoWorld Instance {
-			get {
-				if ( !_instance ) {
-					_instance = GameObject.FindObjectOfType<IsoWorld>();
-				}
-				return _instance;
-			}
+		public static int AllWorldCount {
+			get { return AllBehaviourCount; }
+		}
+
+		public static IsoWorld GetWorld(int index) {
+			return GetBehaviourByIndex(index);
 		}
 
 		// ---------------------------------------------------------------------
@@ -332,10 +330,15 @@ namespace IsoTools {
 			get { return _showDepends; }
 			set { _showDepends = value; }
 		}
-		[SerializeField] bool _snappingEnabled = true;
-		public bool isSnappingEnabled {
-			get { return _snappingEnabled; }
-			set { _snappingEnabled = value; }
+		[SerializeField] bool _snapByCells = true;
+		public bool isSnapByCells {
+			get { return _snapByCells; }
+			set { _snapByCells = value; }
+		}
+		[SerializeField] bool _snapByObjects = true;
+		public bool isSnapByObjects {
+			get { return _snapByObjects; }
+			set { _snapByObjects = value; }
 		}
 	#endif
 
