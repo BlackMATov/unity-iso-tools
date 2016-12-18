@@ -74,7 +74,6 @@ MonoBehaviour:
   _position: {x: -1, y: -2, z: 0}
   _mode: 0
   _cacheRenderers: 1
-  _isShowBounds: 0
 --- !u!212 &21210794
 SpriteRenderer:
   m_ObjectHideFlags: 1

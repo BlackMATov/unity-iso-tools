@@ -46,7 +46,7 @@ namespace IsoTools.Internal {
 			}
 		}
 
-		public static void DrawSelfWorldProperty(IsoWorld[] iso_worlds, string type_name) {
+		public static void DrawSelfWorldProperty(IsoWorld[] iso_worlds) {
 			if ( iso_worlds.Length > 0 ) {
 				var mixed_world = iso_worlds.GroupBy(p => p).Count() > 1;
 				EditorGUILayout.Space();
@@ -59,13 +59,6 @@ namespace IsoTools.Internal {
 							true);
 					});
 				});
-			} else {
-				EditorGUILayout.HelpBox(
-					string.Format(
-						"Detached {0}\nNeed to be a child of IsoWorld",
-						type_name),
-					MessageType.Warning,
-					true);
 			}
 		}
 

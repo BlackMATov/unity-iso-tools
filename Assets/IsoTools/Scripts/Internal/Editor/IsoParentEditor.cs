@@ -46,7 +46,7 @@ namespace IsoTools.Internal {
 		void DrawCustomInspector() {
 			var iso_worlds = _isoParents.Keys.ToArray();
 			IsoEditorUtils.DrawWorldProperties(iso_worlds);
-			IsoEditorUtils.DrawSelfWorldProperty(iso_worlds, "IsoParent");
+			IsoEditorUtils.DrawSelfWorldProperty(iso_worlds);
 		}
 
 		// ---------------------------------------------------------------------

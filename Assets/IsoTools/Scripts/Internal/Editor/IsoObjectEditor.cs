@@ -43,7 +43,18 @@ namespace IsoTools.Internal {
 		void DrawCustomInspector() {
 			var iso_worlds = _isoObjects.Keys.ToArray();
 			IsoEditorUtils.DrawWorldProperties(iso_worlds);
-			IsoEditorUtils.DrawSelfWorldProperty(iso_worlds, "IsoObject");
+			IsoEditorUtils.DrawSelfWorldProperty(iso_worlds);
+			DrawDetachedInspector();
+		}
+
+		void DrawDetachedInspector() {
+			var single_iso_object = targets.Length == 1 ? target as IsoObject : null;
+			if ( single_iso_object && single_iso_object.IsActive() && !single_iso_object.isoWorld ) {
+				EditorGUILayout.HelpBox(
+					"Detached IsoObject\nNeed to be a child of IsoWorld",
+					MessageType.Warning,
+					true);
+			}
 		}
 
 		// ---------------------------------------------------------------------
