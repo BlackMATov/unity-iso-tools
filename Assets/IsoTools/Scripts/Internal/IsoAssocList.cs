@@ -67,13 +67,5 @@ namespace IsoTools.Internal {
 			_list.Clear();
 			_dict.Clear();
 		}
-
-		public void AssignTo(List<T> list) {
-			_list.AssignTo(list);
-		}
-
-		public void AssignTo(IsoList<T> list) {
-			_list.AssignTo(list);
-		}
 	}
 }

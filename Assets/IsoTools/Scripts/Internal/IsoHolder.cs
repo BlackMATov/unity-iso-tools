@@ -1,8 +1,7 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace IsoTools.Internal {
-	public abstract class IsoHolder<THold, TInst> : MonoBehaviour
+	public abstract class IsoHolder<THold, TInst> : IsoBehaviour<THold>
 		where THold : IsoHolder   <THold, TInst>
 		where TInst : IsoInstance <THold, TInst>
 	{
@@ -29,19 +28,15 @@ namespace IsoTools.Internal {
 		//
 		// ---------------------------------------------------------------------
 
-		public bool IsActive() {
-			return isActiveAndEnabled && gameObject.activeInHierarchy;
-		}
-
 		public void AddInstance(TInst instance) {
-			if ( instance != null && instance.IsActive() ) {
+			if ( instance && instance.IsActive() ) {
 				_instances.Add(instance);
 				OnAddInstanceToHolder(instance);
 			}
 		}
 
 		public void RemoveInstance(TInst instance) {
-			if ( instance != null ) {
+			if ( instance ) {
 				_instances.Remove(instance);
 				OnRemoveInstanceFromHolder(instance);
 			}
@@ -57,11 +52,13 @@ namespace IsoTools.Internal {
 		//
 		// ---------------------------------------------------------------------
 
-		protected virtual void OnEnable() {
+		protected override void OnEnable() {
+			base.OnEnable();
 			RecacheChildrenHolders();
 		}
 
-		protected virtual void OnDisable() {
+		protected override void OnDisable() {
+			base.OnDisable();
 			RecacheChildrenHolders();
 		}
 

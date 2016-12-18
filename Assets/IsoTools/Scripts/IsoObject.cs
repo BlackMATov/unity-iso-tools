@@ -151,7 +151,6 @@ namespace IsoTools {
 			Mode3d
 		}
 
-		[Space(10)]
 		[SerializeField]
 		Mode _mode = Mode.Mode2d;
 

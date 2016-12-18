@@ -1,8 +1,7 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace IsoTools.Internal {
-	public abstract class IsoInstance<THold, TInst> : MonoBehaviour
+	public abstract class IsoInstance<THold, TInst> : IsoBehaviour<TInst>
 		where THold : IsoHolder   <THold, TInst>
 		where TInst : IsoInstance <THold, TInst>
 	{
@@ -11,13 +10,29 @@ namespace IsoTools.Internal {
 
 		// ---------------------------------------------------------------------
 		//
-		// Internal
+		// Private
 		//
 		// ---------------------------------------------------------------------
 
-		public bool IsActive() {
-			return isActiveAndEnabled && gameObject.activeInHierarchy;
+		THold FindFirstActiveParent() {
+			THold ret_value = null;
+			GetComponentsInParent<THold>(false, _tempHolders);
+			for ( int i = 0, e = _tempHolders.Count; i < e; ++i ) {
+				var holder = _tempHolders[i];
+				if ( holder.IsActive() ) {
+					ret_value = holder;
+					break;
+				}
+			}
+			_tempHolders.Clear();
+			return ret_value;
 		}
+
+		// ---------------------------------------------------------------------
+		//
+		// Internal
+		//
+		// ---------------------------------------------------------------------
 
 		public void ResetHolder() {
 			if ( _holder ) {
@@ -29,18 +44,10 @@ namespace IsoTools.Internal {
 		public void RecacheHolder() {
 			ResetHolder();
 			if ( IsActive() ) {
-				GetComponentsInParent<THold>(false, _tempHolders);
-				for ( int i = 0, e = _tempHolders.Count; i < e; ++i ) {
-					var holder = _tempHolders[i];
-					if ( holder.IsActive() ) {
-						_holder = holder;
-						break;
-					}
+				_holder = FindFirstActiveParent();
+				if ( _holder ) {
+					_holder.AddInstance(this as TInst);
 				}
-				_tempHolders.Clear();
-			}
-			if ( _holder ) {
-				_holder.AddInstance(this as TInst);
 			}
 		}
 
@@ -53,15 +60,17 @@ namespace IsoTools.Internal {
 
 		// ---------------------------------------------------------------------
 		//
-		// Messages
+		// Virtual
 		//
 		// ---------------------------------------------------------------------
 
-		protected virtual void OnEnable() {
+		protected override void OnEnable() {
+			base.OnEnable();
 			RecacheHolder();
 		}
 
-		protected virtual void OnDisable() {
+		protected override void OnDisable() {
+			base.OnDisable();
 			ResetHolder();
 		}
 
