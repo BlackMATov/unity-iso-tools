@@ -4,9 +4,10 @@ using System.Linq;
 using System.Collections.Generic;
 
 namespace IsoTools.Internal {
-	[CustomEditor(typeof(IsoObject)), CanEditMultipleObjects]
-	class IsoObjectEditor : Editor {
+	[CustomEditor(typeof(IsoParent)), CanEditMultipleObjects]
+	public class IsoParentEditor : Editor {
 
+		Dictionary<IsoWorld, List<IsoParent>> _isoParents   = new Dictionary<IsoWorld, List<IsoParent>>();
 		Dictionary<IsoWorld, List<IsoObject>> _isoObjects   = new Dictionary<IsoWorld, List<IsoObject>>();
 		Dictionary<IsoWorld, List<IsoObject>> _otherObjects = new Dictionary<IsoWorld, List<IsoObject>>();
 		Dictionary<IsoWorld, Vector3>         _viewCenters  = new Dictionary<IsoWorld, Vector3>();
@@ -18,32 +19,99 @@ namespace IsoTools.Internal {
 		// ---------------------------------------------------------------------
 
 		void PrepareTargets() {
-			_isoObjects = targets
-				.OfType<IsoObject>()
+			_isoParents = targets
+				.OfType<IsoParent>()
 				.Where(p => p.isoWorld)
 				.GroupBy(p => p.isoWorld)
 				.ToDictionary(p => p.Key, p => p.ToList());
-			_viewCenters = _isoObjects.ToDictionary(
-				pair => pair.Key,
-				pair => {
-					var iso_world = pair.Key;
-					return pair.Value.Aggregate(Vector3.zero, (AccIn, p) => {
-						return AccIn + IsoUtils.Vec3FromVec2(
-							iso_world.IsoToScreen(p.position + p.size * 0.5f));
-					}) / pair.Value.Count;
-				});
+			_isoObjects = _isoParents.ToDictionary(
+				p => p.Key,
+				p => p.Value.SelectMany(t => t.GetComponentsInChildren<IsoObject>(true)).ToList());
 			_otherObjects = FindObjectsOfType<IsoObject>()
 				.Where(p => p.IsActive() && p.isoWorld)
 				.Where(p => _isoObjects.ContainsKey(p.isoWorld))
 				.Where(p => !_isoObjects[p.isoWorld].Contains(p))
 				.GroupBy(p => p.isoWorld)
 				.ToDictionary(p => p.Key, p => p.ToList());
+			_viewCenters = _isoParents.ToDictionary(
+				pair => pair.Key,
+				pair => {
+					var iso_world = pair.Key;
+					return pair.Value.Aggregate(Vector3.zero, (AccIn, p) => {
+						return AccIn + p.transform.position;
+					}) / pair.Value.Count;
+				});
 		}
 
 		void DrawCustomInspector() {
-			var iso_worlds = _isoObjects.Keys.ToArray();
+			var iso_worlds = _isoParents.Keys.ToArray();
 			IsoEditorUtils.DrawWorldProperties(iso_worlds);
-			IsoEditorUtils.DrawSelfWorldProperty(iso_worlds, "IsoObject");
+			IsoEditorUtils.DrawSelfWorldProperty(iso_worlds, "IsoParent");
+		}
+
+		// ---------------------------------------------------------------------
+		//
+		//
+		//
+		// ---------------------------------------------------------------------
+
+		void XYMoveSliderTool(Color color, Vector3 dir) {
+			foreach ( var iso_world in _viewCenters.Keys.ToList() ) {
+				EditorGUI.BeginChangeCheck();
+				var old_center = _viewCenters[iso_world];
+				var new_center = IsoEditorUtils.GizmoSlider(
+					color,
+					old_center,
+					iso_world.IsoToScreen(dir));
+				if ( EditorGUI.EndChangeCheck() ) {
+					Undo.RecordObjects(
+						_isoParents[iso_world].Select(p => p.transform).ToArray(),
+						_isoParents[iso_world].Count > 1 ? "Move IsoParents" : "Move IsoParent");
+					var old_delta = new_center - old_center;
+					var new_delta = iso_world.IsoToScreen(IsoEditorUtils.XYMoveIsoObjects(
+						false,
+						iso_world,
+						_isoObjects,
+						_otherObjects,
+						iso_world.ScreenToIso(old_delta)));
+					_viewCenters[iso_world] = old_center + IsoUtils.Vec3FromVec2(new_delta);
+					foreach ( var parent in _isoParents[iso_world] ) {
+						parent.transform.position += IsoUtils.Vec3FromVec2(new_delta);
+					}
+					foreach ( var iso_object in _isoObjects[iso_world] ) {
+						iso_object.FixIsoPosition();
+						iso_object.positionXY = IsoUtils.VectorBeautifier(iso_object.positionXY);
+					}
+				}
+			}
+		}
+
+		void XYMoveRectangleTool() {
+			foreach ( var iso_world in _viewCenters.Keys.ToList() ) {
+				EditorGUI.BeginChangeCheck();
+				var old_center = _viewCenters[iso_world];
+				var new_center = IsoEditorUtils.GizmoRectangle(old_center);
+				if ( EditorGUI.EndChangeCheck() ) {
+					Undo.RecordObjects(
+						_isoParents[iso_world].Select(p => p.transform).ToArray(),
+						_isoParents[iso_world].Count > 1 ? "Move IsoParents" : "Move IsoParent");
+					var old_delta = new_center - old_center;
+					var new_delta = iso_world.IsoToScreen(IsoEditorUtils.XYMoveIsoObjects(
+						false,
+						iso_world,
+						_isoObjects,
+						_otherObjects,
+						iso_world.ScreenToIso(old_delta)));
+					_viewCenters[iso_world] = old_center + IsoUtils.Vec3FromVec2(new_delta);
+					foreach ( var parent in _isoParents[iso_world] ) {
+						parent.transform.position += IsoUtils.Vec3FromVec2(new_delta);
+					}
+					foreach ( var iso_object in _isoObjects[iso_world] ) {
+						iso_object.FixIsoPosition();
+						iso_object.positionXY = IsoUtils.VectorBeautifier(iso_object.positionXY);
+					}
+				}
+			}
 		}
 
 		// ---------------------------------------------------------------------
@@ -62,93 +130,11 @@ namespace IsoTools.Internal {
 		void DrawCustomTools() {
 			if ( Tools.current == Tool.Move ) {
 				Tools.hidden = true;
-				ZMoveSliderTool();
 				XYMoveSliderTool(Handles.xAxisColor, IsoUtils.vec3OneX);
 				XYMoveSliderTool(Handles.yAxisColor, IsoUtils.vec3OneY);
 				XYMoveRectangleTool();
 			} else {
 				Tools.hidden = false;
-			}
-		}
-
-		void ZMoveSliderTool() {
-			foreach ( var iso_world in _viewCenters.Keys.ToList() ) {
-				EditorGUI.BeginChangeCheck();
-				var old_center = _viewCenters[iso_world];
-				var new_center = IsoEditorUtils.GizmoSlider(
-					Handles.zAxisColor,
-					old_center,
-					IsoUtils.vec3OneY);
-				if ( EditorGUI.EndChangeCheck() ) {
-					var old_delta = new_center - old_center;
-					var new_delta = IsoEditorUtils.ZMoveIsoObjects(
-						true,
-						iso_world,
-						_isoObjects,
-						_otherObjects,
-						old_delta.y / iso_world.tileHeight) * iso_world.tileHeight;
-					_viewCenters[iso_world] = old_center + IsoUtils.Vec3FromY(new_delta);
-				}
-			}
-		}
-
-		void XYMoveSliderTool(Color color, Vector3 dir) {
-			foreach ( var iso_world in _viewCenters.Keys.ToList() ) {
-				EditorGUI.BeginChangeCheck();
-				var old_center = _viewCenters[iso_world];
-				var new_center = IsoEditorUtils.GizmoSlider(
-					color,
-					old_center,
-					iso_world.IsoToScreen(dir));
-				if ( EditorGUI.EndChangeCheck() ) {
-					var old_delta = new_center - old_center;
-					var new_delta = iso_world.IsoToScreen(IsoEditorUtils.XYMoveIsoObjects(
-						true,
-						iso_world,
-						_isoObjects,
-						_otherObjects,
-						iso_world.ScreenToIso(old_delta)));
-					_viewCenters[iso_world] = old_center + IsoUtils.Vec3FromVec2(new_delta);
-				}
-			}
-		}
-
-		void XYMoveRectangleTool() {
-			foreach ( var iso_world in _viewCenters.Keys.ToList() ) {
-				EditorGUI.BeginChangeCheck();
-				var old_center = _viewCenters[iso_world];
-				var new_center = IsoEditorUtils.GizmoRectangle(old_center);
-				if ( EditorGUI.EndChangeCheck() ) {
-					var old_delta = new_center - old_center;
-					var new_delta = iso_world.IsoToScreen(IsoEditorUtils.XYMoveIsoObjects(
-						true,
-						iso_world,
-						_isoObjects,
-						_otherObjects,
-						iso_world.ScreenToIso(old_delta)));
-					_viewCenters[iso_world] = old_center + IsoUtils.Vec3FromVec2(new_delta);
-				}
-			}
-		}
-
-		// ---------------------------------------------------------------------
-		//
-		//
-		//
-		// ---------------------------------------------------------------------
-
-		void DirtyTargetPosition() {
-			if ( targets.Length == 1 && (target is IsoObject) && (target as IsoObject).IsActive() ) {
-				var position_prop = serializedObject.FindProperty("_position");
-				if ( position_prop != null ) {
-					var last_value = position_prop.vector3Value;
-					position_prop.vector3Value = last_value + Vector3.one;
-					PrefabUtility.RecordPrefabInstancePropertyModifications(target);
-					serializedObject.ApplyModifiedProperties();
-					position_prop.vector3Value = last_value;
-					PrefabUtility.RecordPrefabInstancePropertyModifications(target);
-					serializedObject.ApplyModifiedProperties();
-				}
 			}
 		}
 
@@ -172,7 +158,6 @@ namespace IsoTools.Internal {
 
 		public override void OnInspectorGUI() {
 			PrepareTargets();
-			DirtyTargetPosition();
 			DrawDefaultInspector();
 			DrawCustomInspector();
 		}

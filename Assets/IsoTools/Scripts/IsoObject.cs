@@ -9,7 +9,7 @@ using UnityEditor;
 namespace IsoTools {
 	[SelectionBase]
 	[ExecuteInEditMode, DisallowMultipleComponent]
-	public class IsoObject : MonoBehaviour {
+	public sealed class IsoObject : IsoInstance<IsoWorld, IsoObject> {
 
 		// ---------------------------------------------------------------------
 		//
@@ -151,7 +151,6 @@ namespace IsoTools {
 			Mode3d
 		}
 
-		[Space(10)]
 		[SerializeField]
 		Mode _mode = Mode.Mode2d;
 
@@ -214,13 +213,9 @@ namespace IsoTools {
 		//
 		// ---------------------------------------------------------------------
 
-		IsoWorld _isoWorld = null;
 		public IsoWorld isoWorld {
 			get {
-				if ( !_isoWorld && gameObject.activeInHierarchy ) {
-					_isoWorld = IsoWorld.Instance;
-				}
-				return _isoWorld;
+				return GetHolder();
 			}
 		}
 
@@ -261,6 +256,8 @@ namespace IsoTools {
 				var b = iso_world.IsoToScreen(position).y;
 				var t = iso_world.IsoToScreen(position + size).y;
 				Internal.ScreenBounds = new IsoRect(l, b, r, t);
+			} else {
+				Internal.ScreenBounds = IsoRect.zero;
 			}
 		}
 
@@ -294,19 +291,20 @@ namespace IsoTools {
 			FixIsoPosition();
 		}
 
-		void OnEnable() {
-			var iso_world = isoWorld;
-			if ( iso_world ) {
-				iso_world.AddIsoObject(this);
-			}
+		protected override void OnEnable() {
+			base.OnEnable();
 			MartDirtyIsoWorld();
 		}
 
-		void OnDisable() {
-			var iso_world = isoWorld;
-			if ( iso_world ) {
-				iso_world.RemoveIsoObject(this);
-			}
+		protected override void OnDisable() {
+			base.OnDisable();
+		}
+
+		protected override void OnTransformParentChanged() {
+			base.OnTransformParentChanged();
+			FixCachedProperties();
+			FixLastProperties();
+			FixTransform();
 		}
 
 	#if UNITY_EDITOR

@@ -7,7 +7,7 @@ namespace IsoTools.Examples.Kenney {
 		static IsoRaycastHit[] _raycastBuffer = new IsoRaycastHit[16];
 
 		void Update () {
-			var iso_world = IsoWorld.Instance;
+			var iso_world = IsoWorld.GetWorld(0);
 			if ( iso_world && Input.GetMouseButtonDown(0) ) {
 				var iso_mouse_pos       = iso_world.MouseIsoPosition();
 				var ray_from_iso_camera = iso_world.RayFromIsoCameraToIsoPoint(iso_mouse_pos);
