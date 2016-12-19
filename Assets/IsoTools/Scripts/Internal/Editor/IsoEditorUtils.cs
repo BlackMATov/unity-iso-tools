@@ -82,16 +82,16 @@ namespace IsoTools.Internal {
 						iso_objects.ToArray(),
 						iso_objects.Count > 1 ? "Move IsoObjects" : "Move IsoObject");
 				}
-				List<IsoObject> other_objects;
-				if ( all_other_objects.TryGetValue(iso_world, out other_objects) && other_objects.Count > 0 ) {
-					var snapping_z = false;
-					if ( IsSnapByObjectsEnabled(iso_world) ) {
+				var snapping_z = false;
+				if ( IsSnapByObjectsEnabled(iso_world) ) {
+					List<IsoObject> other_objects;
+					if ( all_other_objects.TryGetValue(iso_world, out other_objects) && other_objects.Count > 0 ) {
 						foreach ( var iso_object in iso_objects ) {
 							var iso_orig_z = iso_object.positionZ;
 							var result_p_z = iso_orig_z + delta;
 							foreach ( var other in other_objects ) {
 								if ( IsoEditorUtils.IsSnapOverlaps(iso_object.positionX, iso_object.sizeX, other.positionX, other.sizeX) &&
-									IsoEditorUtils.IsSnapOverlaps(iso_object.positionY, iso_object.sizeY, other.positionY, other.sizeY) )
+									 IsoEditorUtils.IsSnapOverlaps(iso_object.positionY, iso_object.sizeY, other.positionY, other.sizeY) )
 								{
 									var new_snapping_z = !snapping_z && IsoEditorUtils.IsSnapOverlaps(result_p_z, iso_object.sizeZ, other.positionZ, other.sizeZ)
 										? IsoEditorUtils.SnapProcess(ref result_p_z, iso_object.sizeZ, other.positionZ, other.sizeZ)
@@ -108,16 +108,16 @@ namespace IsoTools.Internal {
 							}
 						}
 					}
-					if ( IsSnapByCellsEnabled(iso_world) && !snapping_z ) {
-						foreach ( var iso_object in iso_objects ) {
-							var iso_orig_z = iso_object.positionZ;
-							var result_p_z = iso_orig_z + delta;
-							var new_snapping_z = IsoEditorUtils.SnapProcess(ref result_p_z, iso_object.sizeZ, iso_object.tilePositionZ, 1.0f);
-							if ( new_snapping_z ) {
-								delta      = result_p_z - iso_orig_z;
-								snapping_z = true;
-								break;
-							}
+				}
+				if ( IsSnapByCellsEnabled(iso_world) && !snapping_z ) {
+					foreach ( var iso_object in iso_objects ) {
+						var iso_orig_z = iso_object.positionZ;
+						var result_p_z = iso_orig_z + delta;
+						var new_snapping_z = IsoEditorUtils.SnapProcess(ref result_p_z, iso_object.sizeZ, iso_object.tilePositionZ, 1.0f);
+						if ( new_snapping_z ) {
+							delta      = result_p_z - iso_orig_z;
+							snapping_z = true;
+							break;
 						}
 					}
 				}
@@ -148,11 +148,11 @@ namespace IsoTools.Internal {
 						iso_objects.ToArray(),
 						iso_objects.Count > 1 ? "Move IsoObjects" : "Move IsoObject");
 				}
-				List<IsoObject> other_objects;
-				if ( all_other_objects.TryGetValue(iso_world, out other_objects) && other_objects.Count > 0 ) {
-					var snapping_x = false;
-					var snapping_y = false;
-					if ( IsSnapByObjectsEnabled(iso_world) ) {
+				var snapping_x = false;
+				var snapping_y = false;
+				if ( IsSnapByObjectsEnabled(iso_world) ) {
+					List<IsoObject> other_objects;
+					if ( all_other_objects.TryGetValue(iso_world, out other_objects) && other_objects.Count > 0 ) {
 						foreach ( var iso_object in iso_objects ) {
 							var iso_orig_p     = iso_object.position;
 							var result_pos_iso = iso_orig_p + iso_delta;
@@ -186,26 +186,26 @@ namespace IsoTools.Internal {
 							}
 						}
 					}
-					if ( IsSnapByCellsEnabled(iso_world) && !snapping_x && !snapping_y ) {
-						foreach ( var iso_object in iso_objects ) {
-							var iso_orig_p     = iso_object.position;
-							var result_pos_iso = iso_orig_p + iso_delta;
-							var new_snapping_x = IsoEditorUtils.SnapProcess(ref result_pos_iso.x, iso_object.sizeX, iso_object.tilePositionX, 1.0f);
-							var new_snapping_y = IsoEditorUtils.SnapProcess(ref result_pos_iso.y, iso_object.sizeY, iso_object.tilePositionY, 1.0f);
-							if ( new_snapping_x || new_snapping_y ) {
-								if ( new_snapping_x ) {
-									iso_delta.x    = result_pos_iso.x - iso_orig_p.x;
-									iso_delta.y    = result_pos_iso.y - iso_orig_p.y;
-									snapping_x = true;
-								}
-								if ( new_snapping_y ) {
-									iso_delta.x    = result_pos_iso.x - iso_orig_p.x;
-									iso_delta.y    = result_pos_iso.y - iso_orig_p.y;
-									snapping_y = true;
-								}
-								if ( snapping_x && snapping_y ) {
-									break;
-								}
+				}
+				if ( IsSnapByCellsEnabled(iso_world) && !snapping_x && !snapping_y ) {
+					foreach ( var iso_object in iso_objects ) {
+						var iso_orig_p     = iso_object.position;
+						var result_pos_iso = iso_orig_p + iso_delta;
+						var new_snapping_x = IsoEditorUtils.SnapProcess(ref result_pos_iso.x, iso_object.sizeX, iso_object.tilePositionX, 1.0f);
+						var new_snapping_y = IsoEditorUtils.SnapProcess(ref result_pos_iso.y, iso_object.sizeY, iso_object.tilePositionY, 1.0f);
+						if ( new_snapping_x || new_snapping_y ) {
+							if ( new_snapping_x ) {
+								iso_delta.x    = result_pos_iso.x - iso_orig_p.x;
+								iso_delta.y    = result_pos_iso.y - iso_orig_p.y;
+								snapping_x = true;
+							}
+							if ( new_snapping_y ) {
+								iso_delta.x    = result_pos_iso.x - iso_orig_p.x;
+								iso_delta.y    = result_pos_iso.y - iso_orig_p.y;
+								snapping_y = true;
+							}
+							if ( snapping_x && snapping_y ) {
+								break;
 							}
 						}
 					}
