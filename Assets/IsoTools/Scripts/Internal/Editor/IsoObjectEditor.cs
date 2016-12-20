@@ -48,8 +48,8 @@ namespace IsoTools.Internal {
 		}
 
 		void DrawDetachedInspector() {
-			var single_iso_object = targets.Length == 1 ? target as IsoObject : null;
-			if ( single_iso_object && single_iso_object.IsActive() && !single_iso_object.isoWorld ) {
+			var iso_object = targets.Length == 1 ? target as IsoObject : null;
+			if ( iso_object && iso_object.IsActive() && !iso_object.isoWorld ) {
 				EditorGUILayout.HelpBox(
 					"Detached IsoObject\nNeed to be a child of IsoWorld",
 					MessageType.Warning,
@@ -148,10 +148,11 @@ namespace IsoTools.Internal {
 		//
 		// ---------------------------------------------------------------------
 
-		void DirtyTargetPosition() {
-			if ( targets.Length == 1 && (target is IsoObject) && (target as IsoObject).IsActive() ) {
+		void DirtyTargetPositions() {
+			var iso_object = targets.Length == 1 ? target as IsoObject : null;
+			if ( iso_object && iso_object.IsActive() ) {
 				var position_prop = serializedObject.FindProperty("_position");
-				if ( position_prop != null ) {
+				if ( position_prop != null && !position_prop.prefabOverride ) {
 					var last_value = position_prop.vector3Value;
 					position_prop.vector3Value = last_value + Vector3.one;
 					PrefabUtility.RecordPrefabInstancePropertyModifications(target);
@@ -183,7 +184,7 @@ namespace IsoTools.Internal {
 
 		public override void OnInspectorGUI() {
 			PrepareTargets();
-			DirtyTargetPosition();
+			DirtyTargetPositions();
 			DrawDefaultInspector();
 			DrawCustomInspector();
 		}

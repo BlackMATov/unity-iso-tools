@@ -221,21 +221,23 @@ namespace IsoTools {
 
 		public void FixTransform() {
 			var iso_world = isoWorld;
-			if ( iso_world ) {
-				Internal.Transform.position = IsoUtils.Vec3ChangeZ(
+			var cached_transform = FixCachedTransform();
+			if ( iso_world && cached_transform ) {
+				cached_transform.position = IsoUtils.Vec3ChangeZ(
 					iso_world.IsoToScreen(position),
-					Internal.Transform.position.z);
+					cached_transform.position.z);
 				FixScreenBounds();
+				FixLastTransform();
+				MartDirtyIsoWorld();
 			}
-			FixLastProperties();
-			MartDirtyIsoWorld();
 		}
 
 		public void FixIsoPosition() {
 			var iso_world = isoWorld;
-			if ( iso_world ) {
+			var cached_transform = FixCachedTransform();
+			if ( iso_world && cached_transform ) {
 				position = iso_world.ScreenToIso(
-					Internal.Transform.position,
+					cached_transform.position,
 					positionZ);
 			}
 		}
@@ -255,17 +257,21 @@ namespace IsoTools {
 				var r = iso_world.IsoToScreen(position + IsoUtils.Vec3FromX(size.x)).x;
 				var b = iso_world.IsoToScreen(position).y;
 				var t = iso_world.IsoToScreen(position + size).y;
-				Internal.ScreenBounds = new IsoRect(l, b, r, t);
+				Internal.ScreenBounds.Set(l, b, r, t);
 			} else {
-				Internal.ScreenBounds = IsoRect.zero;
+				Internal.ScreenBounds.Set(0.0f, 0.0f, 0.0f, 0.0f);
 			}
 		}
 
-		void FixCachedProperties() {
-			Internal.Transform = transform;
+		Transform FixCachedTransform() {
+			var ret_value = Internal.Transform;
+			if ( !ret_value ) {
+				ret_value = Internal.Transform = transform;
+			}
+			return ret_value;
 		}
 
-		void FixLastProperties() {
+		void FixLastTransform() {
 			Internal.LastTrans = Internal.Transform.position;
 		}
 
@@ -286,8 +292,8 @@ namespace IsoTools {
 		// ---------------------------------------------------------------------
 
 		void Awake() {
-			FixCachedProperties();
-			FixLastProperties();
+			FixCachedTransform();
+			FixLastTransform();
 			FixIsoPosition();
 		}
 
@@ -302,14 +308,13 @@ namespace IsoTools {
 
 		protected override void OnTransformParentChanged() {
 			base.OnTransformParentChanged();
-			FixCachedProperties();
-			FixLastProperties();
+			FixCachedTransform();
+			FixLastTransform();
 			FixTransform();
 		}
 
 	#if UNITY_EDITOR
 		void Reset() {
-			FixCachedProperties();
 			size           = Vector3.one;
 			position       = Vector3.zero;
 			mode           = Mode.Mode2d;
@@ -317,7 +322,6 @@ namespace IsoTools {
 		}
 
 		void OnValidate() {
-			FixCachedProperties();
 			size           = _size;
 			position       = _position;
 			mode           = _mode;
@@ -325,22 +329,26 @@ namespace IsoTools {
 		}
 
 		void OnDrawGizmos() {
-			if ( isoWorld && isoWorld.isShowIsoBounds ) {
-				IsoUtils.DrawIsoCube(
-					isoWorld,
-					position + size * 0.5f,
-					size,
-					Color.red);
-			}
-			if ( isoWorld && isoWorld.isShowScreenBounds ) {
-				IsoUtils.DrawRect(
-					Internal.ScreenBounds,
-					Color.green);
+			var iso_world = isoWorld;
+			if ( iso_world ) {
+				if ( iso_world.isShowIsoBounds ) {
+					IsoUtils.DrawIsoCube(
+						iso_world,
+						position + size * 0.5f,
+						size,
+						Color.red);
+				}
+				if ( iso_world.isShowScreenBounds ) {
+					IsoUtils.DrawRect(
+						Internal.ScreenBounds,
+						Color.green);
+				}
 			}
 		}
 
 		void OnDrawGizmosSelected() {
-			if ( isoWorld && isoWorld.isShowDepends ) {
+			var iso_world = isoWorld;
+			if ( iso_world && iso_world.isShowDepends ) {
 				for ( int i = 0, e = Internal.SelfDepends.Count; i < e; ++i ) {
 					IsoUtils.DrawLine(
 						Internal.ScreenBounds.center,
