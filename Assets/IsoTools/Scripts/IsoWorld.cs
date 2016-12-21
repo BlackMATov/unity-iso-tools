@@ -75,7 +75,7 @@ namespace IsoTools {
 
 		[Header("World Settings")]
 		[SerializeField]
-		public float _tileSize = DefTileSize;
+		float _tileSize = DefTileSize;
 		public float tileSize {
 			get { return _tileSize; }
 			set {
@@ -85,7 +85,7 @@ namespace IsoTools {
 		}
 
 		[SerializeField]
-		public float _tileRatio = DefTileRatio;
+		float _tileRatio = DefTileRatio;
 		public float tileRatio {
 			get { return _tileRatio; }
 			set {
@@ -95,7 +95,7 @@ namespace IsoTools {
 		}
 
 		[SerializeField]
-		public float _tileAngle = DefTileAngle;
+		float _tileAngle = DefTileAngle;
 		public float tileAngle {
 			get { return _tileAngle; }
 			set {
@@ -105,7 +105,7 @@ namespace IsoTools {
 		}
 
 		[SerializeField]
-		public float _tileHeight = DefTileHeight;
+		float _tileHeight = DefTileHeight;
 		public float tileHeight {
 			get { return _tileHeight; }
 			set {
@@ -115,7 +115,7 @@ namespace IsoTools {
 		}
 
 		[SerializeField]
-		public float _stepDepth = DefStepDepth;
+		float _stepDepth = DefStepDepth;
 		public float stepDepth {
 			get { return _stepDepth; }
 			set {
@@ -125,7 +125,7 @@ namespace IsoTools {
 		}
 
 		[SerializeField]
-		public float _startDepth = DefStartDepth;
+		float _startDepth = DefStartDepth;
 		public float startDepth {
 			get { return _startDepth; }
 			set {
