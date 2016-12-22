@@ -159,8 +159,8 @@ namespace IsoTools {
 		public Ray RayFromIsoCameraToIsoPoint(Vector3 iso_pnt) {
 			var screen_pnt      = IsoToScreen(iso_pnt);
 
-			var min_xy          = _screenSolver.minXY;
-			var min_screen_pnt  = IsoToScreen(min_xy - Vector2.one);
+			var min_iso_xy      = _screenSolver.minIsoXY;
+			var min_screen_pnt  = IsoToScreen(min_iso_xy - Vector2.one);
 			var max_screen_dist = screen_pnt.y - min_screen_pnt.y;
 
 			var screen_down_pnt = new Vector2(screen_pnt.x, screen_pnt.y - max_screen_dist);
@@ -358,21 +358,15 @@ namespace IsoTools {
 			}
 		}
 
-		void UpdateSolverProperties() {
-			_sortingSolver.stepDepth  = stepDepth;
-			_sortingSolver.startDepth = startDepth;
-		}
-
 		void ChangeSortingProperty() {
 			MarkDirty();
 			UpdateIsoMatrix();
 			FixInstanceTransforms();
-			UpdateSolverProperties();
 		}
 
 		void StepSortingProcess() {
 			_screenSolver.StepSortingAction(this, GetInstances());
-			if ( _sortingSolver.StepSortingAction(_screenSolver) ) {
+			if ( _sortingSolver.StepSortingAction(this, _screenSolver) ) {
 				MarkDirty();
 			}
 			_screenSolver.PostStepSortingAction();
@@ -397,11 +391,13 @@ namespace IsoTools {
 		protected override void OnEnable() {
 			base.OnEnable();
 			_screenSolver.Clear();
+			_sortingSolver.Clear();
 		}
 
 		protected override void OnDisable() {
 			base.OnDisable();
 			_screenSolver.Clear();
+			_sortingSolver.Clear();
 		}
 
 		protected override void OnAddInstanceToHolder(IsoObject instance) {

@@ -1,16 +1,12 @@
 ﻿using UnityEngine;
-using IsoTools.Internal;
 using System.Collections.Generic;
 
 #if UNITY_5_5_OR_NEWER
 using UnityEngine.Profiling;
 #endif
 
-namespace IsoTools {
+namespace IsoTools.Internal {
 	public class IsoSortingSolver {
-		public float stepDepth  = IsoWorld.DefStepDepth;
-		public float startDepth = IsoWorld.DefStartDepth;
-
 		List<Renderer> _tmpRenderers = new List<Renderer>();
 
 		// ---------------------------------------------------------------------
@@ -41,13 +37,13 @@ namespace IsoTools {
 		//
 		// ---------------------------------------------------------------------
 
-		public bool StepSortingAction(IsoScreenSolver screen_solver){
-			Profiler.BeginSample("CalculateSectors");
+		public bool StepSortingAction(IsoWorld iso_world, IsoScreenSolver screen_solver) {
+			Profiler.BeginSample("ResolveVisibles");
 			var dirty = ResolveVisibles(screen_solver);
 			Profiler.EndSample();
 			if ( dirty ) {
 				Profiler.BeginSample("PlaceAllVisibles");
-				PlaceAllVisibles(screen_solver.curVisibles);
+				PlaceAllVisibles(iso_world, screen_solver);
 				Profiler.EndSample();
 			}
 			return dirty;
@@ -57,17 +53,20 @@ namespace IsoTools {
 			_tmpRenderers.Clear();
 		}
 
+		public void Clear() {
+		}
+
 		// ---------------------------------------------------------------------
 		//
 		// ResolveVisibles
 		//
 		// ---------------------------------------------------------------------
 
-		bool ResolveVisibles(IsoScreenSolver screen_solver){
+		bool ResolveVisibles(IsoScreenSolver screen_solver) {
+			var mark_dirty   = false;
 			var old_visibles = screen_solver.oldVisibles;
 			var cur_visibles = screen_solver.curVisibles;
 
-			var mark_dirty = false;
 			for ( int i = 0, e = cur_visibles.Count; i < e; ++i ) {
 				var iso_object = cur_visibles[i];
 				if ( iso_object.Internal.Dirty || !old_visibles.Contains(iso_object) ) {
@@ -79,6 +78,7 @@ namespace IsoTools {
 					mark_dirty = true;
 				}
 			}
+
 			for ( int i = 0, e = old_visibles.Count; i < e; ++i ) {
 				var iso_object = old_visibles[i];
 				if ( !cur_visibles.Contains(iso_object) ) {
@@ -86,12 +86,13 @@ namespace IsoTools {
 					screen_solver.ClearIsoObjectDepends(iso_object);
 				}
 			}
+
 			_tmpRenderers.Clear();
 			return mark_dirty;
 		}
 
 		bool UpdateIsoObjectBounds3d(IsoObject iso_object) {
-			if ( iso_object.mode == IsoObject.Mode.Mode3d ) {
+			if ( iso_object.mode != IsoObject.Mode.Mode3d ) {
 				var minmax3d = IsoObjectMinMax3D(iso_object);
 				var offset3d = iso_object.Internal.Transform.position.z - minmax3d.center;
 				if ( iso_object.Internal.MinMax3d.Approximately(minmax3d) ||
@@ -110,22 +111,22 @@ namespace IsoTools {
 			var  result    = IsoMinMax.zero;
 			var  renderers = GetIsoObjectRenderers(iso_object);
 			for ( int i = 0, e = renderers.Count; i < e; ++i ) {
-				var bounds = renderers[i].bounds;
+				var bounds  = renderers[i].bounds;
 				var extents = bounds.extents;
 				if ( extents.x > 0.0f || extents.y > 0.0f || extents.z > 0.0f ) {
 					var center    = bounds.center.z;
 					var minbounds = center - extents.z;
 					var maxbounds = center + extents.z;
 					if ( inited ) {
-						if ( minbounds < result.min ) {
+						if ( result.min > minbounds ) {
 							result.min = minbounds;
 						}
-						if ( maxbounds > result.max ) {
+						if ( result.max < maxbounds ) {
 							result.max = maxbounds;
 						}
 					} else {
 						inited = true;
-						result = new IsoMinMax(minbounds, maxbounds);
+						result.Set(minbounds, maxbounds);
 					}
 				}
 			}
@@ -147,30 +148,32 @@ namespace IsoTools {
 		//
 		// ---------------------------------------------------------------------
 
-		void PlaceAllVisibles(IsoAssocList<IsoObject> cur_visibles) {
-			var depth = startDepth;
+		void PlaceAllVisibles(IsoWorld iso_world, IsoScreenSolver screen_solver) {
+			var start_depth  = iso_world.startDepth;
+			var cur_visibles = screen_solver.curVisibles;
 			for ( int i = 0, e = cur_visibles.Count; i < e; ++i ) {
-				depth = RecursivePlaceIsoObject(cur_visibles[i], depth);
+				start_depth = RecursivePlaceIsoObject(
+					cur_visibles[i], start_depth, iso_world.stepDepth);
 			}
 		}
 
-		float RecursivePlaceIsoObject(IsoObject iso_object, float depth) {
+		float RecursivePlaceIsoObject(IsoObject iso_object, float depth, float step_depth) {
 			if ( iso_object.Internal.Placed ) {
 				return depth;
 			}
 			iso_object.Internal.Placed = true;
 			var self_depends = iso_object.Internal.SelfDepends;
 			for ( int i = 0, e = self_depends.Count; i < e; ++i ) {
-				depth = RecursivePlaceIsoObject(self_depends[i], depth);
+				depth = RecursivePlaceIsoObject(self_depends[i], depth, step_depth);
 			}
 			if ( iso_object.mode == IsoObject.Mode.Mode3d ) {
 				var zoffset = iso_object.Internal.Offset3d;
 				var extents = iso_object.Internal.MinMax3d.size;
 				PlaceIsoObject(iso_object, depth + extents * 0.5f + zoffset);
-				return depth + extents + stepDepth;
+				return depth + extents + step_depth;
 			} else {
 				PlaceIsoObject(iso_object, depth);
-				return depth + stepDepth;
+				return depth + step_depth;
 			}
 		}
 

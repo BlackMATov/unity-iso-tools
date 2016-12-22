@@ -1,16 +1,15 @@
 ﻿using UnityEngine;
-using IsoTools.Internal;
 using System.Collections.Generic;
 
 #if UNITY_5_5_OR_NEWER
 using UnityEngine.Profiling;
 #endif
 
-namespace IsoTools {
+namespace IsoTools.Internal {
 	public class IsoScreenSolver {
-		public Vector2                 minXY       = Vector2.zero;
-		public IsoAssocList<IsoObject> curVisibles = new IsoAssocList<IsoObject>();
-		public IsoAssocList<IsoObject> oldVisibles = new IsoAssocList<IsoObject>();
+		Vector2                 _minIsoXY    = Vector2.zero;
+		IsoAssocList<IsoObject> _curVisibles = new IsoAssocList<IsoObject>();
+		IsoAssocList<IsoObject> _oldVisibles = new IsoAssocList<IsoObject>();
 
 		class Sector {
 			public IsoList<IsoObject> objects = new IsoList<IsoObject>();
@@ -29,6 +28,24 @@ namespace IsoTools {
 
 		// ---------------------------------------------------------------------
 		//
+		// Properties
+		//
+		// ---------------------------------------------------------------------
+
+		public Vector2 minIsoXY {
+			get { return _minIsoXY; }
+		}
+
+		public IsoAssocList<IsoObject> curVisibles {
+			get { return _curVisibles; }
+		}
+
+		public IsoAssocList<IsoObject> oldVisibles {
+			get { return _oldVisibles; }
+		}
+
+		// ---------------------------------------------------------------------
+		//
 		// Callbacks
 		//
 		// ---------------------------------------------------------------------
@@ -37,13 +54,13 @@ namespace IsoTools {
 		}
 
 		public void OnRemoveInstance(IsoObject iso_object) {
-			oldVisibles.Remove(iso_object);
-			curVisibles.Remove(iso_object);
+			_oldVisibles.Remove(iso_object);
+			_curVisibles.Remove(iso_object);
 			ClearIsoObjectDepends(iso_object);
 		}
 
 		public bool OnMarkDirtyInstance(IsoObject iso_object) {
-			if ( !iso_object.Internal.Dirty && curVisibles.Contains(iso_object) ) {
+			if ( !iso_object.Internal.Dirty && _curVisibles.Contains(iso_object) ) {
 				iso_object.Internal.Dirty = true;
 				return true;
 			}
@@ -57,8 +74,8 @@ namespace IsoTools {
 		// ---------------------------------------------------------------------
 
 		public void StepSortingAction(IsoWorld iso_world, IsoAssocList<IsoObject> instances) {
-			Profiler.BeginSample("ResolveNewVisibles");
-			ResolveNewVisibles(instances);
+			Profiler.BeginSample("ResolveVisibles");
+			ResolveVisibles(instances);
 			Profiler.EndSample();
 			Profiler.BeginSample("ResolveSectors");
 			ResolveSectors(iso_world);
@@ -70,29 +87,52 @@ namespace IsoTools {
 		}
 
 		public void Clear() {
-			curVisibles.Clear();
-			oldVisibles.Clear();
+			_curVisibles.Clear();
+			_oldVisibles.Clear();
 			_sectors.Clear();
+		}
+
+		public void SetupIsoObjectDepends(IsoObject obj_a) {
+			ClearIsoObjectDepends(obj_a);
+			var min = obj_a.Internal.MinSector;
+			var max = obj_a.Internal.MaxSector;
+			for ( var y = min.y; y < max.y; ++y ) {
+			for ( var x = min.x; x < max.x; ++x ) {
+				LookUpSectorDepends(x, y, obj_a);
+				LookUpSectorRDepends(x, y, obj_a);
+			}}
+		}
+
+		public void ClearIsoObjectDepends(IsoObject iso_object) {
+			var their_depends = iso_object.Internal.TheirDepends;
+			for ( int i = 0, e = their_depends.Count; i < e; ++i ) {
+				var their_iso_object = their_depends[i];
+				if ( !their_iso_object.Internal.Dirty ) {
+					their_iso_object.Internal.SelfDepends.Remove(iso_object);
+				}
+			}
+			iso_object.Internal.SelfDepends.Clear();
+			iso_object.Internal.TheirDepends.Clear();
 		}
 
 		// ---------------------------------------------------------------------
 		//
-		//
+		// ResolveVisibles
 		//
 		// ---------------------------------------------------------------------
 
-		void ResolveNewVisibles(IsoAssocList<IsoObject> instances) {
-			oldVisibles.Clear();
+		void ResolveVisibles(IsoAssocList<IsoObject> instances) {
+			_oldVisibles.Clear();
 			if ( instances.Count > 0 ) {
-				minXY.Set(float.MaxValue, float.MaxValue);
+				_minIsoXY.Set(float.MaxValue, float.MaxValue);
 				for ( int i = 0, e = instances.Count; i < e; ++i ) {
 					var iso_object = instances[i];
 					var object_pos = iso_object.position;
-					if ( minXY.x > object_pos.x ) {
-						minXY.x = object_pos.x;
+					if ( _minIsoXY.x > object_pos.x ) {
+						_minIsoXY.x = object_pos.x;
 					}
-					if ( minXY.y > object_pos.y ) {
-						minXY.y = object_pos.y;
+					if ( _minIsoXY.y > object_pos.y ) {
+						_minIsoXY.y = object_pos.y;
 					}
 					if ( !IsoUtils.Vec2Approximately(
 						iso_object.Internal.LastTrans,
@@ -102,21 +142,34 @@ namespace IsoTools {
 					}
 					if ( IsIsoObjectVisible(iso_object) ) {
 						iso_object.Internal.Placed = false;
-						oldVisibles.Add(iso_object);
+						_oldVisibles.Add(iso_object);
 					}
 				}
 			} else {
-				minXY.Set(0.0f, 0.0f);
+				_minIsoXY.Set(0.0f, 0.0f);
 			}
-			var temp_visibles = curVisibles;
-			curVisibles = oldVisibles;
-			oldVisibles = temp_visibles;
+			var temp_visibles = _curVisibles;
+			_curVisibles = _oldVisibles;
+			_oldVisibles = temp_visibles;
 		}
 
-		void ResolveSectors(IsoWorld iso_world) {
-			SetupSectorSize(iso_world);
-			SetupObjectsSectors();
-			SetupSectors();
+		bool IsIsoObjectVisible(IsoObject iso_object) {
+			var renderers = GetIsoObjectRenderers(iso_object);
+			for ( int i = 0, e = renderers.Count; i < e; ++i ) {
+				if ( renderers[i].isVisible ) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		List<Renderer> GetIsoObjectRenderers(IsoObject iso_object) {
+			if ( iso_object.cacheRenderers ) {
+				return iso_object.Internal.Renderers;
+			} else {
+				iso_object.GetComponentsInChildren<Renderer>(_tmpRenderers);
+				return _tmpRenderers;
+			}
 		}
 
 		// ---------------------------------------------------------------------
@@ -125,27 +178,34 @@ namespace IsoTools {
 		//
 		// ---------------------------------------------------------------------
 
+		void ResolveSectors(IsoWorld iso_world) {
+			SetupSectorSize(iso_world);
+			SetupObjectSectors();
+			SetupSectors();
+		}
+
 		void SetupSectorSize(IsoWorld iso_world) {
 			_sectorsSize = 0.0f;
-			for ( int i = 0, e = curVisibles.Count; i < e; ++i ) {
-				var iso_internal = curVisibles[i].Internal;
-				_sectorsSize += IsoUtils.Vec2MaxF(iso_internal.ScreenBounds.size);
+			for ( int i = 0, e = _curVisibles.Count; i < e; ++i ) {
+				var iso_internal = _curVisibles[i].Internal;
+				var size_x = iso_internal.ScreenBounds.x.max - iso_internal.ScreenBounds.x.min;
+				var size_y = iso_internal.ScreenBounds.y.max - iso_internal.ScreenBounds.y.min;
+				_sectorsSize += size_x > size_y ? size_x : size_y;
 			}
-			var min_sector_size_xy = iso_world.IsoToScreen(IsoUtils.vec3OneXY) - iso_world.IsoToScreen(Vector3.zero);
-			var min_sector_size    = Mathf.Max(min_sector_size_xy.x, min_sector_size_xy.y);
-			_sectorsSize = curVisibles.Count > 0
-				? Mathf.Round(Mathf.Max(min_sector_size, _sectorsSize / curVisibles.Count))
+			var min_sector_size = IsoUtils.Vec2MaxF(
+				iso_world.IsoToScreen(IsoUtils.vec3OneXY) -
+				iso_world.IsoToScreen(Vector3.zero));
+			_sectorsSize = _curVisibles.Count > 0
+				? Mathf.Round(Mathf.Max(min_sector_size, _sectorsSize / _curVisibles.Count))
 				: min_sector_size;
 		}
 
-		void SetupObjectsSectors() {
-			if ( curVisibles.Count > 0 ) {
+		void SetupObjectSectors() {
+			if ( _curVisibles.Count > 0 ) {
 				_sectorsMinNumPos.Set(float.MaxValue, float.MaxValue);
 				_sectorsMaxNumPos.Set(float.MinValue, float.MinValue);
-				for ( int i = 0, e = curVisibles.Count; i < e; ++i ) {
-					var iso_internal = curVisibles[i].Internal;
-
-					// high performance tricks
+				for ( int i = 0, e = _curVisibles.Count; i < e; ++i ) {
+					var iso_internal = _curVisibles[i].Internal;
 					var min_x = iso_internal.ScreenBounds.x.min / _sectorsSize;
 					var min_y = iso_internal.ScreenBounds.y.min / _sectorsSize;
 					var max_x = iso_internal.ScreenBounds.x.max / _sectorsSize;
@@ -174,12 +234,17 @@ namespace IsoTools {
 			_sectorsNumPosCount = _sectorsMaxNumPos - _sectorsMinNumPos;
 		}
 
+		void SetupSectors() {
+			ResizeSectors((int)(_sectorsNumPosCount.x * _sectorsNumPosCount.y));
+			FillSectors();
+		}
+
 		void ResizeSectors(int count) {
 			if ( _sectors.Count < count ) {
 				if ( _sectors.Capacity < count ) {
-					_sectors.Capacity = count;
+					_sectors.Capacity = count * 2;
 				}
-				while ( _sectors.Count < _sectors.Capacity ) {
+				while ( _sectors.Count < count ) {
 					_sectors.Add(new Sector());
 				}
 			}
@@ -188,30 +253,25 @@ namespace IsoTools {
 			}
 		}
 
-		void TuneSectors() {
-			for ( int i = 0, e = curVisibles.Count; i < e; ++i ) {
-				var iso_object = curVisibles[i];
+		void FillSectors() {
+			for ( int i = 0, e = _curVisibles.Count; i < e; ++i ) {
+				var iso_object = _curVisibles[i];
 				iso_object.Internal.MinSector -= _sectorsMinNumPos;
 				iso_object.Internal.MaxSector -= _sectorsMinNumPos;
 				var min = iso_object.Internal.MinSector;
 				var max = iso_object.Internal.MaxSector;
 				for ( var y = min.y; y < max.y; ++y ) {
-					for ( var x = min.x; x < max.x; ++x ) {
-						var sector = FindSector(x, y);
-						if ( sector != null ) {
-							sector.objects.Add(iso_object);
-						}
-					}}
+				for ( var x = min.x; x < max.x; ++x ) {
+					var sector = FindSector(x, y);
+					if ( sector != null ) {
+						sector.objects.Add(iso_object);
+					}
+				}}
 			}
 		}
 
-		void SetupSectors() {
-			ResizeSectors((int)(_sectorsNumPosCount.x * _sectorsNumPosCount.y));
-			TuneSectors();
-		}
-
 		Sector FindSector(float num_pos_x, float num_pos_y) {
-			if ( num_pos_x < 0 || num_pos_y < 0 ) {
+			if ( num_pos_x < 0.0f || num_pos_y < 0.0f ) {
 				return null;
 			}
 			if ( num_pos_x >= _sectorsNumPosCount.x || num_pos_y >= _sectorsNumPosCount.y ) {
@@ -219,6 +279,44 @@ namespace IsoTools {
 			}
 			var sector_index = (int)(num_pos_x + _sectorsNumPosCount.x * num_pos_y);
 			return _sectors[sector_index];
+		}
+
+		// ---------------------------------------------------------------------
+		//
+		// LookUpSectorDepends
+		//
+		// ---------------------------------------------------------------------
+
+		void LookUpSectorDepends(float num_pos_x, float num_pos_y, IsoObject obj_a) {
+			var sec = FindSector(num_pos_x, num_pos_y);
+			if ( sec != null ) {
+				for ( int i = 0, e = sec.objects.Count; i < e; ++i ) {
+					var obj_b = sec.objects[i];
+					if ( obj_a != obj_b && !obj_b.Internal.Dirty && IsIsoObjectDepends(obj_a, obj_b) ) {
+						obj_a.Internal.SelfDepends.Add(obj_b);
+						obj_b.Internal.TheirDepends.Add(obj_a);
+					}
+				}
+			}
+		}
+
+		void LookUpSectorRDepends(float num_pos_x, float num_pos_y, IsoObject obj_a) {
+			var sec = FindSector(num_pos_x, num_pos_y);
+			if ( sec != null ) {
+				for ( int i = 0, e = sec.objects.Count; i < e; ++i ) {
+					var obj_b = sec.objects[i];
+					if ( obj_a != obj_b && !obj_b.Internal.Dirty && IsIsoObjectDepends(obj_b, obj_a) ) {
+						obj_b.Internal.SelfDepends.Add(obj_a);
+						obj_a.Internal.TheirDepends.Add(obj_b);
+					}
+				}
+			}
+		}
+
+		bool IsIsoObjectDepends(IsoObject a, IsoObject b) {
+			return
+				a.Internal.ScreenBounds.Overlaps(b.Internal.ScreenBounds) &&
+				IsIsoObjectDepends(a.position, a.size, b.position, b.size);
 		}
 
 		bool IsIsoObjectDepends(Vector3 a_min, Vector3 a_size, Vector3 b_min, Vector3 b_size) {
@@ -255,86 +353,6 @@ namespace IsoTools {
 				}
 			}
 			return a_yesno;
-		}
-
-		bool IsIsoObjectDepends(IsoObject a, IsoObject b) {
-			return
-				a.Internal.ScreenBounds.Overlaps(b.Internal.ScreenBounds) &&
-				IsIsoObjectDepends(a.position, a.size, b.position, b.size);
-		}
-
-		void LookUpSectorDepends(float num_pos_x, float num_pos_y, IsoObject obj_a) {
-			var sec = FindSector(num_pos_x, num_pos_y);
-			if ( sec != null ) {
-				for ( int i = 0, e = sec.objects.Count; i < e; ++i ) {
-					var obj_b = sec.objects[i];
-					if ( obj_a != obj_b && !obj_b.Internal.Dirty && IsIsoObjectDepends(obj_a, obj_b) ) {
-						obj_a.Internal.SelfDepends.Add(obj_b);
-						obj_b.Internal.TheirDepends.Add(obj_a);
-					}
-				}
-			}
-		}
-
-		void LookUpSectorRDepends(float num_pos_x, float num_pos_y, IsoObject obj_a) {
-			var sec = FindSector(num_pos_x, num_pos_y);
-			if ( sec != null ) {
-				for ( int i = 0, e = sec.objects.Count; i < e; ++i ) {
-					var obj_b = sec.objects[i];
-					if ( obj_a != obj_b && !obj_b.Internal.Dirty && IsIsoObjectDepends(obj_b, obj_a) ) {
-						obj_b.Internal.SelfDepends.Add(obj_a);
-						obj_a.Internal.TheirDepends.Add(obj_b);
-					}
-				}
-			}
-		}
-
-		public void SetupIsoObjectDepends(IsoObject obj_a) {
-			ClearIsoObjectDepends(obj_a);
-			var min = obj_a.Internal.MinSector;
-			var max = obj_a.Internal.MaxSector;
-			for ( var y = min.y; y < max.y; ++y ) {
-				for ( var x = min.x; x < max.x; ++x ) {
-					LookUpSectorDepends(x, y, obj_a);
-					LookUpSectorRDepends(x, y, obj_a);
-				}}
-		}
-
-		public void ClearIsoObjectDepends(IsoObject iso_object) {
-			var their_depends = iso_object.Internal.TheirDepends;
-			for ( int i = 0, e = their_depends.Count; i < e; ++i ) {
-				var their_iso_object = their_depends[i];
-				if ( !their_iso_object.Internal.Dirty ) {
-					their_iso_object.Internal.SelfDepends.Remove(iso_object);
-				}
-			}
-			iso_object.Internal.SelfDepends.Clear();
-			iso_object.Internal.TheirDepends.Clear();
-		}
-
-		// ---------------------------------------------------------------------
-		//
-		// Private
-		//
-		// ---------------------------------------------------------------------
-
-		public bool IsIsoObjectVisible(IsoObject iso_object) {
-			var renderers = GetIsoObjectRenderers(iso_object);
-			for ( int i = 0, e = renderers.Count; i < e; ++i ) {
-				if ( renderers[i].isVisible ) {
-					return true;
-				}
-			}
-			return false;
-		}
-
-		List<Renderer> GetIsoObjectRenderers(IsoObject iso_object) {
-			if ( iso_object.cacheRenderers ) {
-				return iso_object.Internal.Renderers;
-			} else {
-				iso_object.GetComponentsInChildren<Renderer>(_tmpRenderers);
-				return _tmpRenderers;
-			}
 		}
 	}
 }
