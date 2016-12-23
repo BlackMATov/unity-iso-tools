@@ -437,6 +437,11 @@ namespace IsoTools {
 			}
 		}
 
+		void OnDrawGizmos() {
+			_screenSolver.OnDrawGizmos(this);
+			_sortingSolver.OnDrawGizmos();
+		}
+
 		/* QuadTree WIP
 		void OnDrawGizmos() {
 			var qt = new IsoQuadTree<IsoObject>(_objects.Count);

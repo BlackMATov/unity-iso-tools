@@ -7,24 +7,57 @@ using UnityEngine.Profiling;
 
 namespace IsoTools.Internal {
 	public class IsoScreenSolver {
-		Vector2                 _minIsoXY    = Vector2.zero;
-		IsoAssocList<IsoObject> _curVisibles = new IsoAssocList<IsoObject>();
-		IsoAssocList<IsoObject> _oldVisibles = new IsoAssocList<IsoObject>();
+		Vector2                 _minIsoXY      = Vector2.zero;
+		IsoAssocList<IsoObject> _curVisibles   = new IsoAssocList<IsoObject>();
+		IsoAssocList<IsoObject> _oldVisibles   = new IsoAssocList<IsoObject>();
+		IsoGrid<IsoObject>      _visibleGrid   = new IsoGrid<IsoObject>(new IsoGridItemAdapter(), 47);
+		IsoGridLookUpper        _gridLookUpper = new IsoGridLookUpper();
+		List<Renderer>          _tmpRenderers  = new List<Renderer>();
 
-		class Sector {
-			public IsoList<IsoObject> objects = new IsoList<IsoObject>();
-			public void Reset() {
-				objects.Clear();
+		// ---------------------------------------------------------------------
+		//
+		// IsoGridItemAdapter
+		//
+		// ---------------------------------------------------------------------
+
+		class IsoGridItemAdapter : IsoGrid<IsoObject>.IItemAdapter {
+			public IsoRect GetBounds(IsoObject item) {
+				return item.Internal.ScreenBounds;
+			}
+
+			public void SetMinMaxCells(IsoObject item, Vector2 min, Vector2 max) {
+				item.Internal.MinSector = min;
+				item.Internal.MaxSector = max;
+			}
+
+			public void GetMinMaxCells(IsoObject item, ref Vector2 min, ref Vector2 max) {
+				min = item.Internal.MinSector;
+				max = item.Internal.MaxSector;
 			}
 		}
 
-		IsoList<Sector> _sectors            = new IsoList<Sector>();
-		float           _sectorsSize        = 0.0f;
-		Vector2         _sectorsMinNumPos   = Vector2.zero;
-		Vector2         _sectorsMaxNumPos   = Vector2.zero;
-		Vector2         _sectorsNumPosCount = Vector2.zero;
+		// ---------------------------------------------------------------------
+		//
+		// IsoGridLookUpper
+		//
+		// ---------------------------------------------------------------------
 
-		List<Renderer>  _tmpRenderers       = new List<Renderer>();
+		class IsoGridLookUpper : IsoGrid<IsoObject>.ILookUpper {
+			IsoObject _isoObject;
+
+			public void LookUp(IsoList<IsoObject> items) {
+				LookUpSectorDepends(_isoObject, items);
+				LookUpSectorRDepends(_isoObject, items);
+			}
+
+			public void Setup(IsoObject iso_object) {
+				_isoObject = iso_object;
+			}
+
+			public void Reset() {
+				_isoObject = null;
+			}
+		}
 
 		// ---------------------------------------------------------------------
 		//
@@ -67,6 +100,25 @@ namespace IsoTools.Internal {
 			return false;
 		}
 
+	#if UNITY_EDITOR
+		public void OnDrawGizmos(IsoWorld iso_world) {
+			/*
+			for ( int y = 0, ye = (int)_sectorsNumPosCount.y; y < ye; ++y ) {
+			for ( int x = 0, xe = (int)_sectorsNumPosCount.x; x < xe; ++x ) {
+				var sector = FindSector((float)x, (float)y);
+				if ( sector != null && sector.objects.Count > 0 ) {
+					var rect = new IsoRect(
+						(x * _sectorsSize),
+						(y * _sectorsSize),
+						(x * _sectorsSize) + _sectorsSize,
+						(y * _sectorsSize) + _sectorsSize);
+					rect.Translate(_sectorsMinNumPos * _sectorsSize);
+					IsoUtils.DrawRect(rect, Color.blue);
+				}
+			}}*/
+		}
+	#endif
+
 		// ---------------------------------------------------------------------
 		//
 		// Functions
@@ -77,8 +129,8 @@ namespace IsoTools.Internal {
 			Profiler.BeginSample("ResolveVisibles");
 			ResolveVisibles(instances);
 			Profiler.EndSample();
-			Profiler.BeginSample("ResolveSectors");
-			ResolveSectors(iso_world);
+			Profiler.BeginSample("ResolveVisibleGrid");
+			ResolveVisibleGrid(iso_world);
 			Profiler.EndSample();
 		}
 
@@ -89,18 +141,17 @@ namespace IsoTools.Internal {
 		public void Clear() {
 			_curVisibles.Clear();
 			_oldVisibles.Clear();
-			_sectors.Clear();
+			_visibleGrid.ClearGrid();
 		}
 
-		public void SetupIsoObjectDepends(IsoObject obj_a) {
-			ClearIsoObjectDepends(obj_a);
-			var min = obj_a.Internal.MinSector;
-			var max = obj_a.Internal.MaxSector;
-			for ( var y = min.y; y < max.y; ++y ) {
-			for ( var x = min.x; x < max.x; ++x ) {
-				LookUpSectorDepends(x, y, obj_a);
-				LookUpSectorRDepends(x, y, obj_a);
-			}}
+		public void SetupIsoObjectDepends(IsoObject iso_object) {
+			ClearIsoObjectDepends(iso_object);
+			_gridLookUpper.Setup(iso_object);
+			_visibleGrid.LookUpCells(
+				iso_object.Internal.MinSector,
+				iso_object.Internal.MaxSector,
+				_gridLookUpper);
+			_gridLookUpper.Reset();
 		}
 
 		public void ClearIsoObjectDepends(IsoObject iso_object) {
@@ -174,111 +225,20 @@ namespace IsoTools.Internal {
 
 		// ---------------------------------------------------------------------
 		//
-		// ResolveSectors
+		// ResolveVisibleGrid
 		//
 		// ---------------------------------------------------------------------
 
-		void ResolveSectors(IsoWorld iso_world) {
-			SetupSectorSize(iso_world);
-			SetupObjectSectors();
-			SetupSectors();
-		}
-
-		void SetupSectorSize(IsoWorld iso_world) {
-			_sectorsSize = 0.0f;
+		void ResolveVisibleGrid(IsoWorld iso_world) {
+			_visibleGrid.ClearItems();
 			for ( int i = 0, e = _curVisibles.Count; i < e; ++i ) {
-				var iso_internal = _curVisibles[i].Internal;
-				var size_x = iso_internal.ScreenBounds.x.max - iso_internal.ScreenBounds.x.min;
-				var size_y = iso_internal.ScreenBounds.y.max - iso_internal.ScreenBounds.y.min;
-				_sectorsSize += size_x > size_y ? size_x : size_y;
+				var iso_object = _curVisibles[i];
+				_visibleGrid.AddItem(iso_object);
 			}
 			var min_sector_size = IsoUtils.Vec2MaxF(
 				iso_world.IsoToScreen(IsoUtils.vec3OneXY) -
 				iso_world.IsoToScreen(Vector3.zero));
-			_sectorsSize = _curVisibles.Count > 0
-				? Mathf.Round(Mathf.Max(min_sector_size, _sectorsSize / _curVisibles.Count))
-				: min_sector_size;
-		}
-
-		void SetupObjectSectors() {
-			if ( _curVisibles.Count > 0 ) {
-				_sectorsMinNumPos.Set(float.MaxValue, float.MaxValue);
-				_sectorsMaxNumPos.Set(float.MinValue, float.MinValue);
-				for ( int i = 0, e = _curVisibles.Count; i < e; ++i ) {
-					var iso_internal = _curVisibles[i].Internal;
-					var min_x = iso_internal.ScreenBounds.x.min / _sectorsSize;
-					var min_y = iso_internal.ScreenBounds.y.min / _sectorsSize;
-					var max_x = iso_internal.ScreenBounds.x.max / _sectorsSize;
-					var max_y = iso_internal.ScreenBounds.y.max / _sectorsSize;
-					iso_internal.MinSector.x = (int)(min_x >= 0.0f ? min_x : min_x - 1.0f);
-					iso_internal.MinSector.y = (int)(min_y >= 0.0f ? min_y : min_y - 1.0f);
-					iso_internal.MaxSector.x = (int)(max_x >= 0.0f ? max_x + 1.0f : max_x);
-					iso_internal.MaxSector.y = (int)(max_y >= 0.0f ? max_y + 1.0f : max_y);
-					if ( _sectorsMinNumPos.x > iso_internal.MinSector.x ) {
-						_sectorsMinNumPos.x = iso_internal.MinSector.x;
-					}
-					if ( _sectorsMinNumPos.y > iso_internal.MinSector.y ) {
-						_sectorsMinNumPos.y = iso_internal.MinSector.y;
-					}
-					if ( _sectorsMaxNumPos.x < iso_internal.MaxSector.x ) {
-						_sectorsMaxNumPos.x = iso_internal.MaxSector.x;
-					}
-					if ( _sectorsMaxNumPos.y < iso_internal.MaxSector.y ) {
-						_sectorsMaxNumPos.y = iso_internal.MaxSector.y;
-					}
-				}
-			} else {
-				_sectorsMinNumPos.Set(0.0f, 0.0f);
-				_sectorsMaxNumPos.Set(_sectorsSize, _sectorsSize);
-			}
-			_sectorsNumPosCount = _sectorsMaxNumPos - _sectorsMinNumPos;
-		}
-
-		void SetupSectors() {
-			ResizeSectors((int)(_sectorsNumPosCount.x * _sectorsNumPosCount.y));
-			FillSectors();
-		}
-
-		void ResizeSectors(int count) {
-			if ( _sectors.Count < count ) {
-				if ( _sectors.Capacity < count ) {
-					_sectors.Capacity = count * 2;
-				}
-				while ( _sectors.Count < count ) {
-					_sectors.Add(new Sector());
-				}
-			}
-			for ( int i = 0, e = _sectors.Count; i < e; ++i ) {
-				_sectors[i].Reset();
-			}
-		}
-
-		void FillSectors() {
-			for ( int i = 0, e = _curVisibles.Count; i < e; ++i ) {
-				var iso_object = _curVisibles[i];
-				iso_object.Internal.MinSector -= _sectorsMinNumPos;
-				iso_object.Internal.MaxSector -= _sectorsMinNumPos;
-				var min = iso_object.Internal.MinSector;
-				var max = iso_object.Internal.MaxSector;
-				for ( var y = min.y; y < max.y; ++y ) {
-				for ( var x = min.x; x < max.x; ++x ) {
-					var sector = FindSector(x, y);
-					if ( sector != null ) {
-						sector.objects.Add(iso_object);
-					}
-				}}
-			}
-		}
-
-		Sector FindSector(float num_pos_x, float num_pos_y) {
-			if ( num_pos_x < 0.0f || num_pos_y < 0.0f ) {
-				return null;
-			}
-			if ( num_pos_x >= _sectorsNumPosCount.x || num_pos_y >= _sectorsNumPosCount.y ) {
-				return null;
-			}
-			var sector_index = (int)(num_pos_x + _sectorsNumPosCount.x * num_pos_y);
-			return _sectors[sector_index];
+			_visibleGrid.RebuildGrid(min_sector_size);
 		}
 
 		// ---------------------------------------------------------------------
@@ -287,39 +247,33 @@ namespace IsoTools.Internal {
 		//
 		// ---------------------------------------------------------------------
 
-		void LookUpSectorDepends(float num_pos_x, float num_pos_y, IsoObject obj_a) {
-			var sec = FindSector(num_pos_x, num_pos_y);
-			if ( sec != null ) {
-				for ( int i = 0, e = sec.objects.Count; i < e; ++i ) {
-					var obj_b = sec.objects[i];
-					if ( obj_a != obj_b && !obj_b.Internal.Dirty && IsIsoObjectDepends(obj_a, obj_b) ) {
-						obj_a.Internal.SelfDepends.Add(obj_b);
-						obj_b.Internal.TheirDepends.Add(obj_a);
-					}
+		static void LookUpSectorDepends(IsoObject obj_a, IsoList<IsoObject> others) {
+			for ( int i = 0, e = others.Count; i < e; ++i ) {
+				var obj_b = others[i];
+				if ( obj_a != obj_b && !obj_b.Internal.Dirty && IsIsoObjectDepends(obj_a, obj_b) ) {
+					obj_a.Internal.SelfDepends.Add(obj_b);
+					obj_b.Internal.TheirDepends.Add(obj_a);
 				}
 			}
 		}
 
-		void LookUpSectorRDepends(float num_pos_x, float num_pos_y, IsoObject obj_a) {
-			var sec = FindSector(num_pos_x, num_pos_y);
-			if ( sec != null ) {
-				for ( int i = 0, e = sec.objects.Count; i < e; ++i ) {
-					var obj_b = sec.objects[i];
-					if ( obj_a != obj_b && !obj_b.Internal.Dirty && IsIsoObjectDepends(obj_b, obj_a) ) {
-						obj_b.Internal.SelfDepends.Add(obj_a);
-						obj_a.Internal.TheirDepends.Add(obj_b);
-					}
+		static void LookUpSectorRDepends(IsoObject obj_a, IsoList<IsoObject> others) {
+			for ( int i = 0, e = others.Count; i < e; ++i ) {
+				var obj_b = others[i];
+				if ( obj_a != obj_b && !obj_b.Internal.Dirty && IsIsoObjectDepends(obj_b, obj_a) ) {
+					obj_b.Internal.SelfDepends.Add(obj_a);
+					obj_a.Internal.TheirDepends.Add(obj_b);
 				}
 			}
 		}
 
-		bool IsIsoObjectDepends(IsoObject a, IsoObject b) {
+		static bool IsIsoObjectDepends(IsoObject a, IsoObject b) {
 			return
 				a.Internal.ScreenBounds.Overlaps(b.Internal.ScreenBounds) &&
 				IsIsoObjectDepends(a.position, a.size, b.position, b.size);
 		}
 
-		bool IsIsoObjectDepends(Vector3 a_min, Vector3 a_size, Vector3 b_min, Vector3 b_size) {
+		static bool IsIsoObjectDepends(Vector3 a_min, Vector3 a_size, Vector3 b_min, Vector3 b_size) {
 			var a_max = a_min + a_size;
 			var b_max = b_min + b_size;
 			var a_yesno = a_max.x > b_min.x && a_max.y > b_min.y && b_max.z > a_min.z;

@@ -47,7 +47,7 @@
 				return this;
 			}
 
-			public Node Clear(IsoIPool<Node> node_pool, IsoIPool<Item>  item_pool) {
+			public Node Clear(IsoIPool<Node> node_pool, IsoIPool<Item> item_pool) {
 				ClearChildren(node_pool, item_pool);
 				ClearContents(item_pool);
 				return Init(null, IsoRect.zero);
@@ -159,19 +159,6 @@
 		}
 
 		//
-		// NodePool
-		//
-
-		class NodePool : IsoPool<Node> {
-			public NodePool(int capacity) : base(capacity) {
-			}
-
-			public override Node CreateItem() {
-				return new Node();
-			}
-		}
-
-		//
 		// ItemPool
 		//
 
@@ -181,6 +168,19 @@
 
 			public override Item CreateItem() {
 				return new Item();
+			}
+		}
+
+		//
+		// NodePool
+		//
+
+		class NodePool : IsoPool<Node> {
+			public NodePool(int capacity) : base(capacity) {
+			}
+
+			public override Node CreateItem() {
+				return new Node();
 			}
 		}
 

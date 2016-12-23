@@ -31,6 +31,11 @@ namespace IsoTools.Internal {
 			return false;
 		}
 
+	#if UNITY_EDITOR
+		public void OnDrawGizmos() {
+		}
+	#endif
+
 		// ---------------------------------------------------------------------
 		//
 		// Functions
@@ -74,8 +79,10 @@ namespace IsoTools.Internal {
 					screen_solver.SetupIsoObjectDepends(iso_object);
 					iso_object.Internal.Dirty = false;
 				}
-				if ( UpdateIsoObjectBounds3d(iso_object) ) {
-					mark_dirty = true;
+				if ( iso_object.mode == IsoObject.Mode.Mode3d ) {
+					if ( UpdateIsoObjectBounds3d(iso_object) ) {
+						mark_dirty = true;
+					}
 				}
 			}
 
@@ -92,16 +99,14 @@ namespace IsoTools.Internal {
 		}
 
 		bool UpdateIsoObjectBounds3d(IsoObject iso_object) {
-			if ( iso_object.mode != IsoObject.Mode.Mode3d ) {
-				var minmax3d = IsoObjectMinMax3D(iso_object);
-				var offset3d = iso_object.Internal.Transform.position.z - minmax3d.center;
-				if ( iso_object.Internal.MinMax3d.Approximately(minmax3d) ||
-					 !Mathf.Approximately(iso_object.Internal.Offset3d, offset3d) )
-				{
-					iso_object.Internal.MinMax3d = minmax3d;
-					iso_object.Internal.Offset3d = offset3d;
-					return true;
-				}
+			var minmax3d = IsoObjectMinMax3D(iso_object);
+			var offset3d = iso_object.Internal.Transform.position.z - minmax3d.center;
+			if ( iso_object.Internal.MinMax3d.Approximately(minmax3d) ||
+				 !Mathf.Approximately(iso_object.Internal.Offset3d, offset3d) )
+			{
+				iso_object.Internal.MinMax3d = minmax3d;
+				iso_object.Internal.Offset3d = offset3d;
+				return true;
 			}
 			return false;
 		}
