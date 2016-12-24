@@ -25,14 +25,14 @@ namespace IsoTools.Internal {
 				return item.Internal.ScreenBounds;
 			}
 
-			public void SetMinMaxCells(IsoObject item, Vector2 min, Vector2 max) {
-				item.Internal.MinSector = min;
-				item.Internal.MaxSector = max;
+			public void SetMinMaxCells(IsoObject item, IsoPoint2 min, IsoPoint2 max) {
+				item.Internal.MinGridCell = min;
+				item.Internal.MaxGridCell = max;
 			}
 
-			public void GetMinMaxCells(IsoObject item, ref Vector2 min, ref Vector2 max) {
-				min = item.Internal.MinSector;
-				max = item.Internal.MaxSector;
+			public void GetMinMaxCells(IsoObject item, ref IsoPoint2 min, ref IsoPoint2 max) {
+				min = item.Internal.MinGridCell;
+				max = item.Internal.MaxGridCell;
 			}
 		}
 
@@ -148,8 +148,8 @@ namespace IsoTools.Internal {
 			ClearIsoObjectDepends(iso_object);
 			_gridLookUpper.Setup(iso_object);
 			_visibleGrid.LookUpCells(
-				iso_object.Internal.MinSector,
-				iso_object.Internal.MaxSector,
+				iso_object.Internal.MinGridCell,
+				iso_object.Internal.MaxGridCell,
 				_gridLookUpper);
 			_gridLookUpper.Reset();
 		}
