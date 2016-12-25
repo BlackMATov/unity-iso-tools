@@ -43,11 +43,11 @@ namespace IsoTools.Internal {
 		// ---------------------------------------------------------------------
 
 		public bool StepSortingAction(IsoWorld iso_world, IsoScreenSolver screen_solver) {
-			Profiler.BeginSample("ResolveVisibles");
+			Profiler.BeginSample("IsoSortingSolver.ResolveVisibles");
 			var dirty = ResolveVisibles(screen_solver);
 			Profiler.EndSample();
 			if ( dirty ) {
-				Profiler.BeginSample("PlaceAllVisibles");
+				Profiler.BeginSample("IsoSortingSolver.PlaceAllVisibles");
 				PlaceAllVisibles(iso_world, screen_solver);
 				Profiler.EndSample();
 			}

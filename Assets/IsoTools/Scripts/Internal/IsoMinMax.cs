@@ -69,9 +69,13 @@ namespace IsoTools.Internal {
 		}
 
 		public static IsoMinMax Merge(IsoMinMax a, IsoMinMax b) {
-			return new IsoMinMax(
-				a.min < b.min ? a.min : b.min,
-				a.max > b.max ? a.max : b.max);
+			if ( a.min > b.min ) {
+				a.min = b.min;
+			}
+			if ( a.max < b.max ) {
+				a.max = b.max;
+			}
+			return a;
 		}
 	}
 }

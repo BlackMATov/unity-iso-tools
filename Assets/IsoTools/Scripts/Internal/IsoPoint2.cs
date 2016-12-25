@@ -38,15 +38,21 @@
 		}
 
 		public static IsoPoint2 operator+(IsoPoint2 a, IsoPoint2 b) {
-			return new IsoPoint2(a.x + b.x, a.y + b.y);
+			a.x += b.x;
+			a.y += b.y;
+			return a;
 		}
 
 		public static IsoPoint2 operator-(IsoPoint2 a, IsoPoint2 b) {
-			return new IsoPoint2(a.x - b.x, a.y - b.y);
+			a.x -= b.x;
+			a.y -= b.y;
+			return a;
 		}
 
 		public static IsoPoint2 operator-(IsoPoint2 a) {
-			return new IsoPoint2(-a.x, -a.y);
+			a.x = -a.x;
+			a.y = -a.y;
+			return a;
 		}
 
 		public static bool operator==(IsoPoint2 lhs, IsoPoint2 rhs) {

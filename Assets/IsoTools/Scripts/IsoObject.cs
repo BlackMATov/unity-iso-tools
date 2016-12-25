@@ -294,7 +294,7 @@ namespace IsoTools {
 		void Awake() {
 			FixCachedTransform();
 			FixLastTransform();
-			FixIsoPosition();
+			FixTransform();
 		}
 
 		protected override void OnEnable() {

@@ -5,6 +5,22 @@ namespace IsoTools.Internal {
 
 		// ---------------------------------------------------------------------
 		//
+		// Interfaces
+		//
+		// ---------------------------------------------------------------------
+
+		public interface IItemAdapter {
+			IsoRect GetBounds      (T item);
+			void    SetMinMaxCells (T item, IsoPoint2 min, IsoPoint2 max);
+			void    GetMinMaxCells (T item, ref IsoPoint2 min, ref IsoPoint2 max);
+		}
+
+		public interface ILookUpper {
+			void LookUp(IsoList<T> items);
+		}
+
+		// ---------------------------------------------------------------------
+		//
 		// CellPool
 		//
 		// ---------------------------------------------------------------------
@@ -24,22 +40,6 @@ namespace IsoTools.Internal {
 			public override void CleanUpItem(Cell item) {
 				item.Items.Clear();
 			}
-		}
-
-		// ---------------------------------------------------------------------
-		//
-		// Interfaces
-		//
-		// ---------------------------------------------------------------------
-
-		public interface IItemAdapter {
-			IsoRect GetBounds      (T item);
-			void    SetMinMaxCells (T item, IsoPoint2 min, IsoPoint2 max);
-			void    GetMinMaxCells (T item, ref IsoPoint2 min, ref IsoPoint2 max);
-		}
-
-		public interface ILookUpper {
-			void LookUp(IsoList<T> items);
 		}
 
 		// ---------------------------------------------------------------------
@@ -79,8 +79,8 @@ namespace IsoTools.Internal {
 			_itemAdapter = item_adapter;
 		}
 
-		public void AddItem(T content) {
-			_gridItems.Add(content);
+		public void AddItem(T item) {
+			_gridItems.Add(item);
 		}
 
 		public void ClearItems() {

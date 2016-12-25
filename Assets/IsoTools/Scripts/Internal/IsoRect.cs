@@ -102,9 +102,9 @@ namespace IsoTools.Internal {
 		}
 
 		public static IsoRect Merge(IsoRect a, IsoRect b) {
-			return new IsoRect(
-				IsoMinMax.Merge(a.x, b.x),
-				IsoMinMax.Merge(a.y, b.y));
+			a.x = IsoMinMax.Merge(a.x, b.x);
+			a.y = IsoMinMax.Merge(a.y, b.y);
+			return a;
 		}
 	}
 }
