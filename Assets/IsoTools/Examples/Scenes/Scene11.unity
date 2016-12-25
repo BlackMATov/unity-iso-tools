@@ -108,7 +108,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 417424, guid: 185575a05f87743c0b2ddb83dd39c6cd, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 1
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 417424, guid: 185575a05f87743c0b2ddb83dd39c6cd, type: 2}
       propertyPath: m_LocalRotation.x
@@ -240,9 +240,11 @@ MonoBehaviour:
   _startDepth: 1
   _showIsoBounds: 0
   _showScreenBounds: 0
-  _showDepends: 1
   _snapByCells: 1
   _snapByObjects: 1
+  _showDepends: 1
+  _showQuadTree: 0
+  _showScreenGrid: 0
 --- !u!1001 &769235453
 Prefab:
   m_ObjectHideFlags: 0
@@ -424,7 +426,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 417424, guid: 185575a05f87743c0b2ddb83dd39c6cd, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 1.2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 417424, guid: 185575a05f87743c0b2ddb83dd39c6cd, type: 2}
       propertyPath: m_LocalRotation.x

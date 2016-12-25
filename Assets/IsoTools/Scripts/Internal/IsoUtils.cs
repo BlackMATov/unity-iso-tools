@@ -542,6 +542,13 @@ namespace IsoTools.Internal {
 			Handles.DrawLine(point2, point3);
 			Handles.DrawLine(point3, point0);
 		}
+
+		public static void DrawSolidRect(IsoRect rect, Color face_color, Color outline_color) {
+			Handles.DrawSolidRectangleWithOutline(
+				new Rect(rect.x.min, rect.y.min, rect.size.x, rect.size.y),
+				face_color,
+				outline_color);
+		}
 	#endif
 	}
 }

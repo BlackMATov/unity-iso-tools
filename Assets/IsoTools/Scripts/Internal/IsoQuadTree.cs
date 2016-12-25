@@ -19,39 +19,7 @@ namespace IsoTools.Internal {
 
 		// ---------------------------------------------------------------------
 		//
-		// ItemPool
-		//
-		// ---------------------------------------------------------------------
-
-		class Item {
-			public Node    Owner   = null;
-			public IsoRect Bounds  = IsoRect.zero;
-			public T       Content = default(T);
-
-			public Item Init(Node owner, IsoRect bounds, T content) {
-				Owner   = owner;
-				Bounds  = bounds;
-				Content = content;
-				return this;
-			}
-
-			public Item Clear() {
-				return Init(null, IsoRect.zero, default(T));
-			}
-		}
-
-		class ItemPool : IsoPool<Item> {
-			public ItemPool(int capacity) : base(capacity) {
-			}
-
-			public override Item CreateItem() {
-				return new Item();
-			}
-		}
-
-		// ---------------------------------------------------------------------
-		//
-		// NodePool
+		// Node
 		//
 		// ---------------------------------------------------------------------
 
@@ -61,26 +29,47 @@ namespace IsoTools.Internal {
 			public Node[]             Nodes      = new Node[4];
 			public IsoAssocList<Item> Items      = new IsoAssocList<Item>(MinChildCountPerNode);
 			public Node               Parent     = null;
-			public IsoRect            Bounds     = IsoRect.zero;
+			public IsoRect            SelfBounds = IsoRect.zero;
 			public IsoRect[]          NodeBounds = new IsoRect[4];
 
 			public Node Init(Node parent, IsoRect bounds) {
-				Parent = parent;
-				Bounds = bounds;
+				Parent     = parent;
+				SelfBounds = bounds;
 				return FillNodeBounds();
 			}
 
-			public Node Clear(IsoIPool<Node> node_pool, IsoIPool<Item> item_pool) {
+			public Node Clear(
+				IsoIPool<Node> node_pool, IsoIPool<Item> item_pool)
+			{
 				ClearNodes(node_pool, item_pool);
 				ClearItems(item_pool);
 				return Init(null, IsoRect.zero);
+			}
+
+			public bool CleanUpNodes(
+				IsoIPool<Node> node_pool, IsoIPool<Item> item_pool)
+			{
+				var has_any_busy_nodes = false;
+				for ( int i = 0, e = Nodes.Length; i < e; ++i ) {
+					var node = Nodes[i];
+					if ( node != null ) {
+						if ( node.CleanUpNodes(node_pool, item_pool) ) {
+							node_pool.Release(
+								node.Clear(node_pool, item_pool));
+							Nodes[i] = null;
+						} else {
+							has_any_busy_nodes = true;
+						}
+					}
+				}
+				return !has_any_busy_nodes && Items.Count == 0;
 			}
 
 			public bool AddItem(
 				IsoRect bounds, T content, out Item item,
 				IsoIPool<Node> node_pool, IsoIPool<Item> item_pool)
 			{
-				if ( !Bounds.Contains(bounds) ) {
+				if ( !SelfBounds.Contains(bounds) ) {
 					item = null;
 					return false;
 				}
@@ -112,12 +101,14 @@ namespace IsoTools.Internal {
 				return true;
 			}
 
-			public void RemoveItem(Item item) {
-				Items.Remove(item);
+			public void RemoveItem(Item item, IsoIPool<Item> item_pool) {
+				if ( Items.Remove(item) ) {
+					item_pool.Release(item.Clear());
+				}
 			}
 
 			public void VisitAllBounds(IBoundsLookUpper look_upper) {
-				look_upper.LookUp(Bounds);
+				look_upper.LookUp(SelfBounds);
 				for ( int i = 0, e = Nodes.Length; i < e; ++i ) {
 					if ( Nodes[i] != null ) {
 						Nodes[i].VisitAllBounds(look_upper);
@@ -125,8 +116,10 @@ namespace IsoTools.Internal {
 				}
 			}
 
-			public void VisitItemsByBounds(IsoRect bounds, IContentLookUpper look_upper) {
-				if ( Bounds.Overlaps(bounds) ) {
+			public void VisitItemsByBounds(
+				IsoRect bounds, IContentLookUpper look_upper)
+			{
+				if ( bounds.Overlaps(SelfBounds) ) {
 					for ( int i = 0, e = Items.Count; i < e; ++i ) {
 						var item = Items[i];
 						if ( bounds.Overlaps(item.Bounds) ) {
@@ -147,8 +140,8 @@ namespace IsoTools.Internal {
 			//
 
 			Node FillNodeBounds() {
-				var size   = Bounds.size * 0.5f;
-				var center = Bounds.center;
+				var size   = SelfBounds.size * 0.5f;
+				var center = SelfBounds.center;
 				{ // LT
 					var rect = new IsoRect(center - size, center);
 					NodeBounds[0] = rect;
@@ -174,8 +167,7 @@ namespace IsoTools.Internal {
 				for ( int i = 0, e = Nodes.Length; i < e; ++i ) {
 					var node = Nodes[i];
 					if ( node != null ) {
-						node_pool.Release(
-							node.Clear(node_pool, item_pool));
+						node_pool.Release(node.Clear(node_pool, item_pool));
 					}
 				}
 				System.Array.Clear(Nodes, 0, Nodes.Length);
@@ -184,12 +176,40 @@ namespace IsoTools.Internal {
 			void ClearItems(IsoIPool<Item> item_pool) {
 				for ( int i = 0, e = Items.Count; i < e; ++i ) {
 					var item = Items[i];
-					item_pool.Release(
-						item.Clear());
+					item_pool.Release(item.Clear());
 				}
 				Items.Clear();
 			}
 		}
+
+		// ---------------------------------------------------------------------
+		//
+		// Item
+		//
+		// ---------------------------------------------------------------------
+
+		class Item {
+			public Node    Owner   = null;
+			public IsoRect Bounds  = IsoRect.zero;
+			public T       Content = default(T);
+
+			public Item Init(Node owner, IsoRect bounds, T content) {
+				Owner   = owner;
+				Bounds  = bounds;
+				Content = content;
+				return this;
+			}
+
+			public Item Clear() {
+				return Init(null, IsoRect.zero, default(T));
+			}
+		}
+
+		// ---------------------------------------------------------------------
+		//
+		// Pools
+		//
+		// ---------------------------------------------------------------------
 
 		class NodePool : IsoPool<Node> {
 			public NodePool(int capacity) : base(capacity) {
@@ -197,6 +217,15 @@ namespace IsoTools.Internal {
 
 			public override Node CreateItem() {
 				return new Node();
+			}
+		}
+
+		class ItemPool : IsoPool<Item> {
+			public ItemPool(int capacity) : base(capacity) {
+			}
+
+			public override Item CreateItem() {
+				return new Item();
 			}
 		}
 
@@ -225,44 +254,67 @@ namespace IsoTools.Internal {
 		}
 
 		public void AddItem(IsoRect bounds, T content) {
-			if ( bounds.x.size > 0.0f && bounds.y.size > 0.0f ) {
-				if ( _allItems.ContainsKey(content) ) {
-					MoveItem(bounds, content);
-				} else {
-					if ( _rootNode == null ) {
-						var initial_bounds = new IsoRect(
-							bounds.center - bounds.size * 2.0f,
-							bounds.center + bounds.size * 2.0f);
-						_rootNode = _nodePool.Take().Init(null, initial_bounds);
-					}
-					Item item;
-					while ( !_rootNode.AddItem(bounds, content, out item, _nodePool, _itemPool) ) {
-						GrowUp(
-							bounds.center.x < _rootNode.Bounds.center.x,
-							bounds.center.y < _rootNode.Bounds.center.y);
-					}
-					_allItems.Add(content, item);
+			if ( _allItems.ContainsKey(content) ) {
+				MoveItem(bounds, content);
+			} else if ( bounds.x.size > 0.0f && bounds.y.size > 0.0f ) {
+				if ( _rootNode == null ) {
+					var initial_side = IsoUtils.Vec2From(
+						IsoUtils.Vec2MaxF(bounds.size));
+					var initial_bounds = new IsoRect(
+						bounds.center - initial_side * 2.0f,
+						bounds.center + initial_side * 2.0f);
+					_rootNode = _nodePool.Take().Init(null, initial_bounds);
 				}
+				Item item;
+				while ( !_rootNode.AddItem(bounds, content, out item, _nodePool, _itemPool) ) {
+					GrowUp(
+						bounds.center.x < _rootNode.SelfBounds.center.x,
+						bounds.center.y < _rootNode.SelfBounds.center.y);
+				}
+				_allItems.Add(content, item);
+				_rootNode.CleanUpNodes(_nodePool, _itemPool);
 			}
 		}
 
-		public bool RemoveItem(T content) {
+		public void RemoveItem(T content) {
 			Item item;
 			if ( _allItems.TryGetValue(content, out item) ) {
-				if ( item.Owner != null ) {
-					item.Owner.RemoveItem(item);
-				}
 				_allItems.Remove(content);
-				return true;
-			} else {
-				return false;
+				var item_node = item.Owner;
+				item_node.RemoveItem(item, _itemPool);
+				if ( item_node.Items.Count == 0 ) {
+					BackwardNodeCleanUp(item_node);
+				}
 			}
 		}
 
 		public void MoveItem(IsoRect bounds, T content) {
-			//TODO implme
-			RemoveItem(content);
-			AddItem(bounds, content);
+			Item item;
+			if ( _allItems.TryGetValue(content, out item) ) {
+				var item_node = item.Owner;
+				if ( item_node.SelfBounds.Contains(bounds) && item_node.Items.Count <= MinChildCountPerNode ) {
+					item.Bounds = bounds;
+				} else {
+					item_node.RemoveItem(item, _itemPool);
+					if ( item_node.Items.Count == 0 ) {
+						item_node = BackwardNodeCleanUp(item_node) ?? _rootNode;
+					}
+					while ( item_node != null ) {
+						Item new_item;
+						if ( item_node.SelfBounds.Contains(bounds) ) {
+							if ( item_node.AddItem(bounds, content, out new_item, _nodePool, _itemPool) ) {
+								_allItems[content] = new_item;
+								return;
+							}
+						}
+						item_node = item_node.Parent;
+					}
+					_allItems.Remove(content);
+					AddItem(bounds, content);
+				}
+			} else {
+				AddItem(bounds, content);
+			}
 		}
 
 		public void Clear() {
@@ -299,11 +351,11 @@ namespace IsoTools.Internal {
 		// ---------------------------------------------------------------------
 
 		void GrowUp(bool left, bool top) {
-			var new_root_bounds = _rootNode.Bounds;
+			var new_root_bounds = _rootNode.SelfBounds;
 			new_root_bounds.Translate(
-				left ? -_rootNode.Bounds.size.x : 0.0f,
-				top  ? -_rootNode.Bounds.size.y : 0.0f);
-			new_root_bounds.Resize(_rootNode.Bounds.size * 2.0f);
+				left ? -new_root_bounds.size.x : 0.0f,
+				top  ? -new_root_bounds.size.y : 0.0f);
+			new_root_bounds.Resize(new_root_bounds.size * 2.0f);
 			var new_root = _nodePool.Take().Init(null, new_root_bounds);
 			if ( left ) {
 				if ( top ) {
@@ -320,6 +372,13 @@ namespace IsoTools.Internal {
 			}
 			_rootNode.Parent = new_root;
 			_rootNode = new_root;
+		}
+
+		Node BackwardNodeCleanUp(Node node) {
+			while ( node != null && node.CleanUpNodes(_nodePool, _itemPool) ) {
+				node = node.Parent;
+			}
+			return node;
 		}
 	}
 }

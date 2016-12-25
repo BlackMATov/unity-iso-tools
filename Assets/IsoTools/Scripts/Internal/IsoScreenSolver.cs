@@ -7,16 +7,18 @@ using UnityEngine.Profiling;
 
 namespace IsoTools.Internal {
 	public class IsoScreenSolver {
-		Vector2                 _minIsoXY     = Vector2.zero;
-		IsoAssocList<IsoObject> _oldVisibles  = new IsoAssocList<IsoObject>();
-		IsoAssocList<IsoObject> _curVisibles  = new IsoAssocList<IsoObject>();
+		Vector2                 _minIsoXY    = Vector2.zero;
+		IsoAssocList<IsoObject> _oldVisibles = new IsoAssocList<IsoObject>();
+		IsoAssocList<IsoObject> _curVisibles = new IsoAssocList<IsoObject>();
 
-		IsoQuadTree<IsoObject>  _quadTree     = new IsoQuadTree<IsoObject>(47);
-		IsoGrid<IsoObject>      _screenGrid   = new IsoGrid<IsoObject>(new IsoGridItemAdapter(), 47);
+		IsoQuadTree<IsoObject>  _quadTree    = new IsoQuadTree<IsoObject>(47);
+		IsoGrid<IsoObject>      _screenGrid  = new IsoGrid<IsoObject>(new IsoSGItemAdapter(), 47);
 
-		IsoQTBoundsLookUpper    _qtBoundsLU   = new IsoQTBoundsLookUpper();
-		IsoQTContentLookUpper   _qtContentLU  = new IsoQTContentLookUpper();
-		IsoGridLookUpper        _screenGridLU = new IsoGridLookUpper();
+		IsoQTBoundsLookUpper    _qtBoundsLU  = new IsoQTBoundsLookUpper();
+		IsoQTContentLookUpper   _qtContentLU = new IsoQTContentLookUpper();
+
+		IsoSGBoundsLookUpper    _sgBoundsLU  = new IsoSGBoundsLookUpper();
+		IsoSGContentLookUpper   _sgContentLU = new IsoSGContentLookUpper();
 
 		// ---------------------------------------------------------------------
 		//
@@ -27,7 +29,10 @@ namespace IsoTools.Internal {
 		class IsoQTBoundsLookUpper : IsoQuadTree<IsoObject>.IBoundsLookUpper {
 			public void LookUp(IsoRect bounds) {
 			#if UNITY_EDITOR
-				IsoUtils.DrawRect(bounds, Color.blue);
+				IsoUtils.DrawSolidRect(
+					bounds,
+					IsoUtils.ColorChangeA(Color.red, 0.05f),
+					Color.red);
 			#endif
 			}
 		}
@@ -64,11 +69,11 @@ namespace IsoTools.Internal {
 
 		// ---------------------------------------------------------------------
 		//
-		// IsoGridItemAdapter
+		// IsoSGItemAdapter
 		//
 		// ---------------------------------------------------------------------
 
-		class IsoGridItemAdapter : IsoGrid<IsoObject>.IItemAdapter {
+		class IsoSGItemAdapter : IsoGrid<IsoObject>.IItemAdapter {
 			public IsoRect GetBounds(IsoObject item) {
 				return item.Internal.ScreenBounds;
 			}
@@ -86,11 +91,28 @@ namespace IsoTools.Internal {
 
 		// ---------------------------------------------------------------------
 		//
-		// IsoGridLookUpper
+		// IsoSGBoundsLookUpper
 		//
 		// ---------------------------------------------------------------------
 
-		class IsoGridLookUpper : IsoGrid<IsoObject>.ILookUpper {
+		class IsoSGBoundsLookUpper : IsoGrid<IsoObject>.IBoundsLookUpper {
+			public void LookUp(IsoRect bounds) {
+			#if UNITY_EDITOR
+				IsoUtils.DrawSolidRect(
+					bounds,
+					IsoUtils.ColorChangeA(Color.green, 0.1f),
+					Color.green);
+			#endif
+			}
+		}
+
+		// ---------------------------------------------------------------------
+		//
+		// IsoSGContentLookUpper
+		//
+		// ---------------------------------------------------------------------
+
+		class IsoSGContentLookUpper : IsoGrid<IsoObject>.IContentLookUpper {
 			IsoObject _isoObject;
 
 			public void LookUp(IsoList<IsoObject> items) {
@@ -102,7 +124,7 @@ namespace IsoTools.Internal {
 				IsoScreenSolver screen_solver, IsoObject iso_object)
 			{
 				_isoObject = iso_object;
-				screen_solver._screenGrid.LookUpCells(
+				screen_solver._screenGrid.VisitItemsByCells(
 					iso_object.Internal.MinGridCell,
 					iso_object.Internal.MaxGridCell,
 					this);
@@ -138,6 +160,7 @@ namespace IsoTools.Internal {
 			_quadTree.AddItem(
 				iso_object.Internal.ScreenBounds,
 				iso_object);
+			_minIsoXY = IsoUtils.Vec2Min(_minIsoXY, iso_object.position);
 		}
 
 		public void OnRemoveInstance(IsoObject iso_object) {
@@ -151,6 +174,7 @@ namespace IsoTools.Internal {
 			_quadTree.MoveItem(
 				iso_object.Internal.ScreenBounds,
 				iso_object);
+			_minIsoXY = IsoUtils.Vec2Min(_minIsoXY, iso_object.position);
 			if ( !iso_object.Internal.Dirty && _curVisibles.Contains(iso_object) ) {
 				iso_object.Internal.Dirty = true;
 				return true;
@@ -160,21 +184,12 @@ namespace IsoTools.Internal {
 
 	#if UNITY_EDITOR
 		public void OnDrawGizmos(IsoWorld iso_world) {
-			_quadTree.VisitAllBounds(_qtBoundsLU);
-			/*
-			for ( int y = 0, ye = (int)_sectorsNumPosCount.y; y < ye; ++y ) {
-			for ( int x = 0, xe = (int)_sectorsNumPosCount.x; x < xe; ++x ) {
-				var sector = FindSector((float)x, (float)y);
-				if ( sector != null && sector.objects.Count > 0 ) {
-					var rect = new IsoRect(
-						(x * _sectorsSize),
-						(y * _sectorsSize),
-						(x * _sectorsSize) + _sectorsSize,
-						(y * _sectorsSize) + _sectorsSize);
-					rect.Translate(_sectorsMinNumPos * _sectorsSize);
-					IsoUtils.DrawRect(rect, Color.blue);
-				}
-			}}*/
+			if ( iso_world.isShowQuadTree ) {
+				_quadTree.VisitAllBounds(_qtBoundsLU);
+			}
+			if ( iso_world.isShowScreenGrid ) {
+				_screenGrid.VisitAllBounds(_sgBoundsLU);
+			}
 		}
 	#endif
 
@@ -205,7 +220,7 @@ namespace IsoTools.Internal {
 
 		public void SetupIsoObjectDepends(IsoObject iso_object) {
 			ClearIsoObjectDepends(iso_object);
-			_screenGridLU.LookUpForDepends(this, iso_object);
+			_sgContentLU.LookUpForDepends(this, iso_object);
 		}
 
 		public void ClearIsoObjectDepends(IsoObject iso_object) {
@@ -237,16 +252,8 @@ namespace IsoTools.Internal {
 
 		void ProcessAllInstances(IsoAssocList<IsoObject> instances) {
 			if ( instances.Count > 0 ) {
-				_minIsoXY.Set(float.MaxValue, float.MaxValue);
 				for ( int i = 0, e = instances.Count; i < e; ++i ) {
 					var iso_object = instances[i];
-					var object_pos = iso_object.position;
-					if ( _minIsoXY.x > object_pos.x ) {
-						_minIsoXY.x = object_pos.x;
-					}
-					if ( _minIsoXY.y > object_pos.y ) {
-						_minIsoXY.y = object_pos.y;
-					}
 					if ( !IsoUtils.Vec2Approximately(
 						iso_object.Internal.LastTrans,
 						iso_object.Internal.Transform.position) )
@@ -254,8 +261,6 @@ namespace IsoTools.Internal {
 						iso_object.FixIsoPosition();
 					}
 				}
-			} else {
-				_minIsoXY.Set(0.0f, 0.0f);
 			}
 		}
 

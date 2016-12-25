@@ -15,7 +15,11 @@ namespace IsoTools.Internal {
 			void    GetMinMaxCells (T item, ref IsoPoint2 min, ref IsoPoint2 max);
 		}
 
-		public interface ILookUpper {
+		public interface IBoundsLookUpper {
+			void LookUp(IsoRect bounds);
+		}
+
+		public interface IContentLookUpper {
 			void LookUp(IsoList<T> items);
 		}
 
@@ -109,13 +113,35 @@ namespace IsoTools.Internal {
 			_gridNumPosCount = IsoPoint2.zero;
 		}
 
-		public void LookUpCells(
-			IsoPoint2 min_cell, IsoPoint2 max_cell, ILookUpper look_upper)
+		public void VisitAllBounds(IBoundsLookUpper look_upper) {
+			if ( look_upper == null ) {
+				throw new System.ArgumentNullException("look_upper");
+			}
+			for ( int y = 0, ye = _gridNumPosCount.y; y < ye; ++y ) {
+			for ( int x = 0, xe = _gridNumPosCount.x; x < xe; ++x ) {
+				var cell = GetCell(x, y);
+				if ( cell.Items.Count > 0 ) {
+					var rect = new IsoRect(
+						x * _gridCellSize,
+						y * _gridCellSize,
+						x * _gridCellSize + _gridCellSize,
+						y * _gridCellSize + _gridCellSize);
+					rect.Translate(
+						_gridMinNumPos.x * _gridCellSize,
+						_gridMinNumPos.y * _gridCellSize);
+					look_upper.LookUp(rect);
+				}
+			}}
+		}
+
+		public void VisitItemsByCells(
+			IsoPoint2 min_cell, IsoPoint2 max_cell,
+			IContentLookUpper look_upper)
 		{
 			if ( min_cell.x < 0 || min_cell.y < 0 ) {
 				throw new System.ArgumentOutOfRangeException("min_cell");
 			}
-			if ( min_cell.y >= _gridNumPosCount.x || min_cell.y >= _gridNumPosCount.y ) {
+			if ( max_cell.x > _gridNumPosCount.x || max_cell.y > _gridNumPosCount.y ) {
 				throw new System.ArgumentOutOfRangeException("max_cell");
 			}
 			if ( look_upper == null ) {

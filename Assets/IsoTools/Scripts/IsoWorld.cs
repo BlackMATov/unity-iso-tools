@@ -297,11 +297,6 @@ namespace IsoTools {
 			get { return _showScreenBounds; }
 			set { _showScreenBounds = value; }
 		}
-		[SerializeField] bool _showDepends = false;
-		public bool isShowDepends {
-			get { return _showDepends; }
-			set { _showDepends = value; }
-		}
 		[SerializeField] bool _snapByCells = true;
 		public bool isSnapByCells {
 			get { return _snapByCells; }
@@ -311,6 +306,22 @@ namespace IsoTools {
 		public bool isSnapByObjects {
 			get { return _snapByObjects; }
 			set { _snapByObjects = value; }
+		}
+		[Header("Development Only")]
+		[SerializeField] bool _showDepends = false;
+		public bool isShowDepends {
+			get { return _showDepends; }
+			set { _showDepends = value; }
+		}
+		[SerializeField] bool _showQuadTree = false;
+		public bool isShowQuadTree {
+			get { return _showQuadTree; }
+			set { _showQuadTree = value; }
+		}
+		[SerializeField] bool _showScreenGrid = false;
+		public bool isShowScreenGrid {
+			get { return _showScreenGrid; }
+			set { _showScreenGrid = value; }
 		}
 	#endif
 
@@ -441,17 +452,6 @@ namespace IsoTools {
 			_screenSolver.OnDrawGizmos(this);
 			_sortingSolver.OnDrawGizmos();
 		}
-
-		/* QuadTree WIP
-		void OnDrawGizmos() {
-			var qt = new IsoQuadTree<IsoObject>(_objects.Count);
-			for ( int i = 0, e = _objects.Count; i < e; ++i ) {
-				qt.Insert(_objects[i].Internal.ScreenRect, _objects[i]);
-			}
-			qt.VisitAllBounds(rect => {
-				IsoUtils.DrawRect(rect, Color.green);
-			});
-		}*/
 	#endif
 	}
 }
