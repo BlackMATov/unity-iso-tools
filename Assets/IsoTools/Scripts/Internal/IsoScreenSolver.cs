@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 #if UNITY_5_5_OR_NEWER
 using UnityEngine.Profiling;
 #endif
@@ -8,6 +12,7 @@ using UnityEngine.Profiling;
 namespace IsoTools.Internal {
 	public class IsoScreenSolver {
 		Vector2                 _minIsoXY    = Vector2.zero;
+
 		IsoAssocList<IsoObject> _oldVisibles = new IsoAssocList<IsoObject>();
 		IsoAssocList<IsoObject> _curVisibles = new IsoAssocList<IsoObject>();
 
@@ -47,22 +52,55 @@ namespace IsoTools.Internal {
 			Camera[]        _tmpCameras   = new Camera[8];
 			IsoScreenSolver _screenSolver = null;
 
+			//
+			// Public
+			//
+
 			public void LookUp(IsoObject iso_object) {
 				iso_object.Internal.Placed = false;
 				_screenSolver._oldVisibles.Add(iso_object);
 			}
 
-			public void LookUpForVisibility(IsoScreenSolver screen_solver) {
+			public void LookUpForVisibility(IsoScreenSolver screen_solver, bool include_scene_view) {
 				_screenSolver = screen_solver;
-				var cam_count = Camera.GetAllCameras(_tmpCameras);
+				var cam_count = FillLookUpCameras(include_scene_view);
 				for ( var i = 0; i < cam_count; ++i ) {
-					var camera  = _tmpCameras[i];
-					var vp_rect = camera.rect;
-					var wrl_min = camera.ViewportToWorldPoint(new Vector3(vp_rect.xMin, vp_rect.yMin));
-					var wrl_max = camera.ViewportToWorldPoint(new Vector3(vp_rect.xMax, vp_rect.yMax));
+					var tmp_cam = _tmpCameras[i];
+					var vp_rect = tmp_cam.rect;
+					var wrl_min = tmp_cam.ViewportToWorldPoint(new Vector3(vp_rect.xMin, vp_rect.yMin));
+					var wrl_max = tmp_cam.ViewportToWorldPoint(new Vector3(vp_rect.xMax, vp_rect.yMax));
 					_screenSolver._quadTree.VisitItemsByBounds(new IsoRect(wrl_min, wrl_max), this);
 				}
+				ResetLookUpCameras();
 				_screenSolver = null;
+			}
+
+			//
+			// Private
+			//
+
+			int FillLookUpCameras(bool include_scene_view) {
+				var camera_count = Camera.allCamerasCount;
+				if ( _tmpCameras.Length < camera_count + 1 ) {
+					_tmpCameras = new Camera[camera_count * 2 + 1];
+				}
+				Camera.GetAllCameras(_tmpCameras);
+				return include_scene_view
+					? AddSceneViewCamera(camera_count)
+					: camera_count;
+			}
+
+			int AddSceneViewCamera(int camera_count) {
+			#if UNITY_EDITOR
+				var scene_view = SceneView.lastActiveSceneView;
+				if ( scene_view && scene_view.camera ) {
+					_tmpCameras[camera_count++] = scene_view.camera;
+				}
+			#endif
+				return camera_count;
+			}
+
+			void ResetLookUpCameras() {
 				System.Array.Clear(_tmpCameras, 0, _tmpCameras.Length);
 			}
 		}
@@ -201,7 +239,7 @@ namespace IsoTools.Internal {
 
 		public void StepSortingAction(IsoWorld iso_world, IsoAssocList<IsoObject> instances) {
 			Profiler.BeginSample("IsoScreenSolver.ResolveVisibles");
-			ResolveVisibles(instances);
+			ResolveVisibles(iso_world, instances);
 			Profiler.EndSample();
 			Profiler.BeginSample("IsoScreenSolver.ResolveVisibleGrid");
 			ResolveVisibleGrid(iso_world);
@@ -241,12 +279,12 @@ namespace IsoTools.Internal {
 		//
 		// ---------------------------------------------------------------------
 
-		void ResolveVisibles(IsoAssocList<IsoObject> instances) {
+		void ResolveVisibles(IsoWorld iso_world, IsoAssocList<IsoObject> instances) {
 			Profiler.BeginSample("ProcessAllInstances");
 			ProcessAllInstances(instances);
 			Profiler.EndSample();
 			Profiler.BeginSample("ProcessNewVisibles");
-			ProcessNewVisibles();
+			ProcessNewVisibles(iso_world.isSortInSceneView);
 			Profiler.EndSample();
 		}
 
@@ -264,9 +302,9 @@ namespace IsoTools.Internal {
 			}
 		}
 
-		void ProcessNewVisibles() {
+		void ProcessNewVisibles(bool include_scene_view) {
 			_oldVisibles.Clear();
-			_qtContentLU.LookUpForVisibility(this);
+			_qtContentLU.LookUpForVisibility(this, include_scene_view);
 			SwapCurrentVisibles();
 		}
 

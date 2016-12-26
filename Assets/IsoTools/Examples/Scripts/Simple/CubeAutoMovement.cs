@@ -7,14 +7,22 @@ namespace IsoTools.Examples.Simple {
 		public float stepTicks    = 0.5f;
 		public float stepRndTicks = 0.5f;
 
-		IsoObject _isoObject = null;
+		Vector3   _startPos     = Vector3.zero;
+		IsoObject _isoObject    = null;
+		Coroutine _movementCoro = null;
 
-		void Start() {
+		void OnEnable() {
 			_isoObject = GetComponent<IsoObject>();
 			if ( !_isoObject ) {
 				throw new UnityException("CubeAutoMovement. IsoObject component not found!");
 			}
-			StartCoroutine(Move());
+			_startPos     = _isoObject.position;
+			_movementCoro = StartCoroutine(Move());
+		}
+
+		void OnDisable() {
+			StopCoroutine(_movementCoro);
+			_isoObject.position = _startPos;
 		}
 
 		WaitForSeconds RndWait() {

@@ -307,6 +307,11 @@ namespace IsoTools {
 			get { return _snapByObjects; }
 			set { _snapByObjects = value; }
 		}
+		[SerializeField] bool _sortInSceneView = true;
+		public bool isSortInSceneView {
+			get { return _sortInSceneView; }
+			set { _sortInSceneView = value; }
+		}
 		[Header("Development Only")]
 		[SerializeField] bool _showDepends = false;
 		public bool isShowDepends {
@@ -401,8 +406,6 @@ namespace IsoTools {
 
 		protected override void OnEnable() {
 			base.OnEnable();
-			_screenSolver.Clear();
-			_sortingSolver.Clear();
 		}
 
 		protected override void OnDisable() {
@@ -443,8 +446,9 @@ namespace IsoTools {
 		}
 
 		void OnRenderObject() {
-			if ( Camera.current && Camera.current.name == "SceneCamera" ) {
-				StepSortingProcess();
+			var camera = Camera.current;
+			if ( camera && camera.name == "SceneCamera" ) {
+				MarkDirty();
 			}
 		}
 
