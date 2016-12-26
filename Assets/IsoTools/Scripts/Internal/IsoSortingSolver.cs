@@ -74,11 +74,10 @@ namespace IsoTools.Internal {
 
 			for ( int i = 0, e = cur_visibles.Count; i < e; ++i ) {
 				var iso_object = cur_visibles[i];
-				//TODO: remove `old_visibles.Contains`?
-				if ( iso_object.Internal.Dirty || !old_visibles.Contains(iso_object) ) {
-					mark_dirty = true;
+				if ( iso_object.Internal.Dirty ) {
 					screen_solver.SetupIsoObjectDepends(iso_object);
 					iso_object.Internal.Dirty = false;
+					mark_dirty = true;
 				}
 				if ( iso_object.mode == IsoObject.Mode.Mode3d ) {
 					if ( UpdateIsoObjectBounds3d(iso_object) ) {
@@ -90,8 +89,9 @@ namespace IsoTools.Internal {
 			for ( int i = 0, e = old_visibles.Count; i < e; ++i ) {
 				var iso_object = old_visibles[i];
 				if ( !cur_visibles.Contains(iso_object) ) {
-					mark_dirty = true;
 					screen_solver.ClearIsoObjectDepends(iso_object);
+					iso_object.Internal.Dirty = true;
+					mark_dirty = true;
 				}
 			}
 

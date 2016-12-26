@@ -167,7 +167,7 @@ namespace IsoTools.Internal {
 				iso_object.Internal.ScreenBounds,
 				iso_object);
 			_minIsoXY = IsoUtils.Vec2Min(_minIsoXY, iso_object.position);
-			if ( !iso_object.Internal.Dirty && _curVisibles.Contains(iso_object) ) {
+			if ( !iso_object.Internal.Dirty ) {
 				iso_object.Internal.Dirty = true;
 				return true;
 			}
@@ -259,8 +259,8 @@ namespace IsoTools.Internal {
 		// ---------------------------------------------------------------------
 
 		static void LookUpCellForLDepends(IsoObject obj_a, IsoObject obj_b) {
-			if ( obj_a != obj_b &&
-				 !obj_b.Internal.Dirty &&
+			if ( !obj_b.Internal.Dirty &&
+				 obj_a != obj_b &&
 				 IsIsoObjectDepends(obj_a.position, obj_a.size, obj_b.position, obj_b.size) )
 			{
 				obj_a.Internal.SelfDepends.Add(obj_b);
@@ -269,8 +269,8 @@ namespace IsoTools.Internal {
 		}
 
 		static void LookUpCellForRDepends(IsoObject obj_a, IsoObject obj_b) {
-			if ( obj_a != obj_b &&
-				 !obj_b.Internal.Dirty &&
+			if ( !obj_b.Internal.Dirty &&
+				 obj_a != obj_b &&
 				 IsIsoObjectDepends(obj_b.position, obj_b.size, obj_a.position, obj_a.size) )
 			{
 				obj_b.Internal.SelfDepends.Add(obj_a);
@@ -279,32 +279,56 @@ namespace IsoTools.Internal {
 		}
 
 		static bool IsIsoObjectDepends(Vector3 a_min, Vector3 a_size, Vector3 b_min, Vector3 b_size) {
-			var a_max = a_min + a_size;
-			var b_max = b_min + b_size;
-			var a_yesno = a_max.x > b_min.x && a_max.y > b_min.y && b_max.z > a_min.z;
-			if ( a_yesno ) {
-				var b_yesno = b_max.x > a_min.x && b_max.y > a_min.y && a_max.z > b_min.z;
-				if ( b_yesno ) {
+			//var a_max = a_min + a_size;
+			//var b_max = b_min + b_size;
 
+			var a_min_x  = a_min.x;
+			var a_min_y  = a_min.y;
+			var a_min_z  = a_min.z;
+
+			var a_size_x = a_size.x;
+			var a_size_y = a_size.y;
+			var a_size_z = a_size.z;
+
+			var b_min_x  = b_min.x;
+			var b_min_y  = b_min.y;
+			var b_min_z  = b_min.z;
+
+			var b_size_x = b_size.x;
+			var b_size_y = b_size.y;
+			var b_size_z = b_size.z;
+
+			var a_max_x  = a_min_x + a_size_x;
+			var a_max_y  = a_min_y + a_size_y;
+			var a_max_z  = a_min_z + a_size_z;
+
+			var b_max_x  = b_min_x + b_size_x;
+			var b_max_y  = b_min_y + b_size_y;
+			var b_max_z  = b_min_z + b_size_z;
+
+			var a_yesno = a_max_x > b_min_x && a_max_y > b_min_y && b_max_z > a_min_z;
+			if ( a_yesno ) {
+				var b_yesno = b_max_x > a_min_x && b_max_y > a_min_y && a_max_z > b_min_z;
+				if ( b_yesno ) {
 					//var da_p = new Vector3(a_max.x - b_min.x, a_max.y - b_min.y, b_max.z - a_min.z);
 					//var db_p = new Vector3(b_max.x - a_min.x, b_max.y - a_min.y, a_max.z - b_min.z);
 					//var dp_p = a_size + b_size - IsoUtils.Vec3Abs(da_p - db_p);
 
-					var dA_x = a_max.x - b_min.x;
-					var dA_y = a_max.y - b_min.y;
-					var dA_z = b_max.z - a_min.z;
+					var dA_x = a_max_x - b_min_x;
+					var dA_y = a_max_y - b_min_y;
+					var dA_z = b_max_z - a_min_z;
 
-					var dB_x = b_max.x - a_min.x;
-					var dB_y = b_max.y - a_min.y;
-					var dB_z = a_max.z - b_min.z;
+					var dB_x = b_max_x - a_min_x;
+					var dB_y = b_max_y - a_min_y;
+					var dB_z = a_max_z - b_min_z;
 
 					var dD_x = dB_x - dA_x;
 					var dD_y = dB_y - dA_y;
 					var dD_z = dB_z - dA_z;
 
-					var dP_x = a_size.x + b_size.x - (dD_x > 0.0f ? dD_x : -dD_x);
-					var dP_y = a_size.y + b_size.y - (dD_y > 0.0f ? dD_y : -dD_y);
-					var dP_z = a_size.z + b_size.z - (dD_z > 0.0f ? dD_z : -dD_z);
+					var dP_x = a_size_x + b_size_x - (dD_x < 0.0f ? -dD_x : dD_x);
+					var dP_y = a_size_y + b_size_y - (dD_y < 0.0f ? -dD_y : dD_y);
+					var dP_z = a_size_z + b_size_z - (dD_z < 0.0f ? -dD_z : dD_z);
 
 					if ( dP_x <= dP_y && dP_x <= dP_z ) {
 						return dA_x > dB_x;

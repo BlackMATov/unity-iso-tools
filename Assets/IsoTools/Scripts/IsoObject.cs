@@ -191,8 +191,8 @@ namespace IsoTools {
 		// ---------------------------------------------------------------------
 
 		public class InternalState {
-			public bool                    Dirty        = false;
-			public bool                    Placed       = false;
+			public bool                    Dirty        = true;
+			public bool                    Placed       = true;
 			public IsoRect                 ScreenBounds = IsoRect.zero;
 			public IsoMinMax               MinMax3d     = IsoMinMax.zero;
 			public float                   Offset3d     = 0.0f;
