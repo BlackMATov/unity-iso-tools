@@ -323,11 +323,6 @@ namespace IsoTools {
 			get { return _showQuadTree; }
 			set { _showQuadTree = value; }
 		}
-		[SerializeField] bool _showScreenGrid = false;
-		public bool isShowScreenGrid {
-			get { return _showScreenGrid; }
-			set { _showScreenGrid = value; }
-		}
 	#endif
 
 		// ---------------------------------------------------------------------
@@ -385,8 +380,6 @@ namespace IsoTools {
 			if ( _sortingSolver.StepSortingAction(this, _screenSolver) ) {
 				MarkDirty();
 			}
-			_screenSolver.PostStepSortingAction();
-			_sortingSolver.PostStepSortingAction();
 		}
 
 		// ---------------------------------------------------------------------

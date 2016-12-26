@@ -11,19 +11,15 @@ using UnityEngine.Profiling;
 
 namespace IsoTools.Internal {
 	public class IsoScreenSolver {
-		Vector2                 _minIsoXY    = Vector2.zero;
+		Vector2                  _minIsoXY       = Vector2.zero;
 
-		IsoAssocList<IsoObject> _oldVisibles = new IsoAssocList<IsoObject>();
-		IsoAssocList<IsoObject> _curVisibles = new IsoAssocList<IsoObject>();
+		IsoAssocList<IsoObject>  _oldVisibles    = new IsoAssocList<IsoObject>(47);
+		IsoAssocList<IsoObject>  _curVisibles    = new IsoAssocList<IsoObject>(47);
 
-		IsoQuadTree<IsoObject>  _quadTree    = new IsoQuadTree<IsoObject>(47);
-		IsoGrid<IsoObject>      _screenGrid  = new IsoGrid<IsoObject>(new IsoSGItemAdapter(), 47);
-
-		IsoQTBoundsLookUpper    _qtBoundsLU  = new IsoQTBoundsLookUpper();
-		IsoQTContentLookUpper   _qtContentLU = new IsoQTContentLookUpper();
-
-		IsoSGBoundsLookUpper    _sgBoundsLU  = new IsoSGBoundsLookUpper();
-		IsoSGContentLookUpper   _sgContentLU = new IsoSGContentLookUpper();
+		IsoQuadTree<IsoObject>   _quadTree       = new IsoQuadTree<IsoObject>(47);
+		IsoQTBoundsLookUpper     _qtBoundsLU     = new IsoQTBoundsLookUpper();
+		IsoQTDependsLookUpper    _qtDependsLU    = new IsoQTDependsLookUpper();
+		IsoQTVisibilityLookUpper _qtVisibilityLU = new IsoQTVisibilityLookUpper();
 
 		// ---------------------------------------------------------------------
 		//
@@ -44,11 +40,34 @@ namespace IsoTools.Internal {
 
 		// ---------------------------------------------------------------------
 		//
-		// IsoQTContentLookUpper
+		// IsoQTDependsLookUpper
 		//
 		// ---------------------------------------------------------------------
 
-		class IsoQTContentLookUpper : IsoQuadTree<IsoObject>.IContentLookUpper {
+		class IsoQTDependsLookUpper : IsoQuadTree<IsoObject>.IContentLookUpper {
+			IsoObject _isoObject;
+
+			public void LookUp(IsoObject other_iso_object) {
+				LookUpCellForLDepends(_isoObject, other_iso_object);
+				LookUpCellForRDepends(_isoObject, other_iso_object);
+			}
+
+			public void LookUpForDepends(
+				IsoScreenSolver screen_solver, IsoObject iso_object)
+			{
+				_isoObject = iso_object;
+				screen_solver._quadTree.VisitItemsByContent(iso_object, this);
+				_isoObject = null;
+			}
+		}
+
+		// ---------------------------------------------------------------------
+		//
+		// IsoQTVisibilityLookUpper
+		//
+		// ---------------------------------------------------------------------
+
+		class IsoQTVisibilityLookUpper : IsoQuadTree<IsoObject>.IContentLookUpper {
 			Camera[]        _tmpCameras   = new Camera[8];
 			IsoScreenSolver _screenSolver = null;
 
@@ -107,71 +126,6 @@ namespace IsoTools.Internal {
 
 		// ---------------------------------------------------------------------
 		//
-		// IsoSGItemAdapter
-		//
-		// ---------------------------------------------------------------------
-
-		class IsoSGItemAdapter : IsoGrid<IsoObject>.IItemAdapter {
-			public IsoRect GetBounds(IsoObject item) {
-				return item.Internal.ScreenBounds;
-			}
-
-			public void SetMinMaxCells(IsoObject item, IsoPoint2 min, IsoPoint2 max) {
-				item.Internal.MinGridCell = min;
-				item.Internal.MaxGridCell = max;
-			}
-
-			public void GetMinMaxCells(IsoObject item, ref IsoPoint2 min, ref IsoPoint2 max) {
-				min = item.Internal.MinGridCell;
-				max = item.Internal.MaxGridCell;
-			}
-		}
-
-		// ---------------------------------------------------------------------
-		//
-		// IsoSGBoundsLookUpper
-		//
-		// ---------------------------------------------------------------------
-
-		class IsoSGBoundsLookUpper : IsoGrid<IsoObject>.IBoundsLookUpper {
-			public void LookUp(IsoRect bounds) {
-			#if UNITY_EDITOR
-				IsoUtils.DrawSolidRect(
-					bounds,
-					IsoUtils.ColorChangeA(Color.green, 0.1f),
-					Color.green);
-			#endif
-			}
-		}
-
-		// ---------------------------------------------------------------------
-		//
-		// IsoSGContentLookUpper
-		//
-		// ---------------------------------------------------------------------
-
-		class IsoSGContentLookUpper : IsoGrid<IsoObject>.IContentLookUpper {
-			IsoObject _isoObject;
-
-			public void LookUp(IsoList<IsoObject> items) {
-				LookUpCellForLDepends(_isoObject, items);
-				LookUpCellForRDepends(_isoObject, items);
-			}
-
-			public void LookUpForDepends(
-				IsoScreenSolver screen_solver, IsoObject iso_object)
-			{
-				_isoObject = iso_object;
-				screen_solver._screenGrid.VisitItemsByCells(
-					iso_object.Internal.MinGridCell,
-					iso_object.Internal.MaxGridCell,
-					this);
-				_isoObject = null;
-			}
-		}
-
-		// ---------------------------------------------------------------------
-		//
 		// Properties
 		//
 		// ---------------------------------------------------------------------
@@ -225,40 +179,33 @@ namespace IsoTools.Internal {
 			if ( iso_world.isShowQuadTree ) {
 				_quadTree.VisitAllBounds(_qtBoundsLU);
 			}
-			if ( iso_world.isShowScreenGrid ) {
-				_screenGrid.VisitAllBounds(_sgBoundsLU);
-			}
 		}
 	#endif
 
 		// ---------------------------------------------------------------------
 		//
-		// Functions
+		// Public
 		//
 		// ---------------------------------------------------------------------
 
 		public void StepSortingAction(IsoWorld iso_world, IsoAssocList<IsoObject> instances) {
-			Profiler.BeginSample("IsoScreenSolver.ResolveVisibles");
-			ResolveVisibles(iso_world, instances);
+			Profiler.BeginSample("IsoScreenSolver.ProcessInstances");
+			ProcessInstances(instances);
 			Profiler.EndSample();
-			Profiler.BeginSample("IsoScreenSolver.ResolveVisibleGrid");
-			ResolveVisibleGrid(iso_world);
+			Profiler.BeginSample("IsoScreenSolver.ProcessVisibles");
+			ProcessVisibles(iso_world.isSortInSceneView);
 			Profiler.EndSample();
-		}
-
-		public void PostStepSortingAction() {
 		}
 
 		public void Clear() {
 			_oldVisibles.Clear();
 			_curVisibles.Clear();
 			_quadTree.Clear();
-			_screenGrid.ClearGrid();
 		}
 
 		public void SetupIsoObjectDepends(IsoObject iso_object) {
 			ClearIsoObjectDepends(iso_object);
-			_sgContentLU.LookUpForDepends(this, iso_object);
+			_qtDependsLU.LookUpForDepends(this, iso_object);
 		}
 
 		public void ClearIsoObjectDepends(IsoObject iso_object) {
@@ -275,20 +222,11 @@ namespace IsoTools.Internal {
 
 		// ---------------------------------------------------------------------
 		//
-		// ResolveVisibles
+		// Private
 		//
 		// ---------------------------------------------------------------------
 
-		void ResolveVisibles(IsoWorld iso_world, IsoAssocList<IsoObject> instances) {
-			Profiler.BeginSample("ProcessAllInstances");
-			ProcessAllInstances(instances);
-			Profiler.EndSample();
-			Profiler.BeginSample("ProcessNewVisibles");
-			ProcessNewVisibles(iso_world.isSortInSceneView);
-			Profiler.EndSample();
-		}
-
-		void ProcessAllInstances(IsoAssocList<IsoObject> instances) {
+		void ProcessInstances(IsoAssocList<IsoObject> instances) {
 			if ( instances.Count > 0 ) {
 				for ( int i = 0, e = instances.Count; i < e; ++i ) {
 					var iso_object = instances[i];
@@ -302,9 +240,9 @@ namespace IsoTools.Internal {
 			}
 		}
 
-		void ProcessNewVisibles(bool include_scene_view) {
+		void ProcessVisibles(bool include_scene_view) {
 			_oldVisibles.Clear();
-			_qtContentLU.LookUpForVisibility(this, include_scene_view);
+			_qtVisibilityLU.LookUpForVisibility(this, include_scene_view);
 			SwapCurrentVisibles();
 		}
 
@@ -316,52 +254,28 @@ namespace IsoTools.Internal {
 
 		// ---------------------------------------------------------------------
 		//
-		// ResolveVisibleGrid
-		//
-		// ---------------------------------------------------------------------
-
-		void ResolveVisibleGrid(IsoWorld iso_world) {
-			_screenGrid.ClearItems();
-			for ( int i = 0, e = _curVisibles.Count; i < e; ++i ) {
-				var iso_object = _curVisibles[i];
-				_screenGrid.AddItem(iso_object);
-			}
-			var min_sector_size = IsoUtils.Vec2MaxF(
-				iso_world.IsoToScreen(IsoUtils.vec3OneXY) -
-				iso_world.IsoToScreen(Vector3.zero));
-			_screenGrid.RebuildGrid(min_sector_size);
-		}
-
-		// ---------------------------------------------------------------------
-		//
 		// LookUpCellForDepends
 		//
 		// ---------------------------------------------------------------------
 
-		static void LookUpCellForLDepends(IsoObject obj_a, IsoList<IsoObject> others) {
-			for ( int i = 0, e = others.Count; i < e; ++i ) {
-				var obj_b = others[i];
-				if ( obj_a != obj_b && !obj_b.Internal.Dirty && IsIsoObjectDepends(obj_a, obj_b) ) {
-					obj_a.Internal.SelfDepends.Add(obj_b);
-					obj_b.Internal.TheirDepends.Add(obj_a);
-				}
+		static void LookUpCellForLDepends(IsoObject obj_a, IsoObject obj_b) {
+			if ( obj_a != obj_b &&
+				 !obj_b.Internal.Dirty &&
+				 IsIsoObjectDepends(obj_a.position, obj_a.size, obj_b.position, obj_b.size) )
+			{
+				obj_a.Internal.SelfDepends.Add(obj_b);
+				obj_b.Internal.TheirDepends.Add(obj_a);
 			}
 		}
 
-		static void LookUpCellForRDepends(IsoObject obj_a, IsoList<IsoObject> others) {
-			for ( int i = 0, e = others.Count; i < e; ++i ) {
-				var obj_b = others[i];
-				if ( obj_a != obj_b && !obj_b.Internal.Dirty && IsIsoObjectDepends(obj_b, obj_a) ) {
-					obj_b.Internal.SelfDepends.Add(obj_a);
-					obj_a.Internal.TheirDepends.Add(obj_b);
-				}
+		static void LookUpCellForRDepends(IsoObject obj_a, IsoObject obj_b) {
+			if ( obj_a != obj_b &&
+				 !obj_b.Internal.Dirty &&
+				 IsIsoObjectDepends(obj_b.position, obj_b.size, obj_a.position, obj_a.size) )
+			{
+				obj_b.Internal.SelfDepends.Add(obj_a);
+				obj_a.Internal.TheirDepends.Add(obj_b);
 			}
-		}
-
-		static bool IsIsoObjectDepends(IsoObject a, IsoObject b) {
-			return
-				a.Internal.ScreenBounds.Overlaps(b.Internal.ScreenBounds) &&
-				IsIsoObjectDepends(a.position, a.size, b.position, b.size);
 		}
 
 		static bool IsIsoObjectDepends(Vector3 a_min, Vector3 a_size, Vector3 b_min, Vector3 b_size) {

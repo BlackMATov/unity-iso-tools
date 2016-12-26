@@ -194,8 +194,6 @@ namespace IsoTools {
 			public bool                    Dirty        = false;
 			public bool                    Placed       = false;
 			public IsoRect                 ScreenBounds = IsoRect.zero;
-			public IsoPoint2               MinGridCell  = IsoPoint2.zero;
-			public IsoPoint2               MaxGridCell  = IsoPoint2.zero;
 			public IsoMinMax               MinMax3d     = IsoMinMax.zero;
 			public float                   Offset3d     = 0.0f;
 			public Transform               Transform    = null;

@@ -344,6 +344,20 @@ namespace IsoTools.Internal {
 			}
 		}
 
+		public void VisitItemsByContent(T content, IContentLookUpper look_upper) {
+			if ( content == null ) {
+				throw new System.ArgumentNullException("content");
+			}
+			if ( look_upper == null ) {
+				throw new System.ArgumentNullException("look_upper");
+			}
+			Item item;
+			if ( _allItems.TryGetValue(content, out item) ) {
+				item.Owner.VisitItemsByBounds(item.Bounds, look_upper);
+				BackwardVisitNodes(item.Owner.Parent, item.Bounds, look_upper);
+			}
+		}
+
 		// ---------------------------------------------------------------------
 		//
 		// Private
@@ -379,6 +393,18 @@ namespace IsoTools.Internal {
 				node = node.Parent;
 			}
 			return node;
+		}
+
+		void BackwardVisitNodes(Node node, IsoRect bounds, IContentLookUpper loop_upper) {
+			while ( node != null ) {
+				for ( int i = 0, e = node.Items.Count; i < e; ++i ) {
+					var item = node.Items[i];
+					if ( bounds.Overlaps(item.Bounds) ) {
+						loop_upper.LookUp(item.Content);
+					}
+				}
+				node = node.Parent;
+			}
 		}
 	}
 }

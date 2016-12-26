@@ -51,15 +51,11 @@ namespace IsoTools.Internal {
 			var dirty = ResolveVisibles(screen_solver);
 			Profiler.EndSample();
 			if ( dirty ) {
-				Profiler.BeginSample("IsoSortingSolver.PlaceAllVisibles");
-				PlaceAllVisibles(iso_world, screen_solver);
+				Profiler.BeginSample("IsoSortingSolver.PlaceVisibles");
+				PlaceVisibles(iso_world, screen_solver);
 				Profiler.EndSample();
 			}
 			return dirty;
-		}
-
-		public void PostStepSortingAction() {
-			_tmpRenderers.Clear();
 		}
 
 		public void Clear() {
@@ -78,6 +74,7 @@ namespace IsoTools.Internal {
 
 			for ( int i = 0, e = cur_visibles.Count; i < e; ++i ) {
 				var iso_object = cur_visibles[i];
+				//TODO: remove `old_visibles.Contains`?
 				if ( iso_object.Internal.Dirty || !old_visibles.Contains(iso_object) ) {
 					mark_dirty = true;
 					screen_solver.SetupIsoObjectDepends(iso_object);
@@ -153,16 +150,17 @@ namespace IsoTools.Internal {
 
 		// ---------------------------------------------------------------------
 		//
-		// PlaceAllVisibles
+		// PlaceVisibles
 		//
 		// ---------------------------------------------------------------------
 
-		void PlaceAllVisibles(IsoWorld iso_world, IsoScreenSolver screen_solver) {
+		void PlaceVisibles(IsoWorld iso_world, IsoScreenSolver screen_solver) {
+			var step_depth   = iso_world.stepDepth;
 			var start_depth  = iso_world.startDepth;
 			var cur_visibles = screen_solver.curVisibles;
 			for ( int i = 0, e = cur_visibles.Count; i < e; ++i ) {
 				start_depth = RecursivePlaceIsoObject(
-					cur_visibles[i], start_depth, iso_world.stepDepth);
+					cur_visibles[i], start_depth, step_depth);
 			}
 		}
 
