@@ -89,6 +89,7 @@ namespace IsoTools.Internal {
 						if ( node == null ) {
 							if ( NodeBounds[i].Contains(bounds) ) {
 								Nodes[i] = node = node_pool.Take().Init(this, NodeBounds[i]);
+								TryMoveItemsToNode(node);
 								if ( node.AddItem(bounds, content, out item, node_pool, item_pool) ) {
 									return true;
 								}
@@ -161,6 +162,19 @@ namespace IsoTools.Internal {
 					NodeBounds[3] = rect;
 				}
 				return this;
+			}
+
+			void TryMoveItemsToNode(Node node) {
+				for ( int i = 0; i < Items.Count; ) {
+					var item = Items[i];
+					if ( node.SelfBounds.Contains(item.Bounds) ) {
+						Items.Remove(item);
+						node.Items.Add(item);
+						item.Owner = node;
+					} else {
+						++i;
+					}
+				}
 			}
 
 			void ClearNodes(IsoIPool<Node> node_pool, IsoIPool<Item> item_pool) {
