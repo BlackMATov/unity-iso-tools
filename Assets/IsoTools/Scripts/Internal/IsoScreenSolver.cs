@@ -56,7 +56,10 @@ namespace IsoTools.Internal {
 				IsoScreenSolver screen_solver, IsoObject iso_object)
 			{
 				_isoObject = iso_object;
-				screen_solver._quadTree.VisitItemsByContent(iso_object, this);
+				if ( iso_object.Internal.QTItem != null ) {
+					screen_solver._quadTree.VisitItemsByItem(
+						iso_object.Internal.QTItem, this);
+				}
 				_isoObject = null;
 			}
 		}
@@ -149,8 +152,8 @@ namespace IsoTools.Internal {
 		// ---------------------------------------------------------------------
 
 		public void OnAddInstance(IsoObject iso_object) {
-			_quadTree.AddItem(
-				iso_object.Internal.ScreenBounds,
+			iso_object.Internal.QTItem = _quadTree.AddItem(
+				iso_object.Internal.QTBounds,
 				iso_object);
 			_minIsoXY = IsoUtils.Vec2Min(_minIsoXY, iso_object.position);
 		}
@@ -158,14 +161,23 @@ namespace IsoTools.Internal {
 		public void OnRemoveInstance(IsoObject iso_object) {
 			_oldVisibles.Remove(iso_object);
 			_curVisibles.Remove(iso_object);
-			_quadTree.RemoveItem(iso_object);
+			if ( iso_object.Internal.QTItem != null ) {
+				_quadTree.RemoveItem(iso_object.Internal.QTItem);
+				iso_object.Internal.QTItem = null;
+			}
 			ClearIsoObjectDepends(iso_object);
 		}
 
 		public bool OnMarkDirtyInstance(IsoObject iso_object) {
-			_quadTree.MoveItem(
-				iso_object.Internal.ScreenBounds,
-				iso_object);
+			if ( iso_object.Internal.QTItem != null ) {
+				iso_object.Internal.QTItem = _quadTree.MoveItem(
+					iso_object.Internal.QTBounds,
+					iso_object.Internal.QTItem);
+			} else {
+				iso_object.Internal.QTItem = _quadTree.AddItem(
+					iso_object.Internal.QTBounds,
+					iso_object);
+			}
 			_minIsoXY = IsoUtils.Vec2Min(_minIsoXY, iso_object.position);
 			if ( !iso_object.Internal.Dirty ) {
 				iso_object.Internal.Dirty = true;

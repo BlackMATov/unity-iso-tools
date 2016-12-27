@@ -191,16 +191,17 @@ namespace IsoTools {
 		// ---------------------------------------------------------------------
 
 		public class InternalState {
-			public bool                    Dirty        = true;
-			public bool                    Placed       = true;
-			public IsoRect                 ScreenBounds = IsoRect.zero;
-			public IsoMinMax               MinMax3d     = IsoMinMax.zero;
-			public float                   Offset3d     = 0.0f;
-			public Transform               Transform    = null;
-			public Vector2                 LastTrans    = Vector2.zero;
-			public List<Renderer>          Renderers    = new List<Renderer>();
-			public IsoAssocList<IsoObject> SelfDepends  = new IsoAssocList<IsoObject>(47);
-			public IsoAssocList<IsoObject> TheirDepends = new IsoAssocList<IsoObject>(47);
+			public bool                         Dirty        = true;
+			public bool                         Placed       = true;
+			public IsoQuadTree<IsoObject>.IItem QTItem       = null;
+			public IsoRect                      QTBounds     = IsoRect.zero;
+			public IsoMinMax                    MinMax3d     = IsoMinMax.zero;
+			public float                        Offset3d     = 0.0f;
+			public Transform                    Transform    = null;
+			public Vector2                      LastTrans    = Vector2.zero;
+			public List<Renderer>               Renderers    = new List<Renderer>();
+			public IsoAssocList<IsoObject>      SelfDepends  = new IsoAssocList<IsoObject>(47);
+			public IsoAssocList<IsoObject>      TheirDepends = new IsoAssocList<IsoObject>(47);
 		}
 
 		public InternalState Internal = new InternalState();
@@ -255,9 +256,9 @@ namespace IsoTools {
 				var r = iso_world.IsoToScreen(position + IsoUtils.Vec3FromX(size.x)).x;
 				var b = iso_world.IsoToScreen(position).y;
 				var t = iso_world.IsoToScreen(position + size).y;
-				Internal.ScreenBounds.Set(l, b, r, t);
+				Internal.QTBounds.Set(l, b, r, t);
 			} else {
-				Internal.ScreenBounds.Set(0.0f, 0.0f, 0.0f, 0.0f);
+				Internal.QTBounds.Set(0.0f, 0.0f, 0.0f, 0.0f);
 			}
 		}
 
@@ -338,7 +339,7 @@ namespace IsoTools {
 				}
 				if ( iso_world.isShowScreenBounds ) {
 					IsoUtils.DrawRect(
-						Internal.ScreenBounds,
+						Internal.QTBounds,
 						Color.green);
 				}
 			}
@@ -349,16 +350,16 @@ namespace IsoTools {
 			if ( iso_world && iso_world.isShowDepends ) {
 				for ( int i = 0, e = Internal.SelfDepends.Count; i < e; ++i ) {
 					IsoUtils.DrawLine(
-						Internal.ScreenBounds.center,
-						Internal.SelfDepends[i].Internal.ScreenBounds.center,
+						Internal.QTBounds.center,
+						Internal.SelfDepends[i].Internal.QTBounds.center,
 						Color.yellow,
 						Color.cyan,
 						0.25f);
 				}
 				for ( int i = 0, e = Internal.TheirDepends.Count; i < e; ++i ) {
 					IsoUtils.DrawLine(
-						Internal.ScreenBounds.center,
-						Internal.TheirDepends[i].Internal.ScreenBounds.center,
+						Internal.QTBounds.center,
+						Internal.TheirDepends[i].Internal.QTBounds.center,
 						Color.yellow,
 						Color.cyan,
 						0.75f);

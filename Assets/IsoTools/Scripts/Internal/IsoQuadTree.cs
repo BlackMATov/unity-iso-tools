@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace IsoTools.Internal {
+﻿namespace IsoTools.Internal {
 	public class IsoQuadTree<T> {
 
 		// ---------------------------------------------------------------------
@@ -8,6 +6,9 @@ namespace IsoTools.Internal {
 		// Interfaces
 		//
 		// ---------------------------------------------------------------------
+
+		public interface IItem {
+		}
 
 		public interface IBoundsLookUpper {
 			void LookUp(IsoRect bounds);
@@ -73,24 +74,16 @@ namespace IsoTools.Internal {
 					item = null;
 					return false;
 				}
-				bool has_any_nodes = false;
 				for ( int i = 0, e = Nodes.Length; i < e; ++i ) {
 					var node = Nodes[i];
 					if ( node != null ) {
-						has_any_nodes = true;
 						if ( node.AddItem(bounds, content, out item, node_pool, item_pool) ) {
 							return true;
 						}
-					}
-				}
-				if ( has_any_nodes || Items.Count >= MinChildCountPerNode ) {
-					for ( int i = 0, e = Nodes.Length; i < e; ++i ) {
-						var node = Nodes[i];
-						if ( node == null && NodeBounds[i].Contains(bounds) ) {
-							Nodes[i] = node = node_pool.Take().Init(this, NodeBounds[i]);
-							if ( node.AddItem(bounds, content, out item, node_pool, item_pool) ) {
-								return true;
-							}
+					} else if ( Items.Count >= MinChildCountPerNode && NodeBounds[i].Contains(bounds) ) {
+						Nodes[i] = node = node_pool.Take().Init(this, NodeBounds[i]);
+						if ( node.AddItem(bounds, content, out item, node_pool, item_pool) ) {
+							return true;
 						}
 					}
 				}
@@ -100,9 +93,24 @@ namespace IsoTools.Internal {
 			}
 
 			public void RemoveItem(Item item, IsoIPool<Item> item_pool) {
-				if ( Items.Remove(item) ) {
+				if ( item != null && item.Owner == this && Items.Remove(item) ) {
 					item_pool.Release(item.Clear());
+				} else {
+					throw new System.ArgumentException("IsoQuadTree logic error", "item");
 				}
+			}
+
+			public bool HasAnyItems() {
+				if ( Items.Count > 0 ) {
+					return true;
+				}
+				for ( int i = 0, e = Nodes.Length; i < e; ++i ) {
+					var node = Nodes[i];
+					if ( node != null && node.HasAnyItems() ) {
+						return true;
+					}
+				}
+				return false;
 			}
 
 			public void VisitAllBounds(IBoundsLookUpper look_upper) {
@@ -187,7 +195,7 @@ namespace IsoTools.Internal {
 		//
 		// ---------------------------------------------------------------------
 
-		class Item {
+		class Item : IItem {
 			public Node    Owner   = null;
 			public IsoRect Bounds  = IsoRect.zero;
 			public T       Content = default(T);
@@ -234,10 +242,9 @@ namespace IsoTools.Internal {
 		//
 		// ---------------------------------------------------------------------
 
-		Node                _rootNode = null;
-		Dictionary<T, Item> _allItems = null;
-		IsoIPool<Node>      _nodePool = null;
-		IsoIPool<Item>      _itemPool = null;
+		Node           _rootNode = null;
+		IsoIPool<Node> _nodePool = null;
+		IsoIPool<Item> _itemPool = null;
 
 		// ---------------------------------------------------------------------
 		//
@@ -247,15 +254,12 @@ namespace IsoTools.Internal {
 
 		public IsoQuadTree(int capacity) {
 			_rootNode = null;
-			_allItems = new Dictionary<T, Item>(capacity);
 			_nodePool = new NodePool(capacity);
 			_itemPool = new ItemPool(capacity);
 		}
 
-		public void AddItem(IsoRect bounds, T content) {
-			if ( _allItems.ContainsKey(content) ) {
-				MoveItem(bounds, content);
-			} else if ( bounds.x.size > 0.0f && bounds.y.size > 0.0f ) {
+		public IItem AddItem(IsoRect bounds, T content) {
+			if ( bounds.x.size > 0.0f && bounds.y.size > 0.0f ) {
 				if ( _rootNode == null ) {
 					var initial_side = IsoUtils.Vec2From(
 						IsoUtils.Vec2MaxF(bounds.size));
@@ -270,30 +274,40 @@ namespace IsoTools.Internal {
 						bounds.center.x < _rootNode.SelfBounds.center.x,
 						bounds.center.y < _rootNode.SelfBounds.center.y);
 				}
-				_allItems.Add(content, item);
-				_rootNode.CleanUpNodes(_nodePool, _itemPool);
+				return item;
+			} else {
+				return _itemPool.Take().Init(null, bounds, content);
 			}
 		}
 
-		public void RemoveItem(T content) {
-			Item item;
-			if ( _allItems.TryGetValue(content, out item) ) {
-				_allItems.Remove(content);
-				var item_node = item.Owner;
+		public void RemoveItem(IItem iitem) {
+			if ( iitem == null ) {
+				throw new System.ArgumentNullException("iitem");
+			}
+			var item      = iitem as Item;
+			var item_node = item.Owner;
+			if ( item_node != null ) {
 				item_node.RemoveItem(item, _itemPool);
 				if ( item_node.Items.Count == 0 ) {
 					BackwardNodeCleanUp(item_node);
 				}
+			} else {
+				_itemPool.Release(item.Clear());
 			}
 		}
 
-		public void MoveItem(IsoRect bounds, T content) {
-			Item item;
-			if ( _allItems.TryGetValue(content, out item) ) {
-				var item_node = item.Owner;
+		public IItem MoveItem(IsoRect bounds, IItem iitem) {
+			if ( iitem == null ) {
+				throw new System.ArgumentNullException("iitem");
+			}
+			var item      = iitem as Item;
+			var item_node = item.Owner;
+			if ( item_node != null ) {
 				if ( item_node.SelfBounds.Contains(bounds) && item_node.Items.Count <= MinChildCountPerNode ) {
 					item.Bounds = bounds;
+					return item;
 				} else {
+					var content = item.Content;
 					item_node.RemoveItem(item, _itemPool);
 					if ( item_node.Items.Count == 0 ) {
 						item_node = BackwardNodeCleanUp(item_node) ?? _rootNode;
@@ -302,17 +316,17 @@ namespace IsoTools.Internal {
 						Item new_item;
 						if ( item_node.SelfBounds.Contains(bounds) ) {
 							if ( item_node.AddItem(bounds, content, out new_item, _nodePool, _itemPool) ) {
-								_allItems[content] = new_item;
-								return;
+								return new_item;
 							}
 						}
 						item_node = item_node.Parent;
 					}
-					_allItems.Remove(content);
-					AddItem(bounds, content);
+					return AddItem(bounds, content);
 				}
 			} else {
-				AddItem(bounds, content);
+				var content = item.Content;
+				_itemPool.Release(item.Clear());
+				return AddItem(bounds, content);
 			}
 		}
 
@@ -322,7 +336,6 @@ namespace IsoTools.Internal {
 					_rootNode.Clear(_nodePool, _itemPool));
 				_rootNode = null;
 			}
-			_allItems.Clear();
 		}
 
 		public void VisitAllBounds(IBoundsLookUpper look_upper) {
@@ -334,26 +347,24 @@ namespace IsoTools.Internal {
 			}
 		}
 
+		public void VisitItemsByItem(IItem iitem, IContentLookUpper look_upper) {
+			if ( iitem == null ) {
+				throw new System.ArgumentNullException("iitem");
+			}
+			if ( look_upper == null ) {
+				throw new System.ArgumentNullException("look_upper");
+			}
+			var item = iitem as Item;
+			item.Owner.VisitItemsByBounds(item.Bounds, look_upper);
+			BackwardVisitNodes(item.Owner.Parent, item.Bounds, look_upper);
+		}
+
 		public void VisitItemsByBounds(IsoRect bounds, IContentLookUpper look_upper) {
 			if ( look_upper == null ) {
 				throw new System.ArgumentNullException("look_upper");
 			}
 			if ( _rootNode != null ) {
 				_rootNode.VisitItemsByBounds(bounds, look_upper);
-			}
-		}
-
-		public void VisitItemsByContent(T content, IContentLookUpper look_upper) {
-			if ( content == null ) {
-				throw new System.ArgumentNullException("content");
-			}
-			if ( look_upper == null ) {
-				throw new System.ArgumentNullException("look_upper");
-			}
-			Item item;
-			if ( _allItems.TryGetValue(content, out item) ) {
-				item.Owner.VisitItemsByBounds(item.Bounds, look_upper);
-				BackwardVisitNodes(item.Owner.Parent, item.Bounds, look_upper);
 			}
 		}
 
@@ -370,20 +381,26 @@ namespace IsoTools.Internal {
 				top  ? -new_root_bounds.size.y : 0.0f);
 			new_root_bounds.Resize(new_root_bounds.size * 2.0f);
 			var new_root = _nodePool.Take().Init(null, new_root_bounds);
-			if ( left ) {
-				if ( top ) {
-					new_root.Nodes[3] = _rootNode;
+			if ( _rootNode.HasAnyItems() ) {
+				if ( left ) {
+					if ( top ) {
+						new_root.Nodes[3] = _rootNode;
+					} else {
+						new_root.Nodes[1] = _rootNode;
+					}
 				} else {
-					new_root.Nodes[1] = _rootNode;
+					if ( top ) {
+						new_root.Nodes[2] = _rootNode;
+					} else {
+						new_root.Nodes[0] = _rootNode;
+					}
 				}
+				_rootNode.Parent = new_root;
 			} else {
-				if ( top ) {
-					new_root.Nodes[2] = _rootNode;
-				} else {
-					new_root.Nodes[0] = _rootNode;
-				}
+				_nodePool.Release(
+					_rootNode.Clear(_nodePool, _itemPool));
+				_rootNode = null;
 			}
-			_rootNode.Parent = new_root;
 			_rootNode = new_root;
 		}
 
