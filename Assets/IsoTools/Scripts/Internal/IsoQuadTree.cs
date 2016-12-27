@@ -86,13 +86,10 @@ namespace IsoTools.Internal {
 				if ( has_any_nodes || Items.Count >= MinChildCountPerNode ) {
 					for ( int i = 0, e = Nodes.Length; i < e; ++i ) {
 						var node = Nodes[i];
-						if ( node == null ) {
-							if ( NodeBounds[i].Contains(bounds) ) {
-								Nodes[i] = node = node_pool.Take().Init(this, NodeBounds[i]);
-								TryMoveItemsToNode(node);
-								if ( node.AddItem(bounds, content, out item, node_pool, item_pool) ) {
-									return true;
-								}
+						if ( node == null && NodeBounds[i].Contains(bounds) ) {
+							Nodes[i] = node = node_pool.Take().Init(this, NodeBounds[i]);
+							if ( node.AddItem(bounds, content, out item, node_pool, item_pool) ) {
+								return true;
 							}
 						}
 					}
@@ -111,8 +108,9 @@ namespace IsoTools.Internal {
 			public void VisitAllBounds(IBoundsLookUpper look_upper) {
 				look_upper.LookUp(SelfBounds);
 				for ( int i = 0, e = Nodes.Length; i < e; ++i ) {
-					if ( Nodes[i] != null ) {
-						Nodes[i].VisitAllBounds(look_upper);
+					var node = Nodes[i];
+					if ( node != null ) {
+						node.VisitAllBounds(look_upper);
 					}
 				}
 			}
@@ -162,19 +160,6 @@ namespace IsoTools.Internal {
 					NodeBounds[3] = rect;
 				}
 				return this;
-			}
-
-			void TryMoveItemsToNode(Node node) {
-				for ( int i = 0; i < Items.Count; ) {
-					var item = Items[i];
-					if ( node.SelfBounds.Contains(item.Bounds) ) {
-						Items.Remove(item);
-						node.Items.Add(item);
-						item.Owner = node;
-					} else {
-						++i;
-					}
-				}
 			}
 
 			void ClearNodes(IsoIPool<Node> node_pool, IsoIPool<Item> item_pool) {
