@@ -196,9 +196,14 @@
 		// ---------------------------------------------------------------------
 
 		class Item : IItem {
+			public int     QTId    = 0;
 			public Node    Owner   = null;
 			public IsoRect Bounds  = IsoRect.zero;
 			public T       Content = default(T);
+
+			public Item(int qtId) {
+				QTId = qtId;
+			}
 
 			public Item Init(Node owner, IsoRect bounds, T content) {
 				Owner   = owner;
@@ -228,11 +233,14 @@
 		}
 
 		class ItemPool : IsoPool<Item> {
-			public ItemPool(int capacity) : base(capacity) {
+			int _qtId = 0;
+
+			public ItemPool(int qtId, int capacity) : base(capacity) {
+				_qtId = qtId;
 			}
 
 			public override Item CreateItem() {
-				return new Item();
+				return new Item(_qtId);
 			}
 		}
 
@@ -241,6 +249,9 @@
 		// Members
 		//
 		// ---------------------------------------------------------------------
+
+		int            _qtId     = 0;
+		static int     _genQTId  = 0;
 
 		Node           _rootNode = null;
 		IsoIPool<Node> _nodePool = null;
@@ -253,9 +264,10 @@
 		// ---------------------------------------------------------------------
 
 		public IsoQuadTree(int capacity) {
+			_qtId     = ++_genQTId;
 			_rootNode = null;
 			_nodePool = new NodePool(capacity);
-			_itemPool = new ItemPool(capacity);
+			_itemPool = new ItemPool(_qtId, capacity);
 		}
 
 		public IItem AddItem(IsoRect bounds, T content) {
@@ -281,10 +293,7 @@
 		}
 
 		public void RemoveItem(IItem iitem) {
-			if ( iitem == null ) {
-				throw new System.ArgumentNullException("iitem");
-			}
-			var item      = iitem as Item;
+			var item = GetItemWithCast(iitem);
 			var item_node = item.Owner;
 			if ( item_node != null ) {
 				item_node.RemoveItem(item, _itemPool);
@@ -297,10 +306,7 @@
 		}
 
 		public IItem MoveItem(IsoRect bounds, IItem iitem) {
-			if ( iitem == null ) {
-				throw new System.ArgumentNullException("iitem");
-			}
-			var item      = iitem as Item;
+			var item = GetItemWithCast(iitem);
 			var item_node = item.Owner;
 			if ( item_node != null ) {
 				if ( item_node.SelfBounds.Contains(bounds) && item_node.Items.Count <= MinChildCountPerNode ) {
@@ -348,15 +354,12 @@
 		}
 
 		public void VisitItemsByItem(IItem iitem, IContentLookUpper look_upper) {
-			if ( iitem == null ) {
-				throw new System.ArgumentNullException("iitem");
+			var item = GetItemWithCast(iitem);
+			var item_node = item.Owner;
+			if ( item_node != null ) {
+				item_node.VisitItemsByBounds(item.Bounds, look_upper);
+				BackwardVisitNodes(item_node.Parent, item.Bounds, look_upper);
 			}
-			if ( look_upper == null ) {
-				throw new System.ArgumentNullException("look_upper");
-			}
-			var item = iitem as Item;
-			item.Owner.VisitItemsByBounds(item.Bounds, look_upper);
-			BackwardVisitNodes(item.Owner.Parent, item.Bounds, look_upper);
 		}
 
 		public void VisitItemsByBounds(IsoRect bounds, IContentLookUpper look_upper) {
@@ -402,6 +405,17 @@
 				_rootNode = null;
 			}
 			_rootNode = new_root;
+		}
+
+		Item GetItemWithCast(IItem iitem) {
+			if ( iitem == null ) {
+				throw new System.ArgumentNullException("iitem");
+			}
+			var item = iitem as Item;
+			if ( item == null || item.QTId != _qtId ) {
+				throw new System.ArgumentException("item from another IsoQuadTree", "iitem");
+			}
+			return item;
 		}
 
 		Node BackwardNodeCleanUp(Node node) {

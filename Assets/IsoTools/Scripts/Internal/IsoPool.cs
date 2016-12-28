@@ -9,9 +9,6 @@
 
 		public IsoPool(int capacity) {
 			_items = new IsoList<T>(capacity);
-			for ( var i = 0; i < capacity; ++i ) {
-				_items.Add(CreateItem());
-			}
 		}
 
 		public T Take() {
