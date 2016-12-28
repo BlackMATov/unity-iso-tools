@@ -115,22 +115,25 @@ namespace IsoTools.Internal {
 			var  result    = IsoMinMax.zero;
 			var  renderers = GetIsoObjectRenderers(iso_object);
 			for ( int i = 0, e = renderers.Count; i < e; ++i ) {
-				var bounds  = renderers[i].bounds;
-				var extents = bounds.extents;
-				if ( extents.x > 0.0f || extents.y > 0.0f || extents.z > 0.0f ) {
-					var center    = bounds.center.z;
-					var minbounds = center - extents.z;
-					var maxbounds = center + extents.z;
-					if ( inited ) {
-						if ( result.min > minbounds ) {
-							result.min = minbounds;
+				var renderer = renderers[i];
+				if ( renderer && renderer.enabled ) {
+					var bounds  = renderer.bounds;
+					var extents = bounds.extents;
+					if ( extents.x > 0.0f || extents.y > 0.0f || extents.z > 0.0f ) {
+						var center    = bounds.center.z;
+						var minbounds = center - extents.z;
+						var maxbounds = center + extents.z;
+						if ( inited ) {
+							if ( result.min > minbounds ) {
+								result.min = minbounds;
+							}
+							if ( result.max < maxbounds ) {
+								result.max = maxbounds;
+							}
+						} else {
+							inited = true;
+							result.Set(minbounds, maxbounds);
 						}
-						if ( result.max < maxbounds ) {
-							result.max = maxbounds;
-						}
-					} else {
-						inited = true;
-						result.Set(minbounds, maxbounds);
 					}
 				}
 			}
