@@ -35,10 +35,8 @@ namespace IsoTools.Internal {
 			return false;
 		}
 
-	#if UNITY_EDITOR
 		public void OnDrawGizmos() {
 		}
-	#endif
 
 		// ---------------------------------------------------------------------
 		//
@@ -160,27 +158,27 @@ namespace IsoTools.Internal {
 			var cur_visibles = screen_solver.curVisibles;
 			for ( int i = 0, e = cur_visibles.Count; i < e; ++i ) {
 				start_depth = RecursivePlaceIsoObject(
-					cur_visibles[i], start_depth, step_depth);
+					cur_visibles[i], step_depth, start_depth);
 			}
 		}
 
-		float RecursivePlaceIsoObject(IsoObject iso_object, float depth, float step_depth) {
+		float RecursivePlaceIsoObject(IsoObject iso_object, float step_depth, float start_depth) {
 			if ( iso_object.Internal.Placed ) {
-				return depth;
+				return start_depth;
 			}
 			iso_object.Internal.Placed = true;
 			var self_depends = iso_object.Internal.SelfDepends;
 			for ( int i = 0, e = self_depends.Count; i < e; ++i ) {
-				depth = RecursivePlaceIsoObject(self_depends[i], depth, step_depth);
+				start_depth = RecursivePlaceIsoObject(self_depends[i], step_depth, start_depth);
 			}
 			if ( iso_object.mode == IsoObject.Mode.Mode3d ) {
 				var zoffset = iso_object.Internal.Offset3d;
 				var extents = iso_object.Internal.MinMax3d.size;
-				PlaceIsoObject(iso_object, depth + extents * 0.5f + zoffset);
-				return depth + extents + step_depth;
+				PlaceIsoObject(iso_object, start_depth + extents * 0.5f + zoffset);
+				return start_depth + extents + step_depth;
 			} else {
-				PlaceIsoObject(iso_object, depth);
-				return depth + step_depth;
+				PlaceIsoObject(iso_object, start_depth);
+				return start_depth + step_depth;
 			}
 		}
 

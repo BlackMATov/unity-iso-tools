@@ -18,7 +18,7 @@ namespace IsoTools.Internal {
 			return isActiveAndEnabled && gameObject.activeInHierarchy;
 		}
 
-		protected IsoWorld FindFirstActiveParentWorld() {
+		protected IsoWorld FindFirstActiveWorld() {
 			IsoWorld ret_value = null;
 			GetComponentsInParent<IsoWorld>(false, _tempWorlds);
 			for ( int i = 0, e = _tempWorlds.Count; i < e; ++i ) {

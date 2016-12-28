@@ -14,7 +14,7 @@ namespace IsoTools.Internal {
 		//
 		// ---------------------------------------------------------------------
 
-		THold FindFirstActiveParent() {
+		THold FindFirstActiveHolder() {
 			THold ret_value = null;
 			GetComponentsInParent<THold>(false, _tempHolders);
 			for ( int i = 0, e = _tempHolders.Count; i < e; ++i ) {
@@ -44,7 +44,7 @@ namespace IsoTools.Internal {
 		public void RecacheHolder() {
 			ResetHolder();
 			if ( IsActive() ) {
-				_holder = FindFirstActiveParent();
+				_holder = FindFirstActiveHolder();
 				if ( _holder ) {
 					_holder.AddInstance(this as TInst);
 				}

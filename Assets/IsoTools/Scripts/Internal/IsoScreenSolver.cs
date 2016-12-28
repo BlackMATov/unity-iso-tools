@@ -186,13 +186,11 @@ namespace IsoTools.Internal {
 			return false;
 		}
 
-	#if UNITY_EDITOR
 		public void OnDrawGizmos(IsoWorld iso_world) {
 			if ( iso_world.isShowQuadTree ) {
 				_quadTree.VisitAllBounds(_qtBoundsLU);
 			}
 		}
-	#endif
 
 		// ---------------------------------------------------------------------
 		//

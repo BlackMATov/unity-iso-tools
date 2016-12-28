@@ -285,7 +285,6 @@ namespace IsoTools {
 		//
 		// ---------------------------------------------------------------------
 
-	#if UNITY_EDITOR
 		[Header("Editor Only")]
 		[SerializeField] bool _showIsoBounds = false;
 		public bool isShowIsoBounds {
@@ -323,7 +322,6 @@ namespace IsoTools {
 			get { return _showQuadTree; }
 			set { _showQuadTree = value; }
 		}
-	#endif
 
 		// ---------------------------------------------------------------------
 		//

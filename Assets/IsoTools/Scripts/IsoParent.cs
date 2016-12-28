@@ -7,7 +7,7 @@ namespace IsoTools {
 	public sealed class IsoParent : IsoBehaviour<IsoParent> {
 		public IsoWorld isoWorld {
 			get {
-				return FindFirstActiveParentWorld();
+				return FindFirstActiveWorld();
 			}
 		}
 	}
