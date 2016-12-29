@@ -19,19 +19,19 @@ namespace IsoTools.Internal {
 		//
 		// ---------------------------------------------------------------------
 
-		public void OnAddInstance(IsoObject iso_object) {
-			if ( iso_object.cacheRenderers ) {
+		public void OnAddIsoObject(IsoObject iso_object) {
+			if ( iso_object.isCachedRenderers ) {
 				iso_object.UpdateCachedRenderers();
 			}
 		}
 
-		public void OnRemoveInstance(IsoObject iso_object) {
-			if ( iso_object.cacheRenderers ) {
+		public void OnRemoveIsoObject(IsoObject iso_object) {
+			if ( iso_object.isCachedRenderers ) {
 				iso_object.ClearCachedRenderers();
 			}
 		}
 
-		public bool OnMarkDirtyInstance(IsoObject iso_object) {
+		public bool OnMarkDirtyIsoObject(IsoObject iso_object) {
 			return false;
 		}
 
@@ -77,7 +77,7 @@ namespace IsoTools.Internal {
 					iso_object.Internal.Dirty = false;
 					mark_dirty = true;
 				}
-				if ( iso_object.mode == IsoObject.Mode.Mode3d ) {
+				if ( iso_object.renderersMode == IsoObject.RenderersMode.Mode3d ) {
 					if ( UpdateIsoObjectBounds3d(iso_object) ) {
 						mark_dirty = true;
 					}
@@ -141,7 +141,7 @@ namespace IsoTools.Internal {
 		}
 
 		List<Renderer> GetIsoObjectRenderers(IsoObject iso_object) {
-			if ( iso_object.cacheRenderers ) {
+			if ( iso_object.isCachedRenderers ) {
 				return iso_object.Internal.Renderers;
 			} else {
 				iso_object.GetComponentsInChildren<Renderer>(_tmpRenderers);
@@ -174,7 +174,7 @@ namespace IsoTools.Internal {
 			for ( int i = 0, e = self_depends.Count; i < e; ++i ) {
 				start_depth = RecursivePlaceIsoObject(self_depends[i], step_depth, start_depth);
 			}
-			if ( iso_object.mode == IsoObject.Mode.Mode3d ) {
+			if ( iso_object.renderersMode == IsoObject.RenderersMode.Mode3d ) {
 				var zoffset = iso_object.Internal.Offset3d;
 				var extents = iso_object.Internal.MinMax3d.size;
 				PlaceIsoObject(iso_object, start_depth + extents * 0.5f + zoffset);

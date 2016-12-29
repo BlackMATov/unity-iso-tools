@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 namespace IsoTools.Internal {
 	public abstract class IsoBehaviour<T> : MonoBehaviour
 		where T : IsoBehaviour<T>
@@ -14,9 +18,17 @@ namespace IsoTools.Internal {
 		//
 		// ---------------------------------------------------------------------
 
-		public bool IsActive() {
-			return isActiveAndEnabled && gameObject.activeInHierarchy;
+		public void Internal_SetDirtyInEditorMode() {
+		#if UNITY_EDITOR
+			EditorUtility.SetDirty(this);
+		#endif
 		}
+
+		// ---------------------------------------------------------------------
+		//
+		// Protected
+		//
+		// ---------------------------------------------------------------------
 
 		protected IsoWorld FindFirstActiveWorld() {
 			IsoWorld ret_value = null;
@@ -38,6 +50,16 @@ namespace IsoTools.Internal {
 
 		protected static T GetBehaviourByIndex(int index) {
 			return _behaviours[index];
+		}
+
+		// ---------------------------------------------------------------------
+		//
+		// Public
+		//
+		// ---------------------------------------------------------------------
+
+		public bool IsActive() {
+			return isActiveAndEnabled && gameObject.activeInHierarchy;
 		}
 
 		// ---------------------------------------------------------------------

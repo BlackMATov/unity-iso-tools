@@ -29,10 +29,10 @@ namespace IsoTools.Tiled.Internal {
 		void CreateTiledMap(GameObject map_go) {
 			var map_data = _asset.Data;
 
-			var iso_object       = map_go.AddComponent<IsoObject>();
-			iso_object.mode      = IsoObject.Mode.Mode3d;
-			iso_object.position  = Vector3.zero;
-			iso_object.size      = IsoUtils.Vec3FromXY(map_data.Height, map_data.Width);
+			var iso_object           = map_go.AddComponent<IsoObject>();
+			iso_object.renderersMode = IsoObject.RenderersMode.Mode3d;
+			iso_object.position      = Vector3.zero;
+			iso_object.size          = IsoUtils.Vec3FromXY(map_data.Height, map_data.Width);
 
 			var tiled_map        = map_go.AddComponent<TiledMap>();
 			tiled_map.Asset      = _asset;

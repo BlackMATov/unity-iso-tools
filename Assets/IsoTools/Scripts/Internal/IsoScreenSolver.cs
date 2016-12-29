@@ -151,14 +151,14 @@ namespace IsoTools.Internal {
 		//
 		// ---------------------------------------------------------------------
 
-		public void OnAddInstance(IsoObject iso_object) {
+		public void OnAddIsoObject(IsoObject iso_object) {
 			iso_object.Internal.QTItem = _quadTree.AddItem(
 				iso_object.Internal.QTBounds,
 				iso_object);
 			_minIsoXY = IsoUtils.Vec2Min(_minIsoXY, iso_object.position);
 		}
 
-		public void OnRemoveInstance(IsoObject iso_object) {
+		public void OnRemoveIsoObject(IsoObject iso_object) {
 			_oldVisibles.Remove(iso_object);
 			_curVisibles.Remove(iso_object);
 			if ( iso_object.Internal.QTItem != null ) {
@@ -168,7 +168,7 @@ namespace IsoTools.Internal {
 			ClearIsoObjectDepends(iso_object);
 		}
 
-		public bool OnMarkDirtyInstance(IsoObject iso_object) {
+		public bool OnMarkDirtyIsoObject(IsoObject iso_object) {
 			if ( iso_object.Internal.QTItem != null ) {
 				iso_object.Internal.QTItem = _quadTree.MoveItem(
 					iso_object.Internal.QTBounds,
@@ -198,9 +198,9 @@ namespace IsoTools.Internal {
 		//
 		// ---------------------------------------------------------------------
 
-		public void StepSortingAction(IsoWorld iso_world, IsoAssocList<IsoObject> instances) {
-			Profiler.BeginSample("IsoScreenSolver.ProcessInstances");
-			ProcessInstances(instances);
+		public void StepSortingAction(IsoWorld iso_world, IsoAssocList<IsoObject> iso_objects) {
+			Profiler.BeginSample("IsoScreenSolver.ProcessIsoObjects");
+			ProcessIsoObjects(iso_objects);
 			Profiler.EndSample();
 			Profiler.BeginSample("IsoScreenSolver.ProcessVisibles");
 			ProcessVisibles(iso_world.isSortInSceneView);
@@ -236,10 +236,10 @@ namespace IsoTools.Internal {
 		//
 		// ---------------------------------------------------------------------
 
-		void ProcessInstances(IsoAssocList<IsoObject> instances) {
-			if ( instances.Count > 0 ) {
-				for ( int i = 0, e = instances.Count; i < e; ++i ) {
-					var iso_object = instances[i];
+		void ProcessIsoObjects(IsoAssocList<IsoObject> iso_objects) {
+			if ( iso_objects.Count > 0 ) {
+				for ( int i = 0, e = iso_objects.Count; i < e; ++i ) {
+					var iso_object = iso_objects[i];
 					if ( !IsoUtils.Vec2Approximately(
 						iso_object.Internal.LastTrans,
 						iso_object.Internal.Transform.position) )

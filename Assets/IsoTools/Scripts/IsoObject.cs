@@ -2,14 +2,10 @@ using UnityEngine;
 using IsoTools.Internal;
 using System.Collections.Generic;
 
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
 namespace IsoTools {
 	[SelectionBase]
 	[ExecuteInEditMode, DisallowMultipleComponent]
-	public sealed class IsoObject : IsoInstance<IsoWorld, IsoObject> {
+	public sealed class IsoObject : IsoObjectBase {
 
 		// ---------------------------------------------------------------------
 		//
@@ -142,22 +138,22 @@ namespace IsoTools {
 
 		// ---------------------------------------------------------------------
 		//
-		// Mode
+		// Renderers mode
 		//
 		// ---------------------------------------------------------------------
 
-		public enum Mode {
+		public enum RenderersMode {
 			Mode2d,
 			Mode3d
 		}
 
 		[SerializeField]
-		Mode _mode = Mode.Mode2d;
+		RenderersMode _renderersMode = RenderersMode.Mode2d;
 
-		public Mode mode {
-			get { return _mode; }
+		public RenderersMode renderersMode {
+			get { return _renderersMode; }
 			set {
-				_mode = value;
+				_renderersMode = value;
 				FixTransform();
 			}
 		}
@@ -169,12 +165,12 @@ namespace IsoTools {
 		// ---------------------------------------------------------------------
 
 		[SerializeField]
-		bool _cacheRenderers = false;
+		bool _cachedRenderers = false;
 
-		public bool cacheRenderers {
-			get { return _cacheRenderers; }
+		public bool isCachedRenderers {
+			get { return _cachedRenderers; }
 			set {
-				_cacheRenderers = value;
+				_cachedRenderers = value;
 				if ( value ) {
 					UpdateCachedRenderers();
 				} else {
@@ -208,15 +204,9 @@ namespace IsoTools {
 
 		// ---------------------------------------------------------------------
 		//
-		// Functions
+		// Public
 		//
 		// ---------------------------------------------------------------------
-
-		public IsoWorld isoWorld {
-			get {
-				return GetHolder();
-			}
-		}
 
 		public void FixTransform() {
 			var iso_world = isoWorld;
@@ -249,6 +239,12 @@ namespace IsoTools {
 			Internal.Renderers.Clear();
 		}
 
+		// ---------------------------------------------------------------------
+		//
+		// Private
+		//
+		// ---------------------------------------------------------------------
+
 		void FixScreenBounds() {
 			var iso_world = isoWorld;
 			if ( iso_world ) {
@@ -277,11 +273,9 @@ namespace IsoTools {
 		void MartDirtyIsoWorld() {
 			var iso_world = isoWorld;
 			if ( iso_world ) {
-				iso_world.MarkDirty(this);
+				iso_world.Internal_MarkDirty(this);
 			}
-		#if UNITY_EDITOR
-			EditorUtility.SetDirty(this);
-		#endif
+			Internal_SetDirtyInEditorMode();
 		}
 
 		// ---------------------------------------------------------------------
@@ -314,17 +308,17 @@ namespace IsoTools {
 
 	#if UNITY_EDITOR
 		void Reset() {
-			size           = Vector3.one;
-			position       = Vector3.zero;
-			mode           = Mode.Mode2d;
-			cacheRenderers = false;
+			size              = Vector3.one;
+			position          = Vector3.zero;
+			renderersMode     = RenderersMode.Mode2d;
+			isCachedRenderers = false;
 		}
 
 		void OnValidate() {
-			size           = _size;
-			position       = _position;
-			mode           = _mode;
-			cacheRenderers = _cacheRenderers;
+			size              = _size;
+			position          = _position;
+			renderersMode     = _renderersMode;
+			isCachedRenderers = _cachedRenderers;
 		}
 
 		void OnDrawGizmos() {

@@ -1,14 +1,9 @@
 ﻿using UnityEngine;
 using IsoTools.Internal;
-using System.Collections.Generic;
-
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 namespace IsoTools {
 	[ExecuteInEditMode, DisallowMultipleComponent]
-	public sealed class IsoWorld : IsoHolder<IsoWorld, IsoObject> {
+	public sealed class IsoWorld : IsoWorldBase {
 
 		Matrix4x4        _isoMatrix     = Matrix4x4.identity;
 		Matrix4x4        _isoRMatrix    = Matrix4x4.identity;
@@ -180,10 +175,11 @@ namespace IsoTools {
 		}
 
 		public Vector3 TouchIsoPosition(int finger_id, float iso_z) {
-			if ( !Camera.main ) {
+			var camera = Camera.main;
+			if ( !camera ) {
 				throw new UnityException("Main camera not found!");
 			}
-			return TouchIsoPosition(finger_id, Camera.main, iso_z);
+			return TouchIsoPosition(finger_id, camera, iso_z);
 		}
 
 		public Vector3 TouchIsoPosition(int finger_id, Camera camera) {
@@ -192,7 +188,7 @@ namespace IsoTools {
 
 		public Vector3 TouchIsoPosition(int finger_id, Camera camera, float iso_z) {
 			if ( !camera ) {
-				throw new UnityException("Camera argument is incorrect!");
+				throw new UnityException("Camera argument is null!");
 			}
 			for ( var i = 0; i < Input.touchCount; ++i ) {
 				var touch = Input.GetTouch(i);
@@ -238,10 +234,11 @@ namespace IsoTools {
 		}
 
 		public Vector3 MouseIsoPosition(float iso_z) {
-			if ( !Camera.main ) {
+			var camera = Camera.main;
+			if ( !camera ) {
 				throw new UnityException("Main camera not found!");
 			}
-			return MouseIsoPosition(Camera.main, iso_z);
+			return MouseIsoPosition(camera, iso_z);
 		}
 
 		public Vector3 MouseIsoPosition(Camera camera) {
@@ -250,7 +247,7 @@ namespace IsoTools {
 
 		public Vector3 MouseIsoPosition(Camera camera, float iso_z) {
 			if ( !camera ) {
-				throw new UnityException("Camera argument is incorrect!");
+				throw new UnityException("Camera argument is null!");
 			}
 			return ScreenToIso(
 				camera.ScreenToWorldPoint(Input.mousePosition),
@@ -329,12 +326,12 @@ namespace IsoTools {
 		//
 		// ---------------------------------------------------------------------
 
-		public void MarkDirty(IsoObject iso_object) {
-			if ( _screenSolver.OnMarkDirtyInstance(iso_object) ) {
-				MarkDirty();
+		public void Internal_MarkDirty(IsoObject iso_object) {
+			if ( _screenSolver.OnMarkDirtyIsoObject(iso_object) ) {
+				Internal_SetDirtyInEditorMode();
 			}
-			if ( _sortingSolver.OnMarkDirtyInstance(iso_object) ) {
-				MarkDirty();
+			if ( _sortingSolver.OnMarkDirtyIsoObject(iso_object) ) {
+				Internal_SetDirtyInEditorMode();
 			}
 		}
 
@@ -343,12 +340,6 @@ namespace IsoTools {
 		// Private
 		//
 		// ---------------------------------------------------------------------
-
-		void MarkDirty() {
-		#if UNITY_EDITOR
-			EditorUtility.SetDirty(this);
-		#endif
-		}
 
 		void UpdateIsoMatrix() {
 			_isoMatrix =
@@ -360,23 +351,23 @@ namespace IsoTools {
 			_isoRMatrix = _isoMatrix.inverse;
 		}
 
-		void FixInstanceTransforms() {
-			var instances = GetInstances();
-			for ( int i = 0, e = instances.Count; i < e; ++i ) {
-				instances[i].FixTransform();
+		void FixIsoObjectTransforms() {
+			var iso_objects = GetIsoObjects();
+			for ( int i = 0, e = iso_objects.Count; i < e; ++i ) {
+				iso_objects[i].FixTransform();
 			}
 		}
 
 		void ChangeSortingProperty() {
-			MarkDirty();
 			UpdateIsoMatrix();
-			FixInstanceTransforms();
+			FixIsoObjectTransforms();
+			Internal_SetDirtyInEditorMode();
 		}
 
 		void StepSortingProcess() {
-			_screenSolver.StepSortingAction(this, GetInstances());
+			_screenSolver.StepSortingAction(this, GetIsoObjects());
 			if ( _sortingSolver.StepSortingAction(this, _screenSolver) ) {
-				MarkDirty();
+				Internal_SetDirtyInEditorMode();
 			}
 		}
 
@@ -405,16 +396,16 @@ namespace IsoTools {
 			_sortingSolver.Clear();
 		}
 
-		protected override void OnAddInstanceToHolder(IsoObject instance) {
-			base.OnAddInstanceToHolder(instance);
-			_screenSolver.OnAddInstance(instance);
-			_sortingSolver.OnAddInstance(instance);
+		protected override void OnAddIsoObjectToWorld(IsoObject iso_object) {
+			base.OnAddIsoObjectToWorld(iso_object);
+			_screenSolver.OnAddIsoObject(iso_object);
+			_sortingSolver.OnAddIsoObject(iso_object);
 		}
 
-		protected override void OnRemoveInstanceFromHolder(IsoObject instance) {
-			base.OnRemoveInstanceFromHolder(instance);
-			_screenSolver.OnRemoveInstance(instance);
-			_sortingSolver.OnRemoveInstance(instance);
+		protected override void OnRemoveIsoObjectFromWorld(IsoObject iso_object) {
+			base.OnRemoveIsoObjectFromWorld(iso_object);
+			_screenSolver.OnRemoveIsoObject(iso_object);
+			_sortingSolver.OnRemoveIsoObject(iso_object);
 		}
 
 	#if UNITY_EDITOR
@@ -439,7 +430,7 @@ namespace IsoTools {
 		void OnRenderObject() {
 			var camera = Camera.current;
 			if ( camera && camera.name == "SceneCamera" ) {
-				MarkDirty();
+				Internal_SetDirtyInEditorMode();
 			}
 		}
 
