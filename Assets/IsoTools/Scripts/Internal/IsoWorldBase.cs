@@ -39,6 +39,12 @@ namespace IsoTools.Internal {
 			}
 		}
 
+		// ---------------------------------------------------------------------
+		//
+		// Protected
+		//
+		// ---------------------------------------------------------------------
+
 		protected IsoAssocList<IsoObject> GetIsoObjects() {
 			return _isoObjects;
 		}

@@ -11,15 +11,20 @@ using UnityEngine.Profiling;
 
 namespace IsoTools.Internal {
 	public class IsoScreenSolver {
-		Vector2                  _minIsoXY       = Vector2.zero;
+		Vector2                           _minIsoXY           = Vector2.zero;
 
-		IsoAssocList<IsoObject>  _oldVisibles    = new IsoAssocList<IsoObject>(47);
-		IsoAssocList<IsoObject>  _curVisibles    = new IsoAssocList<IsoObject>(47);
+		IsoAssocList<IsoObject>           _oldVisibles        = new IsoAssocList<IsoObject>(47);
+		IsoAssocList<IsoObject>           _curVisibles        = new IsoAssocList<IsoObject>(47);
 
-		IsoQuadTree<IsoObject>   _quadTree       = new IsoQuadTree<IsoObject>(47);
-		IsoQTBoundsLookUpper     _qtBoundsLU     = new IsoQTBoundsLookUpper();
-		IsoQTDependsLookUpper    _qtDependsLU    = new IsoQTDependsLookUpper();
-		IsoQTVisibilityLookUpper _qtVisibilityLU = new IsoQTVisibilityLookUpper();
+		IsoQuadTree<IsoObject>            _quadTree           = new IsoQuadTree<IsoObject>(47);
+		IsoQTBoundsLookUpper              _qtBoundsLU         = new IsoQTBoundsLookUpper();
+		IsoQTDependsLookUpper             _qtDependsLU        = new IsoQTDependsLookUpper();
+		IsoQTVisibilityLookUpper          _qtVisibilityLU     = new IsoQTVisibilityLookUpper();
+
+		IsoIPool<ParentInfo>              _parentInfoPool     = new ParentInfoPool(47);
+		IsoAssocList<ParentInfo>          _parentInfoList     = new IsoAssocList<ParentInfo>(47);
+		Dictionary<IsoObject, Transform>  _isoObjectToParent  = new Dictionary<IsoObject, Transform>(47);
+		Dictionary<Transform, ParentInfo> _parentToParentInfo = new Dictionary<Transform, ParentInfo>(47);
 
 		// ---------------------------------------------------------------------
 		//
@@ -85,6 +90,7 @@ namespace IsoTools.Internal {
 
 			public void LookUpForVisibility(IsoScreenSolver screen_solver, bool include_scene_view) {
 				_screenSolver = screen_solver;
+				_screenSolver._oldVisibles.Clear();
 				var cam_count = FillLookUpCameras(include_scene_view);
 				for ( var i = 0; i < cam_count; ++i ) {
 					var tmp_cam = _tmpCameras[i];
@@ -129,6 +135,38 @@ namespace IsoTools.Internal {
 
 		// ---------------------------------------------------------------------
 		//
+		// ParentInfo
+		//
+		// ---------------------------------------------------------------------
+
+		class ParentInfo {
+			public Transform               Parent     = null;
+			public Vector3                 LastTrans  = Vector3.zero;
+			public IsoAssocList<IsoObject> IsoObjects = new IsoAssocList<IsoObject>();
+
+			public ParentInfo Init(Transform parent) {
+				Parent    = parent;
+				LastTrans = parent ? parent.position : Vector3.zero;
+				return this;
+			}
+
+			public ParentInfo Clear() {
+				IsoObjects.Clear();
+				return Init(null);
+			}
+		}
+
+		class ParentInfoPool : IsoPool<ParentInfo> {
+			public ParentInfoPool(int capacity) : base(capacity) {
+			}
+
+			public override ParentInfo CreateItem() {
+				return new ParentInfo();
+			}
+		}
+
+		// ---------------------------------------------------------------------
+		//
 		// Properties
 		//
 		// ---------------------------------------------------------------------
@@ -156,6 +194,7 @@ namespace IsoTools.Internal {
 				iso_object.Internal.QTBounds,
 				iso_object);
 			_minIsoXY = IsoUtils.Vec2Min(_minIsoXY, iso_object.position);
+			RegisterIsoObjectParent(iso_object);
 		}
 
 		public void OnRemoveIsoObject(IsoObject iso_object) {
@@ -166,6 +205,7 @@ namespace IsoTools.Internal {
 				iso_object.Internal.QTItem = null;
 			}
 			ClearIsoObjectDepends(iso_object);
+			UnregisterIsoObjectParent(iso_object);
 		}
 
 		public bool OnMarkDirtyIsoObject(IsoObject iso_object) {
@@ -198,9 +238,9 @@ namespace IsoTools.Internal {
 		//
 		// ---------------------------------------------------------------------
 
-		public void StepSortingAction(IsoWorld iso_world, IsoAssocList<IsoObject> iso_objects) {
-			Profiler.BeginSample("IsoScreenSolver.ProcessIsoObjects");
-			ProcessIsoObjects(iso_objects);
+		public void StepSortingAction(IsoWorld iso_world) {
+			Profiler.BeginSample("IsoScreenSolver.ProcessParents");
+			ProcessParents();
 			Profiler.EndSample();
 			Profiler.BeginSample("IsoScreenSolver.ProcessVisibles");
 			ProcessVisibles(iso_world.isSortInSceneView);
@@ -232,18 +272,56 @@ namespace IsoTools.Internal {
 
 		// ---------------------------------------------------------------------
 		//
-		// Private
+		// Parents
 		//
 		// ---------------------------------------------------------------------
 
-		void ProcessIsoObjects(IsoAssocList<IsoObject> iso_objects) {
-			if ( iso_objects.Count > 0 ) {
-				for ( int i = 0, e = iso_objects.Count; i < e; ++i ) {
-					var iso_object = iso_objects[i];
-					if ( !IsoUtils.Vec2Approximately(
-						iso_object.Internal.LastTrans,
-						iso_object.Internal.Transform.position) )
-					{
+		void RegisterIsoObjectParent(IsoObject iso_object) {
+			var parent = iso_object ? iso_object.transform.parent : null;
+			if ( parent ) {
+				ParentInfo parent_info;
+				if ( _parentToParentInfo.TryGetValue(parent, out parent_info) ) {
+					parent_info.IsoObjects.Add(iso_object);
+				} else {
+					parent_info = _parentInfoPool.Take().Init(parent);
+					parent_info.IsoObjects.Add(iso_object);
+					_parentToParentInfo.Add(parent, parent_info);
+					_parentInfoList.Add(parent_info);
+				}
+				_isoObjectToParent.Add(iso_object, parent);
+			}
+		}
+
+		void UnregisterIsoObjectParent(IsoObject iso_object) {
+			Transform parent;
+			if ( _isoObjectToParent.TryGetValue(iso_object, out parent) ) {
+				ParentInfo parent_info;
+				if ( _parentToParentInfo.TryGetValue(parent, out parent_info) ) {
+					parent_info.IsoObjects.Remove(iso_object);
+					if ( parent_info.IsoObjects.Count == 0 ) {
+						_parentToParentInfo.Remove(parent);
+						_parentInfoList.Remove(parent_info);
+						_parentInfoPool.Release(parent_info.Clear());
+					}
+				}
+				_isoObjectToParent.Remove(iso_object);
+			}
+		}
+
+		// ---------------------------------------------------------------------
+		//
+		// Processes
+		//
+		// ---------------------------------------------------------------------
+
+		void ProcessParents() {
+			for ( int i = 0, ie = _parentInfoList.Count; i < ie; ++i ) {
+				var parent_info  = _parentInfoList[i];
+				var parent_trans = parent_info.Parent.position;
+				if ( parent_info.LastTrans != parent_trans ) {
+					parent_info.LastTrans = parent_trans;
+					for ( int j = 0, je = parent_info.IsoObjects.Count; j < je; ++j ) {
+						var iso_object = parent_info.IsoObjects[j];
 						iso_object.FixIsoPosition();
 					}
 				}
@@ -251,7 +329,6 @@ namespace IsoTools.Internal {
 		}
 
 		void ProcessVisibles(bool include_scene_view) {
-			_oldVisibles.Clear();
 			_qtVisibilityLU.LookUpForVisibility(this, include_scene_view);
 			SwapCurrentVisibles();
 		}

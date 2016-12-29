@@ -365,7 +365,7 @@ namespace IsoTools {
 		}
 
 		void StepSortingProcess() {
-			_screenSolver.StepSortingAction(this, GetIsoObjects());
+			_screenSolver.StepSortingAction(this);
 			if ( _sortingSolver.StepSortingAction(this, _screenSolver) ) {
 				Internal_SetDirtyInEditorMode();
 			}

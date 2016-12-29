@@ -194,7 +194,6 @@ namespace IsoTools {
 			public IsoMinMax                    MinMax3d     = IsoMinMax.zero;
 			public float                        Offset3d     = 0.0f;
 			public Transform                    Transform    = null;
-			public Vector2                      LastTrans    = Vector2.zero;
 			public List<Renderer>               Renderers    = new List<Renderer>();
 			public IsoAssocList<IsoObject>      SelfDepends  = new IsoAssocList<IsoObject>(47);
 			public IsoAssocList<IsoObject>      TheirDepends = new IsoAssocList<IsoObject>(47);
@@ -216,7 +215,6 @@ namespace IsoTools {
 					iso_world.IsoToScreen(position),
 					cached_transform.position.z);
 				FixScreenBounds();
-				FixLastTransform();
 				MartDirtyIsoWorld();
 			}
 		}
@@ -266,10 +264,6 @@ namespace IsoTools {
 			return ret_value;
 		}
 
-		void FixLastTransform() {
-			Internal.LastTrans = Internal.Transform.position;
-		}
-
 		void MartDirtyIsoWorld() {
 			var iso_world = isoWorld;
 			if ( iso_world ) {
@@ -286,7 +280,6 @@ namespace IsoTools {
 
 		void Awake() {
 			FixCachedTransform();
-			FixLastTransform();
 			FixTransform();
 		}
 
@@ -302,7 +295,6 @@ namespace IsoTools {
 		protected override void OnTransformParentChanged() {
 			base.OnTransformParentChanged();
 			FixCachedTransform();
-			FixLastTransform();
 			FixTransform();
 		}
 

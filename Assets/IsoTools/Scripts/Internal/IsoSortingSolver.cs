@@ -187,7 +187,7 @@ namespace IsoTools.Internal {
 
 		void PlaceIsoObject(IsoObject iso_object, float depth) {
 			var iso_internal = iso_object.Internal;
-			var old_position = iso_internal.LastTrans;
+			var old_position = iso_internal.Transform.position;
 			iso_internal.Transform.position =
 				IsoUtils.Vec3FromVec2(old_position, depth);
 		}
