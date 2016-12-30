@@ -35,7 +35,7 @@ namespace IsoTools.Internal {
 			return false;
 		}
 
-		public void OnDrawGizmos() {
+		public void OnDrawGizmos(IsoWorld iso_world) {
 		}
 
 		// ---------------------------------------------------------------------

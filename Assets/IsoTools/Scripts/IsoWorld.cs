@@ -9,6 +9,7 @@ namespace IsoTools {
 		Matrix4x4        _isoRMatrix    = Matrix4x4.identity;
 		IsoScreenSolver  _screenSolver  = new IsoScreenSolver();
 		IsoSortingSolver _sortingSolver = new IsoSortingSolver();
+		IsoWarningSolver _warningSolver = new IsoWarningSolver();
 
 		// ---------------------------------------------------------------------
 		//
@@ -333,6 +334,9 @@ namespace IsoTools {
 			if ( _sortingSolver.OnMarkDirtyIsoObject(iso_object) ) {
 				Internal_SetDirtyInEditorMode();
 			}
+			if ( _warningSolver.OnMarkDirtyIsoObject(iso_object) ) {
+				Internal_SetDirtyInEditorMode();
+			}
 		}
 
 		// ---------------------------------------------------------------------
@@ -369,6 +373,7 @@ namespace IsoTools {
 			if ( _sortingSolver.StepSortingAction(this, _screenSolver) ) {
 				Internal_SetDirtyInEditorMode();
 			}
+			_warningSolver.StepSortingAction(this);
 		}
 
 		// ---------------------------------------------------------------------
@@ -394,18 +399,21 @@ namespace IsoTools {
 			base.OnDisable();
 			_screenSolver.Clear();
 			_sortingSolver.Clear();
+			_warningSolver.Clear();
 		}
 
 		protected override void OnAddIsoObjectToWorld(IsoObject iso_object) {
 			base.OnAddIsoObjectToWorld(iso_object);
 			_screenSolver.OnAddIsoObject(iso_object);
 			_sortingSolver.OnAddIsoObject(iso_object);
+			_warningSolver.OnAddIsoObject(iso_object);
 		}
 
 		protected override void OnRemoveIsoObjectFromWorld(IsoObject iso_object) {
 			base.OnRemoveIsoObjectFromWorld(iso_object);
 			_screenSolver.OnRemoveIsoObject(iso_object);
 			_sortingSolver.OnRemoveIsoObject(iso_object);
+			_warningSolver.OnRemoveIsoObject(iso_object);
 		}
 
 	#if UNITY_EDITOR
@@ -436,7 +444,8 @@ namespace IsoTools {
 
 		void OnDrawGizmos() {
 			_screenSolver.OnDrawGizmos(this);
-			_sortingSolver.OnDrawGizmos();
+			_sortingSolver.OnDrawGizmos(this);
+			_warningSolver.OnDrawGizmos(this);
 		}
 	#endif
 	}
