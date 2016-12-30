@@ -150,7 +150,7 @@ namespace IsoTools.Internal {
 
 		void DirtyTargetPositions() {
 			var iso_object = targets.Length == 1 ? target as IsoObject : null;
-			if ( iso_object && iso_object.IsActive() ) {
+			if ( iso_object && iso_object.IsActive() && !Application.isPlaying ) {
 				var position_prop = serializedObject.FindProperty("_position");
 				if ( position_prop != null && !position_prop.prefabOverride ) {
 					var last_value = position_prop.vector3Value;
