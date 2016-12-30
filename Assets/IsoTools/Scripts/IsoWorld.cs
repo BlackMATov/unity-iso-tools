@@ -429,21 +429,39 @@ namespace IsoTools {
 
 	#if UNITY_EDITOR
 		void Reset() {
-			tileSize   = DefTileSize;
-			tileRatio  = DefTileRatio;
-			tileAngle  = DefTileAngle;
-			tileHeight = DefTileHeight;
-			stepDepth  = DefStepDepth;
-			startDepth = DefStartDepth;
+			tileSize           = DefTileSize;
+			tileRatio          = DefTileRatio;
+			tileAngle          = DefTileAngle;
+			tileHeight         = DefTileHeight;
+			stepDepth          = DefStepDepth;
+			startDepth         = DefStartDepth;
+
+			isShowIsoBounds    = false;
+			isShowScreenBounds = false;
+			isSnapByCells      = true;
+			isSnapByObjects    = true;
+			isSortInSceneView  = true;
+			snappingDistance   = DefSnapDistance;
+			isShowDepends      = false;
+			isShowQuadTree     = false;
 		}
 		
 		void OnValidate() {
-			tileSize   = _tileSize;
-			tileRatio  = _tileRatio;
-			tileAngle  = _tileAngle;
-			tileHeight = _tileHeight;
-			stepDepth  = _stepDepth;
-			startDepth = _startDepth;
+			tileSize           = _tileSize;
+			tileRatio          = _tileRatio;
+			tileAngle          = _tileAngle;
+			tileHeight         = _tileHeight;
+			stepDepth          = _stepDepth;
+			startDepth         = _startDepth;
+
+			isShowIsoBounds    = _showIsoBounds;
+			isShowScreenBounds = _showScreenBounds;
+			isSnapByCells      = _snapByCells;
+			isSnapByObjects    = _snapByObjects;
+			isSortInSceneView  = _sortInSceneView;
+			snappingDistance   = _snappingDistance;
+			isShowDepends      = _showDepends;
+			isShowQuadTree     = _showQuadTree;
 		}
 
 		void OnRenderObject() {
