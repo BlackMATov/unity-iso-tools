@@ -1729,8 +1729,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _size: {x: 1, y: 1, z: 1}
   _position: {x: -3, y: 1, z: 0}
-  _mode: 1
-  _cacheRenderers: 1
+  _renderersMode: 1
+  _cachedRenderers: 1
 --- !u!137 &13705018
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

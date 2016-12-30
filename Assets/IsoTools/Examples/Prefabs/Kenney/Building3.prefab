@@ -166,8 +166,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _size: {x: 1, y: 1, z: 2}
   _position: {x: 0, y: 0, z: 0}
-  _mode: 0
-  _cacheRenderers: 1
+  _renderersMode: 1
+  _cachedRenderers: 1
 --- !u!212 &21269568
 SpriteRenderer:
   m_ObjectHideFlags: 1
