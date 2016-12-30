@@ -90,11 +90,16 @@ namespace IsoTools.Internal {
 							var iso_orig_z = iso_object.positionZ;
 							var result_p_z = iso_orig_z + delta;
 							foreach ( var other in other_objects ) {
-								if ( IsoEditorUtils.IsSnapOverlaps(iso_object.positionX, iso_object.sizeX, other.positionX, other.sizeX) &&
-									 IsoEditorUtils.IsSnapOverlaps(iso_object.positionY, iso_object.sizeY, other.positionY, other.sizeY) )
-								{
-									var new_snapping_z = !snapping_z && IsoEditorUtils.IsSnapOverlaps(result_p_z, iso_object.sizeZ, other.positionZ, other.sizeZ)
-										? IsoEditorUtils.SnapProcess(ref result_p_z, iso_object.sizeZ, other.positionZ, other.sizeZ)
+								var x_snap_overlaps = IsoEditorUtils.IsSnapOverlaps(
+									iso_world.snappingDistance, iso_object.positionX, iso_object.sizeX, other.positionX, other.sizeX);
+								var y_snap_overlaps = IsoEditorUtils.IsSnapOverlaps(
+									iso_world.snappingDistance, iso_object.positionY, iso_object.sizeY, other.positionY, other.sizeY);
+								if ( x_snap_overlaps && y_snap_overlaps ){
+									var new_snapping_z = !snapping_z && IsoEditorUtils.IsSnapOverlaps(
+											iso_world.snappingDistance, result_p_z, iso_object.sizeZ, other.positionZ, other.sizeZ)
+										? IsoEditorUtils.SnapProcess(
+											iso_world.snappingDistance,
+											ref result_p_z, iso_object.sizeZ, other.positionZ, other.sizeZ)
 										: false;
 									if ( new_snapping_z ) {
 										delta      = result_p_z - iso_orig_z;
@@ -113,7 +118,9 @@ namespace IsoTools.Internal {
 					foreach ( var iso_object in iso_objects ) {
 						var iso_orig_z = iso_object.positionZ;
 						var result_p_z = iso_orig_z + delta;
-						var new_snapping_z = IsoEditorUtils.SnapProcess(ref result_p_z, iso_object.sizeZ, iso_object.tilePositionZ, 1.0f);
+						var new_snapping_z = IsoEditorUtils.SnapProcess(
+							iso_world.snappingDistance,
+							ref result_p_z, iso_object.sizeZ, iso_object.tilePositionZ, 1.0f);
 						if ( new_snapping_z ) {
 							delta      = result_p_z - iso_orig_z;
 							snapping_z = true;
@@ -157,12 +164,20 @@ namespace IsoTools.Internal {
 							var iso_orig_p     = iso_object.position;
 							var result_pos_iso = iso_orig_p + iso_delta;
 							foreach ( var other in other_objects ) {
-								if ( IsoEditorUtils.IsSnapOverlaps(iso_object.positionZ, iso_object.sizeZ, other.positionZ, other.sizeZ) ) {
-									var new_snapping_x = !snapping_x && IsoEditorUtils.IsSnapOverlaps(result_pos_iso.y, iso_object.sizeY, other.positionY, other.sizeY)
-										? IsoEditorUtils.SnapProcess(ref result_pos_iso.x, iso_object.sizeX, other.positionX, other.sizeX)
+								var z_snap_overlaps = IsoEditorUtils.IsSnapOverlaps(
+									iso_world.snappingDistance, iso_object.positionZ, iso_object.sizeZ, other.positionZ, other.sizeZ);
+								if ( z_snap_overlaps ) {
+									var new_snapping_x = !snapping_x && IsoEditorUtils.IsSnapOverlaps(
+											iso_world.snappingDistance, result_pos_iso.y, iso_object.sizeY, other.positionY, other.sizeY)
+										? IsoEditorUtils.SnapProcess(
+											iso_world.snappingDistance,
+											ref result_pos_iso.x, iso_object.sizeX, other.positionX, other.sizeX)
 										: false;
-									var new_snapping_y = !snapping_y && IsoEditorUtils.IsSnapOverlaps(result_pos_iso.x, iso_object.sizeX, other.positionX, other.sizeX)
-										? IsoEditorUtils.SnapProcess(ref result_pos_iso.y, iso_object.sizeY, other.positionY, other.sizeY)
+									var new_snapping_y = !snapping_y && IsoEditorUtils.IsSnapOverlaps(
+											iso_world.snappingDistance, result_pos_iso.x, iso_object.sizeX, other.positionX, other.sizeX)
+										? IsoEditorUtils.SnapProcess(
+											iso_world.snappingDistance,
+											ref result_pos_iso.y, iso_object.sizeY, other.positionY, other.sizeY)
 										: false;
 									if ( new_snapping_x || new_snapping_y ) {
 										if ( new_snapping_x ) {
@@ -191,8 +206,12 @@ namespace IsoTools.Internal {
 					foreach ( var iso_object in iso_objects ) {
 						var iso_orig_p     = iso_object.position;
 						var result_pos_iso = iso_orig_p + iso_delta;
-						var new_snapping_x = IsoEditorUtils.SnapProcess(ref result_pos_iso.x, iso_object.sizeX, iso_object.tilePositionX, 1.0f);
-						var new_snapping_y = IsoEditorUtils.SnapProcess(ref result_pos_iso.y, iso_object.sizeY, iso_object.tilePositionY, 1.0f);
+						var new_snapping_x = IsoEditorUtils.SnapProcess(
+							iso_world.snappingDistance,
+							ref result_pos_iso.x, iso_object.sizeX, iso_object.tilePositionX, 1.0f);
+						var new_snapping_y = IsoEditorUtils.SnapProcess(
+							iso_world.snappingDistance,
+							ref result_pos_iso.y, iso_object.sizeY, iso_object.tilePositionY, 1.0f);
 						if ( new_snapping_x || new_snapping_y ) {
 							if ( new_snapping_x ) {
 								iso_delta.x    = result_pos_iso.x - iso_orig_p.x;
@@ -266,32 +285,32 @@ namespace IsoTools.Internal {
 		//
 		// ---------------------------------------------------------------------
 
-		const float SnapDistance = 0.2f;
-
-		public static bool SnapProcess(ref float min_a, float size_a, float min_b, float size_b) {
+		public static bool SnapProcess(
+			float snap_dist, ref float min_a, float size_a, float min_b, float size_b)
+		{
 			var max_a  = min_a + size_a;
 			var max_b  = min_b + size_b;
 			var result = false;
-			if ( IsSnapOverlaps(min_a, size_a, min_b, size_b) ) {
+			if ( IsSnapOverlaps(snap_dist, min_a, size_a, min_b, size_b) ) {
 				// |min_a max_a|min_b max_b|
-				if ( Mathf.Abs(max_a - min_b) < SnapDistance ) {
+				if ( Mathf.Abs(max_a - min_b) < snap_dist ) {
 					min_a  = min_b - size_a;
 					result = true;
 				}
 				// |min_b max_b|min_a max_a|
-				if ( Mathf.Abs(max_b - min_a) < SnapDistance ) {
+				if ( Mathf.Abs(max_b - min_a) < snap_dist ) {
 					min_a  = max_b;
 					result = true;
 				}
 				// |min_a_____max_a|
 				// |min_b__max_b|
-				if ( Mathf.Abs(min_a - min_b) < SnapDistance ) {
+				if ( Mathf.Abs(min_a - min_b) < snap_dist ) {
 					min_a  = min_b;
 					result = true;
 				}
 				// |min_a_____max_a|
 				//    |min_b__max_b|
-				if ( Mathf.Abs(max_a - max_b) < SnapDistance ) {
+				if ( Mathf.Abs(max_a - max_b) < snap_dist ) {
 					min_a  = max_b - size_a;
 					result = true;
 				}
@@ -299,10 +318,12 @@ namespace IsoTools.Internal {
 			return result;
 		}
 
-		public static bool IsSnapOverlaps(float min_a, float size_a, float min_b, float size_b) {
+		public static bool IsSnapOverlaps(
+			float snap_dist, float min_a, float size_a, float min_b, float size_b)
+		{
 			return
-				min_a + size_a + SnapDistance >= min_b &&
-				min_a - SnapDistance <= min_b + size_b;
+				min_a + size_a + snap_dist >= min_b &&
+				min_a - snap_dist <= min_b + size_b;
 		}
 
 		public static bool IsSnapByCellsEnabled(IsoWorld iso_world) {

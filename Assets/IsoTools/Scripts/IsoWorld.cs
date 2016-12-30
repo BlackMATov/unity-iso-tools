@@ -17,29 +17,33 @@ namespace IsoTools {
 		//
 		// ---------------------------------------------------------------------
 
-		public static readonly float DefTileSize   = 32.0f;
-		public static readonly float MinTileSize   = Mathf.Epsilon;
-		public static readonly float MaxTileSize   = float.MaxValue;
+		public const float DefTileSize     = 32.0f;
+		public const float MinTileSize     = float.Epsilon;
+		public const float MaxTileSize     = float.MaxValue;
 
-		public static readonly float DefTileRatio  = 0.5f;
-		public static readonly float MinTileRatio  = 0.25f;
-		public static readonly float MaxTileRatio  = 1.0f;
+		public const float DefTileRatio    = 0.5f;
+		public const float MinTileRatio    = 0.25f;
+		public const float MaxTileRatio    = 1.0f;
 
-		public static readonly float DefTileAngle  = 45.0f;
-		public static readonly float MinTileAngle  = 0.0f;
-		public static readonly float MaxTileAngle  = 90.0f;
+		public const float DefTileAngle    = 45.0f;
+		public const float MinTileAngle    = 0.0f;
+		public const float MaxTileAngle    = 90.0f;
 
-		public static readonly float DefTileHeight = DefTileSize;
-		public static readonly float MinTileHeight = MinTileSize;
-		public static readonly float MaxTileHeight = MaxTileSize;
+		public const float DefTileHeight   = DefTileSize;
+		public const float MinTileHeight   = MinTileSize;
+		public const float MaxTileHeight   = MaxTileSize;
 
-		public static readonly float DefStepDepth  = 0.1f;
-		public static readonly float MinStepDepth  = Mathf.Epsilon;
-		public static readonly float MaxStepDepth  = float.MaxValue;
+		public const float DefStepDepth    = 0.1f;
+		public const float MinStepDepth    = float.Epsilon;
+		public const float MaxStepDepth    = float.MaxValue;
 
-		public static readonly float DefStartDepth = 1.0f;
-		public static readonly float MinStartDepth = float.MinValue;
-		public static readonly float MaxStartDepth = float.MaxValue;
+		public const float DefStartDepth   = 1.0f;
+		public const float MinStartDepth   = float.MinValue;
+		public const float MaxStartDepth   = float.MaxValue;
+
+		public const float DefSnapDistance = 0.2f;
+		public const float MinSnapDistance = 0.0f;
+		public const float MaxSnapDistance = 0.5f;
 
 		// ---------------------------------------------------------------------
 		//
@@ -308,6 +312,13 @@ namespace IsoTools {
 		public bool isSortInSceneView {
 			get { return _sortInSceneView; }
 			set { _sortInSceneView = value; }
+		}
+		[SerializeField]
+		[Range(MinSnapDistance, MaxSnapDistance)]
+		float _snappingDistance = DefSnapDistance;
+		public float snappingDistance {
+			get { return _snappingDistance; }
+			set { _snappingDistance = Mathf.Clamp(value, MinSnapDistance, MaxSnapDistance); }
 		}
 		[Header("Development Only")]
 		[SerializeField] bool _showDepends = false;
