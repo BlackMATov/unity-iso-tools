@@ -405,8 +405,21 @@ namespace IsoTools.Internal {
 			return a == b;
 		}
 
+		public static bool Vec2Approximately(Vector2 a, Vector2 b, float precision) {
+			return
+				Mathf.Abs(a.x - b.x) < precision &&
+				Mathf.Abs(a.y - b.y) < precision;
+		}
+
 		public static bool Vec3Approximately(Vector3 a, Vector3 b) {
 			return a == b;
+		}
+
+		public static bool Vec3Approximately(Vector3 a, Vector3 b, float precision) {
+			return
+				Mathf.Abs(a.x - b.x) < precision &&
+				Mathf.Abs(a.y - b.y) < precision &&
+				Mathf.Abs(a.z - b.z) < precision;
 		}
 
 		// ---------------------------------------------------------------------

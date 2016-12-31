@@ -116,9 +116,10 @@ namespace IsoTools.Internal {
 		void CheckChangedTransform(IsoObject iso_object) {
 			var iso_world = iso_object.isoWorld;
 			if ( iso_world ) {
+				var precision        = Mathf.Min(iso_world.tileSize, iso_world.tileHeight) * 0.01f;
 				var needed_position  = iso_world.IsoToScreen(iso_object.position);
 				var current_position = iso_object.transform.position;
-				if ( !IsoUtils.Vec2Approximately(needed_position, current_position) ) {
+				if ( !IsoUtils.Vec2Approximately(needed_position, current_position, precision) ) {
 					Debug.LogWarning(
 						"Don't change 'IsoObject.transform.position' manually!\n" +
 						"Use 'IsoObject.position' instead.",
