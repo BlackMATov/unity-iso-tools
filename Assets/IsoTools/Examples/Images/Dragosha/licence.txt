@@ -1,8 +1,7 @@
 Author of images:
-http://kenney.nl
-http://kenney.nl/assets/isometric-city
-http://kenney.nl/assets/isometric-buildings
-http://kenney.nl/assets/platformer-art-deluxe
+http://dragosha.com
+http://dragosha.com/free/adventure-tileset.html
+http://dragosha.com/free/isometric-dungeon-tileset.html
 
-Licence: CC0 1.0 Universal (CC0 1.0)
-https://creativecommons.org/publicdomain/zero/1.0/
+Licence: Creative Commons Attribution 4.0 International
+https://creativecommons.org/licenses/by/4.0/
