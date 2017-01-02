@@ -28,5 +28,6 @@ Supports Unity 5.3 and newer, both Personal and Pro. Full C# source code include
 
 Leave your rating for this Asset. It is very important for me and the development of the project :) Thank you!
 
-Samples use Public Domain sprites from kenney.nl "http://www.kenney.nl/assets"
-Samples use Free models from Honeti's models "https://www.assetstore.unity3d.com/en/#!/content/18098"
+Samples use (CC0 1.0) sprites from kenney.nl "http://www.kenney.nl/assets"
+Samples use (CC BY 4.0) sprites from dragosha.com "http://dragosha.com/free"
+Samples use free models from Honeti's models "https://www.assetstore.unity3d.com/en/#!/content/18098"

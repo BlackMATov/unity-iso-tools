@@ -4,6 +4,8 @@
 
 Fix 5.4 warning
 IsoPhysics to Addons/Physics
+Improvements sorting algorithm
+Multiple isometric worlds in one scene
 
 -------------------
 -- Version 2.4.2 --
