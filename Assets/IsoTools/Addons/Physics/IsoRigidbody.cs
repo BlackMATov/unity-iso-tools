@@ -125,7 +125,6 @@ namespace IsoTools.Physics {
 			}
 		}
 
-	#if UNITY_5_4_OR_NEWER
 		public int solverIterations {
 			get { return realRigidbody ? realRigidbody.solverIterations : 0; }
 			set {
@@ -143,25 +142,6 @@ namespace IsoTools.Physics {
 				}
 			}
 		}
-	#else
-		public int solverIterationCount {
-			get { return realRigidbody ? realRigidbody.solverIterationCount : 0; }
-			set {
-				if ( realRigidbody ) {
-					realRigidbody.solverIterationCount = value;
-				}
-			}
-		}
-
-		public int solverVelocityIterationCount {
-			get { return realRigidbody ? realRigidbody.solverVelocityIterationCount : 0; }
-			set {
-				if ( realRigidbody ) {
-					realRigidbody.solverVelocityIterationCount = value;
-				}
-			}
-		}
-	#endif
 
 		public Vector3 velocity {
 			get { return realRigidbody ? realRigidbody.velocity : Vector3.zero; }

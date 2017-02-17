@@ -22,7 +22,7 @@ Make 2.5D isometric game easy!
 * Physics support! (Colliders, Rigidbodies, Trigger and Collision events)
 * Full PlayMaker support.
 
-Supports Unity 5.3 and newer, both Personal and Pro. Full C# source code included.
+Supports Unity 5.5 and newer, both Personal and Pro. Full C# source code included.
 
 Leave your rating for this Asset. It is very important for me and the development of the project :) Thank you!
 
