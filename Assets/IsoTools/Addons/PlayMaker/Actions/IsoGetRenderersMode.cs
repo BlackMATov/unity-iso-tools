@@ -6,21 +6,22 @@ using IsoTools.PlayMaker.Internal;
 namespace IsoTools.PlayMaker.Actions {
 	[ActionCategory("IsoTools")]
 	[HutongGames.PlayMaker.Tooltip(
-		"Sets the Mode of a IsoObject.")]
-	public class IsoSetMode : IsoComponentAction<IsoObject> {
+		"Gets the Renderers Mode of a IsoObject and stores it in a Enum Variable")]
+	public class IsoGetMode : IsoComponentAction<IsoObject> {
 		[RequiredField]
 		[CheckForComponent(typeof(IsoObject))]
 		[HutongGames.PlayMaker.Title("IsoObject (In)")]
 		public FsmOwnerDefault gameObject;
 
 		[RequiredField]
-		[ObjectType(typeof(IsoObject.Mode))]
-		[HutongGames.PlayMaker.Title("Mode (In)")]
-		public FsmEnum mode;
+		[ObjectType(typeof(IsoObject.RenderersMode))]
+		[UIHint(UIHint.Variable)]
+		[HutongGames.PlayMaker.Title("Store Renderers Mode (Out)")]
+		public FsmEnum storeRenderersMode;
 
 		public override void Reset() {
-			gameObject  = null;
-			mode        = IsoObject.Mode.Mode2d;
+			gameObject         = null;
+			storeRenderersMode = null;
 		}
 
 		public override void OnEnter() {
@@ -31,7 +32,7 @@ namespace IsoTools.PlayMaker.Actions {
 		void DoAction() {
 			var go = Fsm.GetOwnerDefaultTarget(gameObject);
 			if ( UpdateCache(go) ) {
-				isoObject.mode = (IsoObject.Mode)mode.Value;
+				storeRenderersMode.Value = isoObject.renderersMode;
 			}
 		}
 	}
