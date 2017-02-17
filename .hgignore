@@ -2,6 +2,9 @@ glob:obj/*
 glob:Temp/*
 glob:Library/*
 
+glob:AssetStoreTools/*
+glob:AssetStoreTools.meta
+
 glob:.DS_Store
 glob:unityiso.sln
 glob:unityiso.userprefs
