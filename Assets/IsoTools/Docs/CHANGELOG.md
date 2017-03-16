@@ -1,3 +1,7 @@
+###### Version 3.0.1
+
+* Fix serialization generic classes problem
+
 ###### Version 3.0.0
 
 * Fix Unity 5.5 warning
