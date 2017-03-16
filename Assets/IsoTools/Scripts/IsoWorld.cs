@@ -118,12 +118,14 @@ namespace IsoTools {
 		//
 		// ---------------------------------------------------------------------
 
+		static IsoAssocList<IsoWorld> _instances = new IsoAssocList<IsoWorld>();
+
 		public static int AllWorldCount {
-			get { return AllBehaviourCount; }
+			get { return _instances.Count; }
 		}
 
 		public static IsoWorld GetWorld(int index) {
-			return GetBehaviourByIndex(index);
+			return _instances[index];
 		}
 
 		// ---------------------------------------------------------------------
@@ -358,7 +360,8 @@ namespace IsoTools {
 
 		void UpdateIsoMatrix() {
 			_isoMatrix =
-				Matrix4x4.Scale(new Vector3(1.0f, tileRatio, 1.0f)) *
+				Matrix4x4.Scale(
+					new Vector3(1.0f, tileRatio, 1.0f)) *
 				Matrix4x4.TRS(
 					Vector3.zero,
 					Quaternion.AngleAxis(90.0f - tileAngle, IsoUtils.vec3OneZ),
@@ -404,6 +407,9 @@ namespace IsoTools {
 
 		protected override void OnEnable() {
 			base.OnEnable();
+			if ( IsActive() ) {
+				_instances.Add(this);
+			}
 		}
 
 		protected override void OnDisable() {
@@ -411,6 +417,7 @@ namespace IsoTools {
 			_screenSolver.Clear();
 			_sortingSolver.Clear();
 			_warningSolver.Clear();
+			_instances.Remove(this);
 		}
 
 		protected override void OnAddIsoObjectToWorld(IsoObject iso_object) {

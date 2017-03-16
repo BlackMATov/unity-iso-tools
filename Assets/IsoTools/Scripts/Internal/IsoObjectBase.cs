@@ -1,5 +1,5 @@
 ﻿namespace IsoTools.Internal {
-	public abstract class IsoObjectBase : IsoBehaviour<IsoObject> {
+	public abstract class IsoObjectBase : IsoBehaviour {
 		IsoWorld _isoWorld = null;
 
 		// ---------------------------------------------------------------------
@@ -46,13 +46,11 @@
 		//
 		// ---------------------------------------------------------------------
 
-		protected override void OnEnable() {
-			base.OnEnable();
+		protected virtual void OnEnable() {
 			Internal_RecacheIsoWorld();
 		}
 
-		protected override void OnDisable() {
-			base.OnDisable();
+		protected virtual void OnDisable() {
 			Internal_ResetIsoWorld();
 		}
 

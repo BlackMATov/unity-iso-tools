@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
 namespace IsoTools.Internal {
-	public abstract class IsoWorldBase : IsoBehaviour<IsoWorld> {
+	public abstract class IsoWorldBase : IsoBehaviour {
 		IsoAssocList<IsoObject> _isoObjects     = new IsoAssocList<IsoObject>();
 		static List<IsoObject>  _tempIsoObjects = new List<IsoObject>();
 
@@ -55,13 +55,11 @@ namespace IsoTools.Internal {
 		//
 		// ---------------------------------------------------------------------
 
-		protected override void OnEnable() {
-			base.OnEnable();
+		protected virtual void OnEnable() {
 			RecacheIsoObjectWorlds();
 		}
 
-		protected override void OnDisable() {
-			base.OnDisable();
+		protected virtual void OnDisable() {
 			RecacheIsoObjectWorlds();
 		}
 
