@@ -17,33 +17,57 @@ namespace IsoTools {
 		//
 		// ---------------------------------------------------------------------
 
-		public const float DefTileSize     = 32.0f;
-		public const float MinTileSize     = float.Epsilon;
-		public const float MaxTileSize     = float.MaxValue;
+		public const float DefTileSize                 = 32.0f;
+		public const float MinTileSize                 = float.Epsilon;
+		public const float MaxTileSize                 = float.MaxValue;
 
-		public const float DefTileRatio    = 0.5f;
-		public const float MinTileRatio    = 0.25f;
-		public const float MaxTileRatio    = 1.0f;
+		public const float DefTileRatio                = 0.5f;
+		public const float MinTileRatio                = 0.25f;
+		public const float MaxTileRatio                = 1.0f;
 
-		public const float DefTileAngle    = 45.0f;
-		public const float MinTileAngle    = 0.0f;
-		public const float MaxTileAngle    = 90.0f;
+		public const float DefTileAngle                = 45.0f;
+		public const float MinTileAngle                = 0.0f;
+		public const float MaxTileAngle                = 90.0f;
 
-		public const float DefTileHeight   = DefTileSize;
-		public const float MinTileHeight   = MinTileSize;
-		public const float MaxTileHeight   = MaxTileSize;
+		public const float DefTileHeight               = DefTileSize;
+		public const float MinTileHeight               = MinTileSize;
+		public const float MaxTileHeight               = MaxTileSize;
 
-		public const float DefStepDepth    = 0.1f;
-		public const float MinStepDepth    = float.Epsilon;
-		public const float MaxStepDepth    = float.MaxValue;
+		public const float DefStepDepth                = 0.1f;
+		public const float MinStepDepth                = float.Epsilon;
+		public const float MaxStepDepth                = float.MaxValue;
 
-		public const float DefStartDepth   = 1.0f;
-		public const float MinStartDepth   = float.MinValue;
-		public const float MaxStartDepth   = float.MaxValue;
+		public const float DefStartDepth               = 1.0f;
+		public const float MinStartDepth               = float.MinValue;
+		public const float MaxStartDepth               = float.MaxValue;
 
-		public const float DefSnapDistance = 0.2f;
-		public const float MinSnapDistance = 0.0f;
-		public const float MaxSnapDistance = 0.5f;
+		public const float DefGravityX                 = 0.0f;
+		public const float DefGravityY                 = 0.0f;
+		public const float DefGravityZ                 = -9.81f;
+
+		public const float DefContactOffset            = 0.01f;
+		public const float MinContactOffset            = float.Epsilon;
+		public const float MaxContactOffset            = float.MaxValue;
+
+		public const int   DefSolverIterations         = 6;
+		public const int   MinSolverIterations         = 1;
+		public const int   MaxSolverIterations         = int.MaxValue;
+
+		public const int   DefSolverVelocityIterations = 1;
+		public const int   MinSolverVelocityIterations = 1;
+		public const int   MaxSolverVelocityIterations = int.MaxValue;
+
+		public const float DefSleepThreshold           = 0.005f;
+		public const float MinSleepThreshold           = float.MinValue;
+		public const float MaxSleepThreshold           = float.MaxValue;
+
+		public const float DefBounceThreshold          = 2.0f;
+		public const float MinBounceThreshold          = float.MinValue;
+		public const float MaxBounceThreshold          = float.MaxValue;
+
+		public const float DefSnapDistance             = 0.2f;
+		public const float MinSnapDistance             = 0.0f;
+		public const float MaxSnapDistance             = 0.5f;
 
 		// ---------------------------------------------------------------------
 		//
@@ -109,6 +133,73 @@ namespace IsoTools {
 			set {
 				_startDepth = Mathf.Clamp(value, MinStartDepth, MaxStartDepth);
 				ChangeSortingProperty();
+			}
+		}
+
+		// ---------------------------------------------------------------------
+		//
+		// Physics properties
+		//
+		// ---------------------------------------------------------------------
+
+		[Header("Physics Settings")]
+		[SerializeField]
+		Vector3 _gravity = new Vector3(DefGravityX, DefGravityY, DefGravityZ);
+		public Vector3 gravity {
+			get { return _gravity; }
+			set {
+				_gravity = value;
+				ChangePhysicsProperty();
+			}
+		}
+
+		[SerializeField]
+		float _contactOffset = DefContactOffset;
+		public float contactOffset {
+			get { return _contactOffset; }
+			set {
+				_contactOffset = Mathf.Clamp(value, MinContactOffset, MaxContactOffset);
+				ChangePhysicsProperty();
+			}
+		}
+
+		[SerializeField]
+		float _sleepThreshold = DefSleepThreshold;
+		public float sleepThreshold {
+			get { return _sleepThreshold; }
+			set {
+				_sleepThreshold = Mathf.Clamp(value, MinSleepThreshold, MaxSleepThreshold);
+				ChangePhysicsProperty();
+			}
+		}
+
+		[SerializeField]
+		float _bounceThreshold = DefBounceThreshold;
+		public float bounceThreshold {
+			get { return _bounceThreshold; }
+			set {
+				_bounceThreshold = Mathf.Clamp(value, MinBounceThreshold, MaxBounceThreshold);
+				ChangePhysicsProperty();
+			}
+		}
+
+		[SerializeField]
+		int _solverIterations = DefSolverIterations;
+		public int solverIterations {
+			get { return _solverIterations; }
+			set {
+				_solverIterations = Mathf.Clamp(value, MinSolverIterations, MaxSolverIterations);
+				ChangePhysicsProperty();
+			}
+		}
+
+		[SerializeField]
+		int _solverVelocityIterations = DefSolverVelocityIterations;
+		public int solverVelocityIterations {
+			get { return _solverVelocityIterations; }
+			set {
+				_solverVelocityIterations = Mathf.Clamp(value, MinSolverVelocityIterations, MaxSolverVelocityIterations);
+				ChangePhysicsProperty();
 			}
 		}
 
@@ -382,6 +473,15 @@ namespace IsoTools {
 			Internal_SetDirtyInEditorMode();
 		}
 
+		void ChangePhysicsProperty() {
+			UnityEngine.Physics.gravity                         = gravity;
+			UnityEngine.Physics.defaultContactOffset            = contactOffset;
+			UnityEngine.Physics.sleepThreshold                  = sleepThreshold;
+			UnityEngine.Physics.bounceThreshold                 = bounceThreshold;
+			UnityEngine.Physics.defaultSolverIterations         = solverIterations;
+			UnityEngine.Physics.defaultSolverVelocityIterations = solverVelocityIterations;
+		}
+
 		void StepSortingProcess() {
 			_screenSolver.StepSortingAction(this);
 			if ( _sortingSolver.StepSortingAction(this, _screenSolver) ) {
@@ -398,6 +498,7 @@ namespace IsoTools {
 
 		void Start() {
 			ChangeSortingProperty();
+			ChangePhysicsProperty();
 			StepSortingProcess();
 		}
 
@@ -436,39 +537,53 @@ namespace IsoTools {
 
 	#if UNITY_EDITOR
 		void Reset() {
-			tileSize           = DefTileSize;
-			tileRatio          = DefTileRatio;
-			tileAngle          = DefTileAngle;
-			tileHeight         = DefTileHeight;
-			stepDepth          = DefStepDepth;
-			startDepth         = DefStartDepth;
+			tileSize                 = DefTileSize;
+			tileRatio                = DefTileRatio;
+			tileAngle                = DefTileAngle;
+			tileHeight               = DefTileHeight;
+			stepDepth                = DefStepDepth;
+			startDepth               = DefStartDepth;
 
-			isShowIsoBounds    = false;
-			isShowScreenBounds = false;
-			isSnapByCells      = true;
-			isSnapByObjects    = true;
-			isSortInSceneView  = true;
-			snappingDistance   = DefSnapDistance;
-			isShowDepends      = false;
-			isShowQuadTree     = false;
+			gravity                  = new Vector3(DefGravityX, DefGravityY, DefGravityZ);
+			contactOffset            = DefContactOffset;
+			sleepThreshold           = DefSleepThreshold;
+			bounceThreshold          = DefBounceThreshold;
+			solverIterations         = DefSolverIterations;
+			solverVelocityIterations = DefSolverVelocityIterations;
+
+			isShowIsoBounds          = false;
+			isShowScreenBounds       = false;
+			isSnapByCells            = true;
+			isSnapByObjects          = true;
+			isSortInSceneView        = true;
+			snappingDistance         = DefSnapDistance;
+			isShowDepends            = false;
+			isShowQuadTree           = false;
 		}
 		
 		void OnValidate() {
-			tileSize           = _tileSize;
-			tileRatio          = _tileRatio;
-			tileAngle          = _tileAngle;
-			tileHeight         = _tileHeight;
-			stepDepth          = _stepDepth;
-			startDepth         = _startDepth;
+			tileSize                 = _tileSize;
+			tileRatio                = _tileRatio;
+			tileAngle                = _tileAngle;
+			tileHeight               = _tileHeight;
+			stepDepth                = _stepDepth;
+			startDepth               = _startDepth;
 
-			isShowIsoBounds    = _showIsoBounds;
-			isShowScreenBounds = _showScreenBounds;
-			isSnapByCells      = _snapByCells;
-			isSnapByObjects    = _snapByObjects;
-			isSortInSceneView  = _sortInSceneView;
-			snappingDistance   = _snappingDistance;
-			isShowDepends      = _showDepends;
-			isShowQuadTree     = _showQuadTree;
+			gravity                  = _gravity;
+			contactOffset            = _contactOffset;
+			sleepThreshold           = _sleepThreshold;
+			bounceThreshold          = _bounceThreshold;
+			solverIterations         = _solverIterations;
+			solverVelocityIterations = _solverVelocityIterations;
+
+			isShowIsoBounds          = _showIsoBounds;
+			isShowScreenBounds       = _showScreenBounds;
+			isSnapByCells            = _snapByCells;
+			isSnapByObjects          = _snapByObjects;
+			isSortInSceneView        = _sortInSceneView;
+			snappingDistance         = _snappingDistance;
+			isShowDepends            = _showDepends;
+			isShowQuadTree           = _showQuadTree;
 		}
 
 		void OnRenderObject() {

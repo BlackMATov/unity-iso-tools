@@ -258,7 +258,7 @@ Prefab:
       objectReference: {fileID: 1396455883}
     - target: {fileID: 11477906, guid: f34dc3b1e71a94249ad50db729f01df0, type: 2}
       propertyPath: NextSceneName
-      value: Scene10
+      value: Scene00
       objectReference: {fileID: 0}
     - target: {fileID: 11477906, guid: f34dc3b1e71a94249ad50db729f01df0, type: 2}
       propertyPath: PrevSceneName
@@ -877,6 +877,12 @@ MonoBehaviour:
   _tileHeight: 1.6
   _stepDepth: 0.1
   _startDepth: 1
+  _gravity: {x: 0, y: 0, z: -9.81}
+  _contactOffset: 0.01
+  _sleepThreshold: 0.005
+  _bounceThreshold: 2
+  _solverIterations: 6
+  _solverVelocityIterations: 1
   _showIsoBounds: 0
   _showScreenBounds: 0
   _snapByCells: 1
@@ -1504,6 +1510,12 @@ MonoBehaviour:
   _tileHeight: 0.8
   _stepDepth: 0.1
   _startDepth: 1
+  _gravity: {x: 0, y: 0, z: -9.81}
+  _contactOffset: 0.01
+  _sleepThreshold: 0.005
+  _bounceThreshold: 2
+  _solverIterations: 6
+  _solverVelocityIterations: 1
   _showIsoBounds: 0
   _showScreenBounds: 0
   _snapByCells: 1

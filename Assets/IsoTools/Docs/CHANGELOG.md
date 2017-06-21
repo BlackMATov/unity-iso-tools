@@ -1,3 +1,7 @@
+###### Version 3.0.2
+
+* Physics settings in IsoWorld inspector
+
 ###### Version 3.0.1
 
 * Fix serialization generic classes problem
