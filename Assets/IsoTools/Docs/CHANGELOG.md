@@ -1,3 +1,7 @@
+###### Version 3.1.0
+
+* Fix Unity 5.6 warning
+
 ###### Version 3.0.2
 
 * Physics settings in IsoWorld inspector

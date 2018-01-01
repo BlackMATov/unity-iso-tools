@@ -249,34 +249,68 @@ namespace IsoTools.Internal {
 		// ---------------------------------------------------------------------
 
 		public static Vector3 GizmoRectangle(Vector3 center) {
-			Handles.color = new Color(
-				Handles.zAxisColor.r,
-				Handles.zAxisColor.g,
-				Handles.zAxisColor.b,
-				0.3f);
-			Handles.DotCap(
-				0,
-				center,
-				Quaternion.identity,
-				HandleUtility.GetHandleSize(center) * 0.15f);
-			Handles.color = Handles.zAxisColor;
-			Handles.ArrowCap(
-				0,
-				center,
-				Quaternion.identity,
-				HandleUtility.GetHandleSize(center));
-			Handles.color = Handles.zAxisColor;
-			return Handles.FreeMoveHandle(
-				center,
-				Quaternion.identity,
-				HandleUtility.GetHandleSize(center) * 0.15f,
-				Vector3.zero,
-				Handles.RectangleCap);
+			GizmoDotCap(new Color(1.0f, 1.0f, 1.0f, 0.3f) * Handles.zAxisColor, center, 0.15f);
+			GizmoArrowCap(Handles.zAxisColor, center, 1.0f);
+			return GizmoFreeMoveHandle(Handles.zAxisColor, center, 0.15f);
 		}
 
 		public static Vector3 GizmoSlider(Color color, Vector3 pos, Vector3 dir) {
 			Handles.color = color;
 			return Handles.Slider(pos, dir);
+		}
+
+		public static void GizmoDotCap(Color color, Vector3 center, float scale) {
+			Handles.color = color;
+		#if UNITY_5_6_OR_NEWER
+			Handles.DotHandleCap(
+				0,
+				center,
+				Quaternion.identity,
+				HandleUtility.GetHandleSize(center) * scale,
+				EventType.Repaint);
+		#else
+			Handles.DotCap(
+				0,
+				center,
+				Quaternion.identity,
+				HandleUtility.GetHandleSize(center) * scale);
+		#endif
+		}
+
+		public static void GizmoArrowCap(Color color, Vector3 center, float scale) {
+			Handles.color = color;
+		#if UNITY_5_6_OR_NEWER
+			Handles.ArrowHandleCap(
+				0,
+				center,
+				Quaternion.identity,
+				HandleUtility.GetHandleSize(center) * scale,
+				EventType.Repaint);
+		#else
+			Handles.ArrowCap(
+				0,
+				center,
+				Quaternion.identity,
+				HandleUtility.GetHandleSize(center) * scale);
+		#endif
+		}
+
+		public static Vector3 GizmoFreeMoveHandle(Color color, Vector3 center, float scale) {
+		#if UNITY_5_6_OR_NEWER
+			return Handles.FreeMoveHandle(
+				center,
+				Quaternion.identity,
+				HandleUtility.GetHandleSize(center) * scale,
+				Vector3.zero,
+				Handles.RectangleHandleCap);
+		#else
+			return Handles.FreeMoveHandle(
+				center,
+				Quaternion.identity,
+				HandleUtility.GetHandleSize(center) * scale,
+				Vector3.zero,
+				Handles.RectangleCap);
+		#endif
 		}
 
 		// ---------------------------------------------------------------------
