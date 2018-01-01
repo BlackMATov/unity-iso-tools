@@ -1,6 +1,6 @@
 ##### Isometric 2.5D Toolset
 
-Make 2.5D isometric game easy!
+Make 2.5D isometric game in Unity easy!
 
 * [Usage video (Sprites)](http://www.youtube.com/watch?v=IwJ_ofKG9_Y)
 * [Usage video (Physics)](http://www.youtube.com/watch?v=wmXhyDHXYcM)
