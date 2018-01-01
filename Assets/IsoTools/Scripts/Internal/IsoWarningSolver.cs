@@ -102,6 +102,12 @@ namespace IsoTools.Internal {
 				Debug.LogWarning(
 					"Don't change 'transform.scale' for IsoObject and its parents!",
 					iso_object);
+				var trans_iter = iso_object.transform;
+				while ( trans_iter ) {
+					trans_iter.localScale = Vector3.one;
+					trans_iter = trans_iter.parent;
+				}
+				iso_object.FixTransform();
 			}
 		}
 
@@ -110,6 +116,12 @@ namespace IsoTools.Internal {
 				Debug.LogWarning(
 					"Don't change 'transform.rotation' for IsoObject and its parents!",
 					iso_object);
+				var trans_iter = iso_object.transform;
+				while ( trans_iter ) {
+					trans_iter.localRotation = Quaternion.identity;
+					trans_iter = trans_iter.parent;
+				}
+				iso_object.FixTransform();
 			}
 		}
 
