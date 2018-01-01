@@ -101,7 +101,7 @@ namespace IsoTools.Internal {
 											iso_world.snappingDistance,
 											ref result_p_z, iso_object.sizeZ, other.positionZ, other.sizeZ)
 										: false;
-									if ( new_snapping_z ) {
+									if ( new_snapping_z && IsSnapByObjectAllowed(iso_object, other) ) {
 										delta      = result_p_z - iso_orig_z;
 										snapping_z = true;
 										break;
@@ -179,7 +179,7 @@ namespace IsoTools.Internal {
 											iso_world.snappingDistance,
 											ref result_pos_iso.y, iso_object.sizeY, other.positionY, other.sizeY)
 										: false;
-									if ( new_snapping_x || new_snapping_y ) {
+									if ( (new_snapping_x || new_snapping_y) && IsSnapByObjectAllowed(iso_object, other) ) {
 										if ( new_snapping_x ) {
 											snapping_x  = true;
 											iso_delta.x = result_pos_iso.x - iso_orig_p.x;
@@ -370,6 +370,18 @@ namespace IsoTools.Internal {
 			return
 				iso_world &&
 				(iso_world.isSnapByObjects != Event.current.control);
+		}
+
+		public static bool IsSnapByObjectAllowed(IsoObject iso_object, IsoObject other_object) {
+			var iso_object_trans = iso_object.transform;
+			var other_object_trans = other_object.transform;
+			while ( other_object_trans ) {
+				if ( other_object_trans.parent == iso_object_trans ) {
+					return false;
+				}
+				other_object_trans = other_object_trans.parent;
+			}
+			return true;
 		}
 	}
 }
