@@ -316,14 +316,14 @@ namespace IsoTools {
 		void OnDrawGizmos() {
 			var iso_world = isoWorld;
 			if ( iso_world ) {
-				if ( iso_world.isShowIsoBounds ) {
+				if ( iso_world.isShowIsoBounds && iso_world.Internal_IsVisible(this) ) {
 					IsoUtils.DrawIsoCube(
 						iso_world,
 						position + size * 0.5f,
 						size,
 						Color.red);
 				}
-				if ( iso_world.isShowScreenBounds ) {
+				if ( iso_world.isShowScreenBounds && iso_world.Internal_IsVisible(this) ) {
 					IsoUtils.DrawRect(
 						Internal.QTBounds,
 						Color.green);
@@ -333,7 +333,7 @@ namespace IsoTools {
 
 		void OnDrawGizmosSelected() {
 			var iso_world = isoWorld;
-			if ( iso_world && iso_world.isShowDepends ) {
+			if ( iso_world && iso_world.isShowDepends && iso_world.Internal_IsVisible(this) ) {
 				for ( int i = 0, e = Internal.SelfDepends.Count; i < e; ++i ) {
 					IsoUtils.DrawLine(
 						Internal.QTBounds.center,

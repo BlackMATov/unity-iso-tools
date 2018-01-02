@@ -443,6 +443,10 @@ namespace IsoTools {
 			}
 		}
 
+		public bool Internal_IsVisible(IsoObject iso_object) {
+			return _screenSolver.curVisibles.Contains(iso_object);
+		}
+
 		// ---------------------------------------------------------------------
 		//
 		// Private

@@ -1,6 +1,7 @@
 ###### Version 3.1.0
 
 * Fix Unity 5.6 warning
+* Speed up debug gizmos render
 * Disable iso object snapping by children
 
 ###### Version 3.0.2
