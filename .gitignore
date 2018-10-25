@@ -1,5 +1,12 @@
+obj/*
 Temp/*
 Library/*
 
 Assets/AssetStoreTools/*
 Assets/AssetStoreTools.meta
+
+.DS_Store
+iso-tools.sln
+iso-tools.userprefs
+Assembly-CSharp.csproj
+Assembly-CSharp-Editor.csproj

@@ -7,23 +7,31 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/IsoTools/Examples/Scenes/Scene00.unity
+    guid: 300dc992f1ccd4215b066b385d870909
   - enabled: 1
     path: Assets/IsoTools/Examples/Scenes/Scene01.unity
+    guid: bed1ae3aad0a341b7a6ce26a08bfed66
   - enabled: 1
     path: Assets/IsoTools/Examples/Scenes/Scene02.unity
+    guid: 3b326225b2d6342dd9a9efd430fdf665
   - enabled: 1
     path: Assets/IsoTools/Examples/Scenes/Scene03.unity
+    guid: f5b64dc65c2c54648bf436e88a46b492
   - enabled: 1
     path: Assets/IsoTools/Examples/Scenes/Scene04.unity
+    guid: 39470f522af884ebea4ecde56b2e7988
   - enabled: 1
     path: Assets/IsoTools/Examples/Scenes/Scene05.unity
+    guid: 247442725a7ca47b5ac9b6588dba41fe
   - enabled: 1
     path: Assets/IsoTools/Examples/Scenes/Scene06.unity
+    guid: 66103e03d44124b8f90fe91cedff2b15
   - enabled: 1
     path: Assets/IsoTools/Examples/Scenes/Scene07.unity
+    guid: 11611aa924d614127917d9e1eedfa841
   - enabled: 1
     path: Assets/IsoTools/Examples/Scenes/Scene08.unity
+    guid: 3aae03a1b5bb14c5e81387a04eaad3b9
   - enabled: 1
     path: Assets/IsoTools/Examples/Scenes/Scene09.unity
-  - enabled: 1
-    path: Assets/IsoTools/Examples/Scenes/Scene10.unity
+    guid: 791584dcfc13145ff8d4699ad898a7f1
