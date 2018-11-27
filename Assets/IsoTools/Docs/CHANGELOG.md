@@ -1,3 +1,7 @@
+###### Version 3.0.4
+
+* Fix sorting problem after Undo in Editor
+
 ###### Version 3.0.3
 
 * Speed up debug gizmos render
