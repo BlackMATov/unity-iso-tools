@@ -100,7 +100,7 @@ namespace IsoTools.Internal {
 		bool UpdateIsoObjectBounds3d(IsoObject iso_object) {
 			var minmax3d = IsoObjectMinMax3D(iso_object);
 			var offset3d = iso_object.Internal.Transform.position.z - minmax3d.center;
-			if ( iso_object.Internal.MinMax3d.Approximately(minmax3d) ||
+			if ( !iso_object.Internal.MinMax3d.Approximately(minmax3d) ||
 				 !Mathf.Approximately(iso_object.Internal.Offset3d, offset3d) )
 			{
 				iso_object.Internal.MinMax3d = minmax3d;
@@ -117,9 +117,13 @@ namespace IsoTools.Internal {
 			for ( int i = 0, e = renderers.Count; i < e; ++i ) {
 				var renderer = renderers[i];
 				if ( renderer && renderer.enabled ) {
+                    if ( renderer is ParticleSystemRenderer ) {
+                        // ParticleSystemRenderer.bound returns incorrect bounds after Undo in Editor
+                        continue;
+                    }
 					var bounds  = renderer.bounds;
 					var extents = bounds.extents;
-					if ( extents.x > 0.0f || extents.y > 0.0f || extents.z > 0.0f ) {
+                    if ( extents.z > 0.0f ) {
 						var center    = bounds.center.z;
 						var minbounds = center - extents.z;
 						var maxbounds = center + extents.z;
@@ -137,7 +141,9 @@ namespace IsoTools.Internal {
 					}
 				}
 			}
-			return inited ? result : IsoMinMax.zero;
+			return inited
+                ? result
+                : new IsoMinMax(iso_object.Internal.Transform.position.z);
 		}
 
 		List<Renderer> GetIsoObjectRenderers(IsoObject iso_object) {

@@ -5,7 +5,12 @@ namespace IsoTools.Internal {
 		public float min;
 		public float max;
 
-		public IsoMinMax(float min, float max) : this() {
+        public IsoMinMax(float minmax) : this() {
+            this.min = minmax;
+            this.max = minmax;
+        }
+
+        public IsoMinMax(float min, float max) : this() {
 			this.min = min;
 			this.max = max;
 		}
@@ -23,7 +28,12 @@ namespace IsoTools.Internal {
 			get { return min + (max - min) * 0.5f; }
 		}
 
-		public void Set(float min, float max) {
+        public void Set(float minmax) {
+            this.min = minmax;
+            this.max = minmax;
+        }
+
+        public void Set(float min, float max) {
 			this.min = min;
 			this.max = max;
 		}
