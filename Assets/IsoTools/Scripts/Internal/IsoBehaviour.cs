@@ -16,7 +16,7 @@ namespace IsoTools.Internal {
 		// ---------------------------------------------------------------------
 
 		public void Internal_SetDirtyInEditorMode() {
-		#if UNITY_EDITOR
+		#if UNITY_EDITOR && !UNITY_2019_1_OR_NEWER
 			EditorUtility.SetDirty(this);
 		#endif
 		}

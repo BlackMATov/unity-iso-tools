@@ -1,3 +1,7 @@
+###### Version 3.0.5
+
+* Fix for Unity 2019
+
 ###### Version 3.0.4
 
 * Fix sorting problem after Undo in Editor
