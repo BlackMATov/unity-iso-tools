@@ -1,3 +1,7 @@
+###### Version 3.0.6
+
+* Minor promo fixes
+
 ###### Version 3.0.5
 
 * Fix for Unity 2019
@@ -28,7 +32,7 @@
 * Custom snapping distance
 * Improvements sorting algorithm
 * Multiple isometric worlds in one scene
-* **Temporarily** removed TiledMap support
+* Temporarily removed TiledMap support
 
 ###### Version 2.4.2
 
