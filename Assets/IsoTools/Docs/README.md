@@ -25,7 +25,7 @@ Make 2.5D isometric game in Unity easy!
 * Intersection of isometric objects is not allowed;
 * Parent-child related isometric objects is not allowed.
 
-Supports Unity 5.5 and newer, both Personal and Pro. Full C# source code included.
+Supports Unity 2017 and newer, both Personal and Pro. Full C# source code included.
 
 Leave your rating for this Asset. It is very important for me and the development of the project :) Thank you!
 

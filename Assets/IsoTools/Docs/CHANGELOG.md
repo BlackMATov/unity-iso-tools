@@ -1,3 +1,8 @@
+###### Version 3.1.0
+
+* fix some saving issues in Unity 2018-2019
+* drop legacy Unity versions (before 2017 LTS)
+
 ###### Version 3.0.6
 
 * Minor promo fixes
