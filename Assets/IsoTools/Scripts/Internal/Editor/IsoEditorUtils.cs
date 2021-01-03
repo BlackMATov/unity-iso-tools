@@ -32,13 +32,9 @@ namespace IsoTools.Internal {
 		}
 
 		public static bool DoFoldoutHeaderGroup(bool foldout, string header, System.Action act) {
-			foldout = EditorGUILayout.BeginFoldoutHeaderGroup(foldout, header);
-			try {
-				if ( foldout ) {
-					act();
-				}
-			} finally {
-				EditorGUILayout.EndFoldoutHeaderGroup();
+			foldout = EditorGUILayout.Foldout(foldout, header);
+			if ( foldout ) {
+				act();
 			}
 			return foldout;
 		}
@@ -72,6 +68,14 @@ namespace IsoTools.Internal {
 					});
 				});
 			}
+		}
+
+		public static bool IsPrefabInstance(GameObject go) {
+		#if UNITY_2018_3_OR_NEWER
+			return PrefabUtility.IsPartOfAnyPrefab(go);
+		#else
+			return PrefabUtility.GetPrefabType(go) != PrefabType.None;
+		#endif
 		}
 
 		// ---------------------------------------------------------------------
@@ -145,7 +149,7 @@ namespace IsoTools.Internal {
 					var result_p_z = iso_orig_z + delta;
 					if ( move ) {
 						iso_object.positionZ = IsoUtils.FloatBeautifier(result_p_z);
-						if ( PrefabUtility.GetPrefabInstanceStatus(iso_object) != PrefabInstanceStatus.NotAPrefab ) {
+						if ( IsoEditorUtils.IsPrefabInstance(iso_object.gameObject) ) {
 							PrefabUtility.RecordPrefabInstancePropertyModifications(iso_object);
 						}
 					}
@@ -249,7 +253,7 @@ namespace IsoTools.Internal {
 					var result_pos_iso = iso_orig_p + iso_delta;
 					if ( move ) {
 						iso_object.position = IsoUtils.VectorBeautifier(result_pos_iso);
-						if ( PrefabUtility.GetPrefabInstanceStatus(iso_object) != PrefabInstanceStatus.NotAPrefab ) {
+						if ( IsoEditorUtils.IsPrefabInstance(iso_object.gameObject) ) {
 							PrefabUtility.RecordPrefabInstancePropertyModifications(iso_object);
 						}
 					}

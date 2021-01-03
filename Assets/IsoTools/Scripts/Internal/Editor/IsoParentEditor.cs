@@ -106,7 +106,7 @@ namespace IsoTools.Internal {
 					foreach ( var iso_object in _isoObjects[iso_world] ) {
 						iso_object.FixIsoPosition();
 						iso_object.positionXY = IsoUtils.VectorBeautifier(iso_object.positionXY);
-						if ( PrefabUtility.GetPrefabInstanceStatus(iso_object) != PrefabInstanceStatus.NotAPrefab ) {
+						if ( IsoEditorUtils.IsPrefabInstance(iso_object.gameObject) ) {
 							PrefabUtility.RecordPrefabInstancePropertyModifications(iso_object);
 						}
 					}
@@ -137,7 +137,7 @@ namespace IsoTools.Internal {
 					foreach ( var iso_object in _isoObjects[iso_world] ) {
 						iso_object.FixIsoPosition();
 						iso_object.positionXY = IsoUtils.VectorBeautifier(iso_object.positionXY);
-						if ( PrefabUtility.GetPrefabInstanceStatus(iso_object) != PrefabInstanceStatus.NotAPrefab ) {
+						if ( IsoEditorUtils.IsPrefabInstance(iso_object.gameObject) ) {
 							PrefabUtility.RecordPrefabInstancePropertyModifications(iso_object);
 						}
 					}
