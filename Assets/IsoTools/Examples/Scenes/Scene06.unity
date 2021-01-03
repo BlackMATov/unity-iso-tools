@@ -13,7 +13,7 @@ OcclusionCullingSettings:
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 7
+  serializedVersion: 8
   m_Fog: 0
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
@@ -25,6 +25,7 @@ RenderSettings:
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
   m_AmbientMode: 3
+  m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
@@ -41,7 +42,7 @@ RenderSettings:
 --- !u!157 &4
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 7
+  serializedVersion: 11
   m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
@@ -53,7 +54,7 @@ LightmapSettings:
     m_EnableBakedLightmaps: 0
     m_EnableRealtimeLightmaps: 0
   m_LightmapEditorSettings:
-    serializedVersion: 4
+    serializedVersion: 9
     m_Resolution: 2
     m_BakeResolution: 40
     m_TextureWidth: 1024
@@ -66,13 +67,30 @@ LightmapSettings:
     m_LightmapParameters: {fileID: 0}
     m_LightmapsBakeMode: 1
     m_TextureCompression: 1
-    m_DirectLightInLightProbes: 1
     m_FinalGather: 0
     m_FinalGatherFiltering: 1
     m_FinalGatherRayCount: 1024
     m_ReflectionCompression: 2
+    m_MixedBakeMode: 1
+    m_BakeBackend: 0
+    m_PVRSampling: 1
+    m_PVRDirectSampleCount: 32
+    m_PVRSampleCount: 500
+    m_PVRBounces: 2
+    m_PVRFilterTypeDirect: 0
+    m_PVRFilterTypeIndirect: 0
+    m_PVRFilterTypeAO: 0
+    m_PVRFilteringMode: 0
+    m_PVRCulling: 1
+    m_PVRFilteringGaussRadiusDirect: 1
+    m_PVRFilteringGaussRadiusIndirect: 5
+    m_PVRFilteringGaussRadiusAO: 2
+    m_PVRFilteringAtrousPositionSigmaDirect: 0.5
+    m_PVRFilteringAtrousPositionSigmaIndirect: 2
+    m_PVRFilteringAtrousPositionSigmaAO: 1
+    m_ShowResolutionOverlay: 1
   m_LightingDataAsset: {fileID: 0}
-  m_RuntimeCPUUsage: 25
+  m_UseShadowmask: 0
 --- !u!196 &5
 NavMeshSettings:
   serializedVersion: 2
@@ -89,7 +107,11 @@ NavMeshSettings:
     minRegionArea: 2
     manualCellSize: 0
     cellSize: 0.16666667
+    manualTileSize: 0
+    tileSize: 256
     accuratePlacement: 0
+    debug:
+      m_Flags: 0
   m_NavMeshData: {fileID: 0}
 --- !u!1001 &38644018
 Prefab:
@@ -720,7 +742,6 @@ GameObject:
   m_Component:
   - component: {fileID: 600542283}
   - component: {fileID: 600542282}
-  - component: {fileID: 600542281}
   - component: {fileID: 600542280}
   - component: {fileID: 600542279}
   - component: {fileID: 600542284}
@@ -739,13 +760,6 @@ AudioListener:
   m_GameObject: {fileID: 600542277}
   m_Enabled: 1
 --- !u!124 &600542280
-Behaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 600542277}
-  m_Enabled: 1
---- !u!92 &600542281
 Behaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -782,10 +796,12 @@ Camera:
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 0
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
-  m_StereoMirrorMode: 0
 --- !u!4 &600542283
 Transform:
   m_ObjectHideFlags: 0
@@ -806,7 +822,7 @@ Light:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 600542277}
   m_Enabled: 1
-  serializedVersion: 7
+  serializedVersion: 8
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1
@@ -831,6 +847,8 @@ Light:
   m_Lightmapping: 4
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
 --- !u!4 &648729772 stripped
@@ -1242,7 +1260,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 478240, guid: 2104b310477ba4cfc9aba14f852031b9, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 163.28665
+      value: 188.189
       objectReference: {fileID: 0}
     - target: {fileID: 478240, guid: 2104b310477ba4cfc9aba14f852031b9, type: 2}
       propertyPath: m_LocalRotation.x
@@ -1826,7 +1844,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 453404, guid: d10e5320df9f84d4186bda0ba98db9ff, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 201.5187
+      value: 201.4187
       objectReference: {fileID: 0}
     - target: {fileID: 453404, guid: d10e5320df9f84d4186bda0ba98db9ff, type: 2}
       propertyPath: m_LocalRotation.x
@@ -2091,7 +2109,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 478240, guid: 2104b310477ba4cfc9aba14f852031b9, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 188.189
+      value: 163.28665
       objectReference: {fileID: 0}
     - target: {fileID: 478240, guid: 2104b310477ba4cfc9aba14f852031b9, type: 2}
       propertyPath: m_LocalRotation.x
@@ -2165,11 +2183,20 @@ MonoBehaviour:
   _tileHeight: 16
   _stepDepth: 0.1
   _startDepth: 1
+  _gravity: {x: 0, y: 0, z: -9.81}
+  _contactOffset: 0.01
+  _sleepThreshold: 0.005
+  _bounceThreshold: 2
+  _solverIterations: 6
+  _solverVelocityIterations: 1
   _showIsoBounds: 0
   _showScreenBounds: 0
-  _showDepends: 0
   _snapByCells: 1
   _snapByObjects: 1
+  _sortInSceneView: 1
+  _snappingDistance: 0.2
+  _showDepends: 0
+  _showQuadTree: 0
 --- !u!4 &1656223596
 Transform:
   m_ObjectHideFlags: 0
@@ -2264,7 +2291,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 453404, guid: d10e5320df9f84d4186bda0ba98db9ff, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 201.4187
+      value: 201.5187
       objectReference: {fileID: 0}
     - target: {fileID: 453404, guid: d10e5320df9f84d4186bda0ba98db9ff, type: 2}
       propertyPath: m_LocalRotation.x
