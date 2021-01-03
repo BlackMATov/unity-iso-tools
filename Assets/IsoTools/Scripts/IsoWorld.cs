@@ -432,15 +432,9 @@ namespace IsoTools {
 		// ---------------------------------------------------------------------
 
 		public void Internal_MarkDirty(IsoObject iso_object) {
-			if ( _screenSolver.OnMarkDirtyIsoObject(iso_object) ) {
-				Internal_SetDirtyInEditorMode();
-			}
-			if ( _sortingSolver.OnMarkDirtyIsoObject(iso_object) ) {
-				Internal_SetDirtyInEditorMode();
-			}
-			if ( _warningSolver.OnMarkDirtyIsoObject(iso_object) ) {
-				Internal_SetDirtyInEditorMode();
-			}
+			_screenSolver.OnMarkDirtyIsoObject(iso_object);
+			_sortingSolver.OnMarkDirtyIsoObject(iso_object);
+			_warningSolver.OnMarkDirtyIsoObject(iso_object);
 		}
 
 		public bool Internal_IsVisible(IsoObject iso_object) {
@@ -474,7 +468,6 @@ namespace IsoTools {
 		void ChangeSortingProperty() {
 			UpdateIsoMatrix();
 			FixIsoObjectTransforms();
-			Internal_SetDirtyInEditorMode();
 		}
 
 		void ChangePhysicsProperty() {
@@ -488,9 +481,7 @@ namespace IsoTools {
 
 		void StepSortingProcess() {
 			_screenSolver.StepSortingAction(this);
-			if ( _sortingSolver.StepSortingAction(this, _screenSolver) ) {
-				Internal_SetDirtyInEditorMode();
-			}
+			_sortingSolver.StepSortingAction(this, _screenSolver);
 			_warningSolver.StepSortingAction(this);
 		}
 
@@ -588,13 +579,6 @@ namespace IsoTools {
 			snappingDistance         = _snappingDistance;
 			isShowDepends            = _showDepends;
 			isShowQuadTree           = _showQuadTree;
-		}
-
-		void OnRenderObject() {
-			var camera = Camera.current;
-			if ( camera && camera.name == "SceneCamera" ) {
-				Internal_SetDirtyInEditorMode();
-			}
 		}
 
 		void OnDrawGizmos() {

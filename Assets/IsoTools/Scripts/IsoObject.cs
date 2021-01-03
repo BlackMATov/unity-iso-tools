@@ -269,7 +269,6 @@ namespace IsoTools {
 			if ( iso_world ) {
 				iso_world.Internal_MarkDirty(this);
 			}
-			Internal_SetDirtyInEditorMode();
 		}
 
 		// ---------------------------------------------------------------------

@@ -208,7 +208,7 @@ namespace IsoTools.Internal {
 			UnregisterIsoObjectParent(iso_object);
 		}
 
-		public bool OnMarkDirtyIsoObject(IsoObject iso_object) {
+		public void OnMarkDirtyIsoObject(IsoObject iso_object) {
 			if ( iso_object.Internal.QTItem != null ) {
 				iso_object.Internal.QTItem = _quadTree.MoveItem(
 					iso_object.Internal.QTBounds,
@@ -219,11 +219,7 @@ namespace IsoTools.Internal {
 					iso_object);
 			}
 			_minIsoXY = IsoUtils.Vec2Min(_minIsoXY, iso_object.position);
-			if ( !iso_object.Internal.Dirty ) {
-				iso_object.Internal.Dirty = true;
-				return true;
-			}
-			return false;
+			iso_object.Internal.Dirty = true;
 		}
 
 		public void OnDrawGizmos(IsoWorld iso_world) {

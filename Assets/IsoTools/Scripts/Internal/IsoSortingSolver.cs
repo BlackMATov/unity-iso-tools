@@ -31,8 +31,7 @@ namespace IsoTools.Internal {
 			}
 		}
 
-		public bool OnMarkDirtyIsoObject(IsoObject iso_object) {
-			return false;
+		public void OnMarkDirtyIsoObject(IsoObject iso_object) {
 		}
 
 		public void OnDrawGizmos(IsoWorld iso_world) {
@@ -44,7 +43,7 @@ namespace IsoTools.Internal {
 		//
 		// ---------------------------------------------------------------------
 
-		public bool StepSortingAction(IsoWorld iso_world, IsoScreenSolver screen_solver) {
+		public void StepSortingAction(IsoWorld iso_world, IsoScreenSolver screen_solver) {
 			Profiler.BeginSample("IsoSortingSolver.ResolveVisibles");
 			var dirty = ResolveVisibles(screen_solver);
 			Profiler.EndSample();
@@ -53,7 +52,6 @@ namespace IsoTools.Internal {
 				PlaceVisibles(iso_world, screen_solver);
 				Profiler.EndSample();
 			}
-			return dirty;
 		}
 
 		public void Clear() {

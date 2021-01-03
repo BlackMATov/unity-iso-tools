@@ -26,8 +26,8 @@ namespace IsoTools.Internal {
 			_impl.OnRemoveIsoObject(iso_object);
 		}
 
-		public bool OnMarkDirtyIsoObject(IsoObject iso_object) {
-			return _impl.OnMarkDirtyIsoObject(iso_object);
+		public void OnMarkDirtyIsoObject(IsoObject iso_object) {
+			_impl.OnMarkDirtyIsoObject(iso_object);
 		}
 
 		public void OnDrawGizmos(IsoWorld iso_world) {
@@ -46,7 +46,7 @@ namespace IsoTools.Internal {
 	class IsoWarningSolverImpl {
 		public virtual void OnAddIsoObject(IsoObject iso_object) {}
 		public virtual void OnRemoveIsoObject(IsoObject iso_object) {}
-		public virtual bool OnMarkDirtyIsoObject(IsoObject iso_object) { return false; }
+		public virtual void OnMarkDirtyIsoObject(IsoObject iso_object) {}
 		public virtual void OnDrawGizmos(IsoWorld iso_world) {}
 		public virtual void StepSortingAction(IsoWorld iso_world) {}
 		public virtual void Clear() {}
