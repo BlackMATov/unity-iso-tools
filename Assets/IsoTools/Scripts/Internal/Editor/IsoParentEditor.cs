@@ -6,6 +6,7 @@ using System.Collections.Generic;
 namespace IsoTools.Internal {
 	[CustomEditor(typeof(IsoParent)), CanEditMultipleObjects]
 	public class IsoParentEditor : Editor {
+		static bool _showWorldSettings = false;
 
 		Dictionary<IsoWorld, List<IsoParent>> _isoParents   = new Dictionary<IsoWorld, List<IsoParent>>();
 		Dictionary<IsoWorld, List<IsoObject>> _isoObjects   = new Dictionary<IsoWorld, List<IsoObject>>();
@@ -44,9 +45,33 @@ namespace IsoTools.Internal {
 		}
 
 		void DrawCustomInspector() {
-			var iso_worlds = _isoParents.Keys.ToArray();
-			IsoEditorUtils.DrawWorldProperties(iso_worlds);
-			IsoEditorUtils.DrawSelfWorldProperty(iso_worlds);
+			if ( DrawDetachedInspector() ) {
+				return;
+			}
+
+			var iso_worlds = _isoObjects.Keys.ToArray();
+			if ( iso_worlds.Length == 0 ) {
+				return;
+			}
+
+			_showWorldSettings = IsoEditorUtils.DoFoldoutHeaderGroup(_showWorldSettings, "World Settings", () => {
+				IsoEditorUtils.DrawSelfWorldProperty(iso_worlds);
+				IsoEditorUtils.DrawWorldProperties(iso_worlds);
+			});
+		}
+
+		bool DrawDetachedInspector() {
+			var iso_parent = targets.Length == 1 ? target as IsoParent : null;
+			var detached = iso_parent && iso_parent.IsActive() && !iso_parent.isoWorld;
+
+			if ( detached ) {
+				EditorGUILayout.HelpBox(
+					"Detached IsoParent\nNeed to be a child of IsoWorld",
+					MessageType.Warning,
+					true);
+			}
+
+			return detached;
 		}
 
 		// ---------------------------------------------------------------------

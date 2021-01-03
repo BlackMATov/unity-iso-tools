@@ -75,7 +75,7 @@ namespace IsoTools {
 		//
 		// ---------------------------------------------------------------------
 
-		[Header("World Settings")]
+		[Header("Isometric Settings")]
 		[SerializeField]
 		float _tileSize = DefTileSize;
 		public float tileSize {

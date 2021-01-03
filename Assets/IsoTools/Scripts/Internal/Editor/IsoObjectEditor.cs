@@ -6,6 +6,7 @@ using System.Collections.Generic;
 namespace IsoTools.Internal {
 	[CustomEditor(typeof(IsoObject)), CanEditMultipleObjects]
 	class IsoObjectEditor : Editor {
+		static bool _showWorldSettings = false;
 
 		Dictionary<IsoWorld, List<IsoObject>> _isoObjects   = new Dictionary<IsoWorld, List<IsoObject>>();
 		Dictionary<IsoWorld, List<IsoObject>> _otherObjects = new Dictionary<IsoWorld, List<IsoObject>>();
@@ -41,20 +42,33 @@ namespace IsoTools.Internal {
 		}
 
 		void DrawCustomInspector() {
+			if ( DrawDetachedInspector() ) {
+				return;
+			}
+
 			var iso_worlds = _isoObjects.Keys.ToArray();
-			IsoEditorUtils.DrawWorldProperties(iso_worlds);
-			IsoEditorUtils.DrawSelfWorldProperty(iso_worlds);
-			DrawDetachedInspector();
+			if ( iso_worlds.Length == 0 ) {
+				return;
+			}
+
+			_showWorldSettings = IsoEditorUtils.DoFoldoutHeaderGroup(_showWorldSettings, "World Settings", () => {
+				IsoEditorUtils.DrawSelfWorldProperty(iso_worlds);
+				IsoEditorUtils.DrawWorldProperties(iso_worlds);
+			});
 		}
 
-		void DrawDetachedInspector() {
+		bool DrawDetachedInspector() {
 			var iso_object = targets.Length == 1 ? target as IsoObject : null;
-			if ( iso_object && iso_object.IsActive() && !iso_object.isoWorld ) {
+			var detached = iso_object && iso_object.IsActive() && !iso_object.isoWorld;
+
+			if ( detached ) {
 				EditorGUILayout.HelpBox(
 					"Detached IsoObject\nNeed to be a child of IsoWorld",
 					MessageType.Warning,
 					true);
 			}
+
+			return detached;
 		}
 
 		// ---------------------------------------------------------------------

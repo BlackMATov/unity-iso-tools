@@ -31,6 +31,18 @@ namespace IsoTools.Internal {
 			}
 		}
 
+		public static bool DoFoldoutHeaderGroup(bool foldout, string header, System.Action act) {
+			foldout = EditorGUILayout.BeginFoldoutHeaderGroup(foldout, header);
+			try {
+				if ( foldout ) {
+					act();
+				}
+			} finally {
+				EditorGUILayout.EndFoldoutHeaderGroup();
+			}
+			return foldout;
+		}
+
 		public static void DrawWorldProperties(IsoWorld[] iso_worlds) {
 			if ( iso_worlds.Length > 0 ) {
 				var so = new SerializedObject(iso_worlds);
