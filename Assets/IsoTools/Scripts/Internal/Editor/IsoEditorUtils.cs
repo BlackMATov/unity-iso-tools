@@ -145,6 +145,9 @@ namespace IsoTools.Internal {
 					var result_p_z = iso_orig_z + delta;
 					if ( move ) {
 						iso_object.positionZ = IsoUtils.FloatBeautifier(result_p_z);
+						if ( PrefabUtility.GetPrefabInstanceStatus(iso_object) != PrefabInstanceStatus.NotAPrefab ) {
+							PrefabUtility.RecordPrefabInstancePropertyModifications(iso_object);
+						}
 					}
 					var z_delta = result_p_z - iso_orig_z;
 					return Mathf.Abs(z_delta) > Mathf.Abs(AccIn) ? z_delta : AccIn;
@@ -246,6 +249,9 @@ namespace IsoTools.Internal {
 					var result_pos_iso = iso_orig_p + iso_delta;
 					if ( move ) {
 						iso_object.position = IsoUtils.VectorBeautifier(result_pos_iso);
+						if ( PrefabUtility.GetPrefabInstanceStatus(iso_object) != PrefabInstanceStatus.NotAPrefab ) {
+							PrefabUtility.RecordPrefabInstancePropertyModifications(iso_object);
+						}
 					}
 					var pos_delta = result_pos_iso - iso_orig_p;
 					return pos_delta.magnitude > AccIn.magnitude ? pos_delta : AccIn;
