@@ -6,6 +6,7 @@
 
 [Asset Store](https://assetstore.unity.com/packages/tools/sprite-management/isometric-2-5d-toolset-27851) |
 [Forum](https://forum.unity.com/threads/isometric-2-5d-toolset.291418/) |
+[Web Demo](https://blackmatov.github.io/unity-assets/isometric-toolset/demo) |
 [Usage Video (Sprites)](http://www.youtube.com/watch?v=IwJ_ofKG9_Y) |
 [Usage Video (Physics)](http://www.youtube.com/watch?v=wmXhyDHXYcM) |
 [API Reference](Assets/IsoTools/Docs/API.md) |
