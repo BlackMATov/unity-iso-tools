@@ -22,7 +22,7 @@
 - Helpful mouse and touch functions
 - Custom isometric tile angle, ratio and height
 - Mix 2D and 3D support
-- Full [PlayPaker](https://assetstore.unity.com/packages/tools/visual-scripting/playmaker-368) support
+- Full [PlayMaker](https://assetstore.unity.com/packages/tools/visual-scripting/playmaker-368) support
 
 Supports Unity 2017.4 (LTS) and newer, both Personal and Pro. Full C# source code included.
 
