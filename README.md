@@ -4,13 +4,14 @@
 
 > Make 2.5D isometric game in Unity easy!
 
-[Asset Store](https://assetstore.unity.com/packages/tools/sprite-management/isometric-2-5d-toolset-27851) |
+[Asset Store](https://assetstore.unity.com/packages/slug/27851) |
+[GitHub Repo](https://github.com/BlackMATov/unity-iso-tools) |
 [Forum](https://forum.unity.com/threads/isometric-2-5d-toolset.291418/) |
 [Web Demo](https://blackmatov.github.io/unity-assets/isometric-toolset/demo) |
 [Usage Video (Sprites)](http://www.youtube.com/watch?v=IwJ_ofKG9_Y) |
 [Usage Video (Physics)](http://www.youtube.com/watch?v=wmXhyDHXYcM) |
-[API Reference](Assets/IsoTools/Docs/API.md) |
-[Changelog](Assets/IsoTools/Docs/CHANGELOG.md)
+[API Reference](https://github.com/BlackMATov/unity-iso-tools/blob/main/Assets/IsoTools/Docs/API.md) |
+[Changelog](https://github.com/BlackMATov/unity-iso-tools/blob/main/Assets/IsoTools/Docs/CHANGELOG.md)
 
 ## Features
 
@@ -24,9 +25,9 @@
 - Mix 2D and 3D support
 - Full [PlayMaker](https://assetstore.unity.com/packages/tools/visual-scripting/playmaker-368) support
 
-Supports Unity 2017.4 (LTS) and newer, both Personal and Pro. Full C# source code included.
+Supports Unity 2019.4 and newer. Full C# source code included.
 
-Leave your rating for this Asset. It is very important for me and the development of the project :) Thank you!
+⭐⭐⭐ Leave your rating for this Asset. It is very important for me and the development of the project :) Also, give your stars on GitHub if you want to support me. Thank you! ⭐⭐⭐
 
 ## Limitations
 

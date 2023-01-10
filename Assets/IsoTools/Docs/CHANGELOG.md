@@ -1,3 +1,8 @@
+### Version 3.2.0
+
+* It's free and Open Source now!
+* New minimal Unity version is 2019.4
+
 ### Version 3.1.0
 
 * fix some saving issues in Unity 2018-2019
