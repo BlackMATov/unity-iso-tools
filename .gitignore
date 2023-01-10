@@ -3,6 +3,7 @@
 
 obj/*
 Temp/*
+Logs/*
 Library/*
 
 Assets/AssetStoreTools/*
