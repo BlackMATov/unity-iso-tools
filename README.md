@@ -33,6 +33,7 @@ Supports Unity 2019.4 and newer. Full C# source code included.
 
 - Intersection of isometric objects is not allowed
 - Parent-child related isometric objects is not allowed
+- Custom [Transparency Sort Axis](https://docs.unity3d.com/Manual/2DSorting.html) is not supported
 
 ## Screenshots
 
